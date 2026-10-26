@@ -1,0 +1,188 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CompressionArtifacts (a) compute → RTT input → cell-fetch fragment > RTTs the child, registers a cell texture, fetches the cell color + sharp alpha > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  quality: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_ca: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(1) var nearestClamp: sampler;
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(1) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let pPix_0 = floor((uv * uniforms._sys.viewportSize));
+  var composed_1 = vec4f((textureSample(compute_0, nearestClamp, vec2f(((clamp(floor((pPix_0.x / 4.0)), 0.0, 1023.0) + 0.5) / 1024.0), ((clamp(floor((pPix_0.y / 4.0)), 0.0, 1023.0) + 0.5) / 1024.0)))).rgb, (unpremultiplyAlpha(textureSample(rtt_0, linearClamp, uv))).a);
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;
+
+exports[`CompressionArtifacts (c) compute kernel resolves (D3 rules) > the cell kernel resolves with textureLoad + jpegBlockRgb + storage textureStore > cellKernel 1`] = `
+"@group(0) @binding(0) var input: texture_2d<f32>;
+
+@group(0) @binding(1) var cellTex: texture_storage_2d<rgba16float, write>;
+
+struct BlockQuantizeParams {
+  inputWidth: f32,
+  inputHeight: f32,
+  quality: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: BlockQuantizeParams;
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+const COS_LUT: array<f32, 64> = array<f32, 64>(1f, 0.9807852804032304f, 0.9238795325112867f, 0.8314696123025452f, 0.7071067811865476f, 0.5555702330196023f, 0.38268343236508984f, 0.19509032201612833f, 1f, 0.8314696123025452f, 0.38268343236508984f, -0.1950903220161282f, -0.7071067811865475f, -0.9807852804032304f, -0.9238795325112868f, -0.5555702330196022f, 1f, 0.5555702330196023f, -0.3826834323650897f, -0.9807852804032304f, -0.7071067811865477f, 0.1950903220161283f, 0.9238795325112865f, 0.8314696123025456f, 1f, 0.19509032201612833f, -0.9238795325112867f, -0.5555702330196022f, 0.7071067811865474f, 0.8314696123025456f, -0.3826834323650899f, -0.9807852804032307f, 1f, -0.1950903220161282f, -0.9238795325112868f, 0.5555702330196018f, 0.7071067811865477f, -0.8314696123025451f, -0.38268343236509056f, 0.9807852804032304f, 1f, -0.555570233019602f, -0.38268343236509034f, 0.9807852804032304f, -0.7071067811865467f, -0.19509032201612803f, 0.9238795325112867f, -0.831469612302545f, 1f, -0.8314696123025453f, 0.38268343236509f, 0.19509032201612878f, -0.7071067811865471f, 0.9807852804032307f, -0.9238795325112864f, 0.5555702330196015f, 1f, -0.9807852804032304f, 0.9238795325112865f, -0.8314696123025451f, 0.7071067811865466f, -0.5555702330196015f, 0.38268343236508956f, -0.19509032201612858f);
+
+const LUMA_QUANT_C: array<f32, 64> = array<f32, 64>(16f, 11f, 10f, 16f, 24f, 40f, 51f, 61f, 12f, 12f, 14f, 19f, 26f, 58f, 60f, 55f, 14f, 13f, 16f, 24f, 40f, 57f, 69f, 56f, 14f, 17f, 22f, 29f, 51f, 87f, 80f, 62f, 18f, 22f, 37f, 56f, 68f, 109f, 103f, 77f, 24f, 35f, 55f, 64f, 81f, 104f, 113f, 92f, 49f, 64f, 78f, 87f, 103f, 121f, 120f, 101f, 72f, 92f, 95f, 98f, 112f, 100f, 103f, 99f);
+
+const CHROMA_QUANT_C: array<f32, 64> = array<f32, 64>(17f, 18f, 24f, 47f, 99f, 99f, 99f, 99f, 18f, 21f, 26f, 66f, 99f, 99f, 99f, 99f, 24f, 26f, 56f, 99f, 99f, 99f, 99f, 99f, 47f, 66f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f, 99f);
+
+fn jpegBlockRgb(block: array<vec3f, 64>, localX: f32, localY: f32, quality: f32) -> vec3f {
+  let qualityC = clamp(quality, 1f, 100f);
+  let qScale = select((200f - (qualityC * 2f)), (5000f / qualityC), (qualityC < 50f));
+  var Yv = array<f32, 64>();
+  var Cbv = array<f32, 64>();
+  var Crv = array<f32, 64>();
+  for (var i = 0; (i < 64i); i++) {
+    let c = block[i];
+    Yv[i] = ((((c.x * 0.299f) + (c.y * 0.587f)) + (c.z * 0.114f)) - 0.5f);
+    Cbv[i] = (((c.x * -0.168736f) + (c.y * -0.331264f)) + (c.z * 0.5f));
+    Crv[i] = (((c.x * 0.5f) + (c.y * -0.418688f)) + (c.z * -0.081312f));
+  }
+  var rowCoef = array<f32, 48>();
+  for (var y = 0; (y < 8i); y++) {
+    for (var u = 0; (u < 6i); u++) {
+      var sum = 0f;
+      for (var x = 0; (x < 8i); x++) {
+        sum = (sum + (Yv[((y * 8i) + x)] * COS_LUT[((x * 8i) + u)]));
+      }
+      rowCoef[((y * 6i) + u)] = sum;
+    }
+  }
+  var acc = 0f;
+  for (var v = 0; (v < 6i); v++) {
+    let av = select(1f, 0.7071067811865476f, (v == 0i));
+    let cy = cos((((localY * 2f) + 1f) * (f32(v) * 0.19634954084936207f)));
+    for (var u = 0; (u < 6i); u++) {
+      let au = select(1f, 0.7071067811865476f, (u == 0i));
+      var colSum = 0f;
+      for (var y = 0; (y < 8i); y++) {
+        colSum = (colSum + (rowCoef[((y * 6i) + u)] * COS_LUT[((y * 8i) + v)]));
+      }
+      let G = (colSum * ((0.25f * au) * av));
+      let q = (clamp(floor((((qScale * LUMA_QUANT_C[((v * 8i) + u)]) + 50f) / 100f)), 1f, 255f) / 255f);
+      let Gq = (floor(((G / q) + 0.5f)) * q);
+      let cxv = cos((((localX * 2f) + 1f) * (f32(u) * 0.19634954084936207f)));
+      acc = (acc + (((Gq * (au * av)) * cxv) * cy));
+    }
+  }
+  let Y = ((acc * 0.25f) + 0.5f);
+  var sumCb = 0f;
+  var sumCr = 0f;
+  for (var i = 0; (i < 64i); i++) {
+    sumCb = (sumCb + Cbv[i]);
+    sumCr = (sumCr + Crv[i]);
+  }
+  let qChroma = (clamp(floor((((qScale * CHROMA_QUANT_C[0i]) + 50f) / 100f)), 1f, 255f) / 255f);
+  let GdcCb = (sumCb / 8f);
+  let GdcCr = (sumCr / 8f);
+  let Cb = ((floor(((GdcCb / qChroma) + 0.5f)) * qChroma) / 8f);
+  let Cr = ((floor(((GdcCr / qChroma) + 0.5f)) * qChroma) / 8f);
+  let r = (Y + (Cr * 1.402f));
+  let g = ((Y - (Cb * 0.344136f)) - (Cr * 0.714136f));
+  let b = (Y + (Cb * 1.772f));
+  return clamp(vec3f(r, g, b), vec3f(), vec3f(1));
+}
+
+fn compressionCell(cx: u32, cy: u32) {
+  let p = (&params);
+  let cellXf = f32(cx);
+  let cellYf = f32(cy);
+  let blockCol = floor((cellXf / 8f));
+  let blockRow = floor((cellYf / 8f));
+  let localX = (cellXf - (blockCol * 8f));
+  let localY = (cellYf - (blockRow * 8f));
+  let originX = (blockCol * 32f);
+  let originY = (blockRow * 32f);
+  var block = array<vec3f, 64>();
+  let wm1 = i32(((*p).inputWidth - 1f));
+  let hm1 = i32(((*p).inputHeight - 1f));
+  for (var y = 0; (y < 8i); y++) {
+    for (var x = 0; (x < 8i); x++) {
+      let px = ((originX + (f32(x) * 4f)) + 2f);
+      let py = ((originY + (f32(y) * 4f)) + 2f);
+      let ix = clamp(i32(px), 0i, wm1);
+      let iy = clamp(i32(py), 0i, hm1);
+      let texel = textureLoad(input, vec2u(u32(ix), u32(iy)), 0);
+      block[((y * 8i) + x)] = unpremultiplyAlpha(texel).xyz;
+    }
+  }
+  let rgb = jpegBlockRgb(block, localX, localY, (*p).quality);
+  textureStore(cellTex, vec2u(cx, cy), vec4f(rgb, 1f));
+}"
+`;

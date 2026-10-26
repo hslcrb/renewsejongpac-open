@@ -1,0 +1,165 @@
+/* [공유 텍스트 역할과 최소 가독성 / Shared text roles and minimum readability]
+   src/data/design-tokens.ts에서 생성됩니다. / Generated from src/data/design-tokens.ts.
+   data-text는 기존 요소의 위계를 보존합니다. / Native data-text annotations preserve existing hierarchy. */
+:where(h5, h6, small, sub, sup) {
+    font-size: max(var(--text-min), 1em);
+}
+
+[data-text="display"] {
+    font-size: max(var(--text-min), var(--text-display));
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+}
+
+[data-text="title"] {
+    font-size: max(var(--text-min), var(--text-title));
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
+}
+
+[data-text="heading"] {
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
+}
+
+[data-text="subheading"] {
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
+}
+
+[data-text="item-title"] {
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: -0.025em;
+}
+
+[data-text="lead"] {
+    font-size: max(var(--text-min), var(--text-lead));
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: -0.015em;
+}
+
+[data-text="body"] {
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: -0.015em;
+}
+
+[data-text="label"] {
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+
+[data-text="caption"] {
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+
+[data-text="action"] {
+    font-size: max(var(--text-min), var(--text-action));
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+
+[data-text="meta"] {
+    font-size: max(var(--text-min), var(--text-meta));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+
+[data-text="navigation"] {
+    font-size: max(var(--text-min), var(--text-navigation));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+
+[data-text="utility"] {
+    font-size: max(var(--text-min), var(--text-utility));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+
+[data-text][data-text-size="display"] {
+    font-size: max(var(--text-min), var(--text-display));
+}
+
+[data-text][data-text-size="title"] {
+    font-size: max(var(--text-min), var(--text-title));
+}
+
+[data-text][data-text-size="heading"] {
+    font-size: max(var(--text-min), var(--text-heading));
+}
+
+[data-text][data-text-size="subheading"] {
+    font-size: max(var(--text-min), var(--text-subheading));
+}
+
+[data-text][data-text-size="item-title"] {
+    font-size: max(var(--text-min), var(--text-item-title));
+}
+
+[data-text][data-text-size="lead"] {
+    font-size: max(var(--text-min), var(--text-lead));
+}
+
+[data-text][data-text-size="body"] {
+    font-size: max(var(--text-min), var(--text-body));
+}
+
+[data-text][data-text-size="label"] {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+[data-text][data-text-size="caption"] {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+[data-text][data-text-size="action"] {
+    font-size: max(var(--text-min), var(--text-action));
+}
+
+[data-text][data-text-size="meta"] {
+    font-size: max(var(--text-min), var(--text-meta));
+}
+
+[data-text][data-text-size="navigation"] {
+    font-size: max(var(--text-min), var(--text-navigation));
+}
+
+[data-text][data-text-size="utility"] {
+    font-size: max(var(--text-min), var(--text-utility));
+}
+
+[data-text][data-text-size="control"] {
+    font-size: max(var(--text-min), 1rem);
+}
+
+[data-text][data-text-size="hero-with-companion"] {
+    font-size: max(var(--text-min), var(--text-hero-with-companion));
+}
+
+[data-text][data-text-size="hero-standalone"] {
+    font-size: max(var(--text-min), var(--text-hero-standalone));
+}
+
+[data-text][data-text-size="quick-action"] {
+    font-size: max(var(--text-min), var(--text-quick-action));
+}

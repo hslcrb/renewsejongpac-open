@@ -1,0 +1,77 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-23T02:02:42.673Z",
+  "mode": "actual Supabase SDK with mocked Auth, PostgREST and reservation RPC; not live RLS verification",
+  "results": [
+    {
+      "name": "email forms await OTP and send the correct account-creation policy",
+      "passed": true
+    },
+    {
+      "name": "room saves reach the DB before applying and survive two fresh contexts",
+      "passed": true
+    },
+    {
+      "name": "notes create and delete through REST and remain escaped after reload",
+      "passed": true
+    },
+    {
+      "name": "favorite fill follows the server and failed writes preserve the prior state",
+      "passed": true
+    },
+    {
+      "name": "reservation RPCs await server state, recover failures, and cancellation persists",
+      "passed": true
+    },
+    {
+      "name": "lost hold and confirm responses retry without duplicates; changed seats and owners stay separate",
+      "passed": true
+    },
+    {
+      "name": "expired reservations show server state and cannot present a cancellation action",
+      "passed": true
+    },
+    {
+      "name": "a delayed reservation response cannot appear under the newly signed-in member",
+      "passed": true
+    },
+    {
+      "name": "profile changes persist in the member table without mutating provider metadata",
+      "passed": true
+    },
+    {
+      "name": "a late profile read and token refresh cannot overwrite a saved member profile",
+      "passed": true
+    },
+    {
+      "name": "an initial favorites read failure can recover through a later click",
+      "passed": true
+    },
+    {
+      "name": "queued favorite clicks cannot be reassigned to a newly signed-in member",
+      "passed": true
+    },
+    {
+      "name": "logout clears private UI and guests cannot persist favorites or bookings",
+      "passed": true
+    },
+    {
+      "name": "late account A data cannot replace account B after an SDK session change",
+      "passed": true
+    }
+  ],
+  "protocolErrors": [],
+  "runtimeErrors": [],
+  "requestCounts": {
+    "rpc/sejong_catalog_snapshot": 28,
+    "sejong_favorites": 26,
+    "sejong_profiles": 51,
+    "sejong_spaces": 17,
+    "sejong_notes": 19,
+    "rpc/get_member_reservations": 16,
+    "rpc/get_session_seats": 10,
+    "rpc/hold_seats": 7,
+    "rpc/confirm_reservation": 3,
+    "rpc/cancel_reservation": 1
+  }
+}

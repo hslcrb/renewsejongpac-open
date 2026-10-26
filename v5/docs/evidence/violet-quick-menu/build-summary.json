@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-19",
+  "baseCommit": "fbe1dc0f945419bfdf9337d83ac5a61d124c9918",
+  "command": "NEXT_TELEMETRY_DISABLED=1 npm run build",
+  "exitCode": 0,
+  "staticPagesGenerated": 156,
+  "typescript": "passed",
+  "lint": "skipped by existing Next configuration",
+  "environment": {
+    "node": "24.19.0",
+    "npm": "11.9.0",
+    "next": "14.2.35",
+    "playwright": "1.62.1",
+    "browser": "Google Chrome for Testing 155.0.8059.84"
+  },
+  "productionOutput": {
+    "existingMirrorFilesMatchedExport": 308,
+    "newMirrorFilesMatchedExport": 19,
+    "developmentOrHotUpdateFiles": 0
+  },
+  "sourceSha256": {
+    "v5/app/page.tsx": "acd15ad4cfa6bfa99140b9fbb01064baa0a2236109116f66a6680a0c302cb459",
+    "v5/app/design-rules/page.tsx": "c5127fa3bd5a1986766679c06ecdfd7bee8705c87d2c6ee97739141329753f4e",
+    "v5/components/VioletQuickMenu.tsx": "3c43b643b0a447890cb5801ee1b57117af9c0cb6892fce27f633f79f26f3d736",
+    "v5/components/VioletQuickMenu.module.css": "02303f5d85331e8e88f73a8510894364ade2ca9cdb2255df1a9e3bd8b2211c5b",
+    "v5/components/VioletFur.tsx": "d57ab31cdbf9062ceba227152c38356f05d3cb9d0c0f44976f08dcf80c7da666",
+    "v5/scripts/clean-build.js": "a89cc039839f83b72f301c7b7050ac78152e99f576fcf0cdeb794fa4edbd3621",
+    "v5/scripts/sync-out.js": "65ef8feadb3461057502a0a525359ab8fdf2bb15e4be3b47b0df41a2aae0c443",
+    "v5/package.json": "dbe174550125ba742dea0f60f715aeea9558a77430b2f0b0fc17d931538c974d",
+    "v5/package-lock.json": "6526c9290371441931ae62f88d87ea1c9c4c22ed6a0be21df6178e923d234213"
+  }
+}

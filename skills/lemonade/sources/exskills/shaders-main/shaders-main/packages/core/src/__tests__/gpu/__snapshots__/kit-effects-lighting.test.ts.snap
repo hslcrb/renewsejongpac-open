@@ -1,0 +1,1988 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`kit/effects (1) resolve gate > all glass/neon/emboss body fns resolve to WGSL (snapshot) 1`] = `
+"fn item(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn item_1(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn item_2(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn item_3(sdf: f32, thickness: f32, volumetric: f32) -> f32 {
+  let thicknessRange = max((thickness * 0.3f), 5e-3f);
+  let depthNorm = clamp(((sdf * -1f) / thicknessRange), 0f, 1f);
+  let vol = smoothstep(0f, 1f, depthNorm);
+  let flat = ((1f - depthNorm) * (1f - depthNorm));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+struct GlassLensUVs {
+  lensUV: vec2f,
+  rUV: vec2f,
+  bUV: vec2f,
+}
+
+fn item_4(uv: vec2f, center: vec2f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, refraction: f32, innerZoom: f32, thickness: f32, aberration: f32, aspect: f32, volumetric: f32) -> GlassLensUVs {
+  let sdf = (sdfRaw / scale);
+  let refrStrength = item_3(sdf, thickness, volumetric);
+  let refrScale = (refraction * 0.15f);
+  let slopeLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let slopeScale = min(1f, (12f / slopeLen));
+  let offsetX = (((((gradX * slopeScale) * -1f) * refrScale) * refrStrength) / aspect);
+  let offsetY = ((((gradY * slopeScale) * -1f) * refrScale) * refrStrength);
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let zoomedX = (centerX + ((uv.x - centerX) / innerZoom));
+  let zoomedY = (centerY + ((uv.y - centerY) / innerZoom));
+  let lensX = (zoomedX + offsetX);
+  let lensY = (zoomedY + offsetY);
+  let chrScale = (aberration * 0.06f);
+  let chrOffX = (offsetX * chrScale);
+  let chrOffY = (offsetY * chrScale);
+  return GlassLensUVs(vec2f(lensX, lensY), vec2f((lensX + chrOffX), (lensY + chrOffY)), vec2f((lensX - chrOffX), (lensY - chrOffY)));
+}
+
+fn item_5(viewportSize: vec2f, blur: f32, ox: f32, oy: f32) -> vec2f {
+  let m = (blur * 2f);
+  return vec2f(((ox / viewportSize.x) * m), ((oy / viewportSize.y) * m));
+}
+
+fn item_6(rgb: vec3f, tintColor: vec3f, tintIntensity: f32, preserveLum: f32) -> vec3f {
+  let lumWeights = vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464);
+  let origLum = dot(rgb, lumWeights);
+  let tinted = mix(rgb, tintColor, tintIntensity);
+  let tintedLum = dot(tinted, lumWeights);
+  let lumPreserved = (tinted * (origLum / max(tintedLum, 1e-4f)));
+  let preserveFactor = select(0f, 1f, (preserveLum > 0.5f));
+  return mix(tinted, lumPreserved, preserveFactor);
+}
+
+fn item_7(sdf: f32, edgeSoftness: f32, pxH: f32, gradX: f32, gradY: f32, lightAngle: f32, highlight: f32) -> f32 {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let w2 = max((sharp * 0.0625f), (pxH * 1.5f));
+  let sdfOuter = (sdf - pxH);
+  let rb2base = (clamp(((sdfOuter * -1f) / w2), 0f, 1f) - clamp(((sdf * -1f) / w2), 0f, 1f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let normalDotLight = ((gradX * lx) + (gradY * ly));
+  let lightFacing = clamp(((normalDotLight * 0.5f) + 0.5f), 0f, 1f);
+  return ((rb2base * lightFacing) * highlight);
+}
+
+fn item_8(gradX: f32, gradY: f32, lightAngle: f32, highlight: f32, highlightSoftness: f32, refrStrength: f32) -> f32 {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  const nz = 2f;
+  let nLen = sqrt((((gradX * gradX) + (gradY * gradY)) + (nz * nz)));
+  let nx = (gradX / nLen);
+  let ny = (gradY / nLen);
+  let nnz = (nz / nLen);
+  let nDotH = (((nx * (lx * 0.4472135954999579f)) + (ny * (ly * 0.4472135954999579f))) + (nnz * 0.8944271909999159f));
+  let shininess = exp2((8f - (highlightSoftness * 7f)));
+  return ((pow(clamp(nDotH, 0f, 1f), shininess) * highlight) * refrStrength);
+}
+
+fn item_9(sdf: f32, gradX: f32, gradY: f32, fresnel: f32, fresnelSoftness: f32, rb1: f32, volumetric: f32) -> f32 {
+  let slopeSq = ((gradX * gradX) + (gradY * gradY));
+  let cosView = (1f / sqrt((slopeSq + 1f)));
+  let exponent = mix(6f, 1.5f, clamp(fresnelSoftness, 0f, 1f));
+  let volRim = (((pow((1f - cosView), exponent) * fresnel) * 2f) * rb1);
+  let fresnelWidth = max((fresnelSoftness * 0.06f), 1e-3f);
+  let fresnelDepth = clamp(((sdf * -1f) / fresnelWidth), 0f, 1f);
+  let flatRim = ((((1f - fresnelDepth) * (1f - fresnelDepth)) * fresnel) * rb1);
+  return select(flatRim, volRim, (volumetric > 0.5f));
+}
+
+fn item_10(baseColor: vec4f, blurred: vec4f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, viewportSize: vec2f, edgeSoftness: f32, lightAngle: f32, highlight: f32, highlightColor: vec3f, highlightSoftness: f32, fresnel: f32, fresnelColor: vec3f, fresnelSoftness: f32, thickness: f32, tintColor: vec3f, tintIntensity: f32, tintPreserveLuminosity: f32, cutout: f32, volumetric: f32) -> vec4f {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let pxH = (1f / viewportSize.y);
+  let sdf = (sdfRaw / scale);
+  let w1 = max((sharp * 0.03125f), (pxH * 1.5f));
+  let rb1 = clamp(((sdf * -1f) / w1), 0f, 1f);
+  let refrStrength = item_3(sdf, thickness, volumetric);
+  let rb2 = item_7(sdf, edgeSoftness, pxH, gradX, gradY, lightAngle, highlight);
+  let blurredRgb = vec3f(blurred.x, blurred.y, blurred.z);
+  let tintedRgb = item_6(blurredRgb, tintColor, tintIntensity, tintPreserveLuminosity);
+  let specGlint = item_8(gradX, gradY, lightAngle, highlight, highlightSoftness, refrStrength);
+  let fresnelRim = item_9(sdf, gradX, gradY, fresnel, fresnelSoftness, rb1, volumetric);
+  let litR = (((tintedRgb.x + (highlightColor.x * rb2)) + (highlightColor.x * specGlint)) + (fresnelColor.x * fresnelRim));
+  let litG = (((tintedRgb.y + (highlightColor.y * rb2)) + (highlightColor.y * specGlint)) + (fresnelColor.y * fresnelRim));
+  let litB = (((tintedRgb.z + (highlightColor.z * rb2)) + (highlightColor.z * specGlint)) + (fresnelColor.z * fresnelRim));
+  let litA = (blurred.w + rb2);
+  let lighting = vec4f(litR, litG, litB, litA);
+  let transition = smoothstep(0f, 1f, rb1);
+  let composited = mix(baseColor, lighting, transition);
+  let cutoutAlpha = select(1f, transition, (cutout > 0.5f));
+  return vec4f(composited.x, composited.y, composited.z, (composited.w * cutoutAlpha));
+}
+
+fn item_11(tubeThickness: f32, cornerSmoothing: f32, volumetric: f32) -> f32 {
+  let vol = max(tubeThickness, 6e-3f);
+  let flat = (8e-3f + (cornerSmoothing * 0.03f));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+fn item_12(sdf: f32, glowRadius: f32, glowIntensity: f32) -> f32 {
+  let glowR = max(glowRadius, 1e-3f);
+  let sdfOutside = max(sdf, 0f);
+  let innerGlow = (exp(((sdfOutside * -1f) * (12f / glowR))) * 0.7f);
+  let outerGlow = (exp(((sdfOutside * -1f) * (4f / glowR))) * 0.35f);
+  let totalGlow = ((innerGlow + outerGlow) * glowIntensity);
+  let outsideFactor = smoothstep(-3e-3f, 3e-3f, sdf);
+  return (totalGlow * outsideFactor);
+}
+
+fn item_13(time: f32, flickerSpeed: f32, flickerAmount: f32) -> f32 {
+  let flickerTime = (time * flickerSpeed);
+  let f1 = sin((flickerTime * 17.13f));
+  let f2 = sin((flickerTime * 31.71f));
+  let f3 = sin((flickerTime * 47.29f));
+  let combined = ((f1 + (f2 * 0.5f)) + (f3 * 0.3f));
+  let threshold = mix(-2f, 0.8f, flickerAmount);
+  return smoothstep((threshold - 0.1f), (threshold + 0.1f), combined);
+}
+
+fn item_14(sdfUV: vec2f, time: f32, flowSpeed: f32, flowAmount: f32) -> f32 {
+  let flowDx = (sdfUV.x - 0.5f);
+  let flowDy = (sdfUV.y - 0.5f);
+  let flowAngle = atan2(flowDy, flowDx);
+  let flowPhase = ((flowAngle * 2f) + (time * flowSpeed));
+  let flowWave = ((sin(flowPhase) * 0.5f) + 0.5f);
+  return mix(1f, flowWave, flowAmount);
+}
+
+fn item_15(sC: vec4f, sR: vec4f, sL: vec4f, sU: vec4f, sD: vec4f, smoothEPS: f32, sdfUV: vec2f, scale: f32, viewportSize: vec2f, time: f32, cornerSmoothing: f32, tubeThickness: f32, color: vec3f, secondaryColor: vec3f, secondaryBlend: f32, glowColor: vec3f, intensity: f32, hotCoreIntensity: f32, glowIntensity: f32, glowRadius: f32, lightAngle: f32, specularIntensity: f32, specularSize: f32, flickerSpeed: f32, flickerAmount: f32, flowSpeed: f32, flowAmount: f32, volumetric: f32) -> vec4f {
+  let sdfCenter = sC.x;
+  let sdfRight = sR.x;
+  let sdfLeft = sL.x;
+  let sdfUp = sU.x;
+  let sdfDown = sD.x;
+  let pxH = (1f / viewportSize.y);
+  let glowR = max(glowRadius, 1e-3f);
+  let softPx = max((pxH / scale), 4e-3f);
+  let gradX = ((sdfRight - sdfLeft) / (smoothEPS * 2f));
+  let gradY = ((sdfUp - sdfDown) / (smoothEPS * 2f));
+  let smoothedSdf = (((((sdfCenter + sdfRight) + sdfLeft) + sdfUp) + sdfDown) / 5f);
+  let sdf = mix(sdfCenter, smoothedSdf, cornerSmoothing);
+  let gxRaw = select(gradX, (sR.w - sL.w), (volumetric > 0.5f));
+  let gyRaw = select(gradY, (sU.w - sD.w), (volumetric > 0.5f));
+  let gradLen = max(sqrt(((gxRaw * gxRaw) + (gyRaw * gyRaw))), 1e-4f);
+  let gnx = (gxRaw / gradLen);
+  let gny = (gyRaw / gradLen);
+  let depthNorm2D = clamp(((sdf * -1f) / max(tubeThickness, 1e-3f)), 0f, 1f);
+  let innerMask2D = smoothstep((tubeThickness + softPx), (tubeThickness - softPx), (sdf * -1f));
+  let lap = (abs(((sR.w + sL.w) - (sC.w * 2f))) + abs(((sU.w + sD.w) - (sC.w * 2f))));
+  let slopeMag = (abs(gxRaw) + abs(gyRaw));
+  let crease = (lap / ((lap + (smoothEPS * 0.6f)) + (slopeMag * 0.35f)));
+  let innerMaskVol = smoothstep(0.08f, 0.35f, crease);
+  let depthNorm = select(depthNorm2D, crease, (volumetric > 0.5f));
+  let innerMask = select(innerMask2D, innerMaskVol, (volumetric > 0.5f));
+  let outerMask = smoothstep(softPx, (softPx * -1f), sdf);
+  let tubeMask = (outerMask * innerMask);
+  let t = depthNorm;
+  let cylinderZ = sqrt(max((t * (2f - t)), 0f));
+  let cylinderR = (1f - t);
+  let nx = (gnx * cylinderR);
+  let ny = (gny * cylinderR);
+  let nz = cylinderZ;
+  let lightRad = (lightAngle * 0.017453292519943295f);
+  let lx = cos(lightRad);
+  let ly = sin(lightRad);
+  let lxn = (lx * 0.8192319205190405f);
+  let lyn = (ly * 0.8192319205190405f);
+  const lzn = 0.5734623443633283;
+  let NdotL = (((nx * lxn) + (ny * lyn)) + (nz * lzn));
+  let diffuse = clamp(NdotL, 0f, 1f);
+  let NdotH = (((nx * (lxn * 0.5637114097207191f)) + (ny * (lyn * 0.5637114097207191f))) + (nz * 0.8869786762835193f));
+  let shininess = exp2((8f - (specularSize * 7f)));
+  let specular = (pow(clamp(NdotH, 0f, 1f), shininess) * specularIntensity);
+  let flowMod = item_14(sdfUV, time, flowSpeed, flowAmount);
+  let twoTone = mix(secondaryColor, color, diffuse);
+  let baseColor = mix(color, twoTone, secondaryBlend);
+  const ambient = 0.12;
+  let selfEmission = (cylinderZ * 0.35f);
+  let shadedRgb = (baseColor * ((ambient + (diffuse * 0.55f)) + selfEmission));
+  let tubeRgb = vec3f((shadedRgb.x + specular), (shadedRgb.y + specular), (shadedRgb.z + specular));
+  let coreProfile = smoothstep(0.55f, 1f, depthNorm);
+  let hotCoreAmt = ((coreProfile * hotCoreIntensity) * flowMod);
+  let hotCoreCol = mix(color, vec3f(1), 0.75f);
+  let tubeWithCore = mix(tubeRgb, hotCoreCol, hotCoreAmt);
+  let tubeFlowed = (tubeWithCore * mix(1f, flowMod, 0.4f));
+  let glowMasked = item_12(sdf, glowRadius, glowIntensity);
+  let flickerValue = item_13(time, flickerSpeed, flickerAmount);
+  let intensityMul = (intensity * flickerValue);
+  let finalTubeRgb = (tubeFlowed * intensityMul);
+  let finalGlowRgb = (glowColor * (glowMasked * intensityMul));
+  let finalR = mix(finalGlowRgb.x, finalTubeRgb.x, tubeMask);
+  let finalG = mix(finalGlowRgb.y, finalTubeRgb.y, tubeMask);
+  let finalB = mix(finalGlowRgb.z, finalTubeRgb.z, tubeMask);
+  let glowAlpha = clamp((glowMasked * 0.6f), 0f, 1f);
+  let finalA = max(tubeMask, glowAlpha);
+  let result = vec4f(finalR, finalG, finalB, finalA);
+  let threshOut = (((glowR * 1.5f) + softPx) + smoothEPS);
+  return select(result, vec4f(), (sdfCenter > threshOut));
+}
+
+fn item_16(s: f32, depth: f32, transitionW: f32, volumetric: f32) -> f32 {
+  let vol = (depth * clamp(((s * -1f) / 0.18f), 0f, 1f));
+  let flat = (depth * smoothstep(transitionW, (transitionW * -1f), s));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+fn item_17(sdfUV: vec2f, lightAngle: f32, depth: f32, frac: f32) -> vec2f {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let absDepth = max(abs(depth), 1e-4f);
+  let spread = (absDepth * 0.06f);
+  return vec2f((sdfUV.x + ((lx * spread) * frac)), (sdfUV.y + ((ly * spread) * frac)));
+}
+
+fn item_18(uv: vec2f, center: vec2f, sdfC: f32, depth: f32) -> vec2f {
+  const tw = 3e-3;
+  let inside = smoothstep(tw, (tw * -1f), sdfC);
+  let dispScale = (1f - ((depth * 0.05f) * inside));
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  return vec2f((centerX + ((uv.x - centerX) * dispScale)), (centerY + ((uv.y - centerY) * dispScale)));
+}
+
+fn item_19(sdfR: f32, sdfL: f32, sdfU: f32, sdfD: f32, depth: f32, lightAngle: f32, lightIntensity: f32, volumetric: f32) -> vec2f {
+  const eps = 3e-3;
+  const tw = 3e-3;
+  let hR = item_16(sdfR, depth, tw, volumetric);
+  let hL = item_16(sdfL, depth, tw, volumetric);
+  let hU = item_16(sdfU, depth, tw, volumetric);
+  let hD = item_16(sdfD, depth, tw, volumetric);
+  let dhx = ((hR - hL) / (eps * 2f));
+  let dhy = ((hU - hD) / (eps * 2f));
+  let nLen = sqrt((((dhx * dhx) + (dhy * dhy)) + 1f));
+  let nx = ((dhx * -1f) / nLen);
+  let ny = ((dhy * -1f) / nLen);
+  let nz = (1f / nLen);
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let lxn = (lx * 0.8192319205190405f);
+  let lyn = (ly * 0.8192319205190405f);
+  const lzn = 0.5734623443633283;
+  let NdotL = (((nx * lxn) + (ny * lyn)) + (nz * lzn));
+  let edgeLighting = ((NdotL - lzn) * lightIntensity);
+  let highlight = max(edgeLighting, 0f);
+  let edgeShadow = max((edgeLighting * -1f), 0f);
+  return vec2f(highlight, edgeShadow);
+}
+
+fn item_20(childColor: vec4f, sdfC: f32, sdfR: f32, sdfL: f32, sdfU: f32, sdfD: f32, h1raw: f32, h2raw: f32, depth: f32, lightAngle: f32, lightIntensity: f32, shadowIntensity: f32, volumetric: f32) -> vec4f {
+  const tw = 3e-3;
+  let light = item_19(sdfR, sdfL, sdfU, sdfD, depth, lightAngle, lightIntensity, volumetric);
+  let highlight = light.x;
+  let edgeShadow = light.y;
+  let hC = item_16(sdfC, depth, tw, volumetric);
+  let absDepth = max(abs(depth), 1e-4f);
+  let shadowTw = (absDepth * 0.06f);
+  let h1 = item_16(h1raw, depth, shadowTw, volumetric);
+  let h2 = item_16(h2raw, depth, shadowTw, volumetric);
+  let diff1 = ((h1 - hC) / absDepth);
+  let diff2 = ((h2 - hC) / absDepth);
+  let castShadow = ((smoothstep(0f, 0.5f, diff1) * 0.55f) + (smoothstep(0f, 0.5f, diff2) * 0.45f));
+  let totalShadow = (clamp((edgeShadow + castShadow), 0f, 1f) * shadowIntensity);
+  let childRgb = vec3f(childColor.x, childColor.y, childColor.z);
+  let highlightRgb = vec3f(highlight, highlight, highlight);
+  let finalRgb = clamp(((childRgb * (1f - totalShadow)) + highlightRgb), vec3f(), vec3f(1));
+  return vec4f(finalRgb.x, finalRgb.y, finalRgb.z, childColor.w);
+}"
+`;
+
+exports[`kit/effects (3a) glass builder resolve-snapshot > blur+aberration Vogel fallback (no blurred buffer) 1`] = `
+"fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn glassGradient(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn glassRefrStrength(sdf: f32, thickness: f32, volumetric: f32) -> f32 {
+  let thicknessRange = max((thickness * 0.3f), 5e-3f);
+  let depthNorm = clamp(((sdf * -1f) / thicknessRange), 0f, 1f);
+  let vol = smoothstep(0f, 1f, depthNorm);
+  let flat = ((1f - depthNorm) * (1f - depthNorm));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+struct GlassLensUVs {
+  lensUV: vec2f,
+  rUV: vec2f,
+  bUV: vec2f,
+}
+
+fn glassLensUVs(uv: vec2f, center: vec2f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, refraction: f32, innerZoom: f32, thickness: f32, aberration: f32, aspect: f32, volumetric: f32) -> GlassLensUVs {
+  let sdf = (sdfRaw / scale);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let refrScale = (refraction * 0.15f);
+  let slopeLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let slopeScale = min(1f, (12f / slopeLen));
+  let offsetX = (((((gradX * slopeScale) * -1f) * refrScale) * refrStrength) / aspect);
+  let offsetY = ((((gradY * slopeScale) * -1f) * refrScale) * refrStrength);
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let zoomedX = (centerX + ((uv.x - centerX) / innerZoom));
+  let zoomedY = (centerY + ((uv.y - centerY) / innerZoom));
+  let lensX = (zoomedX + offsetX);
+  let lensY = (zoomedY + offsetY);
+  let chrScale = (aberration * 0.06f);
+  let chrOffX = (offsetX * chrScale);
+  let chrOffY = (offsetY * chrScale);
+  return GlassLensUVs(vec2f(lensX, lensY), vec2f((lensX + chrOffX), (lensY + chrOffY)), vec2f((lensX - chrOffX), (lensY - chrOffY)));
+}
+
+fn glassBorderHighlight(sdf: f32, edgeSoftness: f32, pxH: f32, gradX: f32, gradY: f32, lightAngle: f32, highlight: f32) -> f32 {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let w2 = max((sharp * 0.0625f), (pxH * 1.5f));
+  let sdfOuter = (sdf - pxH);
+  let rb2base = (clamp(((sdfOuter * -1f) / w2), 0f, 1f) - clamp(((sdf * -1f) / w2), 0f, 1f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let normalDotLight = ((gradX * lx) + (gradY * ly));
+  let lightFacing = clamp(((normalDotLight * 0.5f) + 0.5f), 0f, 1f);
+  return ((rb2base * lightFacing) * highlight);
+}
+
+fn glassTint(rgb: vec3f, tintColor: vec3f, tintIntensity: f32, preserveLum: f32) -> vec3f {
+  let lumWeights = vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464);
+  let origLum = dot(rgb, lumWeights);
+  let tinted = mix(rgb, tintColor, tintIntensity);
+  let tintedLum = dot(tinted, lumWeights);
+  let lumPreserved = (tinted * (origLum / max(tintedLum, 1e-4f)));
+  let preserveFactor = select(0f, 1f, (preserveLum > 0.5f));
+  return mix(tinted, lumPreserved, preserveFactor);
+}
+
+fn glassSpecular(gradX: f32, gradY: f32, lightAngle: f32, highlight: f32, highlightSoftness: f32, refrStrength: f32) -> f32 {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  const nz = 2f;
+  let nLen = sqrt((((gradX * gradX) + (gradY * gradY)) + (nz * nz)));
+  let nx = (gradX / nLen);
+  let ny = (gradY / nLen);
+  let nnz = (nz / nLen);
+  let nDotH = (((nx * (lx * 0.4472135954999579f)) + (ny * (ly * 0.4472135954999579f))) + (nnz * 0.8944271909999159f));
+  let shininess = exp2((8f - (highlightSoftness * 7f)));
+  return ((pow(clamp(nDotH, 0f, 1f), shininess) * highlight) * refrStrength);
+}
+
+fn glassFresnelRim(sdf: f32, gradX: f32, gradY: f32, fresnel: f32, fresnelSoftness: f32, rb1: f32, volumetric: f32) -> f32 {
+  let slopeSq = ((gradX * gradX) + (gradY * gradY));
+  let cosView = (1f / sqrt((slopeSq + 1f)));
+  let exponent = mix(6f, 1.5f, clamp(fresnelSoftness, 0f, 1f));
+  let volRim = (((pow((1f - cosView), exponent) * fresnel) * 2f) * rb1);
+  let fresnelWidth = max((fresnelSoftness * 0.06f), 1e-3f);
+  let fresnelDepth = clamp(((sdf * -1f) / fresnelWidth), 0f, 1f);
+  let flatRim = ((((1f - fresnelDepth) * (1f - fresnelDepth)) * fresnel) * rb1);
+  return select(flatRim, volRim, (volumetric > 0.5f));
+}
+
+fn glassComposite(baseColor: vec4f, blurred: vec4f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, viewportSize: vec2f, edgeSoftness: f32, lightAngle: f32, highlight: f32, highlightColor: vec3f, highlightSoftness: f32, fresnel: f32, fresnelColor: vec3f, fresnelSoftness: f32, thickness: f32, tintColor: vec3f, tintIntensity: f32, tintPreserveLuminosity: f32, cutout: f32, volumetric: f32) -> vec4f {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let pxH = (1f / viewportSize.y);
+  let sdf = (sdfRaw / scale);
+  let w1 = max((sharp * 0.03125f), (pxH * 1.5f));
+  let rb1 = clamp(((sdf * -1f) / w1), 0f, 1f);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let rb2 = glassBorderHighlight(sdf, edgeSoftness, pxH, gradX, gradY, lightAngle, highlight);
+  let blurredRgb = vec3f(blurred.x, blurred.y, blurred.z);
+  let tintedRgb = glassTint(blurredRgb, tintColor, tintIntensity, tintPreserveLuminosity);
+  let specGlint = glassSpecular(gradX, gradY, lightAngle, highlight, highlightSoftness, refrStrength);
+  let fresnelRim = glassFresnelRim(sdf, gradX, gradY, fresnel, fresnelSoftness, rb1, volumetric);
+  let litR = (((tintedRgb.x + (highlightColor.x * rb2)) + (highlightColor.x * specGlint)) + (fresnelColor.x * fresnelRim));
+  let litG = (((tintedRgb.y + (highlightColor.y * rb2)) + (highlightColor.y * specGlint)) + (fresnelColor.y * fresnelRim));
+  let litB = (((tintedRgb.z + (highlightColor.z * rb2)) + (highlightColor.z * specGlint)) + (fresnelColor.z * fresnelRim));
+  let litA = (blurred.w + rb2);
+  let lighting = vec4f(litR, litG, litB, litA);
+  let transition = smoothstep(0f, 1f, rb1);
+  let composited = mix(baseColor, lighting, transition);
+  let cutoutAlpha = select(1f, transition, (cutout > 0.5f));
+  return vec4f(composited.x, composited.y, composited.z, (composited.w * cutoutAlpha));
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn childTex(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+fn glassBlurOffset(viewportSize: vec2f, blur: f32, ox: f32, oy: f32) -> vec2f {
+  let m = (blur * 2f);
+  return vec2f(((ox / viewportSize.x) * m), ((oy / viewportSize.y) * m));
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let glassSdfUV_5 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_4 = stubSdf(glassSdfUV_5);
+  let glassSdfUV_7 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_7 = stubSdf(glassSdfUV_7);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_6 = glassGradient(glassSurf_7.r, (stubSdf(offsetUV(glassSdfUV_8, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_8, 0.0, 0.01))).r);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_8 = stubSdf(glassSdfUV_8);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_8 = glassGradient(glassSurf_8.r, (stubSdf(offsetUV(glassSdfUV_8, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_8, 0.0, 0.01))).r);
+  let glassLens_3 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_4.r, 0.5, glassGrad_6.x, glassGrad_8.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  return glassComposite(unpremultiplyAlpha(childTex(uv)), unpremultiplyAlpha(vec4f(((((((((((childTex((glassLens_3.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.0, 0.0))) + childTex((glassLens_9.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.24578962602610668, 0.22516343142050782)))) + childTex((glassLens_9.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.041212881865007545, -0.46959953214478733)))) + childTex((glassLens_9.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.3512823401715748, 0.45818560738735054)))) + childTex((glassLens_9.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.6564756568769522, -0.11612130025287559)))) + childTex((glassLens_9.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.628898065191966, -0.4000534703678462)))) + childTex((glassLens_9.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.21196602734618714, 0.7885030563781869)))) + childTex((glassLens_9.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.40648178830475873, -0.7826559483926147)))) + childTex((glassLens_9.rUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.8856006111249619, 0.32341992280003845)))) * 0.1111111111111111)).r, ((((((((((childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.0, 0.0))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.24578962602610668, 0.22516343142050782)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.041212881865007545, -0.46959953214478733)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.3512823401715748, 0.45818560738735054)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.6564756568769522, -0.11612130025287559)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.628898065191966, -0.4000534703678462)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.21196602734618714, 0.7885030563781869)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.40648178830475873, -0.7826559483926147)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.8856006111249619, 0.32341992280003845)))) * 0.1111111111111111)).g, ((((((((((childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.0, 0.0))) + childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.24578962602610668, 0.22516343142050782)))) + childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.041212881865007545, -0.46959953214478733)))) + childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.3512823401715748, 0.45818560738735054)))) + childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.6564756568769522, -0.11612130025287559)))) + childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.628898065191966, -0.4000534703678462)))) + childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.21196602734618714, 0.7885030563781869)))) + childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.40648178830475873, -0.7826559483926147)))) + childTex((glassLens_9.bUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.8856006111249619, 0.32341992280003845)))) * 0.1111111111111111)).b, ((((((((((childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.0, 0.0))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.24578962602610668, 0.22516343142050782)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.041212881865007545, -0.46959953214478733)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.3512823401715748, 0.45818560738735054)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.6564756568769522, -0.11612130025287559)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.628898065191966, -0.4000534703678462)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.21196602734618714, 0.7885030563781869)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, -0.40648178830475873, -0.7826559483926147)))) + childTex((glassLens_9.lensUV + glassBlurOffset(vec2f(800.0, 600.0), 0.4, 0.8856006111249619, 0.32341992280003845)))) * 0.1111111111111111)).a)), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, vec2f(800.0, 600.0), 0.2, 45.0, 0.6, (vec4f(1.000, 1.000, 1.000, 1.000)).rgb, 0.5, 0.4, (vec4f(0.600, 0.800, 1.000, 1.000)).rgb, 0.5, 0.5, (vec4f(0.800, 0.900, 1.000, 1.000)).rgb, 0.3, 1.0, 0.0, 0.0);
+}"
+`;
+
+exports[`kit/effects (3a) glass builder resolve-snapshot > fast path — blur off, aberration off (1 tap) 1`] = `
+"fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn glassGradient(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn glassRefrStrength(sdf: f32, thickness: f32, volumetric: f32) -> f32 {
+  let thicknessRange = max((thickness * 0.3f), 5e-3f);
+  let depthNorm = clamp(((sdf * -1f) / thicknessRange), 0f, 1f);
+  let vol = smoothstep(0f, 1f, depthNorm);
+  let flat = ((1f - depthNorm) * (1f - depthNorm));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+struct GlassLensUVs {
+  lensUV: vec2f,
+  rUV: vec2f,
+  bUV: vec2f,
+}
+
+fn glassLensUVs(uv: vec2f, center: vec2f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, refraction: f32, innerZoom: f32, thickness: f32, aberration: f32, aspect: f32, volumetric: f32) -> GlassLensUVs {
+  let sdf = (sdfRaw / scale);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let refrScale = (refraction * 0.15f);
+  let slopeLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let slopeScale = min(1f, (12f / slopeLen));
+  let offsetX = (((((gradX * slopeScale) * -1f) * refrScale) * refrStrength) / aspect);
+  let offsetY = ((((gradY * slopeScale) * -1f) * refrScale) * refrStrength);
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let zoomedX = (centerX + ((uv.x - centerX) / innerZoom));
+  let zoomedY = (centerY + ((uv.y - centerY) / innerZoom));
+  let lensX = (zoomedX + offsetX);
+  let lensY = (zoomedY + offsetY);
+  let chrScale = (aberration * 0.06f);
+  let chrOffX = (offsetX * chrScale);
+  let chrOffY = (offsetY * chrScale);
+  return GlassLensUVs(vec2f(lensX, lensY), vec2f((lensX + chrOffX), (lensY + chrOffY)), vec2f((lensX - chrOffX), (lensY - chrOffY)));
+}
+
+fn glassBorderHighlight(sdf: f32, edgeSoftness: f32, pxH: f32, gradX: f32, gradY: f32, lightAngle: f32, highlight: f32) -> f32 {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let w2 = max((sharp * 0.0625f), (pxH * 1.5f));
+  let sdfOuter = (sdf - pxH);
+  let rb2base = (clamp(((sdfOuter * -1f) / w2), 0f, 1f) - clamp(((sdf * -1f) / w2), 0f, 1f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let normalDotLight = ((gradX * lx) + (gradY * ly));
+  let lightFacing = clamp(((normalDotLight * 0.5f) + 0.5f), 0f, 1f);
+  return ((rb2base * lightFacing) * highlight);
+}
+
+fn glassTint(rgb: vec3f, tintColor: vec3f, tintIntensity: f32, preserveLum: f32) -> vec3f {
+  let lumWeights = vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464);
+  let origLum = dot(rgb, lumWeights);
+  let tinted = mix(rgb, tintColor, tintIntensity);
+  let tintedLum = dot(tinted, lumWeights);
+  let lumPreserved = (tinted * (origLum / max(tintedLum, 1e-4f)));
+  let preserveFactor = select(0f, 1f, (preserveLum > 0.5f));
+  return mix(tinted, lumPreserved, preserveFactor);
+}
+
+fn glassSpecular(gradX: f32, gradY: f32, lightAngle: f32, highlight: f32, highlightSoftness: f32, refrStrength: f32) -> f32 {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  const nz = 2f;
+  let nLen = sqrt((((gradX * gradX) + (gradY * gradY)) + (nz * nz)));
+  let nx = (gradX / nLen);
+  let ny = (gradY / nLen);
+  let nnz = (nz / nLen);
+  let nDotH = (((nx * (lx * 0.4472135954999579f)) + (ny * (ly * 0.4472135954999579f))) + (nnz * 0.8944271909999159f));
+  let shininess = exp2((8f - (highlightSoftness * 7f)));
+  return ((pow(clamp(nDotH, 0f, 1f), shininess) * highlight) * refrStrength);
+}
+
+fn glassFresnelRim(sdf: f32, gradX: f32, gradY: f32, fresnel: f32, fresnelSoftness: f32, rb1: f32, volumetric: f32) -> f32 {
+  let slopeSq = ((gradX * gradX) + (gradY * gradY));
+  let cosView = (1f / sqrt((slopeSq + 1f)));
+  let exponent = mix(6f, 1.5f, clamp(fresnelSoftness, 0f, 1f));
+  let volRim = (((pow((1f - cosView), exponent) * fresnel) * 2f) * rb1);
+  let fresnelWidth = max((fresnelSoftness * 0.06f), 1e-3f);
+  let fresnelDepth = clamp(((sdf * -1f) / fresnelWidth), 0f, 1f);
+  let flatRim = ((((1f - fresnelDepth) * (1f - fresnelDepth)) * fresnel) * rb1);
+  return select(flatRim, volRim, (volumetric > 0.5f));
+}
+
+fn glassComposite(baseColor: vec4f, blurred: vec4f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, viewportSize: vec2f, edgeSoftness: f32, lightAngle: f32, highlight: f32, highlightColor: vec3f, highlightSoftness: f32, fresnel: f32, fresnelColor: vec3f, fresnelSoftness: f32, thickness: f32, tintColor: vec3f, tintIntensity: f32, tintPreserveLuminosity: f32, cutout: f32, volumetric: f32) -> vec4f {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let pxH = (1f / viewportSize.y);
+  let sdf = (sdfRaw / scale);
+  let w1 = max((sharp * 0.03125f), (pxH * 1.5f));
+  let rb1 = clamp(((sdf * -1f) / w1), 0f, 1f);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let rb2 = glassBorderHighlight(sdf, edgeSoftness, pxH, gradX, gradY, lightAngle, highlight);
+  let blurredRgb = vec3f(blurred.x, blurred.y, blurred.z);
+  let tintedRgb = glassTint(blurredRgb, tintColor, tintIntensity, tintPreserveLuminosity);
+  let specGlint = glassSpecular(gradX, gradY, lightAngle, highlight, highlightSoftness, refrStrength);
+  let fresnelRim = glassFresnelRim(sdf, gradX, gradY, fresnel, fresnelSoftness, rb1, volumetric);
+  let litR = (((tintedRgb.x + (highlightColor.x * rb2)) + (highlightColor.x * specGlint)) + (fresnelColor.x * fresnelRim));
+  let litG = (((tintedRgb.y + (highlightColor.y * rb2)) + (highlightColor.y * specGlint)) + (fresnelColor.y * fresnelRim));
+  let litB = (((tintedRgb.z + (highlightColor.z * rb2)) + (highlightColor.z * specGlint)) + (fresnelColor.z * fresnelRim));
+  let litA = (blurred.w + rb2);
+  let lighting = vec4f(litR, litG, litB, litA);
+  let transition = smoothstep(0f, 1f, rb1);
+  let composited = mix(baseColor, lighting, transition);
+  let cutoutAlpha = select(1f, transition, (cutout > 0.5f));
+  return vec4f(composited.x, composited.y, composited.z, (composited.w * cutoutAlpha));
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn childTex(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let glassSdfUV_5 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_4 = stubSdf(glassSdfUV_5);
+  let glassSdfUV_7 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_7 = stubSdf(glassSdfUV_7);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_6 = glassGradient(glassSurf_7.r, (stubSdf(offsetUV(glassSdfUV_8, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_8, 0.0, 0.01))).r);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_8 = stubSdf(glassSdfUV_8);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_8 = glassGradient(glassSurf_8.r, (stubSdf(offsetUV(glassSdfUV_8, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_8, 0.0, 0.01))).r);
+  let glassLens_3 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_4.r, 0.5, glassGrad_6.x, glassGrad_8.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_8 = stubSdf(glassSdfUV_8);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_8 = stubSdf(glassSdfUV_8);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_8 = glassGradient(glassSurf_8.r, (stubSdf(offsetUV(glassSdfUV_8, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_8, 0.0, 0.01))).r);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_8 = stubSdf(glassSdfUV_8);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_8 = glassGradient(glassSurf_8.r, (stubSdf(offsetUV(glassSdfUV_8, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_8, 0.0, 0.01))).r);
+  return glassComposite(unpremultiplyAlpha(childTex(uv)), unpremultiplyAlpha(childTex(glassLens_3.lensUV)), glassSurf_8.r, 0.5, glassGrad_8.x, glassGrad_8.y, vec2f(800.0, 600.0), 0.2, 45.0, 0.6, (vec4f(1.000, 1.000, 1.000, 1.000)).rgb, 0.5, 0.4, (vec4f(0.600, 0.800, 1.000, 1.000)).rgb, 0.5, 0.5, (vec4f(0.800, 0.900, 1.000, 1.000)).rgb, 0.3, 1.0, 0.0, 0.0);
+}"
+`;
+
+exports[`kit/effects (3a) glass builder resolve-snapshot > pre-blurred compute buffer + aberration (3 taps) 1`] = `
+"fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn glassGradient(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn glassRefrStrength(sdf: f32, thickness: f32, volumetric: f32) -> f32 {
+  let thicknessRange = max((thickness * 0.3f), 5e-3f);
+  let depthNorm = clamp(((sdf * -1f) / thicknessRange), 0f, 1f);
+  let vol = smoothstep(0f, 1f, depthNorm);
+  let flat = ((1f - depthNorm) * (1f - depthNorm));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+struct GlassLensUVs {
+  lensUV: vec2f,
+  rUV: vec2f,
+  bUV: vec2f,
+}
+
+fn glassLensUVs(uv: vec2f, center: vec2f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, refraction: f32, innerZoom: f32, thickness: f32, aberration: f32, aspect: f32, volumetric: f32) -> GlassLensUVs {
+  let sdf = (sdfRaw / scale);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let refrScale = (refraction * 0.15f);
+  let slopeLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let slopeScale = min(1f, (12f / slopeLen));
+  let offsetX = (((((gradX * slopeScale) * -1f) * refrScale) * refrStrength) / aspect);
+  let offsetY = ((((gradY * slopeScale) * -1f) * refrScale) * refrStrength);
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let zoomedX = (centerX + ((uv.x - centerX) / innerZoom));
+  let zoomedY = (centerY + ((uv.y - centerY) / innerZoom));
+  let lensX = (zoomedX + offsetX);
+  let lensY = (zoomedY + offsetY);
+  let chrScale = (aberration * 0.06f);
+  let chrOffX = (offsetX * chrScale);
+  let chrOffY = (offsetY * chrScale);
+  return GlassLensUVs(vec2f(lensX, lensY), vec2f((lensX + chrOffX), (lensY + chrOffY)), vec2f((lensX - chrOffX), (lensY - chrOffY)));
+}
+
+fn glassBorderHighlight(sdf: f32, edgeSoftness: f32, pxH: f32, gradX: f32, gradY: f32, lightAngle: f32, highlight: f32) -> f32 {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let w2 = max((sharp * 0.0625f), (pxH * 1.5f));
+  let sdfOuter = (sdf - pxH);
+  let rb2base = (clamp(((sdfOuter * -1f) / w2), 0f, 1f) - clamp(((sdf * -1f) / w2), 0f, 1f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let normalDotLight = ((gradX * lx) + (gradY * ly));
+  let lightFacing = clamp(((normalDotLight * 0.5f) + 0.5f), 0f, 1f);
+  return ((rb2base * lightFacing) * highlight);
+}
+
+fn glassTint(rgb: vec3f, tintColor: vec3f, tintIntensity: f32, preserveLum: f32) -> vec3f {
+  let lumWeights = vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464);
+  let origLum = dot(rgb, lumWeights);
+  let tinted = mix(rgb, tintColor, tintIntensity);
+  let tintedLum = dot(tinted, lumWeights);
+  let lumPreserved = (tinted * (origLum / max(tintedLum, 1e-4f)));
+  let preserveFactor = select(0f, 1f, (preserveLum > 0.5f));
+  return mix(tinted, lumPreserved, preserveFactor);
+}
+
+fn glassSpecular(gradX: f32, gradY: f32, lightAngle: f32, highlight: f32, highlightSoftness: f32, refrStrength: f32) -> f32 {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  const nz = 2f;
+  let nLen = sqrt((((gradX * gradX) + (gradY * gradY)) + (nz * nz)));
+  let nx = (gradX / nLen);
+  let ny = (gradY / nLen);
+  let nnz = (nz / nLen);
+  let nDotH = (((nx * (lx * 0.4472135954999579f)) + (ny * (ly * 0.4472135954999579f))) + (nnz * 0.8944271909999159f));
+  let shininess = exp2((8f - (highlightSoftness * 7f)));
+  return ((pow(clamp(nDotH, 0f, 1f), shininess) * highlight) * refrStrength);
+}
+
+fn glassFresnelRim(sdf: f32, gradX: f32, gradY: f32, fresnel: f32, fresnelSoftness: f32, rb1: f32, volumetric: f32) -> f32 {
+  let slopeSq = ((gradX * gradX) + (gradY * gradY));
+  let cosView = (1f / sqrt((slopeSq + 1f)));
+  let exponent = mix(6f, 1.5f, clamp(fresnelSoftness, 0f, 1f));
+  let volRim = (((pow((1f - cosView), exponent) * fresnel) * 2f) * rb1);
+  let fresnelWidth = max((fresnelSoftness * 0.06f), 1e-3f);
+  let fresnelDepth = clamp(((sdf * -1f) / fresnelWidth), 0f, 1f);
+  let flatRim = ((((1f - fresnelDepth) * (1f - fresnelDepth)) * fresnel) * rb1);
+  return select(flatRim, volRim, (volumetric > 0.5f));
+}
+
+fn glassComposite(baseColor: vec4f, blurred: vec4f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, viewportSize: vec2f, edgeSoftness: f32, lightAngle: f32, highlight: f32, highlightColor: vec3f, highlightSoftness: f32, fresnel: f32, fresnelColor: vec3f, fresnelSoftness: f32, thickness: f32, tintColor: vec3f, tintIntensity: f32, tintPreserveLuminosity: f32, cutout: f32, volumetric: f32) -> vec4f {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let pxH = (1f / viewportSize.y);
+  let sdf = (sdfRaw / scale);
+  let w1 = max((sharp * 0.03125f), (pxH * 1.5f));
+  let rb1 = clamp(((sdf * -1f) / w1), 0f, 1f);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let rb2 = glassBorderHighlight(sdf, edgeSoftness, pxH, gradX, gradY, lightAngle, highlight);
+  let blurredRgb = vec3f(blurred.x, blurred.y, blurred.z);
+  let tintedRgb = glassTint(blurredRgb, tintColor, tintIntensity, tintPreserveLuminosity);
+  let specGlint = glassSpecular(gradX, gradY, lightAngle, highlight, highlightSoftness, refrStrength);
+  let fresnelRim = glassFresnelRim(sdf, gradX, gradY, fresnel, fresnelSoftness, rb1, volumetric);
+  let litR = (((tintedRgb.x + (highlightColor.x * rb2)) + (highlightColor.x * specGlint)) + (fresnelColor.x * fresnelRim));
+  let litG = (((tintedRgb.y + (highlightColor.y * rb2)) + (highlightColor.y * specGlint)) + (fresnelColor.y * fresnelRim));
+  let litB = (((tintedRgb.z + (highlightColor.z * rb2)) + (highlightColor.z * specGlint)) + (fresnelColor.z * fresnelRim));
+  let litA = (blurred.w + rb2);
+  let lighting = vec4f(litR, litG, litB, litA);
+  let transition = smoothstep(0f, 1f, rb1);
+  let composited = mix(baseColor, lighting, transition);
+  let cutoutAlpha = select(1f, transition, (cutout > 0.5f));
+  return vec4f(composited.x, composited.y, composited.z, (composited.w * cutoutAlpha));
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn childTex(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+fn blurTex(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let glassSdfUV_6 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_5 = stubSdf(glassSdfUV_6);
+  let glassSdfUV_8 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_8 = stubSdf(glassSdfUV_8);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_7 = glassGradient(glassSurf_8.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_4 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_5.r, 0.5, glassGrad_7.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassLens_9 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, 0.5, 1.1, 0.5, 0.3, 1.3333333, 0.0);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_9 = stubSdf(glassSdfUV_9);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSdfUV_9 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassGrad_9 = glassGradient(glassSurf_9.r, (stubSdf(offsetUV(glassSdfUV_9, 0.01, 0.0))).r, (stubSdf(offsetUV(glassSdfUV_9, 0.0, 0.01))).r);
+  return glassComposite(unpremultiplyAlpha(childTex(uv)), unpremultiplyAlpha(vec4f((blurTex(glassLens_4.rUV)).r, (blurTex(glassLens_9.lensUV)).g, (blurTex(glassLens_9.bUV)).b, (blurTex(glassLens_9.lensUV)).a)), glassSurf_9.r, 0.5, glassGrad_9.x, glassGrad_9.y, vec2f(800.0, 600.0), 0.2, 45.0, 0.6, (vec4f(1.000, 1.000, 1.000, 1.000)).rgb, 0.5, 0.4, (vec4f(0.600, 0.800, 1.000, 1.000)).rgb, 0.5, 0.5, (vec4f(0.800, 0.900, 1.000, 1.000)).rgb, 0.3, 1.0, 0.0, 0.0);
+}"
+`;
+
+exports[`kit/effects (3a) glass builder resolve-snapshot > volumetric + baked gradients (skips the finite-difference taps) 1`] = `
+"fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn glassRefrStrength(sdf: f32, thickness: f32, volumetric: f32) -> f32 {
+  let thicknessRange = max((thickness * 0.3f), 5e-3f);
+  let depthNorm = clamp(((sdf * -1f) / thicknessRange), 0f, 1f);
+  let vol = smoothstep(0f, 1f, depthNorm);
+  let flat = ((1f - depthNorm) * (1f - depthNorm));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+struct GlassLensUVs {
+  lensUV: vec2f,
+  rUV: vec2f,
+  bUV: vec2f,
+}
+
+fn glassLensUVs(uv: vec2f, center: vec2f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, refraction: f32, innerZoom: f32, thickness: f32, aberration: f32, aspect: f32, volumetric: f32) -> GlassLensUVs {
+  let sdf = (sdfRaw / scale);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let refrScale = (refraction * 0.15f);
+  let slopeLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let slopeScale = min(1f, (12f / slopeLen));
+  let offsetX = (((((gradX * slopeScale) * -1f) * refrScale) * refrStrength) / aspect);
+  let offsetY = ((((gradY * slopeScale) * -1f) * refrScale) * refrStrength);
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let zoomedX = (centerX + ((uv.x - centerX) / innerZoom));
+  let zoomedY = (centerY + ((uv.y - centerY) / innerZoom));
+  let lensX = (zoomedX + offsetX);
+  let lensY = (zoomedY + offsetY);
+  let chrScale = (aberration * 0.06f);
+  let chrOffX = (offsetX * chrScale);
+  let chrOffY = (offsetY * chrScale);
+  return GlassLensUVs(vec2f(lensX, lensY), vec2f((lensX + chrOffX), (lensY + chrOffY)), vec2f((lensX - chrOffX), (lensY - chrOffY)));
+}
+
+fn glassBorderHighlight(sdf: f32, edgeSoftness: f32, pxH: f32, gradX: f32, gradY: f32, lightAngle: f32, highlight: f32) -> f32 {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let w2 = max((sharp * 0.0625f), (pxH * 1.5f));
+  let sdfOuter = (sdf - pxH);
+  let rb2base = (clamp(((sdfOuter * -1f) / w2), 0f, 1f) - clamp(((sdf * -1f) / w2), 0f, 1f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let normalDotLight = ((gradX * lx) + (gradY * ly));
+  let lightFacing = clamp(((normalDotLight * 0.5f) + 0.5f), 0f, 1f);
+  return ((rb2base * lightFacing) * highlight);
+}
+
+fn glassTint(rgb: vec3f, tintColor: vec3f, tintIntensity: f32, preserveLum: f32) -> vec3f {
+  let lumWeights = vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464);
+  let origLum = dot(rgb, lumWeights);
+  let tinted = mix(rgb, tintColor, tintIntensity);
+  let tintedLum = dot(tinted, lumWeights);
+  let lumPreserved = (tinted * (origLum / max(tintedLum, 1e-4f)));
+  let preserveFactor = select(0f, 1f, (preserveLum > 0.5f));
+  return mix(tinted, lumPreserved, preserveFactor);
+}
+
+fn glassSpecular(gradX: f32, gradY: f32, lightAngle: f32, highlight: f32, highlightSoftness: f32, refrStrength: f32) -> f32 {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  const nz = 2f;
+  let nLen = sqrt((((gradX * gradX) + (gradY * gradY)) + (nz * nz)));
+  let nx = (gradX / nLen);
+  let ny = (gradY / nLen);
+  let nnz = (nz / nLen);
+  let nDotH = (((nx * (lx * 0.4472135954999579f)) + (ny * (ly * 0.4472135954999579f))) + (nnz * 0.8944271909999159f));
+  let shininess = exp2((8f - (highlightSoftness * 7f)));
+  return ((pow(clamp(nDotH, 0f, 1f), shininess) * highlight) * refrStrength);
+}
+
+fn glassFresnelRim(sdf: f32, gradX: f32, gradY: f32, fresnel: f32, fresnelSoftness: f32, rb1: f32, volumetric: f32) -> f32 {
+  let slopeSq = ((gradX * gradX) + (gradY * gradY));
+  let cosView = (1f / sqrt((slopeSq + 1f)));
+  let exponent = mix(6f, 1.5f, clamp(fresnelSoftness, 0f, 1f));
+  let volRim = (((pow((1f - cosView), exponent) * fresnel) * 2f) * rb1);
+  let fresnelWidth = max((fresnelSoftness * 0.06f), 1e-3f);
+  let fresnelDepth = clamp(((sdf * -1f) / fresnelWidth), 0f, 1f);
+  let flatRim = ((((1f - fresnelDepth) * (1f - fresnelDepth)) * fresnel) * rb1);
+  return select(flatRim, volRim, (volumetric > 0.5f));
+}
+
+fn glassComposite(baseColor: vec4f, blurred: vec4f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, viewportSize: vec2f, edgeSoftness: f32, lightAngle: f32, highlight: f32, highlightColor: vec3f, highlightSoftness: f32, fresnel: f32, fresnelColor: vec3f, fresnelSoftness: f32, thickness: f32, tintColor: vec3f, tintIntensity: f32, tintPreserveLuminosity: f32, cutout: f32, volumetric: f32) -> vec4f {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let pxH = (1f / viewportSize.y);
+  let sdf = (sdfRaw / scale);
+  let w1 = max((sharp * 0.03125f), (pxH * 1.5f));
+  let rb1 = clamp(((sdf * -1f) / w1), 0f, 1f);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let rb2 = glassBorderHighlight(sdf, edgeSoftness, pxH, gradX, gradY, lightAngle, highlight);
+  let blurredRgb = vec3f(blurred.x, blurred.y, blurred.z);
+  let tintedRgb = glassTint(blurredRgb, tintColor, tintIntensity, tintPreserveLuminosity);
+  let specGlint = glassSpecular(gradX, gradY, lightAngle, highlight, highlightSoftness, refrStrength);
+  let fresnelRim = glassFresnelRim(sdf, gradX, gradY, fresnel, fresnelSoftness, rb1, volumetric);
+  let litR = (((tintedRgb.x + (highlightColor.x * rb2)) + (highlightColor.x * specGlint)) + (fresnelColor.x * fresnelRim));
+  let litG = (((tintedRgb.y + (highlightColor.y * rb2)) + (highlightColor.y * specGlint)) + (fresnelColor.y * fresnelRim));
+  let litB = (((tintedRgb.z + (highlightColor.z * rb2)) + (highlightColor.z * specGlint)) + (fresnelColor.z * fresnelRim));
+  let litA = (blurred.w + rb2);
+  let lighting = vec4f(litR, litG, litB, litA);
+  let transition = smoothstep(0f, 1f, rb1);
+  let composited = mix(baseColor, lighting, transition);
+  let cutoutAlpha = select(1f, transition, (cutout > 0.5f));
+  return vec4f(composited.x, composited.y, composited.z, (composited.w * cutoutAlpha));
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn childTex(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let glassSdfUV_5 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_4 = stubSdf(glassSdfUV_5);
+  let glassSdfUV_6 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_6 = stubSdf(glassSdfUV_6);
+  let glassSdfUV_6 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_6 = stubSdf(glassSdfUV_6);
+  let glassLens_3 = glassLensUVs(uv, vec2f(0.500, 0.500), glassSurf_4.r, 0.5, glassSurf_6.g, glassSurf_6.b, 0.5, 1.1, 0.5, 0.3, 1.3333333, 1.0);
+  let glassSdfUV_6 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_6 = stubSdf(glassSdfUV_6);
+  let glassSdfUV_6 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_6 = stubSdf(glassSdfUV_6);
+  let glassSdfUV_6 = sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333);
+  let glassSurf_6 = stubSdf(glassSdfUV_6);
+  return glassComposite(unpremultiplyAlpha(childTex(uv)), unpremultiplyAlpha(childTex(glassLens_3.lensUV)), glassSurf_6.r, 0.5, glassSurf_6.g, glassSurf_6.b, vec2f(800.0, 600.0), 0.2, 45.0, 0.6, (vec4f(1.000, 1.000, 1.000, 1.000)).rgb, 0.5, 0.4, (vec4f(0.600, 0.800, 1.000, 1.000)).rgb, 0.5, 0.5, (vec4f(0.800, 0.900, 1.000, 1.000)).rgb, 0.3, 1.0, 0.0, 1.0);
+}"
+`;
+
+exports[`kit/effects (3b) neon builder resolve-snapshot > 2D silhouette tube 1`] = `
+"fn neonFlow(sdfUV: vec2f, time: f32, flowSpeed: f32, flowAmount: f32) -> f32 {
+  let flowDx = (sdfUV.x - 0.5f);
+  let flowDy = (sdfUV.y - 0.5f);
+  let flowAngle = atan2(flowDy, flowDx);
+  let flowPhase = ((flowAngle * 2f) + (time * flowSpeed));
+  let flowWave = ((sin(flowPhase) * 0.5f) + 0.5f);
+  return mix(1f, flowWave, flowAmount);
+}
+
+fn neonGlow(sdf: f32, glowRadius: f32, glowIntensity: f32) -> f32 {
+  let glowR = max(glowRadius, 1e-3f);
+  let sdfOutside = max(sdf, 0f);
+  let innerGlow = (exp(((sdfOutside * -1f) * (12f / glowR))) * 0.7f);
+  let outerGlow = (exp(((sdfOutside * -1f) * (4f / glowR))) * 0.35f);
+  let totalGlow = ((innerGlow + outerGlow) * glowIntensity);
+  let outsideFactor = smoothstep(-3e-3f, 3e-3f, sdf);
+  return (totalGlow * outsideFactor);
+}
+
+fn neonFlicker(time: f32, flickerSpeed: f32, flickerAmount: f32) -> f32 {
+  let flickerTime = (time * flickerSpeed);
+  let f1 = sin((flickerTime * 17.13f));
+  let f2 = sin((flickerTime * 31.71f));
+  let f3 = sin((flickerTime * 47.29f));
+  let combined = ((f1 + (f2 * 0.5f)) + (f3 * 0.3f));
+  let threshold = mix(-2f, 0.8f, flickerAmount);
+  return smoothstep((threshold - 0.1f), (threshold + 0.1f), combined);
+}
+
+fn neonComposite(sC: vec4f, sR: vec4f, sL: vec4f, sU: vec4f, sD: vec4f, smoothEPS: f32, sdfUV: vec2f, scale: f32, viewportSize: vec2f, time: f32, cornerSmoothing: f32, tubeThickness: f32, color: vec3f, secondaryColor: vec3f, secondaryBlend: f32, glowColor: vec3f, intensity: f32, hotCoreIntensity: f32, glowIntensity: f32, glowRadius: f32, lightAngle: f32, specularIntensity: f32, specularSize: f32, flickerSpeed: f32, flickerAmount: f32, flowSpeed: f32, flowAmount: f32, volumetric: f32) -> vec4f {
+  let sdfCenter = sC.x;
+  let sdfRight = sR.x;
+  let sdfLeft = sL.x;
+  let sdfUp = sU.x;
+  let sdfDown = sD.x;
+  let pxH = (1f / viewportSize.y);
+  let glowR = max(glowRadius, 1e-3f);
+  let softPx = max((pxH / scale), 4e-3f);
+  let gradX = ((sdfRight - sdfLeft) / (smoothEPS * 2f));
+  let gradY = ((sdfUp - sdfDown) / (smoothEPS * 2f));
+  let smoothedSdf = (((((sdfCenter + sdfRight) + sdfLeft) + sdfUp) + sdfDown) / 5f);
+  let sdf = mix(sdfCenter, smoothedSdf, cornerSmoothing);
+  let gxRaw = select(gradX, (sR.w - sL.w), (volumetric > 0.5f));
+  let gyRaw = select(gradY, (sU.w - sD.w), (volumetric > 0.5f));
+  let gradLen = max(sqrt(((gxRaw * gxRaw) + (gyRaw * gyRaw))), 1e-4f);
+  let gnx = (gxRaw / gradLen);
+  let gny = (gyRaw / gradLen);
+  let depthNorm2D = clamp(((sdf * -1f) / max(tubeThickness, 1e-3f)), 0f, 1f);
+  let innerMask2D = smoothstep((tubeThickness + softPx), (tubeThickness - softPx), (sdf * -1f));
+  let lap = (abs(((sR.w + sL.w) - (sC.w * 2f))) + abs(((sU.w + sD.w) - (sC.w * 2f))));
+  let slopeMag = (abs(gxRaw) + abs(gyRaw));
+  let crease = (lap / ((lap + (smoothEPS * 0.6f)) + (slopeMag * 0.35f)));
+  let innerMaskVol = smoothstep(0.08f, 0.35f, crease);
+  let depthNorm = select(depthNorm2D, crease, (volumetric > 0.5f));
+  let innerMask = select(innerMask2D, innerMaskVol, (volumetric > 0.5f));
+  let outerMask = smoothstep(softPx, (softPx * -1f), sdf);
+  let tubeMask = (outerMask * innerMask);
+  let t = depthNorm;
+  let cylinderZ = sqrt(max((t * (2f - t)), 0f));
+  let cylinderR = (1f - t);
+  let nx = (gnx * cylinderR);
+  let ny = (gny * cylinderR);
+  let nz = cylinderZ;
+  let lightRad = (lightAngle * 0.017453292519943295f);
+  let lx = cos(lightRad);
+  let ly = sin(lightRad);
+  let lxn = (lx * 0.8192319205190405f);
+  let lyn = (ly * 0.8192319205190405f);
+  const lzn = 0.5734623443633283;
+  let NdotL = (((nx * lxn) + (ny * lyn)) + (nz * lzn));
+  let diffuse = clamp(NdotL, 0f, 1f);
+  let NdotH = (((nx * (lxn * 0.5637114097207191f)) + (ny * (lyn * 0.5637114097207191f))) + (nz * 0.8869786762835193f));
+  let shininess = exp2((8f - (specularSize * 7f)));
+  let specular = (pow(clamp(NdotH, 0f, 1f), shininess) * specularIntensity);
+  let flowMod = neonFlow(sdfUV, time, flowSpeed, flowAmount);
+  let twoTone = mix(secondaryColor, color, diffuse);
+  let baseColor = mix(color, twoTone, secondaryBlend);
+  const ambient = 0.12;
+  let selfEmission = (cylinderZ * 0.35f);
+  let shadedRgb = (baseColor * ((ambient + (diffuse * 0.55f)) + selfEmission));
+  let tubeRgb = vec3f((shadedRgb.x + specular), (shadedRgb.y + specular), (shadedRgb.z + specular));
+  let coreProfile = smoothstep(0.55f, 1f, depthNorm);
+  let hotCoreAmt = ((coreProfile * hotCoreIntensity) * flowMod);
+  let hotCoreCol = mix(color, vec3f(1), 0.75f);
+  let tubeWithCore = mix(tubeRgb, hotCoreCol, hotCoreAmt);
+  let tubeFlowed = (tubeWithCore * mix(1f, flowMod, 0.4f));
+  let glowMasked = neonGlow(sdf, glowRadius, glowIntensity);
+  let flickerValue = neonFlicker(time, flickerSpeed, flickerAmount);
+  let intensityMul = (intensity * flickerValue);
+  let finalTubeRgb = (tubeFlowed * intensityMul);
+  let finalGlowRgb = (glowColor * (glowMasked * intensityMul));
+  let finalR = mix(finalGlowRgb.x, finalTubeRgb.x, tubeMask);
+  let finalG = mix(finalGlowRgb.y, finalTubeRgb.y, tubeMask);
+  let finalB = mix(finalGlowRgb.z, finalTubeRgb.z, tubeMask);
+  let glowAlpha = clamp((glowMasked * 0.6f), 0f, 1f);
+  let finalA = max(tubeMask, glowAlpha);
+  let result = vec4f(finalR, finalG, finalB, finalA);
+  let threshOut = (((glowR * 1.5f) + softPx) + smoothEPS);
+  return select(result, vec4f(), (sdfCenter > threshOut));
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn neonSmoothEPS(tubeThickness: f32, cornerSmoothing: f32, volumetric: f32) -> f32 {
+  let vol = max(tubeThickness, 6e-3f);
+  let flat = (8e-3f + (cornerSmoothing * 0.03f));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  return neonComposite(stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333)), stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), neonSmoothEPS(0.05, 0.3, 0.0), 0.0)), stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), (neonSmoothEPS(0.05, 0.3, 0.0) * -1.0), 0.0)), stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.0, neonSmoothEPS(0.05, 0.3, 0.0))), stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.0, (neonSmoothEPS(0.05, 0.3, 0.0) * -1.0))), neonSmoothEPS(0.05, 0.3, 0.0), sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.5, vec2f(800.0, 600.0), 1.5, 0.3, 0.05, (vec3f(0.900, 0.200, 0.600)).rgb, (vec3f(0.200, 0.600, 0.900)).rgb, 0.5, (vec3f(1.000, 0.300, 0.700)).rgb, 1.0, 0.5, 1.0, 0.2, 45.0, 0.5, 0.5, 1.0, 0.2, 1.0, 0.3, 0.0);
+}"
+`;
+
+exports[`kit/effects (3b) neon builder resolve-snapshot > volumetric (view-depth crease tubes) 1`] = `
+"fn neonFlow(sdfUV: vec2f, time: f32, flowSpeed: f32, flowAmount: f32) -> f32 {
+  let flowDx = (sdfUV.x - 0.5f);
+  let flowDy = (sdfUV.y - 0.5f);
+  let flowAngle = atan2(flowDy, flowDx);
+  let flowPhase = ((flowAngle * 2f) + (time * flowSpeed));
+  let flowWave = ((sin(flowPhase) * 0.5f) + 0.5f);
+  return mix(1f, flowWave, flowAmount);
+}
+
+fn neonGlow(sdf: f32, glowRadius: f32, glowIntensity: f32) -> f32 {
+  let glowR = max(glowRadius, 1e-3f);
+  let sdfOutside = max(sdf, 0f);
+  let innerGlow = (exp(((sdfOutside * -1f) * (12f / glowR))) * 0.7f);
+  let outerGlow = (exp(((sdfOutside * -1f) * (4f / glowR))) * 0.35f);
+  let totalGlow = ((innerGlow + outerGlow) * glowIntensity);
+  let outsideFactor = smoothstep(-3e-3f, 3e-3f, sdf);
+  return (totalGlow * outsideFactor);
+}
+
+fn neonFlicker(time: f32, flickerSpeed: f32, flickerAmount: f32) -> f32 {
+  let flickerTime = (time * flickerSpeed);
+  let f1 = sin((flickerTime * 17.13f));
+  let f2 = sin((flickerTime * 31.71f));
+  let f3 = sin((flickerTime * 47.29f));
+  let combined = ((f1 + (f2 * 0.5f)) + (f3 * 0.3f));
+  let threshold = mix(-2f, 0.8f, flickerAmount);
+  return smoothstep((threshold - 0.1f), (threshold + 0.1f), combined);
+}
+
+fn neonComposite(sC: vec4f, sR: vec4f, sL: vec4f, sU: vec4f, sD: vec4f, smoothEPS: f32, sdfUV: vec2f, scale: f32, viewportSize: vec2f, time: f32, cornerSmoothing: f32, tubeThickness: f32, color: vec3f, secondaryColor: vec3f, secondaryBlend: f32, glowColor: vec3f, intensity: f32, hotCoreIntensity: f32, glowIntensity: f32, glowRadius: f32, lightAngle: f32, specularIntensity: f32, specularSize: f32, flickerSpeed: f32, flickerAmount: f32, flowSpeed: f32, flowAmount: f32, volumetric: f32) -> vec4f {
+  let sdfCenter = sC.x;
+  let sdfRight = sR.x;
+  let sdfLeft = sL.x;
+  let sdfUp = sU.x;
+  let sdfDown = sD.x;
+  let pxH = (1f / viewportSize.y);
+  let glowR = max(glowRadius, 1e-3f);
+  let softPx = max((pxH / scale), 4e-3f);
+  let gradX = ((sdfRight - sdfLeft) / (smoothEPS * 2f));
+  let gradY = ((sdfUp - sdfDown) / (smoothEPS * 2f));
+  let smoothedSdf = (((((sdfCenter + sdfRight) + sdfLeft) + sdfUp) + sdfDown) / 5f);
+  let sdf = mix(sdfCenter, smoothedSdf, cornerSmoothing);
+  let gxRaw = select(gradX, (sR.w - sL.w), (volumetric > 0.5f));
+  let gyRaw = select(gradY, (sU.w - sD.w), (volumetric > 0.5f));
+  let gradLen = max(sqrt(((gxRaw * gxRaw) + (gyRaw * gyRaw))), 1e-4f);
+  let gnx = (gxRaw / gradLen);
+  let gny = (gyRaw / gradLen);
+  let depthNorm2D = clamp(((sdf * -1f) / max(tubeThickness, 1e-3f)), 0f, 1f);
+  let innerMask2D = smoothstep((tubeThickness + softPx), (tubeThickness - softPx), (sdf * -1f));
+  let lap = (abs(((sR.w + sL.w) - (sC.w * 2f))) + abs(((sU.w + sD.w) - (sC.w * 2f))));
+  let slopeMag = (abs(gxRaw) + abs(gyRaw));
+  let crease = (lap / ((lap + (smoothEPS * 0.6f)) + (slopeMag * 0.35f)));
+  let innerMaskVol = smoothstep(0.08f, 0.35f, crease);
+  let depthNorm = select(depthNorm2D, crease, (volumetric > 0.5f));
+  let innerMask = select(innerMask2D, innerMaskVol, (volumetric > 0.5f));
+  let outerMask = smoothstep(softPx, (softPx * -1f), sdf);
+  let tubeMask = (outerMask * innerMask);
+  let t = depthNorm;
+  let cylinderZ = sqrt(max((t * (2f - t)), 0f));
+  let cylinderR = (1f - t);
+  let nx = (gnx * cylinderR);
+  let ny = (gny * cylinderR);
+  let nz = cylinderZ;
+  let lightRad = (lightAngle * 0.017453292519943295f);
+  let lx = cos(lightRad);
+  let ly = sin(lightRad);
+  let lxn = (lx * 0.8192319205190405f);
+  let lyn = (ly * 0.8192319205190405f);
+  const lzn = 0.5734623443633283;
+  let NdotL = (((nx * lxn) + (ny * lyn)) + (nz * lzn));
+  let diffuse = clamp(NdotL, 0f, 1f);
+  let NdotH = (((nx * (lxn * 0.5637114097207191f)) + (ny * (lyn * 0.5637114097207191f))) + (nz * 0.8869786762835193f));
+  let shininess = exp2((8f - (specularSize * 7f)));
+  let specular = (pow(clamp(NdotH, 0f, 1f), shininess) * specularIntensity);
+  let flowMod = neonFlow(sdfUV, time, flowSpeed, flowAmount);
+  let twoTone = mix(secondaryColor, color, diffuse);
+  let baseColor = mix(color, twoTone, secondaryBlend);
+  const ambient = 0.12;
+  let selfEmission = (cylinderZ * 0.35f);
+  let shadedRgb = (baseColor * ((ambient + (diffuse * 0.55f)) + selfEmission));
+  let tubeRgb = vec3f((shadedRgb.x + specular), (shadedRgb.y + specular), (shadedRgb.z + specular));
+  let coreProfile = smoothstep(0.55f, 1f, depthNorm);
+  let hotCoreAmt = ((coreProfile * hotCoreIntensity) * flowMod);
+  let hotCoreCol = mix(color, vec3f(1), 0.75f);
+  let tubeWithCore = mix(tubeRgb, hotCoreCol, hotCoreAmt);
+  let tubeFlowed = (tubeWithCore * mix(1f, flowMod, 0.4f));
+  let glowMasked = neonGlow(sdf, glowRadius, glowIntensity);
+  let flickerValue = neonFlicker(time, flickerSpeed, flickerAmount);
+  let intensityMul = (intensity * flickerValue);
+  let finalTubeRgb = (tubeFlowed * intensityMul);
+  let finalGlowRgb = (glowColor * (glowMasked * intensityMul));
+  let finalR = mix(finalGlowRgb.x, finalTubeRgb.x, tubeMask);
+  let finalG = mix(finalGlowRgb.y, finalTubeRgb.y, tubeMask);
+  let finalB = mix(finalGlowRgb.z, finalTubeRgb.z, tubeMask);
+  let glowAlpha = clamp((glowMasked * 0.6f), 0f, 1f);
+  let finalA = max(tubeMask, glowAlpha);
+  let result = vec4f(finalR, finalG, finalB, finalA);
+  let threshOut = (((glowR * 1.5f) + softPx) + smoothEPS);
+  return select(result, vec4f(), (sdfCenter > threshOut));
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn neonSmoothEPS(tubeThickness: f32, cornerSmoothing: f32, volumetric: f32) -> f32 {
+  let vol = max(tubeThickness, 6e-3f);
+  let flat = (8e-3f + (cornerSmoothing * 0.03f));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  return neonComposite(stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333)), stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), neonSmoothEPS(0.05, 0.3, 1.0), 0.0)), stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), (neonSmoothEPS(0.05, 0.3, 1.0) * -1.0), 0.0)), stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.0, neonSmoothEPS(0.05, 0.3, 1.0))), stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.0, (neonSmoothEPS(0.05, 0.3, 1.0) * -1.0))), neonSmoothEPS(0.05, 0.3, 1.0), sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.5, vec2f(800.0, 600.0), 1.5, 0.3, 0.05, (vec3f(0.900, 0.200, 0.600)).rgb, (vec3f(0.200, 0.600, 0.900)).rgb, 0.5, (vec3f(1.000, 0.300, 0.700)).rgb, 1.0, 0.5, 1.0, 0.2, 45.0, 0.5, 0.5, 1.0, 0.2, 1.0, 0.3, 1.0);
+}"
+`;
+
+exports[`kit/effects (3c) emboss builder resolve-snapshot > 2D plateau relief 1`] = `
+"fn embossHeight(s: f32, depth: f32, transitionW: f32, volumetric: f32) -> f32 {
+  let vol = (depth * clamp(((s * -1f) / 0.18f), 0f, 1f));
+  let flat = (depth * smoothstep(transitionW, (transitionW * -1f), s));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+fn embossEdgeLighting(sdfR: f32, sdfL: f32, sdfU: f32, sdfD: f32, depth: f32, lightAngle: f32, lightIntensity: f32, volumetric: f32) -> vec2f {
+  const eps = 3e-3;
+  const tw = 3e-3;
+  let hR = embossHeight(sdfR, depth, tw, volumetric);
+  let hL = embossHeight(sdfL, depth, tw, volumetric);
+  let hU = embossHeight(sdfU, depth, tw, volumetric);
+  let hD = embossHeight(sdfD, depth, tw, volumetric);
+  let dhx = ((hR - hL) / (eps * 2f));
+  let dhy = ((hU - hD) / (eps * 2f));
+  let nLen = sqrt((((dhx * dhx) + (dhy * dhy)) + 1f));
+  let nx = ((dhx * -1f) / nLen);
+  let ny = ((dhy * -1f) / nLen);
+  let nz = (1f / nLen);
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let lxn = (lx * 0.8192319205190405f);
+  let lyn = (ly * 0.8192319205190405f);
+  const lzn = 0.5734623443633283;
+  let NdotL = (((nx * lxn) + (ny * lyn)) + (nz * lzn));
+  let edgeLighting = ((NdotL - lzn) * lightIntensity);
+  let highlight = max(edgeLighting, 0f);
+  let edgeShadow = max((edgeLighting * -1f), 0f);
+  return vec2f(highlight, edgeShadow);
+}
+
+fn embossComposite(childColor: vec4f, sdfC: f32, sdfR: f32, sdfL: f32, sdfU: f32, sdfD: f32, h1raw: f32, h2raw: f32, depth: f32, lightAngle: f32, lightIntensity: f32, shadowIntensity: f32, volumetric: f32) -> vec4f {
+  const tw = 3e-3;
+  let light = embossEdgeLighting(sdfR, sdfL, sdfU, sdfD, depth, lightAngle, lightIntensity, volumetric);
+  let highlight = light.x;
+  let edgeShadow = light.y;
+  let hC = embossHeight(sdfC, depth, tw, volumetric);
+  let absDepth = max(abs(depth), 1e-4f);
+  let shadowTw = (absDepth * 0.06f);
+  let h1 = embossHeight(h1raw, depth, shadowTw, volumetric);
+  let h2 = embossHeight(h2raw, depth, shadowTw, volumetric);
+  let diff1 = ((h1 - hC) / absDepth);
+  let diff2 = ((h2 - hC) / absDepth);
+  let castShadow = ((smoothstep(0f, 0.5f, diff1) * 0.55f) + (smoothstep(0f, 0.5f, diff2) * 0.45f));
+  let totalShadow = (clamp((edgeShadow + castShadow), 0f, 1f) * shadowIntensity);
+  let childRgb = vec3f(childColor.x, childColor.y, childColor.z);
+  let highlightRgb = vec3f(highlight, highlight, highlight);
+  let finalRgb = clamp(((childRgb * (1f - totalShadow)) + highlightRgb), vec3f(), vec3f(1));
+  return vec4f(finalRgb.x, finalRgb.y, finalRgb.z, childColor.w);
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn childTex(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+fn embossWarpUV(uv: vec2f, center: vec2f, sdfC: f32, depth: f32) -> vec2f {
+  const tw = 3e-3;
+  let inside = smoothstep(tw, (tw * -1f), sdfC);
+  let dispScale = (1f - ((depth * 0.05f) * inside));
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  return vec2f((centerX + ((uv.x - centerX) * dispScale)), (centerY + ((uv.y - centerY) * dispScale)));
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn embossTraceUV(sdfUV: vec2f, lightAngle: f32, depth: f32, frac: f32) -> vec2f {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let absDepth = max(abs(depth), 1e-4f);
+  let spread = (absDepth * 0.06f);
+  return vec2f((sdfUV.x + ((lx * spread) * frac)), (sdfUV.y + ((ly * spread) * frac)));
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  return embossComposite(unpremultiplyAlpha(childTex(embossWarpUV(uv, vec2f(0.500, 0.500), (stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333))).r, 5.0))), (stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.003, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), -0.003, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.0, 0.003))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.0, -0.003))).r, (stubSdf(embossTraceUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 45.0, 5.0, 0.5))).r, (stubSdf(embossTraceUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 45.0, 5.0, 1.0))).r, 5.0, 45.0, 1.0, 1.0, 0.0);
+}"
+`;
+
+exports[`kit/effects (3c) emboss builder resolve-snapshot > volumetric height field 1`] = `
+"fn embossHeight(s: f32, depth: f32, transitionW: f32, volumetric: f32) -> f32 {
+  let vol = (depth * clamp(((s * -1f) / 0.18f), 0f, 1f));
+  let flat = (depth * smoothstep(transitionW, (transitionW * -1f), s));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+fn embossEdgeLighting(sdfR: f32, sdfL: f32, sdfU: f32, sdfD: f32, depth: f32, lightAngle: f32, lightIntensity: f32, volumetric: f32) -> vec2f {
+  const eps = 3e-3;
+  const tw = 3e-3;
+  let hR = embossHeight(sdfR, depth, tw, volumetric);
+  let hL = embossHeight(sdfL, depth, tw, volumetric);
+  let hU = embossHeight(sdfU, depth, tw, volumetric);
+  let hD = embossHeight(sdfD, depth, tw, volumetric);
+  let dhx = ((hR - hL) / (eps * 2f));
+  let dhy = ((hU - hD) / (eps * 2f));
+  let nLen = sqrt((((dhx * dhx) + (dhy * dhy)) + 1f));
+  let nx = ((dhx * -1f) / nLen);
+  let ny = ((dhy * -1f) / nLen);
+  let nz = (1f / nLen);
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let lxn = (lx * 0.8192319205190405f);
+  let lyn = (ly * 0.8192319205190405f);
+  const lzn = 0.5734623443633283;
+  let NdotL = (((nx * lxn) + (ny * lyn)) + (nz * lzn));
+  let edgeLighting = ((NdotL - lzn) * lightIntensity);
+  let highlight = max(edgeLighting, 0f);
+  let edgeShadow = max((edgeLighting * -1f), 0f);
+  return vec2f(highlight, edgeShadow);
+}
+
+fn embossComposite(childColor: vec4f, sdfC: f32, sdfR: f32, sdfL: f32, sdfU: f32, sdfD: f32, h1raw: f32, h2raw: f32, depth: f32, lightAngle: f32, lightIntensity: f32, shadowIntensity: f32, volumetric: f32) -> vec4f {
+  const tw = 3e-3;
+  let light = embossEdgeLighting(sdfR, sdfL, sdfU, sdfD, depth, lightAngle, lightIntensity, volumetric);
+  let highlight = light.x;
+  let edgeShadow = light.y;
+  let hC = embossHeight(sdfC, depth, tw, volumetric);
+  let absDepth = max(abs(depth), 1e-4f);
+  let shadowTw = (absDepth * 0.06f);
+  let h1 = embossHeight(h1raw, depth, shadowTw, volumetric);
+  let h2 = embossHeight(h2raw, depth, shadowTw, volumetric);
+  let diff1 = ((h1 - hC) / absDepth);
+  let diff2 = ((h2 - hC) / absDepth);
+  let castShadow = ((smoothstep(0f, 0.5f, diff1) * 0.55f) + (smoothstep(0f, 0.5f, diff2) * 0.45f));
+  let totalShadow = (clamp((edgeShadow + castShadow), 0f, 1f) * shadowIntensity);
+  let childRgb = vec3f(childColor.x, childColor.y, childColor.z);
+  let highlightRgb = vec3f(highlight, highlight, highlight);
+  let finalRgb = clamp(((childRgb * (1f - totalShadow)) + highlightRgb), vec3f(), vec3f(1));
+  return vec4f(finalRgb.x, finalRgb.y, finalRgb.z, childColor.w);
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn childTex(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+fn embossWarpUV(uv: vec2f, center: vec2f, sdfC: f32, depth: f32) -> vec2f {
+  const tw = 3e-3;
+  let inside = smoothstep(tw, (tw * -1f), sdfC);
+  let dispScale = (1f - ((depth * 0.05f) * inside));
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  return vec2f((centerX + ((uv.x - centerX) * dispScale)), (centerY + ((uv.y - centerY) * dispScale)));
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn embossTraceUV(sdfUV: vec2f, lightAngle: f32, depth: f32, frac: f32) -> vec2f {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let absDepth = max(abs(depth), 1e-4f);
+  let spread = (absDepth * 0.06f);
+  return vec2f((sdfUV.x + ((lx * spread) * frac)), (sdfUV.y + ((ly * spread) * frac)));
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  return embossComposite(unpremultiplyAlpha(childTex(embossWarpUV(uv, vec2f(0.500, 0.500), (stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333))).r, 5.0))), (stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.003, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), -0.003, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.0, 0.003))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 0.0, -0.003))).r, (stubSdf(embossTraceUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 45.0, 5.0, 0.5))).r, (stubSdf(embossTraceUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 0.0, uv, 1.3333333), 45.0, 5.0, 1.0))).r, 5.0, 45.0, 1.0, 1.0, 1.0);
+}"
+`;

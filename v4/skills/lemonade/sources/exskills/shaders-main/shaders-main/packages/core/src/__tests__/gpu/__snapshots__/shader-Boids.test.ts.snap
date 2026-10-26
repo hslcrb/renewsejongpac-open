@@ -1,0 +1,497 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Boids (a) compute simulation → resolved texture > registers the boids (compute) texture and samples it in the fragment (GENERATOR) > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  colorA: vec4f,
+  colorB: vec4f,
+  colorSpace: f32,
+  count: f32,
+  speed: f32,
+  seed: f32,
+  size: f32,
+  trails: f32,
+  separation: f32,
+  alignment: f32,
+  cohesion: f32,
+  perception: f32,
+  cursorStrength: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_bd: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = in.uv;
+  var composed_0 = textureSample(compute_0, linearClamp, uv);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`Boids (c) kernels resolve (D3 rules) > every shape variant of the render splat resolves and accumulates atomically > splatKernel 1`] = `
+"struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  count: f32,
+  trails: f32,
+  dt: f32,
+  aspect: f32,
+  domainX: f32,
+  maxSpeed: f32,
+  maxForce: f32,
+  perceptionSq: f32,
+  sepRadiusSq: f32,
+  sepW: f32,
+  aliW: f32,
+  cohW: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorMode: f32,
+  cursorRadius: f32,
+  cursorRadiusSq: f32,
+  cursorForce: f32,
+  bodyR: f32,
+  margin: f32,
+  turnForce: f32,
+  seed: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 4096>;
+
+struct AgentPose {
+  pos: vec2f,
+  dir: vec2f,
+  spd: f32,
+}
+
+fn boidsSplatPose(i: u32) -> AgentPose {
+  let a = (&agents[i]);
+  let vel = vec2f((*a).z, (*a).w);
+  let spd = length(vel);
+  return AgentPose(vec2f((*a).x, (*a).y), select(vec2f(1, 0), (vel / max(spd, 1e-5f)), (spd > 1e-5f)), spd);
+}
+
+@group(0) @binding(1) var<storage, read_write> agit: array<f32, 4096>;
+
+fn boidsSplatExcitement(i: u32, _spd: f32) -> f32 {
+  return clamp(agit[i], 0f, 1f);
+}
+
+struct SplatWindow {
+  x0: i32,
+  x1: i32,
+  y0: i32,
+  y1: i32,
+}
+
+fn worldSplatWindow(pos: vec2f, reach: f32, aspect: f32, res: f32) -> SplatWindow {
+  let asp = max(aspect, 1e-5f);
+  let cxi = i32(floor(((pos.x / asp) * res)));
+  let cyi = i32(floor((pos.y * res)));
+  let radX = i32(ceil(((reach * res) / asp)));
+  let radY = i32(ceil((reach * res)));
+  let last = (i32(res) - 1i);
+  return SplatWindow(max((cxi - radX), 0i), min((cxi + radX), last), max((cyi - radY), 0i), min((cyi + radY), last));
+}
+
+fn agentArrowSdf(t: f32, n: f32, hl: f32, hw: f32) -> f32 {
+  let px = abs(n);
+  let py = (hl - t);
+  let qx = hw;
+  let qy = (hl * 2f);
+  let k = clamp((((px * qx) + (py * qy)) / max(((qx * qx) + (qy * qy)), 1e-9f)), 0f, 1f);
+  let ax = (px - (qx * k));
+  let ay = (py - (qy * k));
+  let bx = (px - (qx * clamp((px / max(qx, 1e-9f)), 0f, 1f)));
+  let by = (py - qy);
+  let dSq = min(((ax * ax) + (ay * ay)), ((bx * bx) + (by * by)));
+  let sA = ((py * qx) - (px * qy));
+  let sB = (qy - py);
+  let inside = (min(sA, sB) > 0f);
+  return select(sqrt(dSq), -(sqrt(dSq)), inside);
+}
+
+fn agentTexelWeight(_q: f32, t: f32, n: f32, bodyR: f32, aaW: f32) -> f32 {
+  let sd = agentArrowSdf(t, n, (bodyR * 2.3f), (bodyR * 1f));
+  return (1f - smoothstep(-(aaW), aaW, sd));
+}
+
+fn agentCometWeight(t: f32, n: f32, bodyR: f32, aaW: f32) -> f32 {
+  let hl = (bodyR * 2.3f);
+  let tGlow = (t - clamp(t, -(hl), hl));
+  let tEval = select(t, tGlow, false);
+  let tk = clamp(((hl - t) / max((hl * 2f), 1e-6f)), 0f, 1f);
+  let bright = (1f - ((0.55f * tk) * 0f));
+  let qEval = (((tEval * tEval) + (n * n)) / (bodyR * bodyR));
+  return (agentTexelWeight(qEval, tEval, n, bodyR, aaW) * bright);
+}
+
+fn boidsSplatWeight(_dSq: f32, offX: f32, offY: f32, dir: vec2f, bodyR: f32, _bodyRSq: f32, aaW: f32) -> f32 {
+  let t = ((offX * dir.x) + (offY * dir.y));
+  let n = ((offX * -(dir.y)) + (offY * dir.x));
+  return agentCometWeight(t, n, bodyR, aaW);
+}
+
+@group(0) @binding(2) var<storage, read_write> accumE: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(3) var<storage, read_write> accumS: array<atomic<u32>, 1048576>;
+
+fn boidsSplat(i: u32) {
+  let prm = (&params);
+  let p = boidsSplatPose(i);
+  let agitI = boidsSplatExcitement(i, p.spd);
+  let agitGain = (agitI * 637f);
+  let aspect = max((*prm).aspect, 1e-5f);
+  let bodyR = clamp((*prm).bodyR, 1e-6f, 0.015625f);
+  let bodyRSq = (bodyR * bodyR);
+  let radW = ((bodyR * 2.65f) + 0.00146484375f);
+  let extSq = (radW * radW);
+  let win = worldSplatWindow(p.pos, radW, aspect, 1024f);
+  for (var py = win.y0; (py <= win.y1); py++) {
+    let offY = (((f32(py) + 0.5f) * 9.765625e-4f) - p.pos.y);
+    let offYSq = (offY * offY);
+    for (var px = win.x0; (px <= win.x1); px++) {
+      let offX = ((((f32(px) + 0.5f) * 9.765625e-4f) * aspect) - p.pos.x);
+      let dSq = ((offX * offX) + offYSq);
+      if ((dSq < extSq)) {
+        let w = boidsSplatWeight(dSq, offX, offY, p.dir, bodyR, bodyRSq, 7.32421875e-4f);
+        let e = u32((w * 637f));
+        if ((e > 0u)) {
+          let idx = u32(((py * 1024i) + px));
+          atomicAdd(&accumE[idx], e);
+          if ((agitI > 0f)) {
+            atomicAdd(&accumS[idx], u32((w * agitGain)));
+          }
+        }
+      }
+    }
+  }
+}"
+`;
+
+exports[`Boids (c) kernels resolve (D3 rules) > the resolve kernel color-mixes rest→excited, blends the trail canvas, writes the texture > resolveKernel 1`] = `
+"struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  count: f32,
+  trails: f32,
+  dt: f32,
+  aspect: f32,
+  domainX: f32,
+  maxSpeed: f32,
+  maxForce: f32,
+  perceptionSq: f32,
+  sepRadiusSq: f32,
+  sepW: f32,
+  aliW: f32,
+  cohW: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorMode: f32,
+  cursorRadius: f32,
+  cursorRadiusSq: f32,
+  cursorForce: f32,
+  bodyR: f32,
+  margin: f32,
+  turnForce: f32,
+  seed: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+@group(0) @binding(2) var<storage, read_write> accumE: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(3) var<storage, read_write> accumS: array<atomic<u32>, 1048576>;
+
+fn boidsResolveEnergy(eRaw: f32) -> f32 {
+  return (eRaw * 0.00392156862745098f);
+}
+
+fn p3ToSRGB(p3: vec3f) -> vec3f {
+  let r = (((p3.x * 1.2249401f) - (p3.y * 0.2249404f)) - (p3.z * 0f));
+  let g = (((p3.x * -0.0420569f) + (p3.y * 1.0420571f)) + (p3.z * 0f));
+  let b = (((p3.x * -0.0196376f) - (p3.y * 0.0786361f)) + (p3.z * 1.0982735f));
+  return vec3f(r, g, b);
+}
+
+fn rgbToOklab(rgb: vec3f) -> vec3f {
+  let r = rgb.x;
+  let g = rgb.y;
+  let b = rgb.z;
+  let l = (((r * 0.4122214708f) + (g * 0.5363325363f)) + (b * 0.0514459929f));
+  let m = ((r * 0.2119034982f) + ((g * 0.6806995451f) + (b * 0.1073969566f)));
+  let s = (((r * 0.0883024619f) + (g * 0.2817188376f)) + (b * 0.6299787005f));
+  let l_ = (sign(l) * pow(abs(l), 0.3333333333333333f));
+  let m_ = (sign(m) * pow(abs(m), 0.3333333333333333f));
+  let s_ = (sign(s) * pow(abs(s), 0.3333333333333333f));
+  return vec3f((((l_ * 0.2104542553f) + (m_ * 0.793617785f)) - (s_ * 0.0040720468f)), (((l_ * 1.9779984951f) - (m_ * 2.428592205f)) + (s_ * 0.4505937099f)), (((l_ * 0.0259040371f) + (m_ * 0.7827717662f)) - (s_ * 0.808675766f)));
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixFn(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let oklabA = rgbToOklab(p3ToSRGB(colorA.xyz));
+  let oklabB = rgbToOklab(p3ToSRGB(colorB.xyz));
+  let mixed = awMix(oklabA, oklabB, weightA, weightB, safeWeight);
+  let rgb = sRGBToP3(oklabToRgb(mixed));
+  return vec4f(rgb, totalWeight);
+}
+
+fn energyCoverageAlpha(energy: f32, k: f32) -> f32 {
+  return (1f - exp(((energy * k) * -1f)));
+}
+
+@group(0) @binding(4) var<storage, read_write> trailBuf: array<vec4f, 1048576>;
+
+fn agentTrailMaxDecay(col: vec4f, curA: f32, prev: vec4f, trails: f32) -> vec4f {
+  let prevA = (prev.w * trails);
+  let win = (curA >= prevA);
+  let outA = max(curA, prevA);
+  let outRGB = select(vec3f(prev.x, prev.y, prev.z), vec3f(col.x, col.y, col.z), win);
+  return vec4f(outRGB.x, outRGB.y, outRGB.z, outA);
+}
+
+fn boidsResolveTrailComposite(col: vec4f, curA: f32, idx: u32) -> vec4f {
+  return agentTrailMaxDecay(col, curA, trailBuf[idx], params.trails);
+}
+
+@group(0) @binding(6) var outTex: texture_storage_2d<rgba16float, write>;
+
+fn boidsResolve(x: u32, y: u32) {
+  let prm = (&params);
+  let idx = ((y * 1024u) + x);
+  let eRaw = f32(atomicLoad(&accumE[idx]));
+  atomicStore(&accumE[idx], 0u);
+  let sRaw = f32(atomicLoad(&accumS[idx]));
+  atomicStore(&accumS[idx], 0u);
+  let energy = boidsResolveEnergy(eRaw);
+  var col = (*prm).colA;
+  if ((eRaw > 0f)) {
+    let agitAvg = (sRaw / max(eRaw, 1f));
+    col = mixFn((*prm).colA, (*prm).colB, clamp(agitAvg, 0f, 1f));
+  }
+  let curA = (energyCoverageAlpha(energy, 1.6f) * col.w);
+  let out = boidsResolveTrailComposite(col, curA, idx);
+  trailBuf[idx] = out;
+  textureStore(outTex, vec2u(x, y), out);
+}"
+`;
+
+exports[`Boids (c) kernels resolve (D3 rules) > the update integrator resolves with a runtime-count break in the neighbour loop > updateKernel 1`] = `
+"struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  count: f32,
+  trails: f32,
+  dt: f32,
+  aspect: f32,
+  domainX: f32,
+  maxSpeed: f32,
+  maxForce: f32,
+  perceptionSq: f32,
+  sepRadiusSq: f32,
+  sepW: f32,
+  aliW: f32,
+  cohW: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorMode: f32,
+  cursorRadius: f32,
+  cursorRadiusSq: f32,
+  cursorForce: f32,
+  bodyR: f32,
+  margin: f32,
+  turnForce: f32,
+  seed: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 4096>;
+
+fn floatBitsToUint1(x: f32) -> u32 { return bitcast<u32>(x); }
+
+fn noise_hash11(p: f32) -> f32 {
+  let u = floatBitsToUint1((p * 3141592653f));
+  return (f32(((u * u) * 3141592653u)) / 4294967296f);
+}
+
+fn agentCruiseVariation(fi: f32) -> f32 {
+  return (0.82f + (noise_hash11(((fi * 0.61803f) + 0.13f)) * 0.4f));
+}
+
+fn agentReynoldsSteer(dir: vec2f, vel: vec2f, maxSpeed: f32, maxForce: f32) -> vec2f {
+  let len = length(dir);
+  let desired = select(vec2f(), ((dir / max(len, 1e-5f)) * maxSpeed), (len > 1e-5f));
+  let steer = (desired - vel);
+  let sl = length(steer);
+  return select(steer, ((steer / max(sl, 1e-5f)) * maxForce), (sl > maxForce));
+}
+
+fn forceFlocking(pos: vec2f, vel: vec2f, maxSpeedI: f32) -> vec2f {
+  let prm = (&params);
+  var sep = vec2f();
+  var ali = vec2f();
+  var coh = vec2f();
+  var nCount = 0f;
+  var sCount = 0f;
+  for (var j = 0; (j < 4096i); j++) {
+    if ((f32(j) >= (*prm).count)) {
+      break;
+    }
+    let other = (&agents[u32(j)]);
+    let opos = vec2f((*other).x, (*other).y);
+    let off = (pos - opos);
+    let dsq = dot(off, off);
+    if (((dsq > 1e-7f) && (dsq < (*prm).perceptionSq))) {
+      ali = (ali + vec2f((*other).z, (*other).w));
+      coh = (coh + opos);
+      nCount = (nCount + 1f);
+      if ((dsq < (*prm).sepRadiusSq)) {
+        sep = (sep + (off / dsq));
+        sCount = (sCount + 1f);
+      }
+    }
+  }
+  var accel = vec2f();
+  if ((nCount > 0.5f)) {
+    let aliSteer = agentReynoldsSteer((ali / nCount), vel, maxSpeedI, (*prm).maxForce);
+    let cohSteer = agentReynoldsSteer(((coh / nCount) - pos), vel, maxSpeedI, (*prm).maxForce);
+    accel = ((accel + (aliSteer * (*prm).aliW)) + (cohSteer * (*prm).cohW));
+  }
+  if ((sCount > 0.5f)) {
+    accel = (accel + (agentReynoldsSteer(sep, vel, maxSpeedI, (*prm).maxForce) * (*prm).sepW));
+  }
+  return accel;
+}
+
+fn forceCursorSteer(pos: vec2f, _vel: vec2f, _maxSpeedI: f32) -> vec2f {
+  let prm = (&params);
+  var accel = vec2f();
+  if (((*prm).cursorMode > 0.5f)) {
+    let cd = (vec2f((*prm).cursorX, (*prm).cursorY) - pos);
+    let cdsq = dot(cd, cd);
+    if (((cdsq > 1e-7f) && (cdsq < (*prm).cursorRadiusSq))) {
+      let cdist = sqrt(cdsq);
+      let falloff = (1f - (cdist / max((*prm).cursorRadius, 1e-5f)));
+      let sign_1 = select(1f, -1f, ((*prm).cursorMode > 1.5f));
+      accel = ((cd / cdist) * ((sign_1 * falloff) * (*prm).cursorForce));
+    }
+  }
+  return accel;
+}
+
+fn steerSum1(pos: vec2f, vel: vec2f, maxSpeedI: f32) -> vec2f {
+  return (forceFlocking(pos, vel, maxSpeedI) + forceCursorSteer(pos, vel, maxSpeedI));
+}
+
+fn forceWallTurn(pos: vec2f, _vel: vec2f, _maxSpeedI: f32) -> vec2f {
+  let prm = (&params);
+  let m = (*prm).margin;
+  let tf = (*prm).turnForce;
+  let ax = (select(0f, tf, (pos.x < m)) + select(0f, -(tf), (pos.x > ((*prm).domainX - m))));
+  let ay = (select(0f, tf, (pos.y < m)) + select(0f, -(tf), (pos.y > (1f - m))));
+  return vec2f(ax, ay);
+}
+
+fn steerSum2(pos: vec2f, vel: vec2f, maxSpeedI: f32) -> vec2f {
+  return (steerSum1(pos, vel, maxSpeedI) + forceWallTurn(pos, vel, maxSpeedI));
+}
+
+@group(0) @binding(1) var<storage, read_write> agit: array<f32, 4096>;
+
+fn boidsUpdate(i: u32) {
+  let prm = (&params);
+  let self_1 = (&agents[i]);
+  var pos = vec2f((*self_1).x, (*self_1).y);
+  var vel = vec2f((*self_1).z, (*self_1).w);
+  let dt = (*prm).dt;
+  let maxSpeedI = ((*prm).maxSpeed * agentCruiseVariation(f32(i)));
+  let accel = steerSum2(pos, vel, maxSpeedI);
+  let effort = (length(accel) / max((*prm).maxForce, 1e-5f));
+  let raw = clamp(((effort - 1.5f) * 0.4545f), 0f, 1f);
+  let cooled = (agit[i] * exp((dt * -1.3f)));
+  agit[i] = max(raw, cooled);
+  vel = (vel + (accel * dt));
+  let spd = length(vel);
+  let clamped = clamp(spd, (maxSpeedI * 0.35f), maxSpeedI);
+  vel = ((vel / max(spd, 1e-5f)) * clamped);
+  pos = (pos + (vel * dt));
+  let hitX = ((pos.x < 0f) || (pos.x > (*prm).domainX));
+  let hitY = ((pos.y < 0f) || (pos.y > 1f));
+  let nvx = select(vel.x, (vel.x * -0.6f), hitX);
+  let nvy = select(vel.y, (vel.y * -0.6f), hitY);
+  let cx = clamp(pos.x, 0f, (*prm).domainX);
+  let cy = clamp(pos.y, 0f, 1f);
+  agents[i] = vec4f(cx, cy, nvx, nvy);
+}"
+`;

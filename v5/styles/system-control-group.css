@@ -1,0 +1,48 @@
+/* [공통 비율 분배 / Shared proportional control layout]
+   픽셀 폭 대신 전체 너비에서 간격을 뺀 비율을 사용합니다.
+   Divide the available width after gaps instead of assigning pixel widths. */
+.system-control-group {
+    --control-group-gap: var(--space-3);
+    --control-group-columns: var(--control-group-columns-compact);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--control-group-gap);
+    inline-size: 100%;
+    min-inline-size: 0;
+    margin-inline: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.system-control-group > .system-control-group-item {
+    display: flex;
+    flex: 1 1 calc((100% - var(--control-group-gap) * (var(--control-group-columns) - 1)) / var(--control-group-columns));
+    min-inline-size: 0;
+    max-inline-size: 100%;
+}
+
+.system-control-group-item > :is(a, button) {
+    flex: 1 1 auto;
+    align-self: stretch;
+    inline-size: 100%;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    min-block-size: var(--control-size);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+/* [중간 화면과 넓은 화면 / Medium and wide viewports] */
+@media (min-width: 48rem) {
+    .system-control-group {
+        --control-group-columns: var(--control-group-columns-medium);
+    }
+}
+
+@media (min-width: 64rem) {
+    .system-control-group {
+        --control-group-columns: var(--control-group-columns-wide);
+    }
+}

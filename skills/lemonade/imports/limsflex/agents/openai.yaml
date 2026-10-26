@@ -1,0 +1,6 @@
+interface:
+    display_name: "limsflex · 림스플렉스"
+    short_description: "자유로운 웹 UI 디자인과 엄격한 들여쓰기·클래스명·기본 CSS·웹표준"
+    icon_small: "./assets/icon.svg"
+    icon_large: "./assets/logo.svg"
+    default_prompt: "$limsflex를 사용해 디자인은 자유롭게, 코드 형식과 웹표준은 엄격하게 지키며 이 웹 UI를 구현해 주세요."

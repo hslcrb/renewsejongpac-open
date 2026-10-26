@@ -1,0 +1,47 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T07:09:47.441Z",
+  "results": [
+    {
+      "name": "all visible home imagery loads from official local media on desktop and phone",
+      "passed": true
+    },
+    {
+      "name": "the home card uses the shared filled heart and visible notification",
+      "passed": true
+    },
+    {
+      "name": "every program card uses a loaded official image with no generated poster fallback",
+      "passed": true
+    },
+    {
+      "name": "clicking the heart fills its real icon, persists the choice and keeps the card on the same page",
+      "passed": true
+    },
+    {
+      "name": "favorite changes are synchronized between two open pages",
+      "passed": true
+    },
+    {
+      "name": "the notification is a readable rounded bottom capsule that renews and fades without stealing focus",
+      "passed": true
+    },
+    {
+      "name": "the registered component has its requested name, public props and working live demo",
+      "passed": true
+    },
+    {
+      "name": "favorites still fill and report their temporary state when browser storage is unavailable",
+      "passed": true
+    },
+    {
+      "name": "account favorites display the same official image without a duplicated asset path",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

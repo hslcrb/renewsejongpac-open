@@ -1,0 +1,1365 @@
+{
+    "baselineGeneric": 97,
+    "publishedPageRecords": 98,
+    "results": [
+        {
+            "route": "/visit",
+            "title": "이용안내",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200352",
+            "exported": true,
+            "mainTextLength": 237,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/support",
+            "title": "고객지원",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/singl/sound/list.do?menuNo=200355",
+            "exported": true,
+            "mainTextLength": 224,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/support/lost",
+            "title": "분실물 안내",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200354",
+            "exported": true,
+            "mainTextLength": 227,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/support/lost/umbrella",
+            "title": "분실물 상세 · 우산",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200354",
+            "exported": true,
+            "mainTextLength": 237,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/support/lost/scarf",
+            "title": "분실물 상세 · 머플러",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200354",
+            "exported": true,
+            "mainTextLength": 239,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/support/lost/glasses",
+            "title": "분실물 상세 · 안경",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200354",
+            "exported": true,
+            "mainTextLength": 237,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/support/inquiry",
+            "title": "문의하기",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/singl/sound/list.do?menuNo=200355",
+            "exported": true,
+            "mainTextLength": 224,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/support/faq",
+            "title": "자주 묻는 질문",
+            "contentType": [
+                "faq",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/singl/sound/list.do?menuNo=200355",
+            "exported": true,
+            "mainTextLength": 325,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/spaces",
+            "title": "공간안내",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200368",
+            "exported": true,
+            "mainTextLength": 490,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/plan",
+            "title": "방문 계획",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200352",
+            "exported": true,
+            "mainTextLength": 239,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/group",
+            "title": "단체관람 안내·신청",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200322",
+            "exported": true,
+            "mainTextLength": 245,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/etiquette",
+            "title": "관람 유의사항",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200322",
+            "exported": true,
+            "mainTextLength": 308,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/directions",
+            "title": "오시는 길·주차",
+            "contentType": [
+                "facts",
+                "map",
+                "actions"
+            ],
+            "blocks": 3,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200352",
+            "exported": true,
+            "mainTextLength": 286,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/amenities",
+            "title": "편의시설",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200388",
+            "exported": true,
+            "mainTextLength": 262,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/amenities/facilities",
+            "title": "편의시설 위치",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200388",
+            "exported": true,
+            "mainTextLength": 268,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/amenities/dining",
+            "title": "F&B · 다이닝",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200388",
+            "exported": true,
+            "mainTextLength": 205,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/visit/accessibility",
+            "title": "장애인 이용안내",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200353",
+            "exported": true,
+            "mainTextLength": 261,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/sitemap",
+            "title": "사이트맵",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 171,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/search",
+            "title": "통합검색",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 979,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental",
+            "title": "대관",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 198,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/venues",
+            "title": "대관시설",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200368",
+            "exported": true,
+            "mainTextLength": 505,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/schedule",
+            "title": "대관일정",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 194,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/process",
+            "title": "대관절차",
+            "contentType": [
+                "timeline",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 264,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/process/documents",
+            "title": "신청서류 및 심사기준",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 244,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/guide",
+            "title": "대관안내",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 202,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/guide/fees",
+            "title": "대관요금",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 201,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/guide/eligibility",
+            "title": "대관 대상 및 기준",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 242,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/equipment",
+            "title": "무대 기술·장비 안내",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 214,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/contact",
+            "title": "대관문의",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 196,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/compare",
+            "title": "대관 공간 비교",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200368",
+            "exported": true,
+            "mainTextLength": 513,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/rental/apply",
+            "title": "대관신청",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/reservation/reservation/list.do?menuNo=200402",
+            "exported": true,
+            "mainTextLength": 196,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/season",
+            "title": "기획·시즌 프로그램",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000033/list.do?menuNo=200302",
+            "exported": true,
+            "mainTextLength": 255,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/season/sync-next",
+            "title": "Sync Next",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000053/list.do?menuNo=200667",
+            "exported": true,
+            "mainTextLength": 257,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/season/summer",
+            "title": "누구나 세종썸머페스티벌",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200581",
+            "exported": true,
+            "mainTextLength": 255,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/season/sejong",
+            "title": "2026 세종시즌",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000033/list.do?menuNo=200302",
+            "exported": true,
+            "mainTextLength": 231,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/season/package",
+            "title": "시즌 패키지",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000033/list.do?menuNo=200302",
+            "exported": true,
+            "mainTextLength": 231,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/season/orchestra",
+            "title": "누구나 꿈나무오케스트라",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200464",
+            "exported": true,
+            "mainTextLength": 253,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/season/everyone",
+            "title": "모든 누구나",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200446",
+            "exported": true,
+            "mainTextLength": 239,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/season/classic",
+            "title": "누구나 클래식",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200450",
+            "exported": true,
+            "mainTextLength": 233,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/performance",
+            "title": "공연",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/academy/academyProgram/list.do?menuNo=200560",
+            "exported": true,
+            "mainTextLength": 722,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/history",
+            "title": "세종·충무공 이야기",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongstory.or.kr",
+            "exported": true,
+            "mainTextLength": 225,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/exhibition",
+            "title": "전시",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/academy/academyProgram/list.do?menuNo=200560",
+            "exported": true,
+            "mainTextLength": 306,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/education",
+            "title": "교육",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/academy/academyProgram/list.do?menuNo=200560",
+            "exported": true,
+            "mainTextLength": 377,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/education/apply-guide",
+            "title": "교육 신청안내",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/academy/academyProgram/list.do?menuNo=200560",
+            "exported": true,
+            "mainTextLength": 395,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/programs/booking-guide",
+            "title": "예매안내",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200322",
+            "exported": true,
+            "mainTextLength": 301,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/policy/terms",
+            "title": "이용약관",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200322",
+            "exported": true,
+            "mainTextLength": 166,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/policy/privacy",
+            "title": "개인정보처리방침",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 193,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/policy/email",
+            "title": "이메일 무단수집거부",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 150,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news",
+            "title": "소식과 혜택",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000058/list.do?menuNo=200568",
+            "exported": true,
+            "mainTextLength": 422,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/notices",
+            "title": "공지사항",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000058/list.do?menuNo=200568",
+            "exported": true,
+            "mainTextLength": 418,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/notices/recruit/apply",
+            "title": "공연장 안내원 지원서",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000058/list.do?menuNo=200568",
+            "exported": true,
+            "mainTextLength": 200,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/newsletter",
+            "title": "뉴스레터·세종문화N",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000056/list.do?menuNo=200299",
+            "exported": true,
+            "mainTextLength": 175,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/newsletter/archive",
+            "title": "뉴스레터 아카이브",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000056/list.do?menuNo=200299",
+            "exported": true,
+            "mainTextLength": 173,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/membership",
+            "title": "멤버십",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200437",
+            "exported": true,
+            "mainTextLength": 200,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/membership/join",
+            "title": "멤버십 가입",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200437",
+            "exported": true,
+            "mainTextLength": 206,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/membership/benefits",
+            "title": "멤버십 혜택",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200437",
+            "exported": true,
+            "mainTextLength": 206,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/magazine",
+            "title": "세종문화N",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/bbs/B0000067/list.do?menuNo=200300",
+            "exported": true,
+            "mainTextLength": 188,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/goods",
+            "title": "세종 굿즈",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/goods/store/userList.do?menuNo=200660",
+            "exported": true,
+            "mainTextLength": 196,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/goods/viewing-journal",
+            "title": "관람 기록 노트",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/goods/store/userList.do?menuNo=200660",
+            "exported": true,
+            "mainTextLength": 202,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/goods/orders",
+            "title": "굿즈 주문내역",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/goods/store/userList.do?menuNo=200660",
+            "exported": true,
+            "mainTextLength": 200,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/goods/cart",
+            "title": "굿즈 장바구니",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/goods/store/userList.do?menuNo=200660",
+            "exported": true,
+            "mainTextLength": 200,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/goods/canvas-bag",
+            "title": "캔버스 토트백",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/goods/store/userList.do?menuNo=200660",
+            "exported": true,
+            "mainTextLength": 200,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/goods/art-postcards",
+            "title": "공연의 한 장면 · 엽서",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/goods/store/userList.do?menuNo=200660",
+            "exported": true,
+            "mainTextLength": 212,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/events",
+            "title": "이벤트",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/qestnar/qustnr/list.do?menuNo=200670&status=T",
+            "exported": true,
+            "mainTextLength": 199,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/events/winners",
+            "title": "당첨자 발표",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/qestnar/qustnr/list.do?menuNo=200670&status=T",
+            "exported": true,
+            "mainTextLength": 205,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/events/summer-end",
+            "title": "여름의 기억",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/qestnar/qustnr/list.do?menuNo=200670&status=T",
+            "exported": true,
+            "mainTextLength": 205,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/events/review",
+            "title": "관람 후기 이벤트",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/qestnar/qustnr/list.do?menuNo=200670&status=T",
+            "exported": true,
+            "mainTextLength": 211,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/events/review/apply",
+            "title": "관람 후기 이벤트 · 참여",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/qestnar/qustnr/list.do?menuNo=200670&status=T",
+            "exported": true,
+            "mainTextLength": 221,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/events/autumn-walk",
+            "title": "가을의 취향을 나누다",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/qestnar/qustnr/list.do?menuNo=200670&status=T",
+            "exported": true,
+            "mainTextLength": 215,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/news/events/autumn-walk/apply",
+            "title": "가을의 취향을 나누다 · 참여",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/qestnar/qustnr/list.do?menuNo=200670&status=T",
+            "exported": true,
+            "mainTextLength": 225,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/english",
+            "title": "English visitor guide",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/eng/main/main.do",
+            "exported": true,
+            "mainTextLength": 392,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about",
+            "title": "세종문화회관",
+            "contentType": [
+                "timeline",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 174,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/partners",
+            "title": "협력 및 협찬",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200514",
+            "exported": true,
+            "mainTextLength": 207,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/partners/apply",
+            "title": "협력·협찬 제안",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200514",
+            "exported": true,
+            "mainTextLength": 209,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/introduction/organization",
+            "title": "조직도",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/organizationalList/organizationalList/list.do?menuNo=200471",
+            "exported": true,
+            "mainTextLength": 171,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/introduction/history",
+            "title": "걸어온 역사",
+            "contentType": [
+                "timeline",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 174,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/introduction/greeting",
+            "title": "인사말",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 162,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/introduction/ci",
+            "title": "CI 소개",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200508",
+            "exported": true,
+            "mainTextLength": 224,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/esg",
+            "title": "ESG 경영",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200632",
+            "exported": true,
+            "mainTextLength": 217,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/esg/social",
+            "title": "사회공헌",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200632",
+            "exported": true,
+            "mainTextLength": 213,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/esg/governance",
+            "title": "윤리경영",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200521",
+            "exported": true,
+            "mainTextLength": 201,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/esg/environment",
+            "title": "환경경영",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200632",
+            "exported": true,
+            "mainTextLength": 213,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/donation",
+            "title": "후원",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200514",
+            "exported": true,
+            "mainTextLength": 197,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/donation/apply",
+            "title": "후원 참여",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200514",
+            "exported": true,
+            "mainTextLength": 203,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/disclosure",
+            "title": "정보공개",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200528",
+            "exported": true,
+            "mainTextLength": 212,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/disclosure/request",
+            "title": "정보공개 청구",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200528",
+            "exported": true,
+            "mainTextLength": 218,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/disclosure/management",
+            "title": "경영공시",
+            "contentType": [
+                "facts",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200528",
+            "exported": true,
+            "mainTextLength": 212,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/disclosure/ethics",
+            "title": "부패신고·규제혁신센터",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200521",
+            "exported": true,
+            "mainTextLength": 215,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/companies",
+            "title": "서울시예술단",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 173,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/companies/traditional",
+            "title": "서울시국악관현악단",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 161,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/companies/theater",
+            "title": "서울시극단",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 137,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/companies/opera",
+            "title": "서울시오페라단",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 146,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/companies/musical",
+            "title": "서울시뮤지컬단",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 148,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/companies/dance",
+            "title": "서울시무용단",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 143,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/companies/chorus",
+            "title": "서울시합창단",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 140,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/companies/ballet",
+            "title": "서울시발레단",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200505",
+            "exported": true,
+            "mainTextLength": 145,
+            "oldGenericBody": false,
+            "status": "complete"
+        },
+        {
+            "route": "/about/arts-center",
+            "title": "꿈의숲 아트센터",
+            "contentType": [
+                "prose",
+                "actions"
+            ],
+            "blocks": 2,
+            "sourceUrl": "https://www.sejongpac.or.kr/dfac/main/main.do",
+            "exported": true,
+            "mainTextLength": 215,
+            "oldGenericBody": false,
+            "status": "complete"
+        }
+    ]
+}

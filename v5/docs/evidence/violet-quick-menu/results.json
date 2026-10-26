@@ -1,0 +1,737 @@
+{
+  "target": "http://127.0.0.1:3011/v5/",
+  "filter": null,
+  "startedAt": "2026-10-19T16:20:53.541Z",
+  "checks": [
+    {
+      "name": "a working v5 home page exposes the violet quick-menu component",
+      "status": "passed",
+      "details": {
+        "status": 200,
+        "menus": 1
+      }
+    },
+    {
+      "name": "the resting control has a closed state and an accessible open action",
+      "status": "passed"
+    },
+    {
+      "name": "fine-pointer hover exposes six real navigation destinations",
+      "status": "passed"
+    },
+    {
+      "name": "hover can reopen after automatic pointer exit",
+      "status": "passed"
+    },
+    {
+      "name": "hover can reopen after leaving the closed control before its delay",
+      "status": "passed"
+    },
+    {
+      "name": "Escape closes the wheel and restores the toggle focus",
+      "status": "passed"
+    },
+    {
+      "name": "arrow keys wrap the selection and Home/End reach the boundary items",
+      "status": "passed",
+      "details": {
+        "itemOrder": [
+          "#quick-booking",
+          "/v5/programs/",
+          "/v5/visit/directions/",
+          "/v5/visit/group/",
+          "/v5/rental/",
+          "/v5/account/"
+        ]
+      }
+    },
+    {
+      "name": "mouse dragging crosses the angle boundary and snaps without navigation",
+      "status": "passed",
+      "details": {
+        "input": "mouse pointer",
+        "startHit": {
+          "point": {
+            "x": 606.234375,
+            "y": 780.671875
+          },
+          "tag": "SPAN",
+          "link": "rental"
+        },
+        "liveChange": 79.99595601420492,
+        "snapped": 60,
+        "samples": [
+          0,
+          4.999735753629693,
+          9.999503938584667,
+          14.999235923423612,
+          19.998987010683095,
+          24.998737523944328,
+          29.9984724760468,
+          34.998225304616426,
+          39.99798121568642,
+          44.997726899620716,
+          49.99745262876684,
+          54.997212313688806,
+          59.99695544630799,
+          64.99670703840843,
+          69.99644201691831,
+          74.99620693395445,
+          79.99595601420492
+        ]
+      }
+    },
+    {
+      "name": "all six targets and the center remain separate and onscreen at 320x1000px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 320,
+          "height": 1000,
+          "scrollWidth": 320
+        },
+        "wheel": {
+          "x": 19,
+          "y": 618,
+          "width": 282,
+          "height": 282,
+          "right": 301,
+          "bottom": 900
+        },
+        "center": {
+          "x": 113,
+          "y": 712,
+          "width": 94,
+          "height": 94,
+          "right": 207,
+          "bottom": 806
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "#quick-booking",
+            "x": 122,
+            "y": 630.875,
+            "width": 76,
+            "height": 56,
+            "right": 198,
+            "bottom": 686.875
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 208.6875,
+            "y": 680.9375,
+            "width": 76,
+            "height": 56,
+            "right": 284.6875,
+            "bottom": 736.9375
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 208.6875,
+            "y": 781.046875,
+            "width": 76,
+            "height": 56,
+            "right": 284.6875,
+            "bottom": 837.046875
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 122,
+            "y": 831.109375,
+            "width": 76,
+            "height": 56,
+            "right": 198,
+            "bottom": 887.109375
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 35.296875,
+            "y": 781.046875,
+            "width": 76,
+            "height": 56,
+            "right": 111.296875,
+            "bottom": 837.046875
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 35.296875,
+            "y": 680.9375,
+            "width": 76,
+            "height": 56,
+            "right": 111.296875,
+            "bottom": 736.9375
+          }
+        ]
+      }
+    },
+    {
+      "name": "all six targets and the center remain separate and onscreen at 390x1000px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 390,
+          "height": 1000,
+          "scrollWidth": 390
+        },
+        "wheel": {
+          "x": 29,
+          "y": 568,
+          "width": 332,
+          "height": 332,
+          "right": 361,
+          "bottom": 900
+        },
+        "center": {
+          "x": 148,
+          "y": 687,
+          "width": 94,
+          "height": 94,
+          "right": 242,
+          "bottom": 781
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "#quick-booking",
+            "x": 157,
+            "y": 588.125,
+            "width": 76,
+            "height": 56,
+            "right": 233,
+            "bottom": 644.125
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 259.0625,
+            "y": 647.0625,
+            "width": 76,
+            "height": 56,
+            "right": 335.0625,
+            "bottom": 703.0625
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 259.0625,
+            "y": 764.921875,
+            "width": 76,
+            "height": 56,
+            "right": 335.0625,
+            "bottom": 820.921875
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 157,
+            "y": 823.859375,
+            "width": 76,
+            "height": 56,
+            "right": 233,
+            "bottom": 879.859375
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 54.921875,
+            "y": 764.921875,
+            "width": 76,
+            "height": 56,
+            "right": 130.921875,
+            "bottom": 820.921875
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 54.921875,
+            "y": 647.0625,
+            "width": 76,
+            "height": 56,
+            "right": 130.921875,
+            "bottom": 703.0625
+          }
+        ]
+      }
+    },
+    {
+      "name": "all six targets and the center remain separate and onscreen at 768x1000px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 768,
+          "height": 1000,
+          "scrollWidth": 768
+        },
+        "wheel": {
+          "x": 199,
+          "y": 530,
+          "width": 370,
+          "height": 370,
+          "right": 569,
+          "bottom": 900
+        },
+        "center": {
+          "x": 328,
+          "y": 659,
+          "width": 112,
+          "height": 112,
+          "right": 440,
+          "bottom": 771
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "#quick-booking",
+            "x": 340,
+            "y": 551.640625,
+            "width": 88,
+            "height": 64,
+            "right": 428,
+            "bottom": 615.640625
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 453.75,
+            "y": 617.3125,
+            "width": 88,
+            "height": 64,
+            "right": 541.75,
+            "bottom": 681.3125
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 453.75,
+            "y": 748.671875,
+            "width": 88,
+            "height": 64,
+            "right": 541.75,
+            "bottom": 812.671875
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 340,
+            "y": 814.34375,
+            "width": 88,
+            "height": 64,
+            "right": 428,
+            "bottom": 878.34375
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 226.234375,
+            "y": 748.671875,
+            "width": 88,
+            "height": 64,
+            "right": 314.234375,
+            "bottom": 812.671875
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 226.234375,
+            "y": 617.3125,
+            "width": 88,
+            "height": 64,
+            "right": 314.234375,
+            "bottom": 681.3125
+          }
+        ]
+      }
+    },
+    {
+      "name": "all six targets and the center remain separate and onscreen at 1024x1000px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 1024,
+          "height": 1000,
+          "scrollWidth": 1024
+        },
+        "wheel": {
+          "x": 327,
+          "y": 530,
+          "width": 370,
+          "height": 370,
+          "right": 697,
+          "bottom": 900
+        },
+        "center": {
+          "x": 456,
+          "y": 659,
+          "width": 112,
+          "height": 112,
+          "right": 568,
+          "bottom": 771
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "#quick-booking",
+            "x": 468,
+            "y": 551.640625,
+            "width": 88,
+            "height": 64,
+            "right": 556,
+            "bottom": 615.640625
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 581.75,
+            "y": 617.3125,
+            "width": 88,
+            "height": 64,
+            "right": 669.75,
+            "bottom": 681.3125
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 581.75,
+            "y": 748.671875,
+            "width": 88,
+            "height": 64,
+            "right": 669.75,
+            "bottom": 812.671875
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 468,
+            "y": 814.34375,
+            "width": 88,
+            "height": 64,
+            "right": 556,
+            "bottom": 878.34375
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 354.234375,
+            "y": 748.671875,
+            "width": 88,
+            "height": 64,
+            "right": 442.234375,
+            "bottom": 812.671875
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 354.234375,
+            "y": 617.3125,
+            "width": 88,
+            "height": 64,
+            "right": 442.234375,
+            "bottom": 681.3125
+          }
+        ]
+      }
+    },
+    {
+      "name": "all six targets and the center remain separate and onscreen at 1440x1000px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 1440,
+          "height": 1000,
+          "scrollWidth": 1440
+        },
+        "wheel": {
+          "x": 535,
+          "y": 530,
+          "width": 370,
+          "height": 370,
+          "right": 905,
+          "bottom": 900
+        },
+        "center": {
+          "x": 664,
+          "y": 659,
+          "width": 112,
+          "height": 112,
+          "right": 776,
+          "bottom": 771
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "#quick-booking",
+            "x": 676,
+            "y": 551.640625,
+            "width": 88,
+            "height": 64,
+            "right": 764,
+            "bottom": 615.640625
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 789.75,
+            "y": 617.3125,
+            "width": 88,
+            "height": 64,
+            "right": 877.75,
+            "bottom": 681.3125
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 789.75,
+            "y": 748.671875,
+            "width": 88,
+            "height": 64,
+            "right": 877.75,
+            "bottom": 812.671875
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 676,
+            "y": 814.34375,
+            "width": 88,
+            "height": 64,
+            "right": 764,
+            "bottom": 878.34375
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 562.234375,
+            "y": 748.671875,
+            "width": 88,
+            "height": 64,
+            "right": 650.234375,
+            "bottom": 812.671875
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 562.234375,
+            "y": 617.3125,
+            "width": 88,
+            "height": 64,
+            "right": 650.234375,
+            "bottom": 681.3125
+          }
+        ]
+      }
+    },
+    {
+      "name": "all six targets and the center remain separate and onscreen at 844x390px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "scrollWidth": 844
+        },
+        "wheel": {
+          "x": 285,
+          "y": 42,
+          "width": 274,
+          "height": 274,
+          "right": 559,
+          "bottom": 316
+        },
+        "center": {
+          "x": 380,
+          "y": 137,
+          "width": 84,
+          "height": 84,
+          "right": 464,
+          "bottom": 221
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "#quick-booking",
+            "x": 387,
+            "y": 56.71875,
+            "width": 70,
+            "height": 50,
+            "right": 457,
+            "bottom": 106.71875
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 471.234375,
+            "y": 105.359375,
+            "width": 70,
+            "height": 50,
+            "right": 541.234375,
+            "bottom": 155.359375
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 471.234375,
+            "y": 202.625,
+            "width": 70,
+            "height": 50,
+            "right": 541.234375,
+            "bottom": 252.625
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 387,
+            "y": 251.265625,
+            "width": 70,
+            "height": 50,
+            "right": 457,
+            "bottom": 301.265625
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 302.75,
+            "y": 202.625,
+            "width": 70,
+            "height": 50,
+            "right": 372.75,
+            "bottom": 252.625
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 302.75,
+            "y": 105.359375,
+            "width": 70,
+            "height": 50,
+            "right": 372.75,
+            "bottom": 155.359375
+          }
+        ]
+      }
+    },
+    {
+      "name": "the center booking action scrolls and focuses the booking heading",
+      "status": "passed"
+    },
+    {
+      "name": "a coarse-pointer tap opens and closes the menu",
+      "status": "passed"
+    },
+    {
+      "name": "actual touch dragging rotates and snaps without activating the touched link",
+      "status": "passed",
+      "details": {
+        "input": "CDP touch events",
+        "startHit": {
+          "point": {
+            "x": 92.92187500000001,
+            "y": 636.921875
+          },
+          "tag": "SPAN",
+          "link": "rental"
+        },
+        "liveChange": 79.994549611009,
+        "snapped": 60,
+        "samples": [
+          0,
+          4.9996698835241205,
+          9.999312481439915,
+          14.998963343107903,
+          19.99863823744522,
+          24.998293877269248,
+          29.99795689700386,
+          34.99761611027134,
+          39.99726044771228,
+          44.99694556287636,
+          49.99659603678322,
+          54.99625771162994,
+          59.995907164440155,
+          64.99557438034071,
+          69.99523233000662,
+          74.99488309801131,
+          79.994549611009
+        ]
+      }
+    },
+    {
+      "name": "a native outer-link tap reaches #quick-booking",
+      "status": "passed",
+      "details": {
+        "destination": "#quick-booking",
+        "arrived": "http://127.0.0.1:3011/v5/#quick-booking"
+      }
+    },
+    {
+      "name": "a native outer-link tap reaches /v5/programs/",
+      "status": "passed",
+      "details": {
+        "destination": "/v5/programs/",
+        "arrived": "http://127.0.0.1:3011/v5/programs/"
+      }
+    },
+    {
+      "name": "a native outer-link tap reaches /v5/visit/directions/",
+      "status": "passed",
+      "details": {
+        "destination": "/v5/visit/directions/",
+        "arrived": "http://127.0.0.1:3011/v5/visit/directions/"
+      }
+    },
+    {
+      "name": "a native outer-link tap reaches /v5/visit/group/",
+      "status": "passed",
+      "details": {
+        "destination": "/v5/visit/group/",
+        "arrived": "http://127.0.0.1:3011/v5/visit/group/"
+      }
+    },
+    {
+      "name": "a native outer-link tap reaches /v5/rental/",
+      "status": "passed",
+      "details": {
+        "destination": "/v5/rental/",
+        "arrived": "http://127.0.0.1:3011/v5/rental/"
+      }
+    },
+    {
+      "name": "a native outer-link tap reaches /v5/account/",
+      "status": "passed",
+      "details": {
+        "destination": "/v5/account/",
+        "arrived": "http://127.0.0.1:3011/v5/account/"
+      }
+    },
+    {
+      "name": "reduced motion leaves no active animated menu layer",
+      "status": "passed"
+    },
+    {
+      "name": "the home and menu produce no browser errors",
+      "status": "passed",
+      "details": {
+        "pageAndConsoleErrors": 0
+      }
+    }
+  ],
+  "menuErrors": [],
+  "unrelatedErrors": [],
+  "screenshots": [
+    "closed-1440.png",
+    "open-320x1000.png",
+    "open-390x1000.png",
+    "open-768x1000.png",
+    "open-1024x1000.png",
+    "open-1440x1000.png",
+    "open-844x390.png",
+    "touch-drag-390.png",
+    "reduced-motion-1440.png"
+  ],
+  "finishedAt": "2026-10-19T16:21:40.970Z",
+  "status": "passed"
+}

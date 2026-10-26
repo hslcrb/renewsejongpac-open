@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+    <title id="title">limsflex · 림스플렉스 로고</title>
+    <rect width="128" height="128" rx="24" fill="#443175" />
+    <path d="M36 30V68Q36 94 62 94H96" fill="none" stroke="#F5F6F8" stroke-width="16" stroke-linecap="round" />
+    <path d="M64 34C90 34 98 48 90 62C86 69 78 71 70 71" fill="none" stroke="#D9B5F2" stroke-width="8" stroke-linecap="round" />
+</svg>

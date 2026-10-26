@@ -1,0 +1,766 @@
+{
+  "schemaVersion": 2,
+  "reviewedAt": "2026-10-14",
+  "roles": [
+    "nav",
+    "hero",
+    "quick-access",
+    "short-grid",
+    "wide-grid",
+    "flat-list",
+    "panel",
+    "footer"
+  ],
+  "board": {
+    "path": "../../../와이어프레임 실습.png",
+    "size": [
+      12992,
+      4984
+    ],
+    "evidence": "user-supplied-static-image",
+    "limits": "Board annotation frames are not website UI; repeated specimens are not independent sites."
+  },
+  "boardRegions": [
+    {
+      "id": "board-nav",
+      "role": "nav",
+      "title": "Navigation",
+      "bounds": [
+        240,
+        280,
+        11850,
+        800
+      ],
+      "observations": [
+        "Closed/open navigation states range from compact dropdowns to full-width grouped menus.",
+        "Header treatment follows media contrast and distinct visitor tasks."
+      ]
+    },
+    {
+      "id": "board-hero",
+      "role": "hero",
+      "title": "First hero",
+      "bounds": [
+        240,
+        850,
+        12800,
+        1380
+      ],
+      "observations": [
+        "Full-bleed media, booking splits, poster rails and editorial splits coexist.",
+        "Select identification, evidence and primary action using the actual subject/assets."
+      ]
+    },
+    {
+      "id": "board-quick-access",
+      "role": "quick-access",
+      "title": "Fast decisions",
+      "bounds": [
+        250,
+        1540,
+        8165,
+        1970
+      ],
+      "observations": [
+        "9 specimens: calendars/agendas, two posters, service selector/details, client cases, editorial resources and priced booking.",
+        "Quick means a short decision path, not a compulsory tiny row."
+      ]
+    },
+    {
+      "id": "board-short-grid",
+      "role": "short-grid",
+      "title": "Short showcase",
+      "bounds": [
+        250,
+        2170,
+        4960,
+        2580
+      ],
+      "observations": [
+        "6 specimens: portrait promotions, news masonry, news covers, demonstrations, projects and resources.",
+        "Preserve recognition and comparable metadata."
+      ]
+    },
+    {
+      "id": "board-wide-grid",
+      "role": "wide-grid",
+      "title": "Wide showcase",
+      "bounds": [
+        250,
+        2790,
+        6780,
+        3250
+      ],
+      "observations": [
+        "9 specimens including a standalone invitation, landscape editorials, products, evidence splits and portrait programs.",
+        "Wide describes composition territory, not a fixed card aspect ratio."
+      ]
+    },
+    {
+      "id": "board-flat-list",
+      "role": "flat-list",
+      "title": "Shallow information",
+      "bounds": [
+        250,
+        3310,
+        6855,
+        3780
+      ],
+      "observations": [
+        "9 specimens: repeated service/catalog/benefit examples plus resources, partner proof, contact, stories and video/poster compositions.",
+        "Several examples repeat from the wide row; do not count as independent sites."
+      ]
+    },
+    {
+      "id": "board-panel",
+      "role": "panel",
+      "title": "Composite panels",
+      "bounds": [
+        255,
+        3910,
+        2200,
+        4270
+      ],
+      "observations": [
+        "3 specimens: news/newsletter pair, six-photo mosaic and social/video/subscription collection.",
+        "Give each region a clear priority and destination."
+      ]
+    },
+    {
+      "id": "board-footer",
+      "role": "footer",
+      "title": "Operational close",
+      "bounds": [
+        255,
+        4410,
+        6040,
+        4750
+      ],
+      "observations": [
+        "7 specimens: contact/legal/support, branded invitation, imagery, inquiry form and utility columns.",
+        "Match complexity to real organization tasks; preserve practical information."
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "gdweb-27742",
+      "name": "Busan International Film Festival",
+      "roles": [
+        "nav",
+        "hero",
+        "quick-access",
+        "wide-grid",
+        "flat-list"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=27742",
+        "originalUrl": "https://www.biff.kr/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=27742&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "parsed-text; redirected to /eng/",
+        "imageSize": [
+          1872,
+          6567
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1872,
+            1460
+          ],
+          [
+            0,
+            1404,
+            1872,
+            2901
+          ]
+        ]
+      },
+      "observations": [
+        "Two-tier institutional header and image-led hero share space with timed event cards.",
+        "Four comparable film stills carry premiere labels, names and country/year/duration; news rows use structural rules."
+      ],
+      "avoid": [
+        "Static snapshot content differs from current live text; do not copy event dates or sponsor assets."
+      ]
+    },
+    {
+      "id": "gdweb-26873",
+      "name": "NOL Theater Daehakro",
+      "roles": [
+        "nav",
+        "hero",
+        "short-grid",
+        "quick-access"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=26873",
+        "originalUrl": "https://www.noltheater-daehakro.com/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=26873&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "403; redirected to error page; live behavior unverified",
+        "imageSize": [
+          1920,
+          4369
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1920,
+            1497
+          ],
+          [
+            0,
+            1440,
+            1920,
+            2976
+          ]
+        ]
+      },
+      "observations": [
+        "Performance artwork dominates the hero; poster listings retain venue, period and title below.",
+        "A 3-by-2 visit-guide grid uses named icons for seating, floor guide, services, FAQ and directions."
+      ],
+      "avoid": [
+        "Icon grids can serve navigation; truncated titles and dark surfaces still need independent readability checks."
+      ]
+    },
+    {
+      "id": "gdweb-26820",
+      "name": "GS Arts Center",
+      "roles": [
+        "nav",
+        "hero",
+        "short-grid",
+        "footer"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=26820",
+        "originalUrl": "https://www.gsartscenter.com/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=26820&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "response accessible; redirected /en; no extracted text",
+        "imageSize": [
+          1280,
+          1798
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1280,
+            998
+          ],
+          [
+            0,
+            774,
+            1280,
+            1798
+          ]
+        ]
+      },
+      "observations": [
+        "A spare identity/navigation field faces unequal image columns; performance metadata has its own text territory.",
+        "Read/watch items have varied image heights with category/title/date, followed by contact, utilities and newsletter footer."
+      ],
+      "avoid": [
+        "Editorial asymmetry is optional; a booking-heavy page may need a more immediate action."
+      ]
+    },
+    {
+      "id": "gdweb-26813",
+      "name": "Leeum Museum",
+      "roles": [
+        "nav",
+        "hero",
+        "wide-grid"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=26813",
+        "originalUrl": "https://www.leeumhoam.org/leeum",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=26813&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "parsed-text",
+        "imageSize": [
+          1440,
+          4316
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1440,
+            1123
+          ],
+          [
+            0,
+            1080,
+            1440,
+            2232
+          ]
+        ]
+      },
+      "observations": [
+        "White grouped navigation and generous text space precede a broad artwork photograph.",
+        "Paired exhibition media aligns names/dates; collection images form shallow landscape bands."
+      ],
+      "avoid": [
+        "Visible placeholder exhibit titles in the supplied capture must not become real content in a generated page."
+      ]
+    },
+    {
+      "id": "gdweb-27146",
+      "name": "Jeonju International Film Festival",
+      "roles": [
+        "nav",
+        "hero",
+        "quick-access",
+        "wide-grid",
+        "flat-list"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=27146",
+        "originalUrl": "https://www.jeonjufest.kr/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=27146&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "parsed-text",
+        "imageSize": [
+          1920,
+          8126
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1920,
+            1497
+          ],
+          [
+            0,
+            1440,
+            1920,
+            2976
+          ]
+        ]
+      },
+      "observations": [
+        "Festival graphic forms lead the hero; repeated event cards use real stills and consistent fields.",
+        "Date/time and venue are divided by thin structural rules; live text includes an agenda/calendar."
+      ],
+      "avoid": [
+        "Graphic masks express this festival identity; they are not a default way to crop another brand."
+      ]
+    },
+    {
+      "id": "gdweb-27569",
+      "name": "Onmaru Arts Space",
+      "roles": [
+        "nav",
+        "hero",
+        "quick-access",
+        "wide-grid",
+        "footer"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=27569",
+        "originalUrl": "https://asanonmaru.com/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=27569&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "parsed-text; redirected /site/index.php",
+        "imageSize": [
+          1920,
+          7529
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1920,
+            1497
+          ],
+          [
+            0,
+            1440,
+            1920,
+            2976
+          ],
+          [
+            0,
+            5929,
+            1920,
+            7529
+          ]
+        ]
+      },
+      "observations": [
+        "Atmospheric shadow-image hero and centered Korean serif title lead to eight topic pills.",
+        "An asymmetric three-line Korean introduction, artwork band, video/notices and operational footer vary the reading density."
+      ],
+      "avoid": [
+        "Atmosphere suits an arts subject; preserve identification and evidence for other contexts."
+      ]
+    },
+    {
+      "id": "gdweb-26971",
+      "name": "Centre Pompidou Hanwha",
+      "roles": [
+        "nav",
+        "hero",
+        "short-grid",
+        "panel",
+        "footer"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=26971",
+        "originalUrl": "https://www.centrepompidou-hanwha.kr/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=26971&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "tool-error; original-site behavior unverified",
+        "imageSize": [
+          1920,
+          5909
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1920,
+            1497
+          ],
+          [
+            0,
+            1440,
+            1920,
+            2976
+          ],
+          [
+            0,
+            4309,
+            1920,
+            5909
+          ]
+        ]
+      },
+      "observations": [
+        "Two-tier header includes six principal links plus opening/account/ticket utilities above architecture media.",
+        "Exhibition text/poster is roughly 1:3; mark-derived bars and paired membership/help sections continue the system."
+      ],
+      "avoid": [
+        "Museum utility complexity should not be copied into a single-purpose microsite."
+      ]
+    },
+    {
+      "id": "gdweb-26486",
+      "name": "Cruziana Golf and Resort",
+      "roles": [
+        "nav",
+        "hero",
+        "wide-grid",
+        "footer"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=26486",
+        "originalUrl": "https://cruzianagolf.com/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=26486&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "response accessible; no extracted text; live layout unverified",
+        "imageSize": [
+          1920,
+          10776
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1920,
+            1497
+          ],
+          [
+            0,
+            1440,
+            1920,
+            2976
+          ],
+          [
+            0,
+            9176,
+            1920,
+            10776
+          ]
+        ]
+      },
+      "observations": [
+        "Full-width landscape hero uses a large lower serif place name and ruled resource links.",
+        "Warm information fields, broad course media and address/map/contact form a place-led sequence."
+      ],
+      "avoid": [
+        "A monumental name cannot replace booking details or first-time orientation."
+      ]
+    },
+    {
+      "id": "gdweb-27785",
+      "name": "SEAMARQ Hotel",
+      "roles": [
+        "nav",
+        "hero",
+        "quick-access",
+        "wide-grid",
+        "footer"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=27785",
+        "originalUrl": "https://www.seamarqhotel.com/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=27785&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "parsed-text",
+        "imageSize": [
+          1905,
+          8508
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1905,
+            1485
+          ],
+          [
+            0,
+            1428,
+            1905,
+            2952
+          ],
+          [
+            0,
+            6908,
+            1905,
+            8508
+          ]
+        ]
+      },
+      "observations": [
+        "Image-first opening is supported by persistent booking utility; later architecture media includes headline, paging and booking bar.",
+        "Offers pair category controls with substantial imagery; practical contact/legal information closes the page."
+      ],
+      "avoid": [
+        "An image-only opening depends on recognition and booking access; it is not a general no-headline rule."
+      ]
+    },
+    {
+      "id": "gdweb-27795",
+      "name": "MUSINSA Corporate",
+      "roles": [
+        "nav",
+        "hero",
+        "panel",
+        "short-grid",
+        "footer"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=27795",
+        "originalUrl": "https://corp.musinsa.com/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=27795&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "parsed-text",
+        "imageSize": [
+          1600,
+          9286
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1600,
+            1248
+          ],
+          [
+            0,
+            1200,
+            1600,
+            2480
+          ],
+          [
+            0,
+            7686,
+            1600,
+            9286
+          ]
+        ]
+      },
+      "observations": [
+        "News-led opening allocates roughly 2:1 dominant media versus secondary story/utility column.",
+        "A centered three-line Korean manifesto and news rail with three complete items plus a preview continue below."
+      ],
+      "avoid": [
+        "The stacked column serves editorial priorities; do not turn it into an automatic feature bento."
+      ]
+    },
+    {
+      "id": "gdweb-27794",
+      "name": "Seojin System",
+      "roles": [
+        "nav",
+        "hero",
+        "wide-grid",
+        "panel",
+        "footer"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=27794",
+        "originalUrl": "https://www.seojinsystem.net/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=27794&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "parsed-text",
+        "imageSize": [
+          1920,
+          7529
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1920,
+            1497
+          ],
+          [
+            0,
+            1440,
+            1920,
+            2976
+          ],
+          [
+            0,
+            5929,
+            1920,
+            7529
+          ]
+        ]
+      },
+      "observations": [
+        "Manufacturing-image hero combines a Korean proposition and three compact previews.",
+        "Text/image split and six-category thumbnail selector precede a dark network region, recruitment and detailed footer."
+      ],
+      "avoid": [
+        "Division selectors require real divisions; never invent categories to reproduce geometry."
+      ]
+    },
+    {
+      "id": "gdweb-27828",
+      "name": "MG Insurance",
+      "roles": [
+        "nav",
+        "hero",
+        "quick-access",
+        "wide-grid",
+        "panel",
+        "footer"
+      ],
+      "source": {
+        "url": "https://www.gdweb.co.kr/sub/view.asp?str_no=27828",
+        "originalUrl": "https://insure.kfcc.co.kr/",
+        "captureUrl": "https://www.gdweb.co.kr/sub/filedata.asp?str_no=27828&sgbn=1",
+        "checkedAt": "2026-10-14",
+        "evidence": "static-capture",
+        "liveAccess": "tool-error; original-site behavior unverified",
+        "imageSize": [
+          1920,
+          2375
+        ],
+        "inspectedBounds": [
+          [
+            0,
+            0,
+            1920,
+            1497
+          ],
+          [
+            0,
+            839,
+            1920,
+            2375
+          ]
+        ]
+      },
+      "observations": [
+        "A dominant product panel and smaller login panel precede ten named service shortcuts.",
+        "Outlined product cards, category icons, recommendations and notices form distinct task territories inside a restrained container."
+      ],
+      "avoid": [
+        "Mascots and service-card density fit this portal; they are not mandatory visual language for another brand."
+      ]
+    }
+  ],
+  "builds": [
+    {
+      "id": "local-onsil",
+      "name": "ONSIL / 온실",
+      "roles": [
+        "nav",
+        "hero",
+        "quick-access",
+        "short-grid",
+        "wide-grid",
+        "panel",
+        "footer"
+      ],
+      "source": {
+        "evidence": "render-and-interaction-review",
+        "checkedAt": "2026-10-14",
+        "path": "../../../examples/onsil",
+        "verificationPath": "../../../examples/onsil/VERIFICATION.md",
+        "designPath": "../../../examples/onsil/DESIGN.md",
+        "assetRecordPath": "../../../examples/onsil/ASSETS.md",
+        "previews": [
+          "../../../examples/onsil/preview-desktop.png",
+          "../../../examples/onsil/preview-mobile.png"
+        ],
+        "inspection": {
+          "profile": "reference",
+          "widths": [
+            1440,
+            768,
+            390
+          ],
+          "fail": 0,
+          "warn": 14
+        },
+        "browserQA": {
+          "checks": 63,
+          "status": "PASS",
+          "inputMethodNote": "Automated pointer/Escape plus programmatic date/select changes; additional keyboard review is documented separately."
+        },
+        "limits": [
+          "Recorded local results, not a fresh verification run.",
+          "Saved reports retain final PASS results; initial failed captures were not kept.",
+          "Filter QA derives expected cards from the DOM; documented 3/2/1 inventory is not independently asserted by that check.",
+          "No production accessibility certification, real venue data, booking provider or payment processing."
+        ]
+      },
+      "observations": [
+        "Original generated media and real Korean typography form an editorial botanical exhibition page; matching catalog fields support comparison.",
+        "Implementation review documented a journal image-height repair and medium-width running copy raised to 16px; initial failed captures/reports were not retained.",
+        "Filters, date/time/count states, closure/sold-out validation, stale-slot reset, honest demo confirmation and focus restoration were exercised.",
+        "Affected visual rechecks covered scrolled modal close/title visibility and an open mobile menu crossing into desktop."
+      ],
+      "avoid": [
+        "Do not treat ONSIL forest colors, serif type, lime actions, image count or three-program inventory as universal defaults.",
+        "Do not copy its current prices, dates or fictional venue as business facts.",
+        "Do not infer all keyboard/screen-reader behavior from programmatic control changes or treat 0 FAIL as a design grade."
+      ]
+    }
+  ]
+}

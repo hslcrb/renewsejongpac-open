@@ -1,0 +1,132 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Ascii (a) glyph-atlas stylization filter > samples child brightness + glyph media atlas, composes tinted glyph > final-pass 1`] = `
+"fn asciiCompose(asciiRgb: vec3f, cellColor: vec4f, isOutside: f32, alphaThreshold: f32, preserveAlpha: f32) -> vec4f {
+  let charBrightness = dot(asciiRgb, vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464));
+  let isBackground = (charBrightness < 0.1f);
+  let sourceAlpha = cellColor.w;
+  let isBelowThreshold = (sourceAlpha < alphaThreshold);
+  let outputAlpha = select(1f, sourceAlpha, (preserveAlpha > 0.5f));
+  let hide = ((isBackground || (isOutside > 0.5f)) || isBelowThreshold);
+  let finalAlpha = select(outputAlpha, 0f, hide);
+  return vec4f((asciiRgb.x * cellColor.x), (asciiRgb.y * cellColor.y), (asciiRgb.z * cellColor.z), finalAlpha);
+}
+
+@group(1) @binding(0) var media_0: texture_2d<f32>;
+
+@group(2) @binding(1) var nearestClamp: sampler;
+
+fn asciiAtlasUV(cellRgb: vec3f, gamma: f32, charCount: f32, atlasSize: f32, atlasScale: f32, cellUV: vec2f) -> vec2f {
+  let rawBrightness = dot(cellRgb, vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464));
+  let adjustedBrightness = pow(rawBrightness, gamma);
+  let invertedBrightness = (1f - adjustedBrightness);
+  let scaledBrightness = (invertedBrightness * charCount);
+  let charIndex = clamp(floor(scaledBrightness), 0f, (charCount - 1f));
+  let atlasCol = (charIndex - (atlasSize * floor((charIndex / atlasSize))));
+  let atlasRow = floor((charIndex / atlasSize));
+  let atlasCellSize = ((1f / atlasSize) * atlasScale);
+  let baseU = (atlasCol * atlasCellSize);
+  let baseV = (atlasRow * atlasCellSize);
+  return vec2f((baseU + (cellUV.x * atlasCellSize)), (baseV + (cellUV.y * atlasCellSize)));
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(1) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+struct AsciiGrid {
+  cellCenter: vec2f,
+  cellUV: vec2f,
+  isOutside: f32,
+}
+
+fn asciiGrid(uv: vec2f, viewport: vec2f, cellSize: f32, spacing: f32) -> AsciiGrid {
+  let scaleFactor = (viewport.y / 1080f);
+  let effectiveCellSize = (cellSize * scaleFactor);
+  let mainGridSize = vec2f((viewport.x / effectiveCellSize), (viewport.y / effectiveCellSize));
+  let gridCoords = vec2f((uv.x * mainGridSize.x), (uv.y * mainGridSize.y));
+  let cellCoords = floor(gridCoords);
+  let rawCellUV = fract(gridCoords);
+  let centeredU = (rawCellUV.x - 0.5f);
+  let centeredV = (rawCellUV.y - 0.5f);
+  let cellUV = vec2f(((centeredU / spacing) + 0.5f), ((centeredV / spacing) + 0.5f));
+  let half = (spacing * 0.5f);
+  let isOutside = select(0f, 1f, ((abs(centeredU) > half) || (abs(centeredV) > half)));
+  let cellCenter = vec2f(((cellCoords.x + 0.5f) / mainGridSize.x), ((cellCoords.y + 0.5f) / mainGridSize.y));
+  return AsciiGrid(cellCenter, cellUV, isOutside);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  cellSize: f32,
+  spacing: f32,
+  gamma: f32,
+  alphaThreshold: f32,
+  preserveAlpha: f32,
+  _charCount: f32,
+  _atlasScale: f32,
+  _atlasSize: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_as: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = asciiCompose((textureSample(media_0, nearestClamp, asciiAtlasUV((unpremultiplyAlpha(textureSample(rtt_0, linearClamp, (asciiGrid(uv, uniforms._sys.viewportSize, uniforms.n_as.cellSize, uniforms.n_as.spacing)).cellCenter))).rgb, uniforms.n_as.gamma, uniforms.n_as._charCount, uniforms.n_as._atlasSize, uniforms.n_as._atlasScale, (asciiGrid(uv, uniforms._sys.viewportSize, uniforms.n_as.cellSize, uniforms.n_as.spacing)).cellUV))).rgb, unpremultiplyAlpha(textureSample(rtt_0, linearClamp, (asciiGrid(uv, uniforms._sys.viewportSize, uniforms.n_as.cellSize, uniforms.n_as.spacing)).cellCenter)), (asciiGrid(uv, uniforms._sys.viewportSize, uniforms.n_as.cellSize, uniforms.n_as.spacing)).isOutside, uniforms.n_as.alphaThreshold, uniforms.n_as.preserveAlpha);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

@@ -1,0 +1,209 @@
+{
+  "skill_name": "lemonade",
+  "profile": "reference",
+  "status": "scenario-specifications-not-executed",
+  "how_to_run": "Give each independent prompt to an evaluator with the installed lemonade skill and the named project evidence, but without the criteria. Assess the resulting diagnosis, implementation scope and verification record against the criteria. Record actual artifacts and limitations separately; reading this file or validating its JSON does not execute a UI evaluation.",
+  "evidence_limits": [
+    "These scenarios are evaluation specifications, not executed browser, device, accessibility or assistive-technology tests.",
+    "No scenario has a recorded pass result. Validate proposed fixes in the actual project and supported browser, operating system and input environment.",
+    "The Gregorian fixtures are small independent expected-value examples. They are not a complete calendar implementation, availability model, timezone database or coverage claim.",
+    "A fixture's natural row count does not mandate a visual row policy. Native controls, deliberate multiline growth and reserved calendar height remain valid choices when they satisfy the product contract."
+  ],
+  "references": {
+    "interaction_contract": "../references/interaction-edge-cases.md",
+    "selection_controls": "../references/selection-controls.md",
+    "calendar_and_date": "../references/calendar-and-date.md"
+  },
+  "evals": [
+    {
+      "id": "selection-trigger-geometry",
+      "references": ["interaction_contract", "selection_controls"],
+      "prompt": "An existing single-line Korean booking form has aligned 40px fields. Its custom select is 40px with a placeholder, 48px after selecting a short value and 68px for a long program title. The clear button and chevron collide at 390px. The design requires a single-line trigger at normal text size and usable enlarged text. Fix only this control and the affected alignment; preserve the full program identity and current component library.",
+      "criteria": [
+        "States the trigger's sizing, line/wrapping, overflow and adornment contract before choosing a fix.",
+        "Checks computed styles and rendered border boxes across placeholder and selected wrappers, including margins, line-height, padding, border, box sizing and flex shrink.",
+        "Keeps the intended single-line normal-size trigger geometry consistent across empty, short and long selections without overlapping clear and chevron actions.",
+        "Provides a usable way to identify a truncated long value and verifies actual Korean glyphs and enlarged text rather than relying on character counts.",
+        "Verifies clear, reselection, open state and the affected narrow/intermediate widths; does not impose fixed heights on every control or redesign unrelated fields."
+      ]
+    },
+    {
+      "id": "native-popup-ownership",
+      "references": ["interaction_contract", "selection_controls"],
+      "prompt": "A branded dark form uses an HTML select. Its closed trigger matches the design, but opening it on Windows produces a light system popup and a phone presents a different picker. A teammate proposes replacing every native select and date input with clickable divs. The product needs a short single choice, form submission, keyboard access and mobile use; exact popup branding has not been established as a requirement. Diagnose the mismatch and choose a scoped implementation and verification path.",
+      "criteria": [
+        "Identifies which parts are browser/OS-owned and which parts the application styles, based on the actual control and supported environment.",
+        "Treats native versus custom rendering as a product and platform decision, rather than declaring either universally preferable.",
+        "Does not claim that trigger CSS or a resting DOM screenshot proves the appearance or operation of a native popup.",
+        "If a custom control is justified, retains the correct pattern semantics, accessible name/value, keyboard behavior, form submission and focus lifecycle through the existing suitable primitive.",
+        "Requests or obtains evidence for relevant open states on the supported environments and explicitly records unobserved native UI."
+      ]
+    },
+    {
+      "id": "focus-stroke-and-commitment",
+      "references": ["interaction_contract", "selection_controls"],
+      "prompt": "A custom select inside a dialog gains two blue strokes when opened by keyboard. One stroke belongs to a trigger wrapper and another to its inner button. Arrow navigation highlights an option before Enter; Escape closes the list and currently leaves that highlighted option selected. Someone proposes a global outline:none rule and selecting on every focus movement. Review the intended single-select interaction, repair the relevant layer, and verify the result.",
+      "criteria": [
+        "Distinguishes border, focus indicator, expanded state and selected/active option styling before removing an accidental duplicate.",
+        "Keeps a visible, unclipped focus indication in relevant themes and enlarged-text states without adding layout movement.",
+        "Defines whether navigation commits selection for the actual implemented pattern, and tests commitment and cancellation against that contract.",
+        "Checks opening, intended arrow/typeahead behavior, Enter/Space where applicable, Escape, Tab/Shift+Tab and focus return using real keyboard input.",
+        "Does not globally remove outlines, conflate highlight with committed value, or describe programmatic value changes as complete keyboard verification."
+      ]
+    },
+    {
+      "id": "multiline-selection-and-enlargement",
+      "references": ["interaction_contract", "selection_controls"],
+      "prompt": "A participant multi-select intentionally grows from one to three rows as Korean name chips are added. A visual review calls any change in field height a bug and suggests fixing all controls to 40px. At enlarged text size, a long chip hides its remove button and the final row covers the form's next label. Preserve intentional wrapping, support keyboard removal, and improve only the affected control and surrounding flow.",
+      "criteria": [
+        "Distinguishes legitimate content-hug growth from unintended single-line selected-value drift.",
+        "Defines wrapping, minimum size, optional maximum size/scroll behavior and surrounding layout response for this control.",
+        "Checks empty, one, many and long selections with the actual supported language and relevant text/browser enlargement.",
+        "Keeps each necessary remove action and current keyboard focus reachable; removing a chip has a deliberate subsequent focus target.",
+        "Preserves full selection identity and adjacent labels without enforcing a universal fixed height or hiding meaningful chips solely to pass a screenshot."
+      ]
+    },
+    {
+      "id": "popup-nesting-viewport-and-direction",
+      "references": ["interaction_contract", "selection_controls"],
+      "prompt": "An editable combobox is near the bottom of a scrollable modal. Its popup is portaled to the page; the modal has a transformed ancestor. In RTL the popup aligns to the wrong edge, scrolling leaves it behind, and a phone keyboard covers its last options. Pressing Escape currently closes both the popup and the modal. Fix the relevant open-state behavior while preserving the existing popup library and the form draft.",
+      "criteria": [
+        "Defines trigger anchor, logical alignment, gap, width, collision boundary and allowed flip/shift behavior rather than assuming a single placement everywhere.",
+        "Checks the actual portal/container coordinate system, stacking, clipping and nested scrolling instead of treating every issue as insufficient z-index.",
+        "Verifies open-state positioning after scroll, viewport/breakpoint changes, RTL layout and relevant mobile keyboard/visual-viewport changes.",
+        "Provides a reachable scrolling region for long options without hiding actions or scrolling the wrong container.",
+        "Dismisses the intended top layer first, preserves the draft as specified, restores appropriate focus and cleans up scroll locks on final closure.",
+        "Records device limitations when mobile keyboard behavior was simulated or not observed."
+      ]
+    },
+    {
+      "id": "combobox-ime-and-request-races",
+      "references": ["interaction_contract", "selection_controls"],
+      "prompt": "A remote Korean organization combobox searches on every keystroke. Composing a Hangul syllable sends incomplete queries, an older slow request replaces newer results, and pressing Enter during composition occasionally chooses the first option. Empty and failed searches leave the previous highlighted option active. Improve this flow while keeping typed text separate from the committed organization ID.",
+      "criteria": [
+        "Models composing text, query, request identity/status, active option and committed value separately.",
+        "Handles IME composition without treating composition-confirming Enter as unintended option commitment.",
+        "Prevents out-of-order or cancelled results from replacing the current query's results and does not use timing assumptions as a correctness guarantee.",
+        "Defines active-option and committed-value behavior for loading, empty, error, retry and result replacement states.",
+        "Uses deliberately reordered responses and actual or clearly scoped composition/input evidence; checks labels and submitted IDs with independent fixtures.",
+        "Does not silently select an arbitrary first result or claim complete IME verification from assigning an input value."
+      ]
+    },
+    {
+      "id": "identity-reset-and-dependent-values",
+      "references": ["interaction_contract", "selection_controls"],
+      "prompt": "A booking form has two programs both displayed as 'Studio Tour' with IDs studio-a and studio-b. Each has different session IDs and prices. Changing program leaves an unavailable old session selected; a refreshed option list removes a selected option; native form reset updates visible inputs but leaves the custom widget's internal ID and confirmation message unchanged. Keep the intended compatible choices only when valid and make the displayed and submitted booking agree.",
+      "criteria": [
+        "Uses stable IDs for identity and enough visible context to distinguish duplicate labels.",
+        "Defines controlled/uncontrolled ownership, defaults, clearing and reset behavior across the form and custom control.",
+        "Revalidates dependent choices after parent changes or option refresh, preserving compatible choices only under the declared product contract.",
+        "Clears or explains invalid/unavailable selections and invalidates stale confirmation and totals consistently.",
+        "Checks visible label, stored ID, submitted value, session validity and price against independent data including duplicate labels and removed options.",
+        "Exercises user-driven reset/clear as well as state logic; does not assume hiding a stale label removes its submitted value."
+      ]
+    },
+    {
+      "id": "calendar-arithmetic-and-row-policy",
+      "references": ["interaction_contract", "calendar_and_date"],
+      "prompt": "A Gregorian archive date picker supports years 1899 through 2101 and selectable Sunday-first or Monday-first weeks. Its CSS always creates 35 cells, and its leap-year code accepts every year divisible by four. February 2021, February 2026 and August 2026 expose different grid problems. Establish valid month arithmetic and a deliberate natural-row or reserved-height layout policy. Use independent fixtures; avoid treating a fixed six-row design as universally required or universally wrong.",
+      "criteria": [
+        "Computes actual Gregorian month lengths including the century rule and independently verifies 1900, 2000 and 2100 February.",
+        "Computes weekday offset relative to the configured week start and validates real 4-, 5- and 6-row cases.",
+        "Separates valid dates from leading/trailing cells and defines whether adjacent-month dates are visible and selectable.",
+        "Declares natural rows versus a deliberately reserved footprint; either choice preserves alignment, readable cells and reachable navigation.",
+        "Tests the corresponding visible transitions, not only date arithmetic or a single month screenshot.",
+        "Does not treat the included fixture set as a complete calendar implementation or force the same row/height policy on every picker."
+      ]
+    },
+    {
+      "id": "calendar-navigation-focus-and-selection",
+      "references": ["interaction_contract", "calendar_and_date"],
+      "prompt": "A keyboard month picker focuses January 31. Moving to February overflows into March, recreates the grid and loses focus. Moving the visible month also silently changes an already committed booking date. The intended contract keeps the committed date until selection, clamps the focused day to the target month's last valid day, and supports bounded navigation. Repair this behavior and verify short months, leap years and year rollover.",
+      "criteria": [
+        "Separates visible month, focused/active date, committed selection and today.",
+        "Applies the explicitly requested clamp to focused-month navigation without silently changing the committed selection or generalizing clamping to all products.",
+        "Verifies January 31 to February in common and leap years, reverse month navigation and December/January rollover against independent expected dates.",
+        "Exercises the actual supported grid/navigation keyboard model, bounds and unavailable-date behavior rather than inventing a universal key map.",
+        "Keeps the intended focus target and a visible focus indicator through re-rendering, and verifies opening, selection, cancellation and focus return.",
+        "Checks understandable month/date naming and distinguishes focus, today, selection and unavailable styling."
+      ]
+    },
+    {
+      "id": "calendar-range-and-availability",
+      "references": ["interaction_contract", "calendar_and_date"],
+      "prompt": "A room-reservation range picker allows same-day use, includes both endpoints in its displayed day count, and forbids any unavailable date inside a booking. The server can refresh availability while the picker is open. A draft start-only range looks confirmed, selecting an end before the start gives a negative price, and a newly unavailable middle day is accepted because both endpoints remain enabled. Repair the draft, validation and completion behavior using the stated rules.",
+      "criteria": [
+        "Separates incomplete draft, previewed range, valid committed range and server-confirmed reservation.",
+        "Implements the supplied endpoint inclusivity, same-day and unavailable-interior rules without assuming that every range picker uses the same contract.",
+        "Defines end-before-start correction and cancellation behavior, with clear focus and validation feedback.",
+        "Revalidates after availability changes and prevents stale prices or confirmation from describing an invalid range.",
+        "Tests leap-day and month/year-crossing ranges, start-only, same-day, reversed, min/max if present, and newly unavailable interior dates with independent expected results.",
+        "Keeps range endpoints, interior, today, focus and unavailable states understandable without relying on color alone."
+      ]
+    },
+    {
+      "id": "civil-date-and-instant-boundaries",
+      "references": ["interaction_contract", "calendar_and_date"],
+      "prompt": "A Seoul exhibition booking stores a date-only visit day, but the client converts local midnight to an ISO timestamp and slices the UTC date, sometimes submitting the previous day. A separate livestream form stores an actual start instant and shows it in the viewer's selected timezone. Keep those contracts distinct. Verify date-only round trips near timezone/year boundaries and define what to do if a supported timed-event input is ambiguous or nonexistent during a daylight-saving transition.",
+      "criteria": [
+        "Distinguishes a civil date, local date/time with a named zone, and an instant instead of applying one serialization rule to all fields.",
+        "Preserves the date-only value across parsing, display, validation, storage and submission without an unintended timezone conversion.",
+        "Converts actual instants using the timed-event contract and explicitly handles relevant ambiguous/nonexistent local times rather than assuming a permanent fixed offset.",
+        "Uses independent boundary examples and tests relevant client/server or timezone environments without claiming coverage of untested zones.",
+        "Validates impossible or out-of-domain dates and retains locale presentation separately from machine identity.",
+        "Does not claim that the small fixed-offset projection fixtures implement named-zone or daylight-saving behavior."
+      ]
+    },
+    {
+      "id": "filtered-pagination-and-async-submit",
+      "references": ["interaction_contract"],
+      "prompt": "A support-ticket table has filters, pagination, row selection and a bulk-assignment form. Filtering from page 5 leaves an empty page even though matches exist on page 1; a late response restores the old page. Hidden selected rows are still included in a bulk action without an agreed selection scope. Double-clicking Save creates duplicate assignments, and a failed request clears the draft while an older success message remains. Establish the affected control contracts and verify a complete filter-select-submit-retry flow.",
+      "criteria": [
+        "Defines how filter and page-size changes affect page index, valid page bounds and loading/empty/error states.",
+        "Prevents stale responses from restoring old query/page state and verifies result IDs/counts with an independent data oracle.",
+        "Declares visible-page versus cross-page selection scope, communicates it and revalidates selected IDs after data changes.",
+        "Defines pending, success, failure, retry and cancellation behavior; preserves or invalidates draft and confirmation deliberately.",
+        "Guards repeated submission in the UI and identifies the server/idempotency contract needed for real duplicate-operation guarantees rather than treating a disabled button as proof.",
+        "Checks keyboard/pointer repeat input, reordered responses and failure/retry outcomes without redesigning unrelated table layout or claiming backend guarantees from a local demo."
+      ]
+    }
+  ],
+  "calendar_fixtures": {
+    "calendar": "proleptic-gregorian",
+    "scope": "Small expected-value fixtures, not an implementation or a UI execution record. Natural row counts use the configured week start. Clamping below is only the explicit focused-month-navigation contract and does not imply changing the committed selection.",
+    "month_grids": [
+      {"id": "century-1900-common", "year": 1900, "month": 2, "week_starts_on": "monday", "expected_days": 28, "expected_first_weekday_monday_zero": 3, "expected_natural_rows": 5},
+      {"id": "century-2000-leap", "year": 2000, "month": 2, "week_starts_on": "monday", "expected_days": 29, "expected_first_weekday_monday_zero": 1, "expected_natural_rows": 5},
+      {"id": "century-2100-common", "year": 2100, "month": 2, "week_starts_on": "monday", "expected_days": 28, "expected_first_weekday_monday_zero": 0, "expected_natural_rows": 4},
+      {"id": "monday-first-four-rows", "year": 2021, "month": 2, "week_starts_on": "monday", "expected_days": 28, "expected_first_weekday_monday_zero": 0, "expected_natural_rows": 4},
+      {"id": "sunday-first-four-rows", "year": 2026, "month": 2, "week_starts_on": "sunday", "expected_days": 28, "expected_first_weekday_monday_zero": 6, "expected_natural_rows": 4},
+      {"id": "thirty-days-five-rows", "year": 2026, "month": 4, "week_starts_on": "monday", "expected_days": 30, "expected_first_weekday_monday_zero": 2, "expected_natural_rows": 5},
+      {"id": "thirty-one-days-six-rows", "year": 2026, "month": 8, "week_starts_on": "monday", "expected_days": 31, "expected_first_weekday_monday_zero": 5, "expected_natural_rows": 6}
+    ],
+    "date_validity": [
+      {"date": "1900-02-29", "expected_valid": false},
+      {"date": "2000-02-29", "expected_valid": true},
+      {"date": "2100-02-29", "expected_valid": false},
+      {"date": "2026-04-31", "expected_valid": false},
+      {"date": "2024-02-29", "expected_valid": true}
+    ],
+    "focused_month_navigation": [
+      {"from": "2025-01-31", "month_delta": 1, "expected_focus": "2025-02-28"},
+      {"from": "2024-01-31", "month_delta": 1, "expected_focus": "2024-02-29"},
+      {"from": "2026-03-31", "month_delta": -1, "expected_focus": "2026-02-28"},
+      {"from": "2026-12-31", "month_delta": 1, "expected_focus": "2027-01-31"}
+    ],
+    "inclusive_range_day_counts": [
+      {"start": "2024-02-28", "end": "2024-03-01", "expected_days": 3},
+      {"start": "2025-02-28", "end": "2025-03-01", "expected_days": 2},
+      {"start": "2026-12-31", "end": "2026-12-31", "expected_days": 1}
+    ],
+    "instant_projection_examples": {
+      "scope": "Demonstrates that converting an instant can change its calendar date. These inputs are instants, not date-only storage recipes; fixed offsets do not cover named-zone or daylight-saving rules.",
+      "cases": [
+        {"instant": "2026-01-01T00:00:00+09:00", "target_offset_minutes": 0, "expected_date": "2025-12-31"},
+        {"instant": "2026-12-31T15:00:00+00:00", "target_offset_minutes": 540, "expected_date": "2027-01-01"}
+      ]
+    }
+  }
+}

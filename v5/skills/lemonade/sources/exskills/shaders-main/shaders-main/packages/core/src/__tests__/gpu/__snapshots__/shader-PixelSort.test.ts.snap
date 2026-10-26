@@ -1,0 +1,161 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PixelSort (a) compute → RTT input → state-lookup fragment > RTTs the child, registers a state texture, samples state (nearest) + the child at the sorted UV > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  radius: f32,
+  falloff: f32,
+  strength: f32,
+  decay: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_ps: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+@group(1) @binding(1) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(1) var nearestClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = in.uv;
+  var composed_0 = unpremultiplyAlpha(textureSample(rtt_0, linearClamp, vec2f(uv.x, (textureSample(compute_0, nearestClamp, uv)).r)));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`PixelSort (c) kernels resolve (D3 rules) > luma / swap / output kernels resolve with textureLoad / storage buffers / textureStore > swapKernel 1`] = `
+"struct SortSwapParams {
+  mouseX: f32,
+  mouseY: f32,
+  radius: f32,
+  falloff: f32,
+  decay: f32,
+  aspect: f32,
+  seed: f32,
+}
+
+@group(0) @binding(3) var<uniform> params: SortSwapParams;
+
+@group(0) @binding(0) var<storage, read> readBuf: array<f32, 262144>;
+
+@group(0) @binding(2) var<storage, read> lumaBuf: array<f32, 262144>;
+
+fn aspectBrushWeight(cxf: f32, cyf: f32, mouseX: f32, mouseY: f32, radius: f32, falloff: f32, aspect: f32) -> f32 {
+  let dx = ((cxf / 512f) - mouseX);
+  let dy = ((cyf / 512f) - mouseY);
+  let ddx = select(dx, (dx * aspect), (aspect >= 1f));
+  let ddy = select((dy / aspect), dy, (aspect >= 1f));
+  let dist = sqrt(((ddx * ddx) + (ddy * ddy)));
+  let inner = (radius * (1f - falloff));
+  return (1f - smoothstep(inner, radius, dist));
+}
+
+fn floatBitsToUint3(v: vec3f) -> vec3u { return bitcast<vec3u>(v); }
+
+fn noise_hash13(p: vec3f) -> f32 {
+  let u = floatBitsToUint3((p * vec3f(141421360, 2718281728, 1618034048)));
+  return (f32((((u.x ^ u.y) ^ u.z) * 3141592653u)) / 4294967296f);
+}
+
+@group(0) @binding(1) var<storage, read_write> writeBuf: array<f32, 262144>;
+
+fn pixelSortSwap(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 512u) + cx);
+  let xf = f32(cx);
+  let yf = f32(cy);
+  let lineC = cy;
+  let fixedC = cx;
+  let lineCf = f32(lineC);
+  let lineCi = i32(lineC);
+  let myOff = readBuf[idx];
+  let myCol = clamp((lineCf + myOff), 0f, 511f);
+  let isLeft = (((lineC + 0u) % 2u) == 0u);
+  let partnerLineI = select((lineCi - 1i), (lineCi + 1i), isLeft);
+  let valid = ((partnerLineI >= 0i) && (partnerLineI < 512i));
+  let pClamped = clamp(partnerLineI, 0i, 511i);
+  let pClampedU = u32(pClamped);
+  let partnerX = fixedC;
+  let partnerY = pClampedU;
+  let partnerIdx = ((partnerY * 512u) + partnerX);
+  let partnerOff = readBuf[partnerIdx];
+  let partnerCol = clamp((f32(pClamped) + partnerOff), 0f, 511f);
+  let myC0 = clamp(floor(myCol), 0f, 511f);
+  let myC1 = min((myC0 + 1f), 511f);
+  let myIdx0 = ((u32(myC0) * 512u) + fixedC);
+  let myIdx1 = ((u32(myC1) * 512u) + fixedC);
+  let myKey = mix(lumaBuf[myIdx0], lumaBuf[myIdx1], (myCol - myC0));
+  let pC0 = clamp(floor(partnerCol), 0f, 511f);
+  let pC1 = min((pC0 + 1f), 511f);
+  let pIdx0 = ((u32(pC0) * 512u) + fixedC);
+  let pIdx1 = ((u32(pC1) * 512u) + fixedC);
+  let partnerKey = mix(lumaBuf[pIdx0], lumaBuf[pIdx1], (partnerCol - pC0));
+  let wMy = aspectBrushWeight(xf, yf, (*p).mouseX, (*p).mouseY, (*p).radius, (*p).falloff, (*p).aspect);
+  let wP = aspectBrushWeight(f32(partnerX), f32(partnerY), (*p).mouseX, (*p).mouseY, (*p).radius, (*p).falloff, (*p).aspect);
+  let rnd = noise_hash13(vec3f(xf, yf, (*p).seed));
+  let gate = (valid && (min(wMy, wP) > rnd));
+  let keyDiff = ((myKey - partnerKey) * -1f);
+  let takePartner = select((keyDiff < 0f), (keyDiff > 0f), isLeft);
+  let newCol = select(myCol, partnerCol, (gate && takePartner));
+  let decayed = mix(newCol, lineCf, (*p).decay);
+  writeBuf[idx] = (decayed - lineCf);
+}"
+`;

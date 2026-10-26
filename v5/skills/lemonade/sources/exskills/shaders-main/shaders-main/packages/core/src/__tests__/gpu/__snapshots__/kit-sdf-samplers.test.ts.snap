@@ -1,0 +1,723 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`kit/sdf createAnalyticSdfSampler (d) construct + resolve > the underlying analytic fns transpile to WGSL for representative shapes (snapshot) 1`] = `
+"fn circleSdf(dx: f32, dy: f32, radius: f32) -> f32 {
+  return (sqrt(((dx * dx) + (dy * dy))) - radius);
+}
+
+fn analyticSdf_circleSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = circleSdf(rdx, rdy, r);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn polygonSdf(dx: f32, dy: f32, radius: f32, sides: f32) -> f32 {
+  let len = sqrt(((dx * dx) + (dy * dy)));
+  let angle = atan2(dy, dx);
+  let sectorAngle = (6.283185307179586f / sides);
+  let sectorIdx = floor(((angle / sectorAngle) + 0.5f));
+  let canonicalAngle = (angle - (sectorIdx * sectorAngle));
+  return ((len * cos(canonicalAngle)) - radius);
+}
+
+fn analyticSdf_polygonSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = mix(polygonSdf(rdx, rdy, r, n), circleSdf(rdx, rdy, r), round_1);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn starSdf(dx: f32, dy: f32, outerRadius: f32, sides: f32, innerRatio: f32) -> f32 {
+  let innerRadius = (outerRadius * innerRatio);
+  let len = sqrt(((dx * dx) + (dy * dy)));
+  let angle = atan2(dy, dx);
+  let sectorAngle = (6.283185307179586f / sides);
+  let sectorIdx = floor(((angle / sectorAngle) + 0.5f));
+  let bn = (angle - (sectorIdx * sectorAngle));
+  let fpx = abs((len * sin(bn)));
+  let fpy = (len * cos(bn));
+  let an = (3.141592653589793f / sides);
+  let sinAn = sin(an);
+  let cosAn = cos(an);
+  let ex = (innerRadius * sinAn);
+  let ey = ((innerRadius * cosAn) - outerRadius);
+  let qx = fpx;
+  let qy = (fpy - outerRadius);
+  let dotQE = ((qx * ex) + (qy * ey));
+  let dotEE = ((ex * ex) + (ey * ey));
+  let t = clamp((dotQE / dotEE), 0f, 1f);
+  let nx = (fpx - (ex * t));
+  let ny = (fpy - (outerRadius + (ey * t)));
+  let dist = sqrt(((nx * nx) + (ny * ny)));
+  let cross_1 = ((ex * qy) - (ey * qx));
+  return (dist * sign(cross_1));
+}
+
+fn analyticSdf_starSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = starSdf(rdx, rdy, r, n, inner);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn heartSdf(dx: f32, dy: f32, radius: f32) -> f32 {
+  let S = (radius / 0.75f);
+  let px = (abs(dx) / S);
+  let py = (((dy * -1f) / S) + 0.6f);
+  let ax = (px - 0.25f);
+  let ay = (py - 0.75f);
+  let distA = (sqrt(((ax * ax) + (ay * ay))) - 0.35355339059327373f);
+  let b1y = (py - 1f);
+  let dot1 = ((px * px) + (b1y * b1y));
+  let m = (max((px + py), 0f) * 0.5f);
+  let b2x = (px - m);
+  let b2y = (py - m);
+  let dot2v = ((b2x * b2x) + (b2y * b2y));
+  let distB = (sqrt(min(dot1, dot2v)) * sign((px - py)));
+  return (select(distB, distA, ((px + py) > 1f)) * S);
+}
+
+fn analyticSdf_heartSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = heartSdf(rdx, rdy, r);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn arcSdf(dx: f32, dy: f32, radius: f32, halfAngle: f32) -> f32 {
+  let px = abs(dx);
+  let cx = sin(halfAngle);
+  let cy = cos(halfAngle);
+  let l = (sqrt(((px * px) + (dy * dy))) - radius);
+  let clamped = clamp(((px * cx) + (dy * cy)), 0f, radius);
+  let mx = (px - (cx * clamped));
+  let my = (dy - (cy * clamped));
+  let m = sqrt(((mx * mx) + (my * my)));
+  return max(l, (m * sign(((cy * px) - (cx * dy)))));
+}
+
+fn analyticSdf_arcSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = arcSdf(rdx, rdy, r, (ap * 0.008726646259971648f));
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn trapezoidSdf(dx: f32, dy: f32, r1: f32, r2: f32, he: f32) -> f32 {
+  let px = abs(dx);
+  let k1x = r2;
+  let k1y = he;
+  let k2x = (r2 - r1);
+  let k2y = (he * 2f);
+  let clampWidth = select(r2, r1, (dy < 0f));
+  let cax = (px - min(px, clampWidth));
+  let cay = (abs(dy) - he);
+  let diffX = (k1x - px);
+  let diffY = (k1y - dy);
+  let dotNum = ((diffX * k2x) + (diffY * k2y));
+  let dotDen = max(((k2x * k2x) + (k2y * k2y)), 1e-4f);
+  let t = clamp((dotNum / dotDen), 0f, 1f);
+  let cbx = ((px - k1x) + (k2x * t));
+  let cby = ((dy - k1y) + (k2y * t));
+  let sInner = select(1f, -1f, (cay < 0f));
+  let s = select(1f, sInner, (cbx < 0f));
+  let dca = ((cax * cax) + (cay * cay));
+  let dcb = ((cbx * cbx) + (cby * cby));
+  return (s * sqrt(min(dca, dcb)));
+}
+
+fn analyticSdf_trapezoidSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = trapezoidSdf(rdx, rdy, inner, r, h);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn parallelogramSdf(dx: f32, dy: f32, wi: f32, he: f32, sk: f32) -> f32 {
+  let ex = sk;
+  let ey = he;
+  let flip1 = (dy < 0f);
+  let px0 = select(dx, (dx * -1f), flip1);
+  let py0 = select(dy, (dy * -1f), flip1);
+  let wx0 = (px0 - ex);
+  let wy = (py0 - ey);
+  let wx = (wx0 - clamp(wx0, (wi * -1f), wi));
+  let dX = ((wx * wx) + (wy * wy));
+  let dY = (wy * -1f);
+  let s = ((px0 * ey) - (py0 * ex));
+  let flip2 = (s < 0f);
+  let px = select(px0, (px0 * -1f), flip2);
+  let py = select(py0, (py0 * -1f), flip2);
+  let vx0 = (px - wi);
+  let dotve = ((vx0 * ex) + (py * ey));
+  let dotee = max(((ex * ex) + (ey * ey)), 1e-4f);
+  let tt = clamp((dotve / dotee), -1f, 1f);
+  let vx = (vx0 - (ex * tt));
+  let vy = (py - (ey * tt));
+  let finalX = min(dX, ((vx * vx) + (vy * vy)));
+  let finalY = min(dY, ((wi * he) - abs(s)));
+  return (sqrt(finalX) * sign((finalY * -1f)));
+}
+
+fn analyticSdf_parallelogramSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = parallelogramSdf(rdx, rdy, r, h, off);
+  return vec4f(dist, 0f, 0f, 1f);
+}"
+`;
+
+exports[`kit/sdf3d buildFieldSampleGraphArgs (c) fn-arg samplers resolve > bicubic + analytic-gradient + bilinear + texelSpan resolve to WGSL with textureLoad (snapshot) 1`] = `
+"fn fieldSampleArg(uv: vec2f, field: texture_2d<f32>, originX: f32, originY: f32, spanX: f32, spanY: f32, activeResF: f32, rBound: f32) -> vec4f {
+  let uxc = clamp(uv.x, originX, (originX + spanX));
+  let uyc = clamp(uv.y, originY, (originY + spanY));
+  let outsideDist = length(vec2f((uv.x - uxc), (uv.y - uyc)));
+  let px = ((((uxc - originX) / spanX) * activeResF) - 0.5f);
+  let py = ((((uyc - originY) / spanY) * activeResF) - 0.5f);
+  let x0 = floor(px);
+  let y0 = floor(py);
+  let fx = (px - x0);
+  let fy = (py - y0);
+  let tx2 = (fx * fx);
+  let tx3 = (tx2 * fx);
+  let wx0 = (((tx3 * -0.5f) + tx2) - (fx * 0.5f));
+  let wx1 = (((tx3 * 1.5f) - (tx2 * 2.5f)) + 1f);
+  let wx2 = (((tx3 * -1.5f) + (tx2 * 2f)) + (fx * 0.5f));
+  let wx3 = ((tx3 * 0.5f) - (tx2 * 0.5f));
+  let ty2 = (fy * fy);
+  let ty3 = (ty2 * fy);
+  let wy0 = (((ty3 * -0.5f) + ty2) - (fy * 0.5f));
+  let wy1 = (((ty3 * 1.5f) - (ty2 * 2.5f)) + 1f);
+  let wy2 = (((ty3 * -1.5f) + (ty2 * 2f)) + (fy * 0.5f));
+  let wy3 = ((ty3 * 0.5f) - (ty2 * 0.5f));
+  let maxT = (activeResF - 1f);
+  let cxm = u32(clamp((x0 - 1f), 0f, maxT));
+  let cx0 = u32(clamp(x0, 0f, maxT));
+  let cx1 = u32(clamp((x0 + 1f), 0f, maxT));
+  let cx2 = u32(clamp((x0 + 2f), 0f, maxT));
+  let cym = u32(clamp((y0 - 1f), 0f, maxT));
+  let cy0 = u32(clamp(y0, 0f, maxT));
+  let cy1 = u32(clamp((y0 + 1f), 0f, maxT));
+  let cy2 = u32(clamp((y0 + 2f), 0f, maxT));
+  let k00 = textureLoad(field, vec2u(cxm, cym), 0);
+  let k01 = textureLoad(field, vec2u(cx0, cym), 0);
+  let k02 = textureLoad(field, vec2u(cx1, cym), 0);
+  let k03 = textureLoad(field, vec2u(cx2, cym), 0);
+  let k10 = textureLoad(field, vec2u(cxm, cy0), 0);
+  let k11 = textureLoad(field, vec2u(cx0, cy0), 0);
+  let k12 = textureLoad(field, vec2u(cx1, cy0), 0);
+  let k13 = textureLoad(field, vec2u(cx2, cy0), 0);
+  let k20 = textureLoad(field, vec2u(cxm, cy1), 0);
+  let k21 = textureLoad(field, vec2u(cx0, cy1), 0);
+  let k22 = textureLoad(field, vec2u(cx1, cy1), 0);
+  let k23 = textureLoad(field, vec2u(cx2, cy1), 0);
+  let k30 = textureLoad(field, vec2u(cxm, cy2), 0);
+  let k31 = textureLoad(field, vec2u(cx0, cy2), 0);
+  let k32 = textureLoad(field, vec2u(cx1, cy2), 0);
+  let k33 = textureLoad(field, vec2u(cx2, cy2), 0);
+  let rAcc = (((((((((((((((((k00.r * wx0) * wy0) + ((k01.r * wx1) * wy0)) + ((k02.r * wx2) * wy0)) + ((k03.r * wx3) * wy0)) + ((k10.r * wx0) * wy1)) + ((k11.r * wx1) * wy1)) + ((k12.r * wx2) * wy1)) + ((k13.r * wx3) * wy1)) + ((k20.r * wx0) * wy2)) + ((k21.r * wx1) * wy2)) + ((k22.r * wx2) * wy2)) + ((k23.r * wx3) * wy2)) + ((k30.r * wx0) * wy3)) + ((k31.r * wx1) * wy3)) + ((k32.r * wx2) * wy3)) + ((k33.r * wx3) * wy3));
+  let aAcc = (((((((((((((((((k00.a * wx0) * wy0) + ((k01.a * wx1) * wy0)) + ((k02.a * wx2) * wy0)) + ((k03.a * wx3) * wy0)) + ((k10.a * wx0) * wy1)) + ((k11.a * wx1) * wy1)) + ((k12.a * wx2) * wy1)) + ((k13.a * wx3) * wy1)) + ((k20.a * wx0) * wy2)) + ((k21.a * wx1) * wy2)) + ((k22.a * wx2) * wy2)) + ((k23.a * wx3) * wy2)) + ((k30.a * wx0) * wy3)) + ((k31.a * wx1) * wy3)) + ((k32.a * wx2) * wy3)) + ((k33.a * wx3) * wy3));
+  let bl = mix(mix(k11, k12, fx), mix(k21, k22, fx), fy);
+  let rMin = min(min(k11.r, k12.r), min(k21.r, k22.r));
+  let rMax = max(max(k11.r, k12.r), max(k21.r, k22.r));
+  let aMin = min(min(k11.a, k12.a), min(k21.a, k22.a));
+  let aMax = max(max(k11.a, k12.a), max(k21.a, k22.a));
+  let aOut = clamp(aAcc, aMin, aMax);
+  let rNear = (clamp(rAcc, rMin, rMax) + outsideDist);
+  let rCircle = (length(vec2f((uv.x - 0.5f), (uv.y - 0.5f))) - rBound);
+  let rOut = mix(rNear, max(rCircle, rNear), smoothstep(0f, 0.25f, outsideDist));
+  return vec4f(rOut, bl.g, bl.b, aOut);
+}
+
+fn fieldSampleGradArg(uv: vec2f, field: texture_2d<f32>, originX: f32, originY: f32, spanX: f32, spanY: f32, activeResF: f32, rBound: f32) -> vec4f {
+  let uxc = clamp(uv.x, originX, (originX + spanX));
+  let uyc = clamp(uv.y, originY, (originY + spanY));
+  let outsideDist = length(vec2f((uv.x - uxc), (uv.y - uyc)));
+  let px = ((((uxc - originX) / spanX) * activeResF) - 0.5f);
+  let py = ((((uyc - originY) / spanY) * activeResF) - 0.5f);
+  let x0 = floor(px);
+  let y0 = floor(py);
+  let fx = (px - x0);
+  let fy = (py - y0);
+  let tx2 = (fx * fx);
+  let tx3 = (tx2 * fx);
+  let wx0 = (((tx3 * -0.5f) + tx2) - (fx * 0.5f));
+  let wx1 = (((tx3 * 1.5f) - (tx2 * 2.5f)) + 1f);
+  let wx2 = (((tx3 * -1.5f) + (tx2 * 2f)) + (fx * 0.5f));
+  let wx3 = ((tx3 * 0.5f) - (tx2 * 0.5f));
+  let ty2 = (fy * fy);
+  let ty3 = (ty2 * fy);
+  let wy0 = (((ty3 * -0.5f) + ty2) - (fy * 0.5f));
+  let wy1 = (((ty3 * 1.5f) - (ty2 * 2.5f)) + 1f);
+  let wy2 = (((ty3 * -1.5f) + (ty2 * 2f)) + (fy * 0.5f));
+  let wy3 = ((ty3 * 0.5f) - (ty2 * 0.5f));
+  let oxf = (1f - fx);
+  let bx0 = (((oxf * oxf) * oxf) * 0.16666667f);
+  let bx1 = (((tx3 * 0.5f) - tx2) + 0.66666667f);
+  let bx2 = ((((tx3 * -0.5f) + (tx2 * 0.5f)) + (fx * 0.5f)) + 0.16666667f);
+  let bx3 = (tx3 * 0.16666667f);
+  let dbx0 = ((oxf * oxf) * -0.5f);
+  let dbx1 = ((tx2 * 1.5f) - (fx * 2f));
+  let dbx2 = (((tx2 * -1.5f) + fx) + 0.5f);
+  let dbx3 = (tx2 * 0.5f);
+  let oyf = (1f - fy);
+  let by0 = (((oyf * oyf) * oyf) * 0.16666667f);
+  let by1 = (((ty3 * 0.5f) - ty2) + 0.66666667f);
+  let by2 = ((((ty3 * -0.5f) + (ty2 * 0.5f)) + (fy * 0.5f)) + 0.16666667f);
+  let by3 = (ty3 * 0.16666667f);
+  let dby0 = ((oyf * oyf) * -0.5f);
+  let dby1 = ((ty2 * 1.5f) - (fy * 2f));
+  let dby2 = (((ty2 * -1.5f) + fy) + 0.5f);
+  let dby3 = (ty2 * 0.5f);
+  let maxT = (activeResF - 1f);
+  let cxm = u32(clamp((x0 - 1f), 0f, maxT));
+  let cx0 = u32(clamp(x0, 0f, maxT));
+  let cx1 = u32(clamp((x0 + 1f), 0f, maxT));
+  let cx2 = u32(clamp((x0 + 2f), 0f, maxT));
+  let cym = u32(clamp((y0 - 1f), 0f, maxT));
+  let cy0 = u32(clamp(y0, 0f, maxT));
+  let cy1 = u32(clamp((y0 + 1f), 0f, maxT));
+  let cy2 = u32(clamp((y0 + 2f), 0f, maxT));
+  let k00 = textureLoad(field, vec2u(cxm, cym), 0);
+  let k01 = textureLoad(field, vec2u(cx0, cym), 0);
+  let k02 = textureLoad(field, vec2u(cx1, cym), 0);
+  let k03 = textureLoad(field, vec2u(cx2, cym), 0);
+  let k10 = textureLoad(field, vec2u(cxm, cy0), 0);
+  let k11 = textureLoad(field, vec2u(cx0, cy0), 0);
+  let k12 = textureLoad(field, vec2u(cx1, cy0), 0);
+  let k13 = textureLoad(field, vec2u(cx2, cy0), 0);
+  let k20 = textureLoad(field, vec2u(cxm, cy1), 0);
+  let k21 = textureLoad(field, vec2u(cx0, cy1), 0);
+  let k22 = textureLoad(field, vec2u(cx1, cy1), 0);
+  let k23 = textureLoad(field, vec2u(cx2, cy1), 0);
+  let k30 = textureLoad(field, vec2u(cxm, cy2), 0);
+  let k31 = textureLoad(field, vec2u(cx0, cy2), 0);
+  let k32 = textureLoad(field, vec2u(cx1, cy2), 0);
+  let k33 = textureLoad(field, vec2u(cx2, cy2), 0);
+  let rAcc = (((((((((((((((((k00.r * wx0) * wy0) + ((k01.r * wx1) * wy0)) + ((k02.r * wx2) * wy0)) + ((k03.r * wx3) * wy0)) + ((k10.r * wx0) * wy1)) + ((k11.r * wx1) * wy1)) + ((k12.r * wx2) * wy1)) + ((k13.r * wx3) * wy1)) + ((k20.r * wx0) * wy2)) + ((k21.r * wx1) * wy2)) + ((k22.r * wx2) * wy2)) + ((k23.r * wx3) * wy2)) + ((k30.r * wx0) * wy3)) + ((k31.r * wx1) * wy3)) + ((k32.r * wx2) * wy3)) + ((k33.r * wx3) * wy3));
+  let aAcc = (((((((((((((((((k00.a * wx0) * wy0) + ((k01.a * wx1) * wy0)) + ((k02.a * wx2) * wy0)) + ((k03.a * wx3) * wy0)) + ((k10.a * wx0) * wy1)) + ((k11.a * wx1) * wy1)) + ((k12.a * wx2) * wy1)) + ((k13.a * wx3) * wy1)) + ((k20.a * wx0) * wy2)) + ((k21.a * wx1) * wy2)) + ((k22.a * wx2) * wy2)) + ((k23.a * wx3) * wy2)) + ((k30.a * wx0) * wy3)) + ((k31.a * wx1) * wy3)) + ((k32.a * wx2) * wy3)) + ((k33.a * wx3) * wy3));
+  let drdpx = (((((((((((((((((k00.r * dbx0) * by0) + ((k01.r * dbx1) * by0)) + ((k02.r * dbx2) * by0)) + ((k03.r * dbx3) * by0)) + ((k10.r * dbx0) * by1)) + ((k11.r * dbx1) * by1)) + ((k12.r * dbx2) * by1)) + ((k13.r * dbx3) * by1)) + ((k20.r * dbx0) * by2)) + ((k21.r * dbx1) * by2)) + ((k22.r * dbx2) * by2)) + ((k23.r * dbx3) * by2)) + ((k30.r * dbx0) * by3)) + ((k31.r * dbx1) * by3)) + ((k32.r * dbx2) * by3)) + ((k33.r * dbx3) * by3));
+  let drdpy = (((((((((((((((((k00.r * bx0) * dby0) + ((k01.r * bx1) * dby0)) + ((k02.r * bx2) * dby0)) + ((k03.r * bx3) * dby0)) + ((k10.r * bx0) * dby1)) + ((k11.r * bx1) * dby1)) + ((k12.r * bx2) * dby1)) + ((k13.r * bx3) * dby1)) + ((k20.r * bx0) * dby2)) + ((k21.r * bx1) * dby2)) + ((k22.r * bx2) * dby2)) + ((k23.r * bx3) * dby2)) + ((k30.r * bx0) * dby3)) + ((k31.r * bx1) * dby3)) + ((k32.r * bx2) * dby3)) + ((k33.r * bx3) * dby3));
+  let rMin = min(min(k11.r, k12.r), min(k21.r, k22.r));
+  let rMax = max(max(k11.r, k12.r), max(k21.r, k22.r));
+  let aMin = min(min(k11.a, k12.a), min(k21.a, k22.a));
+  let aMax = max(max(k11.a, k12.a), max(k21.a, k22.a));
+  let aOut = clamp(aAcc, aMin, aMax);
+  let kSoft = (((rMax - rMin) * 0.3f) + 1e-6f);
+  let hCap = clamp(((((rMax - rAcc) / kSoft) * 0.5f) + 0.5f), 0f, 1f);
+  let rCap = (mix(rMax, rAcc, hCap) - ((kSoft * hCap) * (1f - hCap)));
+  let hFlr = clamp(((((rCap - rMin) / kSoft) * 0.5f) + 0.5f), 0f, 1f);
+  let rSoft = (mix(rMin, rCap, hFlr) + ((kSoft * hFlr) * (1f - hFlr)));
+  let rNear = (rSoft + outsideDist);
+  let rCircle = (length(vec2f((uv.x - 0.5f), (uv.y - 0.5f))) - rBound);
+  let rOut = mix(rNear, max(rCircle, rNear), smoothstep(0f, 0.25f, outsideDist));
+  let insideX = select(0f, 1f, (abs((uv.x - uxc)) < 1e-7f));
+  let insideY = select(0f, 1f, (abs((uv.y - uyc)) < 1e-7f));
+  let invOut = (1f / max(outsideDist, 1e-5f));
+  let gU = (((drdpx * (activeResF / spanX)) * insideX) + ((uv.x - uxc) * invOut));
+  let gV = (((drdpy * (activeResF / spanY)) * insideY) + ((uv.y - uyc) * invOut));
+  return vec4f(rOut, gU, gV, aOut);
+}
+
+fn fieldSampleFastArg(uv: vec2f, field: texture_2d<f32>, originX: f32, originY: f32, spanX: f32, spanY: f32, activeResF: f32, rBound: f32) -> vec4f {
+  let uxc = clamp(uv.x, originX, (originX + spanX));
+  let uyc = clamp(uv.y, originY, (originY + spanY));
+  let outsideDist = length(vec2f((uv.x - uxc), (uv.y - uyc)));
+  let px = ((((uxc - originX) / spanX) * activeResF) - 0.5f);
+  let py = ((((uyc - originY) / spanY) * activeResF) - 0.5f);
+  let x0 = floor(px);
+  let y0 = floor(py);
+  let fx = (px - x0);
+  let fy = (py - y0);
+  let maxT = (activeResF - 1f);
+  let cx0 = u32(clamp(x0, 0f, maxT));
+  let cx1 = u32(clamp((x0 + 1f), 0f, maxT));
+  let cy0 = u32(clamp(y0, 0f, maxT));
+  let cy1 = u32(clamp((y0 + 1f), 0f, maxT));
+  let t00 = textureLoad(field, vec2u(cx0, cy0), 0);
+  let t10 = textureLoad(field, vec2u(cx1, cy0), 0);
+  let t01 = textureLoad(field, vec2u(cx0, cy1), 0);
+  let t11 = textureLoad(field, vec2u(cx1, cy1), 0);
+  let bl = mix(mix(t00, t10, fx), mix(t01, t11, fx), fy);
+  let rNear = (bl.r + outsideDist);
+  let rCircle = (length(vec2f((uv.x - 0.5f), (uv.y - 0.5f))) - rBound);
+  let rOut = mix(rNear, max(rCircle, rNear), smoothstep(0f, 0.25f, outsideDist));
+  return vec4f(rOut, bl.g, bl.b, bl.a);
+}
+
+fn fieldTexelSpan(spanX: f32, spanY: f32, activeResF: f32) -> f32 {
+  return (max(spanX, spanY) / activeResF);
+}"
+`;
+
+exports[`kit/sdf3d createAnalytic3dSdfSetup (b) baked sdfFn resolves > SVG-3D extrusion sdfFn (samples the sdfSource DATA texture) + march + kernel resolve (snapshot) 1`] = `
+"struct RotStruct {
+  cx: f32,
+  sx: f32,
+  cy: f32,
+  sy: f32,
+  cz: f32,
+  sz: f32,
+}
+
+struct MarchParams {
+  @align(16) @size(32) rot: RotStruct,
+  rBound: f32,
+  spanX: f32,
+  spanY: f32,
+  originX: f32,
+  originY: f32,
+  activeRes: u32,
+  pA: f32,
+  pB: f32,
+  pC: f32,
+  pD: f32,
+  mb0: vec3f,
+  mb1: vec3f,
+  mb2: vec3f,
+  mb3: vec3f,
+  mb4: vec3f,
+  mb5: vec3f,
+  mb6: vec3f,
+  mb7: vec3f,
+}
+
+@group(0) @binding(1) var<uniform> params: MarchParams;
+
+@group(0) @binding(2) var sdfSource: texture_2d<f32>;
+
+fn item(p: vec3f) -> f32 {
+  let pp = (&params);
+  let halfDepth2 = (*pp).pA;
+  let bevel2 = (*pp).pB;
+  let u = (((p.x + 0.5f) * 512f) - 0.5f);
+  let v = (((0.5f - p.y) * 512f) - 0.5f);
+  let x0 = floor(u);
+  let y0 = floor(v);
+  let fx = (u - x0);
+  let fy = (v - y0);
+  let cx0 = u32(clamp(x0, 0f, 511f));
+  let cx1 = u32(clamp((x0 + 1f), 0f, 511f));
+  let cy0 = u32(clamp(y0, 0f, 511f));
+  let cy1 = u32(clamp((y0 + 1f), 0f, 511f));
+  let s00 = textureLoad(sdfSource, vec2u(cx0, cy0), 0).r;
+  let s10 = textureLoad(sdfSource, vec2u(cx1, cy0), 0).r;
+  let s01 = textureLoad(sdfSource, vec2u(cx0, cy1), 0).r;
+  let s11 = textureLoad(sdfSource, vec2u(cx1, cy1), 0).r;
+  let field2d = mix(mix(s00, s10, fx), mix(s01, s11, fx), fy);
+  let d2 = (field2d + bevel2);
+  let wz = ((abs(p.z) - halfDepth2) + bevel2);
+  let inner = min(max(d2, wz), 0f);
+  let outer = length(vec2f(max(d2, 0f), max(wz, 0f)));
+  return ((inner + outer) - bevel2);
+}
+
+fn rotateVec3(v: vec3f, rot: RotStruct) -> vec3f {
+  let x1 = ((v.x * rot.cy) + (v.z * rot.sy));
+  let z1 = ((v.z * rot.cy) - (v.x * rot.sy));
+  let y2 = ((v.y * rot.cx) - (z1 * rot.sx));
+  let z2 = ((v.y * rot.sx) + (z1 * rot.cx));
+  let x3 = ((x1 * rot.cz) - (y2 * rot.sz));
+  let y3 = ((x1 * rot.sz) + (y2 * rot.cz));
+  return vec3f(x3, y3, z2);
+}
+
+fn raymarchedField(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let ro0 = vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f);
+  let rd0 = vec3f(0, 0, 1);
+  let ro = rotateVec3(ro0, rot);
+  let rd = rotateVec3(rd0, rot);
+  let steps = i32(clamp((rBound * 220f), 96f, 384f));
+  let b = dot(ro, rd);
+  let perp = sqrt(max((dot(ro, ro) - (b * b)), 0f));
+  let halfSpan = sqrt(max(((rBound * rBound) - (perp * perp)), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  var t = tStart;
+  var tPrev = tStart;
+  var minD = 10f;
+  var hit = 0f;
+  for (var i = 0; (i < steps); i++) {
+    let p = (ro + (rd * t));
+    let dd = item(p);
+    minD = min(minD, dd);
+    if ((dd < 0f)) {
+      hit = 1f;
+      break;
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+    tPrev = t;
+    t = (t + max(dd, 2e-3f));
+  }
+  var fieldVal = minD;
+  let patternU = 0f;
+  let patternV = 0f;
+  var viewDepth = (tEnd + 0.4f);
+  if ((hit > 0.5f)) {
+    var eLo = tPrev;
+    var eHi = t;
+    for (var i = 0; (i < 10i); i++) {
+      let mid = ((eLo + eHi) * 0.5f);
+      let dm = item((ro + (rd * mid)));
+      if ((dm > 0f)) {
+        eLo = mid;
+      }
+      else {
+        eHi = mid;
+      }
+    }
+    let tEnter = ((eLo + eHi) * 0.5f);
+    var tExit = tEnter;
+    {
+      let roB = (ro + (rd * tEnd));
+      let span = ((tEnd - tStart) + 0.01f);
+      var s = 0f;
+      var sPrev = 0f;
+      for (var i = 0; (i < steps); i++) {
+        let p = (roB - (rd * s));
+        let dd = item(p);
+        if ((dd < 0f)) {
+          break;
+        }
+        if ((s > span)) {
+          break;
+        }
+        sPrev = s;
+        s = (s + max(dd, 2e-3f));
+      }
+      var xLo = sPrev;
+      var xHi = s;
+      for (var i = 0; (i < 10i); i++) {
+        let mid = ((xLo + xHi) * 0.5f);
+        let dm = item((roB - (rd * mid)));
+        if ((dm > 0f)) {
+          xLo = mid;
+        }
+        else {
+          xHi = mid;
+        }
+      }
+      tExit = (tEnd - ((xLo + xHi) * 0.5f));
+    }
+    let halfChord = (max((tExit - tEnter), 0f) * 0.5f);
+    fieldVal = (halfChord * -1f);
+    viewDepth = tEnter;
+  }
+  return vec4f(fieldVal, patternU, patternV, viewDepth);
+}
+
+@group(0) @binding(0) var field_1: texture_storage_2d<rgba32float, write>;
+
+fn volumetricFieldMarch(cx: u32, cy: u32) {
+  let p = (&params);
+  let activeResF = f32((*p).activeRes);
+  let uv = vec2f(((*p).originX + (((f32(cx) + 0.5f) / activeResF) * (*p).spanX)), ((*p).originY + (((f32(cy) + 0.5f) / activeResF) * (*p).spanY)));
+  let field = raymarchedField(uv, (*p).rot, (*p).rBound);
+  textureStore(field_1, vec2u(cx, cy), field);
+}"
+`;
+
+exports[`kit/sdf3d createAnalytic3dSdfSetup (b) baked sdfFn resolves > cube3D sdfFn + march + kernel resolve to WGSL (snapshot) 1`] = `
+"struct RotStruct {
+  cx: f32,
+  sx: f32,
+  cy: f32,
+  sy: f32,
+  cz: f32,
+  sz: f32,
+}
+
+struct MarchParams {
+  @align(16) @size(32) rot: RotStruct,
+  rBound: f32,
+  spanX: f32,
+  spanY: f32,
+  originX: f32,
+  originY: f32,
+  activeRes: u32,
+  pA: f32,
+  pB: f32,
+  pC: f32,
+  pD: f32,
+  mb0: vec3f,
+  mb1: vec3f,
+  mb2: vec3f,
+  mb3: vec3f,
+  mb4: vec3f,
+  mb5: vec3f,
+  mb6: vec3f,
+  mb7: vec3f,
+}
+
+@group(0) @binding(1) var<uniform> params: MarchParams;
+
+fn sdRoundBox(p: vec3f, hx: f32, hy: f32, hz: f32, rounding: f32) -> f32 {
+  let qx = ((abs(p.x) - hx) + rounding);
+  let qy = ((abs(p.y) - hy) + rounding);
+  let qz = ((abs(p.z) - hz) + rounding);
+  let outer = length(vec3f(max(qx, 0f), max(qy, 0f), max(qz, 0f)));
+  let inner = min(max(qx, max(qy, qz)), 0f);
+  return ((outer + inner) - rounding);
+}
+
+fn item(p: vec3f) -> f32 {
+  let pp = (&params);
+  return sdRoundBox(p, (*pp).pA, (*pp).pB, (*pp).pC, (*pp).pD);
+}
+
+fn rotateVec3(v: vec3f, rot: RotStruct) -> vec3f {
+  let x1 = ((v.x * rot.cy) + (v.z * rot.sy));
+  let z1 = ((v.z * rot.cy) - (v.x * rot.sy));
+  let y2 = ((v.y * rot.cx) - (z1 * rot.sx));
+  let z2 = ((v.y * rot.sx) + (z1 * rot.cx));
+  let x3 = ((x1 * rot.cz) - (y2 * rot.sz));
+  let y3 = ((x1 * rot.sz) + (y2 * rot.cz));
+  return vec3f(x3, y3, z2);
+}
+
+fn raymarchedField(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let ro0 = vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f);
+  let rd0 = vec3f(0, 0, 1);
+  let ro = rotateVec3(ro0, rot);
+  let rd = rotateVec3(rd0, rot);
+  let steps = i32(clamp((rBound * 220f), 96f, 384f));
+  let b = dot(ro, rd);
+  let perp = sqrt(max((dot(ro, ro) - (b * b)), 0f));
+  let halfSpan = sqrt(max(((rBound * rBound) - (perp * perp)), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  var t = tStart;
+  var tPrev = tStart;
+  var minD = 10f;
+  var hit = 0f;
+  for (var i = 0; (i < steps); i++) {
+    let p = (ro + (rd * t));
+    let dd = item(p);
+    minD = min(minD, dd);
+    if ((dd < 0f)) {
+      hit = 1f;
+      break;
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+    tPrev = t;
+    t = (t + max(dd, 2e-3f));
+  }
+  var fieldVal = minD;
+  var patternU = 0f;
+  var patternV = 0f;
+  var viewDepth = (tEnd + 0.4f);
+  if ((hit > 0.5f)) {
+    var eLo = tPrev;
+    var eHi = t;
+    for (var i = 0; (i < 10i); i++) {
+      let mid = ((eLo + eHi) * 0.5f);
+      let dm = item((ro + (rd * mid)));
+      if ((dm > 0f)) {
+        eLo = mid;
+      }
+      else {
+        eHi = mid;
+      }
+    }
+    let tEnter = ((eLo + eHi) * 0.5f);
+    var tExit = tEnter;
+    {
+      let roB = (ro + (rd * tEnd));
+      let span = ((tEnd - tStart) + 0.01f);
+      var s = 0f;
+      var sPrev = 0f;
+      for (var i = 0; (i < steps); i++) {
+        let p = (roB - (rd * s));
+        let dd = item(p);
+        if ((dd < 0f)) {
+          break;
+        }
+        if ((s > span)) {
+          break;
+        }
+        sPrev = s;
+        s = (s + max(dd, 2e-3f));
+      }
+      var xLo = sPrev;
+      var xHi = s;
+      for (var i = 0; (i < 10i); i++) {
+        let mid = ((xLo + xHi) * 0.5f);
+        let dm = item((roB - (rd * mid)));
+        if ((dm > 0f)) {
+          xLo = mid;
+        }
+        else {
+          xHi = mid;
+        }
+      }
+      tExit = (tEnd - ((xLo + xHi) * 0.5f));
+    }
+    let halfChord = (max((tExit - tEnter), 0f) * 0.5f);
+    fieldVal = (halfChord * -1f);
+    viewDepth = tEnter;
+    {
+      let hp = (ro + (rd * tEnter));
+      patternU = (hp.x + (hp.z * 0.7f));
+      patternV = (hp.y + (hp.z * 0.5f));
+    }
+  }
+  return vec4f(fieldVal, patternU, patternV, viewDepth);
+}
+
+@group(0) @binding(0) var field_1: texture_storage_2d<rgba32float, write>;
+
+fn volumetricFieldMarch(cx: u32, cy: u32) {
+  let p = (&params);
+  let activeResF = f32((*p).activeRes);
+  let uv = vec2f(((*p).originX + (((f32(cx) + 0.5f) / activeResF) * (*p).spanX)), ((*p).originY + (((f32(cy) + 0.5f) / activeResF) * (*p).spanY)));
+  let field = raymarchedField(uv, (*p).rot, (*p).rBound);
+  textureStore(field_1, vec2u(cx, cy), field);
+}"
+`;

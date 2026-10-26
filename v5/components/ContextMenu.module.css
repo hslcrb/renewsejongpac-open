@@ -1,0 +1,107 @@
+/* ==========================================================================
+   [커스텀 우클릭 컨텍스트 메뉴 / Custom Right-click Context Menu]
+   네이티브 우클릭을 대체해 둥근 모던 패널로 페이지·링크 작업을 제공합니다.
+   Replaces the native context menu with a rounded modern panel offering page and link actions.
+   ========================================================================== */
+
+.shell {
+    position: fixed;
+    z-index: 1200;
+    min-width: 232px;
+    max-width: 340px;
+    padding: 8px;
+    background: var(--paper, var(--color-white));
+    border: 1px solid var(--line, var(--color-gray-300));
+    border-radius: 1.5rem;
+    box-shadow: 0 0.5rem 1.5rem var(--color-detail-2br9yp);
+    color: var(--ink, var(--color-black));
+    font-family: var(--font, inherit);
+    transform-origin: top left;
+    animation: shell-in 170ms cubic-bezier(0.33, 1, 0.68, 1) both;
+}
+
+@keyframes shell-in {
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(0) scale(1);
+    }
+}
+
+.list {
+    display: grid;
+    gap: 2px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 1.25rem;
+    background: var(--color-detail-j5afio);
+    font: inherit;
+    font-size: max(var(--text-min), var(--text-sm, 1rem));
+    line-height: 1.5;
+    font-weight: var(--weight-action, 600);
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 120ms ease, color 120ms ease;
+}
+
+.item:hover {
+    background: var(--soft, var(--color-gray-050));
+    color: var(--ink, var(--color-black));
+}
+
+.item:active {
+    background: var(--line, var(--color-gray-300));
+    color: var(--ink, var(--color-black));
+}
+
+.item:disabled {
+    color: var(--action-disabled-text, var(--color-gray-600));
+    cursor: default;
+    background: var(--color-detail-j5afio);
+}
+
+.item > .material-icon {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    color: var(--ink-secondary, var(--color-gray-600));
+}
+
+.item:active > .material-icon {
+    color: var(--ink, var(--color-black));
+}
+
+.divider {
+    height: 1px;
+    margin: 6px 10px;
+    background: var(--line, var(--color-gray-300));
+}
+
+.location {
+    padding: 8px 14px 6px;
+    font-size: max(var(--text-min), var(--text-sm, 1rem));
+    font-weight: var(--weight-label, 500);
+    line-height: 1.5;
+    color: var(--muted, var(--color-gray-600));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shell {
+        animation: none;
+    }
+}

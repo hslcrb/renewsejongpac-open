@@ -1,0 +1,201 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`std motion + paintThrough + slot signals > motion words emit rhythm over the global clock > rhythm 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_r: padded_1,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let pulseT_0 = fract((uniforms._sys.time / 2.0));
+  let cycles_2 = (uniforms._sys.time / 3.0);
+  let cycleT_1 = fract(cycles_2);
+  let cycleI_3 = floor(cycles_2);
+  var composed_4 = vec4f(vec3f(((smoothstep(0.0, 0.05, pulseT_0) * (1.0 - smoothstep((0.25 - 0.05), 0.25, pulseT_0))) * (0.2 + (((sin(((uniforms._sys.time * 3.141592653589793) + 0.0)) * 0.5) + 0.5) * (1.0 - 0.2))))), ((cycleT_1 * 0.001) + (fract((sin(((cycleI_3 * 12.9898) + 551.7724000000001)) * 43758.5453)) * 0.001)));
+  return vec4f(linearToSrgb(tone_linear(composed_4.rgb)), composed_4.a);
+}"
+`;
+
+exports[`std motion + paintThrough + slot signals > oscillating() drives a warp ArgSpec slot from time > wobble 1`] = `
+"fn edgeClampUV(uv: vec2f) -> vec2f {
+  return clamp(uv, vec2f(), vec2f(1));
+}
+
+fn twirlUV(center: vec2f, intensity: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerPos = vec2f(center.x, (1f - center.y));
+  let delta = (uv - centerPos);
+  let acd = vec2f((delta.x * aspect), delta.y);
+  let angle = (intensity * length(acd));
+  let cosA = cos(angle);
+  let sinA = sin(angle);
+  let rotatedX = ((cosA * acd.x) - (sinA * acd.y));
+  let rotatedY = ((sinA * acd.x) + (cosA * acd.y));
+  return vec2f(((rotatedX / aspect) + centerPos.x), (rotatedY + centerPos.y));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  center: vec2f,
+  edges: f32,
+  speed: f32,
+  _opacity: f32,
+  _animTime: f32,
+  _pad0: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_w: padded_1,
+  n_c: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let foldUV_0 = edgeClampUV(twirlUV(uniforms.n_w.center, (0.4 + (((sin(((uniforms.n_w._animTime * 3.141592653589793) + 0.0)) * 0.5) + 0.5) * (1.6 - 0.4))), uv, uniforms._sys.aspect));
+  var composed_1 = vec4f(vec3f(foldUV_0.x), 1.0);
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;
+
+exports[`std motion + paintThrough + slot signals > paintThrough masks a paint by the child alpha (pure-Expr pointwise path) > stencil 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  color: vec4f,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_f: padded_1,
+  n_c: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let painted_0 = vec4f(vec3f((0.0 + (((sin(((uniforms._sys.time * 6.283185307179586) + 0.0)) * 0.5) + 0.5) * (1.0 - 0.0)))), 1.0);
+  var composed_1 = vec4f(painted_0.rgb, (painted_0.a * uniforms.n_c.color.a));
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;

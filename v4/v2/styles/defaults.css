@@ -1,0 +1,69 @@
+/* [읽기와 조작의 기본값 / Readability and interaction defaults]
+   새 화면은 이 크기 체계를 사용하고 보조 정보를 16px 미만으로 줄이지 않습니다.
+   New screens use this scale; supporting text never drops below 1rem. */
+:root {
+    --text-sm: 1rem;
+    --text-body: 1.125rem;
+    --text-lead: 1.25rem;
+    --text-action: 1.375rem;
+    --text-item-title: 1.25rem;
+    --text-card-title: 1.25rem;
+    --text-meta: 1rem;
+    --text-heading: clamp(1.75rem, 3vw, 2.5rem);
+    --weight-body: 400;
+    --weight-label: 500;
+    --weight-action: 600;
+    --weight-title: 650;
+    --weight-heading: 720;
+    --leading-body: 1.7;
+    --leading-label: 1.5;
+    --control-size: 3rem;
+    --shortcut-size: 4rem;
+    --radius-dialog: 1.5rem;
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --state-hover: #f0f2f4;
+    --state-pressed: #e1e5e9;
+    --focus-color: #08779a;
+    --feedback-duration: 160ms;
+}
+
+html {
+    font-size: 100%;
+}
+
+body {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+}
+
+small {
+    font-size: var(--text-sm);
+    line-height: var(--leading-label);
+}
+
+/* [기본 조작 영역과 포커스 / Default control targets and focus]
+   조작 상태는 색과 명확한 테두리로 알리고 요소를 들뜨게 하지 않습니다.
+   State feedback uses color and visible outlines without moving controls. */
+.button, .round-button {
+    min-height: var(--control-size);
+}
+
+.round-button {
+    min-width: var(--control-size);
+}
+
+:focus-visible {
+    outline: 3px solid var(--focus-color);
+    outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+    :root {
+        --text-action: 1.25rem;
+    }
+}

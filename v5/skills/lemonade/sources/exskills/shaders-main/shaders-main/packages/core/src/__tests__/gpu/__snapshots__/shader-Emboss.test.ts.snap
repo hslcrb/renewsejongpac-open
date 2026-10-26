@@ -1,0 +1,193 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Emboss (a) flat analytic circle over an RTT child > RTTs the child, samples the analytic circle, and shades the relief (unpremultiplied) > final-pass 1`] = `
+"fn embossHeight(s: f32, depth: f32, transitionW: f32, volumetric: f32) -> f32 {
+  let vol = (depth * clamp(((s * -1f) / 0.18f), 0f, 1f));
+  let flat = (depth * smoothstep(transitionW, (transitionW * -1f), s));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+fn embossEdgeLighting(sdfR: f32, sdfL: f32, sdfU: f32, sdfD: f32, depth: f32, lightAngle: f32, lightIntensity: f32, volumetric: f32) -> vec2f {
+  const eps = 3e-3;
+  const tw = 3e-3;
+  let hR = embossHeight(sdfR, depth, tw, volumetric);
+  let hL = embossHeight(sdfL, depth, tw, volumetric);
+  let hU = embossHeight(sdfU, depth, tw, volumetric);
+  let hD = embossHeight(sdfD, depth, tw, volumetric);
+  let dhx = ((hR - hL) / (eps * 2f));
+  let dhy = ((hU - hD) / (eps * 2f));
+  let nLen = sqrt((((dhx * dhx) + (dhy * dhy)) + 1f));
+  let nx = ((dhx * -1f) / nLen);
+  let ny = ((dhy * -1f) / nLen);
+  let nz = (1f / nLen);
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let lxn = (lx * 0.8192319205190405f);
+  let lyn = (ly * 0.8192319205190405f);
+  const lzn = 0.5734623443633283;
+  let NdotL = (((nx * lxn) + (ny * lyn)) + (nz * lzn));
+  let edgeLighting = ((NdotL - lzn) * lightIntensity);
+  let highlight = max(edgeLighting, 0f);
+  let edgeShadow = max((edgeLighting * -1f), 0f);
+  return vec2f(highlight, edgeShadow);
+}
+
+fn embossComposite(childColor: vec4f, sdfC: f32, sdfR: f32, sdfL: f32, sdfU: f32, sdfD: f32, h1raw: f32, h2raw: f32, depth: f32, lightAngle: f32, lightIntensity: f32, shadowIntensity: f32, volumetric: f32) -> vec4f {
+  const tw = 3e-3;
+  let light = embossEdgeLighting(sdfR, sdfL, sdfU, sdfD, depth, lightAngle, lightIntensity, volumetric);
+  let highlight = light.x;
+  let edgeShadow = light.y;
+  let hC = embossHeight(sdfC, depth, tw, volumetric);
+  let absDepth = max(abs(depth), 1e-4f);
+  let shadowTw = (absDepth * 0.06f);
+  let h1 = embossHeight(h1raw, depth, shadowTw, volumetric);
+  let h2 = embossHeight(h2raw, depth, shadowTw, volumetric);
+  let diff1 = ((h1 - hC) / absDepth);
+  let diff2 = ((h2 - hC) / absDepth);
+  let castShadow = ((smoothstep(0f, 0.5f, diff1) * 0.55f) + (smoothstep(0f, 0.5f, diff2) * 0.45f));
+  let totalShadow = (clamp((edgeShadow + castShadow), 0f, 1f) * shadowIntensity);
+  let childRgb = vec3f(childColor.x, childColor.y, childColor.z);
+  let highlightRgb = vec3f(highlight, highlight, highlight);
+  let finalRgb = clamp(((childRgb * (1f - totalShadow)) + highlightRgb), vec3f(), vec3f(1));
+  return vec4f(finalRgb.x, finalRgb.y, finalRgb.z, childColor.w);
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn embossWarpUV(uv: vec2f, center: vec2f, sdfC: f32, depth: f32) -> vec2f {
+  const tw = 3e-3;
+  let inside = smoothstep(tw, (tw * -1f), sdfC);
+  let dispScale = (1f - ((depth * 0.05f) * inside));
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  return vec2f((centerX + ((uv.x - centerX) * dispScale)), (centerY + ((uv.y - centerY) * dispScale)));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  center: vec2f,
+  scale: f32,
+  rotation: f32,
+  depth: f32,
+  lightAngle: f32,
+  lightIntensity: f32,
+  shadowIntensity: f32,
+  _opacity: f32,
+  _vfOriginX: f32,
+  _vfOriginY: f32,
+  _vfSpanX: f32,
+  _vfSpanY: f32,
+  _vfActiveRes: f32,
+  _vfRBound: f32,
+  _saRadius: f32,
+  _saSides: f32,
+  _saRounding: f32,
+  _saInnerRatio: f32,
+  _saRotation: f32,
+  _saHeight: f32,
+  _saOffset: f32,
+  _saAperture: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_e: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn circleSdf(dx: f32, dy: f32, radius: f32) -> f32 {
+  return (sqrt(((dx * dx) + (dy * dy))) - radius);
+}
+
+fn analyticSdf_circleSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = circleSdf(rdx, rdy, r);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn embossTraceUV(sdfUV: vec2f, lightAngle: f32, depth: f32, frac: f32) -> vec2f {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let absDepth = max(abs(depth), 1e-4f);
+  let spread = (absDepth * 0.06f);
+  return vec2f((sdfUV.x + ((lx * spread) * frac)), (sdfUV.y + ((ly * spread) * frac)));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  var composed_0 = embossComposite(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, embossWarpUV(uv, uniforms.n_e.center, (analyticSdf_circleSDF(sdfSpaceUV(uniforms.n_e.center, uniforms.n_e.scale, uniforms.n_e.rotation, uv, uniforms._sys.aspect), uniforms.n_e._saRadius, uniforms.n_e._saSides, uniforms.n_e._saRounding, uniforms.n_e._saInnerRatio, uniforms.n_e._saRotation, uniforms.n_e._saHeight, uniforms.n_e._saOffset, uniforms.n_e._saAperture)).r, uniforms.n_e.depth))), (analyticSdf_circleSDF(sdfSpaceUV(uniforms.n_e.center, uniforms.n_e.scale, uniforms.n_e.rotation, uv, uniforms._sys.aspect), uniforms.n_e._saRadius, uniforms.n_e._saSides, uniforms.n_e._saRounding, uniforms.n_e._saInnerRatio, uniforms.n_e._saRotation, uniforms.n_e._saHeight, uniforms.n_e._saOffset, uniforms.n_e._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_e.center, uniforms.n_e.scale, uniforms.n_e.rotation, uv, uniforms._sys.aspect), 0.003, 0.0), uniforms.n_e._saRadius, uniforms.n_e._saSides, uniforms.n_e._saRounding, uniforms.n_e._saInnerRatio, uniforms.n_e._saRotation, uniforms.n_e._saHeight, uniforms.n_e._saOffset, uniforms.n_e._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_e.center, uniforms.n_e.scale, uniforms.n_e.rotation, uv, uniforms._sys.aspect), -0.003, 0.0), uniforms.n_e._saRadius, uniforms.n_e._saSides, uniforms.n_e._saRounding, uniforms.n_e._saInnerRatio, uniforms.n_e._saRotation, uniforms.n_e._saHeight, uniforms.n_e._saOffset, uniforms.n_e._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_e.center, uniforms.n_e.scale, uniforms.n_e.rotation, uv, uniforms._sys.aspect), 0.0, 0.003), uniforms.n_e._saRadius, uniforms.n_e._saSides, uniforms.n_e._saRounding, uniforms.n_e._saInnerRatio, uniforms.n_e._saRotation, uniforms.n_e._saHeight, uniforms.n_e._saOffset, uniforms.n_e._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_e.center, uniforms.n_e.scale, uniforms.n_e.rotation, uv, uniforms._sys.aspect), 0.0, -0.003), uniforms.n_e._saRadius, uniforms.n_e._saSides, uniforms.n_e._saRounding, uniforms.n_e._saInnerRatio, uniforms.n_e._saRotation, uniforms.n_e._saHeight, uniforms.n_e._saOffset, uniforms.n_e._saAperture)).r, (analyticSdf_circleSDF(embossTraceUV(sdfSpaceUV(uniforms.n_e.center, uniforms.n_e.scale, uniforms.n_e.rotation, uv, uniforms._sys.aspect), uniforms.n_e.lightAngle, uniforms.n_e.depth, 0.5), uniforms.n_e._saRadius, uniforms.n_e._saSides, uniforms.n_e._saRounding, uniforms.n_e._saInnerRatio, uniforms.n_e._saRotation, uniforms.n_e._saHeight, uniforms.n_e._saOffset, uniforms.n_e._saAperture)).r, (analyticSdf_circleSDF(embossTraceUV(sdfSpaceUV(uniforms.n_e.center, uniforms.n_e.scale, uniforms.n_e.rotation, uv, uniforms._sys.aspect), uniforms.n_e.lightAngle, uniforms.n_e.depth, 1.0), uniforms.n_e._saRadius, uniforms.n_e._saSides, uniforms.n_e._saRounding, uniforms.n_e._saInnerRatio, uniforms.n_e._saRotation, uniforms.n_e._saHeight, uniforms.n_e._saOffset, uniforms.n_e._saAperture)).r, uniforms.n_e.depth, uniforms.n_e.lightAngle, uniforms.n_e.lightIntensity, uniforms.n_e.shadowIntensity, 0.0);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

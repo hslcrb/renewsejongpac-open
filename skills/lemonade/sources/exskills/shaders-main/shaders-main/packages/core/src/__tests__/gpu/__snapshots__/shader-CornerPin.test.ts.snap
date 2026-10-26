@@ -1,0 +1,368 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CornerPin (a) analytic UV fold over a generator > folds cornerPinSample into the generator sample coordinate (inline, no RTT) > cornerpin-uvremap 1`] = `
+"fn edgeClampUV(uv: vec2f) -> vec2f {
+  return clamp(uv, vec2f(), vec2f(1));
+}
+
+fn cornerSideOf(p: vec2f, a: vec2f, b: vec2f) -> f32 {
+  let bax = (b.x - a.x);
+  let bay = (b.y - a.y);
+  let pax = (p.x - a.x);
+  let pay = (p.y - a.y);
+  return ((bax * pay) - (bay * pax));
+}
+
+fn cornerInsideTri(p: vec2f, a: vec2f, b: vec2f, c: vec2f) -> f32 {
+  let d1 = cornerSideOf(p, a, b);
+  let d2 = cornerSideOf(p, b, c);
+  let d3 = cornerSideOf(p, c, a);
+  let allPos = ((step(0f, d1) * step(0f, d2)) * step(0f, d3));
+  let allNeg = ((step(d1, 0f) * step(d2, 0f)) * step(d3, 0f));
+  return (allPos + allNeg);
+}
+
+fn cornerProjectToDiagonal(p: vec2f, a: vec2f, b: vec2f, refSide: f32) -> vec2f {
+  let ab = (b - a);
+  let t = clamp((dot((p - a), ab) / max(dot(ab, ab), 1e-8f)), 0f, 1f);
+  let foot = (a + (ab * t));
+  let perp = (vec2f((ab.y * -1f), ab.x) / max(length(ab), 1e-8f));
+  let nudge = ((sign(refSide) * -1f) * 4e-3f);
+  return (foot + (perp * nudge));
+}
+
+fn cornerConvexify(p: vec2f, a: vec2f, b: vec2f, o: vec2f) -> vec2f {
+  let inside = (cornerInsideTri(p, a, b, o) > 0.5f);
+  let proj = cornerProjectToDiagonal(p, a, b, cornerSideOf(o, a, b));
+  return select(p, proj, inside);
+}
+
+fn cornerPinSafeDiv(n: f32, dv: f32) -> f32 {
+  return (n / select(dv, 1e-8f, (abs(dv) < 1e-8f)));
+}
+
+fn cornerPinSample(coord: vec2f, amount: f32, c0: vec2f, c1: vec2f, c2: vec2f, c3: vec2f) -> vec3f {
+  let amt = vec2f(amount, amount);
+  let r0 = mix(vec2f(), vec2f(c0.x, (1f - c0.y)), amt);
+  let r1 = mix(vec2f(1, 0), vec2f(c1.x, (1f - c1.y)), amt);
+  let r2 = mix(vec2f(1), vec2f(c2.x, (1f - c2.y)), amt);
+  let r3 = mix(vec2f(0, 1), vec2f(c3.x, (1f - c3.y)), amt);
+  let q0 = cornerConvexify(r0, r1, r3, r2);
+  let q1 = cornerConvexify(r1, r0, r2, r3);
+  let q2 = cornerConvexify(r2, r1, r3, r0);
+  let q3 = cornerConvexify(r3, r0, r2, r1);
+  let dx1 = (q1.x - q2.x);
+  let dx2 = (q3.x - q2.x);
+  let dx3 = (((q0.x - q1.x) + q2.x) - q3.x);
+  let dy1 = (q1.y - q2.y);
+  let dy2 = (q3.y - q2.y);
+  let dy3 = (((q0.y - q1.y) + q2.y) - q3.y);
+  let denA = ((dx1 * dy2) - (dx2 * dy1));
+  let a13 = cornerPinSafeDiv(((dx3 * dy2) - (dx2 * dy3)), denA);
+  let a23 = cornerPinSafeDiv(((dx1 * dy3) - (dx3 * dy1)), denA);
+  let a11 = ((q1.x - q0.x) + (a13 * q1.x));
+  let a21 = ((q3.x - q0.x) + (a23 * q3.x));
+  let a31 = q0.x;
+  let a12 = ((q1.y - q0.y) + (a13 * q1.y));
+  let a22 = ((q3.y - q0.y) + (a23 * q3.y));
+  let a32 = q0.y;
+  let c00 = (a22 - (a32 * a23));
+  let c10 = ((a21 - (a31 * a23)) * -1f);
+  let c20 = ((a21 * a32) - (a31 * a22));
+  let c01 = ((a12 - (a32 * a13)) * -1f);
+  let c11 = (a11 - (a31 * a13));
+  let c21 = (((a11 * a32) - (a31 * a12)) * -1f);
+  let c02 = ((a12 * a23) - (a22 * a13));
+  let c12 = (((a11 * a23) - (a21 * a13)) * -1f);
+  let c22 = ((a11 * a22) - (a21 * a12));
+  let px = coord.x;
+  let py = coord.y;
+  let den = (((c02 * px) + (c12 * py)) + c22);
+  let su = cornerPinSafeDiv((((c00 * px) + (c10 * py)) + c20), den);
+  let sv = cornerPinSafeDiv((((c01 * px) + (c11 * py)) + c21), den);
+  let det = (((a11 * c00) + (a21 * c01)) + (a31 * c02));
+  let front = step(0f, (den * det));
+  return vec3f(su, sv, front);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  topLeft: vec2f,
+  topRight: vec2f,
+  bottomLeft: vec2f,
+  bottomRight: vec2f,
+  amount: f32,
+  edges: f32,
+  _opacity: f32,
+}
+
+struct padded_1 {
+  seed: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_cp: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn genBody(seed: f32, uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, seed, 1f);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let foldUV_1 = edgeClampUV((cornerPinSample(uv, uniforms.n_cp.amount, uniforms.n_cp.topLeft, uniforms.n_cp.topRight, uniforms.n_cp.bottomRight, uniforms.n_cp.bottomLeft)).xy);
+  let sibs_0 = genBody(uniforms.n_gen.seed, foldUV_1);
+  var composed_2 = vec4f(sibs_0.rgb, (sibs_0.a * (1.0 * (cornerPinSample(uv, uniforms.n_cp.amount, uniforms.n_cp.topLeft, uniforms.n_cp.topRight, uniforms.n_cp.bottomRight, uniforms.n_cp.bottomLeft)).z)));
+  return vec4f(linearToSrgb(tone_linear(composed_2.rgb)), composed_2.a);
+}"
+`;
+
+exports[`CornerPin (b) RTT filter path (fragment) > converts the child to a texture, samples the projected coord, front-clips, unpremultiplies > cornerpin-fragment 1`] = `
+"fn cornerSideOf(p: vec2f, a: vec2f, b: vec2f) -> f32 {
+  let bax = (b.x - a.x);
+  let bay = (b.y - a.y);
+  let pax = (p.x - a.x);
+  let pay = (p.y - a.y);
+  return ((bax * pay) - (bay * pax));
+}
+
+fn cornerInsideTri(p: vec2f, a: vec2f, b: vec2f, c: vec2f) -> f32 {
+  let d1 = cornerSideOf(p, a, b);
+  let d2 = cornerSideOf(p, b, c);
+  let d3 = cornerSideOf(p, c, a);
+  let allPos = ((step(0f, d1) * step(0f, d2)) * step(0f, d3));
+  let allNeg = ((step(d1, 0f) * step(d2, 0f)) * step(d3, 0f));
+  return (allPos + allNeg);
+}
+
+fn cornerProjectToDiagonal(p: vec2f, a: vec2f, b: vec2f, refSide: f32) -> vec2f {
+  let ab = (b - a);
+  let t = clamp((dot((p - a), ab) / max(dot(ab, ab), 1e-8f)), 0f, 1f);
+  let foot = (a + (ab * t));
+  let perp = (vec2f((ab.y * -1f), ab.x) / max(length(ab), 1e-8f));
+  let nudge = ((sign(refSide) * -1f) * 4e-3f);
+  return (foot + (perp * nudge));
+}
+
+fn cornerConvexify(p: vec2f, a: vec2f, b: vec2f, o: vec2f) -> vec2f {
+  let inside = (cornerInsideTri(p, a, b, o) > 0.5f);
+  let proj = cornerProjectToDiagonal(p, a, b, cornerSideOf(o, a, b));
+  return select(p, proj, inside);
+}
+
+fn cornerPinSafeDiv(n: f32, dv: f32) -> f32 {
+  return (n / select(dv, 1e-8f, (abs(dv) < 1e-8f)));
+}
+
+fn cornerPinSample(coord: vec2f, amount: f32, c0: vec2f, c1: vec2f, c2: vec2f, c3: vec2f) -> vec3f {
+  let amt = vec2f(amount, amount);
+  let r0 = mix(vec2f(), vec2f(c0.x, (1f - c0.y)), amt);
+  let r1 = mix(vec2f(1, 0), vec2f(c1.x, (1f - c1.y)), amt);
+  let r2 = mix(vec2f(1), vec2f(c2.x, (1f - c2.y)), amt);
+  let r3 = mix(vec2f(0, 1), vec2f(c3.x, (1f - c3.y)), amt);
+  let q0 = cornerConvexify(r0, r1, r3, r2);
+  let q1 = cornerConvexify(r1, r0, r2, r3);
+  let q2 = cornerConvexify(r2, r1, r3, r0);
+  let q3 = cornerConvexify(r3, r0, r2, r1);
+  let dx1 = (q1.x - q2.x);
+  let dx2 = (q3.x - q2.x);
+  let dx3 = (((q0.x - q1.x) + q2.x) - q3.x);
+  let dy1 = (q1.y - q2.y);
+  let dy2 = (q3.y - q2.y);
+  let dy3 = (((q0.y - q1.y) + q2.y) - q3.y);
+  let denA = ((dx1 * dy2) - (dx2 * dy1));
+  let a13 = cornerPinSafeDiv(((dx3 * dy2) - (dx2 * dy3)), denA);
+  let a23 = cornerPinSafeDiv(((dx1 * dy3) - (dx3 * dy1)), denA);
+  let a11 = ((q1.x - q0.x) + (a13 * q1.x));
+  let a21 = ((q3.x - q0.x) + (a23 * q3.x));
+  let a31 = q0.x;
+  let a12 = ((q1.y - q0.y) + (a13 * q1.y));
+  let a22 = ((q3.y - q0.y) + (a23 * q3.y));
+  let a32 = q0.y;
+  let c00 = (a22 - (a32 * a23));
+  let c10 = ((a21 - (a31 * a23)) * -1f);
+  let c20 = ((a21 * a32) - (a31 * a22));
+  let c01 = ((a12 - (a32 * a13)) * -1f);
+  let c11 = (a11 - (a31 * a13));
+  let c21 = (((a11 * a32) - (a31 * a12)) * -1f);
+  let c02 = ((a12 * a23) - (a22 * a13));
+  let c12 = (((a11 * a23) - (a21 * a13)) * -1f);
+  let c22 = ((a11 * a22) - (a21 * a12));
+  let px = coord.x;
+  let py = coord.y;
+  let den = (((c02 * px) + (c12 * py)) + c22);
+  let su = cornerPinSafeDiv((((c00 * px) + (c10 * py)) + c20), den);
+  let sv = cornerPinSafeDiv((((c01 * px) + (c11 * py)) + c21), den);
+  let det = (((a11 * c00) + (a21 * c01)) + (a31 * c02));
+  let front = step(0f, (den * det));
+  return vec3f(su, sv, front);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  topLeft: vec2f,
+  topRight: vec2f,
+  bottomLeft: vec2f,
+  bottomRight: vec2f,
+  amount: f32,
+  edges: f32,
+  _opacity: f32,
+}
+
+struct padded_1 {
+  seed: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_cp: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+fn catmullRomAxisPositions(uv: f32, texSize: f32) -> vec3f {
+  let samplePos = (uv * texSize);
+  let texPos1 = (floor((samplePos - 0.5f)) + 0.5f);
+  let f = (samplePos - texPos1);
+  let w1 = (1f + ((f * f) * (-2.5f + (1.5f * f))));
+  let w2 = (f * (0.5f + (f * (2f - (1.5f * f)))));
+  let w12 = max((w1 + w2), 1e-6f);
+  let offset12 = (w2 / w12);
+  return vec3f(((texPos1 - 1f) / texSize), ((texPos1 + offset12) / texSize), ((texPos1 + 2f) / texSize));
+}
+
+fn catmullRomAxisWeights(uv: f32, texSize: f32) -> vec3f {
+  let samplePos = (uv * texSize);
+  let texPos1 = (floor((samplePos - 0.5f)) + 0.5f);
+  let f = (samplePos - texPos1);
+  let w0 = (f * (-0.5f + (f * (1f - (0.5f * f)))));
+  let w1 = (1f + ((f * f) * (-2.5f + (1.5f * f))));
+  let w2 = (f * (0.5f + (f * (2f - (1.5f * f)))));
+  let w3 = ((f * f) * (-0.5f + (0.5f * f)));
+  return vec3f(w0, (w1 + w2), w3);
+}
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn overComposite(base: vec4f, blended: vec3f, overlayAlpha: f32) -> vec4f {
+  let baseWeight = (base.w * (1f - overlayAlpha));
+  let finalAlpha = (overlayAlpha + baseWeight);
+  let rgb = ((blended * overlayAlpha) + (base.xyz * baseWeight));
+  return vec4f(rgb, finalAlpha);
+}
+
+fn blend_normal(base: vec4f, overlay2: vec4f, opacity: f32) -> vec4f {
+  let overlayAlpha = (overlay2.w * opacity);
+  return overComposite(base, overlay2.xyz, overlayAlpha);
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn edgeTransparentMask(uv: vec2f) -> f32 {
+  let inX = (step(0f, uv.x) * step(uv.x, 1f));
+  let inY = (step(0f, uv.y) * step(uv.y, 1f));
+  return (inX * inY);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let crUV_0 = (cornerPinSample(uv, uniforms.n_cp.amount, uniforms.n_cp.topLeft, uniforms.n_cp.topRight, uniforms.n_cp.bottomRight, uniforms.n_cp.bottomLeft)).xy;
+  let crSize_1 = vec2f(textureDimensions(rtt_0));
+  let crPosX_2 = catmullRomAxisPositions(crUV_0.x, crSize_1.x);
+  let crPosY_3 = catmullRomAxisPositions(crUV_0.y, crSize_1.y);
+  let crWx_4 = catmullRomAxisWeights(crUV_0.x, crSize_1.x);
+  let crWy_5 = catmullRomAxisWeights(crUV_0.y, crSize_1.y);
+  var crOut_6 = vec4f(0.0, 0.0, 0.0, 0.0);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.x)) * (crWx_4.x * crWy_5.x);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.x)) * (crWx_4.y * crWy_5.x);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.x)) * (crWx_4.z * crWy_5.x);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.y)) * (crWx_4.x * crWy_5.y);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.y)) * (crWx_4.y * crWy_5.y);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.y)) * (crWx_4.z * crWy_5.y);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.z)) * (crWx_4.x * crWy_5.z);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.z)) * (crWx_4.y * crWy_5.z);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.z)) * (crWx_4.z * crWy_5.z);
+  crOut_6 = max(crOut_6, vec4f(0.0, 0.0, 0.0, 0.0));
+  var composed_7 = blend_normal(vec4f(1.0, 1.0, 1.0, 0.0), unpremultiplyAlpha(vec4f((vec4f(crOut_6.rgb, (crOut_6.a * edgeTransparentMask((cornerPinSample(uv, uniforms.n_cp.amount, uniforms.n_cp.topLeft, uniforms.n_cp.topRight, uniforms.n_cp.bottomRight, uniforms.n_cp.bottomLeft)).xy)))).rgb, ((vec4f(crOut_6.rgb, (crOut_6.a * edgeTransparentMask((cornerPinSample(uv, uniforms.n_cp.amount, uniforms.n_cp.topLeft, uniforms.n_cp.topRight, uniforms.n_cp.bottomRight, uniforms.n_cp.bottomLeft)).xy)))).a * (cornerPinSample(uv, uniforms.n_cp.amount, uniforms.n_cp.topLeft, uniforms.n_cp.topRight, uniforms.n_cp.bottomRight, uniforms.n_cp.bottomLeft)).z))), uniforms.n_cp._opacity);
+  return vec4f(linearToSrgb(tone_linear(composed_7.rgb)), composed_7.a);
+}"
+`;

@@ -1,0 +1,88 @@
+{
+  "scope": "Final local verification for the single sejongpac-renewmakes skill and current about/toast changes",
+  "base_commit_before_changes": "a5db6d34fee7b54ff6235351c3b6dadd2dd90b4f",
+  "node_suite": {
+    "command": "node --test tests/*.test.mjs v2/tests/*.test.mjs",
+    "exit_code": 0,
+    "tests": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0
+  },
+  "readability": {
+    "command": "node v2/tests/readability.cjs",
+    "exit_code": 0,
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440
+    ]
+  },
+  "design_consistency": {
+    "command": "node v2/tests/design-consistency.cjs",
+    "exit_code": 0,
+    "about_routes": [
+      "/about",
+      "/about/introduction"
+    ],
+    "toast_entries": [
+      "/legacy.html",
+      "/v2/index.html"
+    ],
+    "toast_and_dialog_widths": [
+      1280,
+      320
+    ],
+    "dialog_radius_px": 24,
+    "toast_radius_px": 9999
+  },
+  "skill_check": {
+    "command": "python3 skills/sejongpac-renewmakes/scripts/check.py",
+    "passed": 17,
+    "failed": 0
+  },
+  "route_check": {
+    "timestamp": "2026-10-15T06:54:06.596Z",
+    "origin": "http://127.0.0.1:8000",
+    "widths": [
+      {
+        "width": 1440,
+        "count": 132,
+        "failed": [],
+        "overflow": []
+      },
+      {
+        "width": 390,
+        "count": 132,
+        "failed": [],
+        "overflow": []
+      },
+      {
+        "width": 320,
+        "count": 132,
+        "failed": [],
+        "overflow": []
+      }
+    ],
+    "errors": [],
+    "failedResponses": []
+  },
+  "historical_font_migration": {
+    "commit": "a5db6d3",
+    "removed_literal_sub_16px_declarations": 451,
+    "rechecked_against_commit_parent": true
+  },
+  "independent_reviews": [
+    "Six reference/application scenarios before and after the skill",
+    "Coverage against the public conversation",
+    "Final targeted-circle and documentation consistency review"
+  ],
+  "boundaries": [
+    "Local tests do not establish hosting deployment",
+    "Historical onboarding backend observations are conversation records",
+    "Private internal reasoning is not reconstructed",
+    "Absent historical screenshot files are not fabricated"
+  ]
+}

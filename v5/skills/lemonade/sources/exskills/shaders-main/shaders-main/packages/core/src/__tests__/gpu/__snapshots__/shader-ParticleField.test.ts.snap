@@ -1,0 +1,344 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ParticleField (a) compute simulation over child RTT → resolved field texture > RTTs the child, registers the field (compute) texture, samples it in the fragment > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  count: f32,
+  depth: f32,
+  particleSize: f32,
+  depthShading: f32,
+  wobble: f32,
+  zoom: f32,
+  rotationX: f32,
+  rotationY: f32,
+  rotationZ: f32,
+  offsetX: f32,
+  offsetY: f32,
+  cursorStrength: f32,
+  cursorRadius: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_pf: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = in.uv;
+  var composed_0 = textureSample(compute_0, linearClamp, uv);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`ParticleField (c) kernels resolve (D3 rules) > splat / resolve kernels resolve with atomics + textureStore > splatKernel 1`] = `
+"struct SimParams {
+  rowX: vec4f,
+  rowY: vec4f,
+  rowZ: vec4f,
+  dt: f32,
+  time: f32,
+  snap: f32,
+  gridW: f32,
+  gridH: f32,
+  outW: f32,
+  outH: f32,
+  depth: f32,
+  dragMul: f32,
+  wobbleAmp: f32,
+  depthShading: f32,
+  spacing: f32,
+  particleSize: f32,
+  aspect: f32,
+  zoom: f32,
+  transX: f32,
+  transY: f32,
+  pointerX: f32,
+  pointerY: f32,
+  cursorForce: f32,
+  cursorZForce: f32,
+  cursorRadSq: f32,
+}
+
+@group(0) @binding(7) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> pos: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> col: array<vec4f, 65536>;
+
+fn agentApplyCameraRows(pw: vec3f, rowX: vec4f, rowY: vec4f, rowZ: vec4f) -> vec3f {
+  return vec3f((((rowX.x * pw.x) + (rowX.y * pw.y)) + (rowX.z * pw.z)), (((rowY.x * pw.x) + (rowY.y * pw.y)) + (rowY.z * pw.z)), (((rowZ.x * pw.x) + (rowZ.y * pw.y)) + (rowZ.z * pw.z)));
+}
+
+struct SplatWindow {
+  x0: i32,
+  x1: i32,
+  y0: i32,
+  y1: i32,
+}
+
+fn texelSplatWindow(center: vec2f, rad: i32, last: vec2i) -> SplatWindow {
+  let cxi = i32(floor(center.x));
+  let cyi = i32(floor(center.y));
+  return SplatWindow(max((cxi - rad), 0i), min((cxi + rad), last.x), max((cyi - rad), 0i), min((cyi + rad), last.y));
+}
+
+fn agentTexelWeight(q: f32, _t: f32, _n: f32, bodyR: f32, aaW: f32) -> f32 {
+  let sd = (bodyR * (sqrt(q) - 1f));
+  return (1f - smoothstep(-(aaW), aaW, sd));
+}
+
+@group(0) @binding(3) var<storage, read_write> accumR: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(4) var<storage, read_write> accumG: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(5) var<storage, read_write> accumB: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(6) var<storage, read_write> accumW: array<atomic<u32>, 1048576>;
+
+fn particleFieldSplat(gx: u32, gy: u32) {
+  let P = (&params);
+  let i = ((gy * u32((*P).gridW)) + gx);
+  let p4 = (&pos[i]);
+  let col_1 = (&col[i]);
+  let childA = (*col_1).w;
+  if ((childA > 2e-3f)) {
+    let homeU = ((f32(gx) + 0.5f) / (*P).gridW);
+    let homeV = ((f32(gy) + 0.5f) / (*P).gridH);
+    let ph = ((*p4).w * 6.283185307179586f);
+    let wob = (*P).wobbleAmp;
+    let wx = ((sin((((*P).time * 1.15f) + ph)) * wob) * 0.012f);
+    let wy = ((cos(((((*P).time * 1.15f) * 1.13f) + (ph * 1.7f))) * wob) * 0.012f);
+    let wz = ((sin(((((*P).time * 1.15f) * 0.87f) + (ph * 2.3f))) * wob) * 0.06f);
+    let pw = vec3f(((((homeU - 0.5f) * (*P).aspect) + (*p4).x) + wx), (((homeV - 0.5f) + (*p4).y) + wy), ((*p4).z + wz));
+    let rv = agentApplyCameraRows(pw, (*P).rowX, (*P).rowY, (*P).rowZ);
+    let persp0 = (1f / clamp((1f - (rv.z * 1.1f)), 0.35f, 2.6f));
+    let persp = (persp0 * (*P).zoom);
+    let su = ((0.5f + ((rv.x * persp) / (*P).aspect)) + (*P).transX);
+    let sv = ((0.5f + (rv.y * persp)) + (*P).transY);
+    let tx = (su * (*P).outW);
+    let ty = (sv * (*P).outH);
+    let dotR = clamp(((((*P).particleSize * (*P).spacing) * 0.5f) * persp), 0.5f, 8f);
+    let dr = max((*P).depth, 1e-3f);
+    let near = smoothstep((dr * -1f), dr, rv.z);
+    let shade = mix(1f, (0.35f + (0.65f * near)), (*P).depthShading);
+    let depthWeight = ((persp0 * persp0) * shade);
+    let cw = (childA * depthWeight);
+    let extR = (1.2000000476837158f + (0.75f / dotR));
+    let rad = i32(ceil((dotR * extR)));
+    let radF = f32(rad);
+    let onTarget = ((((tx > (radF * -1f)) && (tx < ((*P).outW + radF))) && (ty > (radF * -1f))) && (ty < ((*P).outH + radF)));
+    if (((cw > 4.8828125e-4f) && onTarget)) {
+      let owU = u32((*P).outW);
+      let win = texelSplatWindow(vec2f(tx, ty), rad, vec2i((i32((*P).outW) - 1i), (i32((*P).outH) - 1i)));
+      for (var py = win.y0; (py <= win.y1); py++) {
+        let ddy = ((f32(py) + 0.5f) - ty);
+        for (var px = win.x0; (px <= win.x1); px++) {
+          let ddx = ((f32(px) + 0.5f) - tx);
+          let q = (((ddx * ddx) + (ddy * ddy)) / max((dotR * dotR), 0.01f));
+          if ((q < (extR * extR))) {
+            let wc = (agentTexelWeight(q, ddx, ddy, dotR, 0.75f) * cw);
+            if ((wc > 0f)) {
+              let idx = ((u32(py) * owU) + u32(px));
+              atomicAdd(&accumR[idx], u32((((*col_1).x * wc) * 2048f)));
+              atomicAdd(&accumG[idx], u32((((*col_1).y * wc) * 2048f)));
+              atomicAdd(&accumB[idx], u32((((*col_1).z * wc) * 2048f)));
+              atomicAdd(&accumW[idx], u32((wc * 2048f)));
+            }
+          }
+        }
+      }
+    }
+  }
+}"
+`;
+
+exports[`ParticleField (c) kernels resolve (D3 rules) > the sim kernel bakes the depth channel, samples the child, and runs the cursor physics > simKernel-luminance 1`] = `
+"struct SimParams {
+  rowX: vec4f,
+  rowY: vec4f,
+  rowZ: vec4f,
+  dt: f32,
+  time: f32,
+  snap: f32,
+  gridW: f32,
+  gridH: f32,
+  outW: f32,
+  outH: f32,
+  depth: f32,
+  dragMul: f32,
+  wobbleAmp: f32,
+  depthShading: f32,
+  spacing: f32,
+  particleSize: f32,
+  aspect: f32,
+  zoom: f32,
+  transX: f32,
+  transY: f32,
+  pointerX: f32,
+  pointerY: f32,
+  cursorForce: f32,
+  cursorZForce: f32,
+  cursorRadSq: f32,
+}
+
+@group(0) @binding(7) var<uniform> params: SimParams;
+
+@group(0) @binding(8) var src: texture_2d<f32>;
+
+struct AgentBilinearFrame {
+  x0: u32,
+  x1: u32,
+  y0: u32,
+  y1: u32,
+  fx: f32,
+  fy: f32,
+}
+
+fn agentBilinearTexelFrame(uv01: vec2f, dims: vec2f) -> AgentBilinearFrame {
+  let cu = ((uv01.x * dims.x) - 0.5f);
+  let cv = ((uv01.y * dims.y) - 0.5f);
+  let cx0 = floor(cu);
+  let cy0 = floor(cv);
+  return AgentBilinearFrame(u32(clamp(cx0, 0f, (dims.x - 1f))), u32(clamp((cx0 + 1f), 0f, (dims.x - 1f))), u32(clamp(cy0, 0f, (dims.y - 1f))), u32(clamp((cy0 + 1f), 0f, (dims.y - 1f))), (cu - cx0), (cv - cy0));
+}
+
+@group(0) @binding(2) var<storage, read_write> col: array<vec4f, 65536>;
+
+fn channel2(rgb: vec3f, _a: f32) -> f32 {
+  return dot(rgb, vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464));
+}
+
+@group(0) @binding(0) var<storage, read_write> pos: array<vec4f, 65536>;
+
+@group(0) @binding(1) var<storage, read_write> vel: array<vec4f, 65536>;
+
+fn agentApplyCameraRows(pw: vec3f, rowX: vec4f, rowY: vec4f, rowZ: vec4f) -> vec3f {
+  return vec3f((((rowX.x * pw.x) + (rowX.y * pw.y)) + (rowX.z * pw.z)), (((rowY.x * pw.x) + (rowY.y * pw.y)) + (rowY.z * pw.z)), (((rowZ.x * pw.x) + (rowZ.y * pw.y)) + (rowZ.z * pw.z)));
+}
+
+fn agentCursorFalloff(delta: vec2f, radSq: f32) -> f32 {
+  let dl = dot(delta, delta);
+  return exp(((dl / max(radSq, 1e-5f)) * -1f));
+}
+
+fn agentCursorMagnet(delta: vec2f, radSq: f32, force: f32) -> vec2f {
+  let dl = max(length(delta), 1e-4f);
+  return ((delta / dl) * (agentCursorFalloff(delta, radSq) * force));
+}
+
+fn agentApplyCameraRowsT(v: vec3f, rowX: vec4f, rowY: vec4f, rowZ: vec4f) -> vec3f {
+  return vec3f((((rowX.x * v.x) + (rowY.x * v.y)) + (rowZ.x * v.z)), (((rowX.y * v.x) + (rowY.y * v.y)) + (rowZ.y * v.z)), (((rowX.z * v.x) + (rowY.z * v.y)) + (rowZ.z * v.z)));
+}
+
+fn forceCursorInView(homeW: vec2f, off: vec2f, z: f32) -> vec3f {
+  let P = (&params);
+  let pw = vec3f((homeW.x + off.x), (homeW.y + off.y), z);
+  let rv = agentApplyCameraRows(pw, (*P).rowX, (*P).rowY, (*P).rowZ);
+  let persp = ((*P).zoom / clamp((1f - (rv.z * 1.1f)), 0.35f, 2.6f));
+  let su = ((0.5f + ((rv.x * persp) / (*P).aspect)) + (*P).transX);
+  let sv = ((0.5f + (rv.y * persp)) + (*P).transY);
+  let deltaS = vec2f(((su - (*P).pointerX) * (*P).aspect), (sv - (*P).pointerY));
+  let mxy = agentCursorMagnet(deltaS, (*P).cursorRadSq, (*P).cursorForce);
+  let mz = (agentCursorFalloff(deltaS, (*P).cursorRadSq) * (*P).cursorZForce);
+  return agentApplyCameraRowsT(vec3f(mxy.x, mxy.y, mz), (*P).rowX, (*P).rowY, (*P).rowZ);
+}
+
+fn integrateSemiImplicitEuler(vel_1: vec3f, force: vec3f, dt: f32, dragMul: f32, maxSpeed: f32) -> vec3f {
+  let v = ((vel_1 + (force * dt)) * dragMul);
+  let spd = length(v);
+  return (v * (min(spd, maxSpeed) / max(spd, 1e-5f)));
+}
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn noise_hash12(p: vec2f) -> f32 {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  return (f32(((u.x ^ u.y) * 3141592653u)) / 4294967296f);
+}
+
+fn particleFieldSim(gx: u32, gy: u32) {
+  let P = (&params);
+  let i = ((gy * u32((*P).gridW)) + gx);
+  let homeU = ((f32(gx) + 0.5f) / (*P).gridW);
+  let homeV = ((f32(gy) + 0.5f) / (*P).gridH);
+  let dims = textureDimensions(src);
+  let bf = agentBilinearTexelFrame(vec2f(homeU, homeV), vec2f(f32(dims.x), f32(dims.y)));
+  let c00 = textureLoad(src, vec2u(bf.x0, bf.y0), 0);
+  let c10 = textureLoad(src, vec2u(bf.x1, bf.y0), 0);
+  let c01 = textureLoad(src, vec2u(bf.x0, bf.y1), 0);
+  let c11 = textureLoad(src, vec2u(bf.x1, bf.y1), 0);
+  let prem = mix(mix(c00, c10, bf.fx), mix(c01, c11, bf.fx), bf.fy);
+  let a = prem.w;
+  let rgb = (prem.xyz / max(a, 9.999999747378752e-5f));
+  col[i] = vec4f(rgb.x, rgb.y, rgb.z, a);
+  let ch = channel2(rgb, a);
+  let targetZ = ((ch - 0.5f) * (*P).depth);
+  let p4 = (&pos[i]);
+  let v4 = (&vel[i]);
+  let dt = (*P).dt;
+  let needsSnap = (((*P).snap > 0.5f) || ((*v4).w < 0.5f));
+  let homeW = vec2f(((homeU - 0.5f) * (*P).aspect), (homeV - 0.5f));
+  let off = vec2f((*p4).x, (*p4).y);
+  let cf = forceCursorInView(homeW, off, (*p4).z);
+  let F = (vec3f((off.x * -26f), (off.y * -26f), ((targetZ - (*p4).z) * 26f)) + cf);
+  var v3 = integrateSemiImplicitEuler(vec3f((*v4).x, (*v4).y, (*v4).z), F, dt, (*P).dragMul, 4f);
+  var offN = (off + (vec2f(v3.x, v3.y) * dt));
+  var curZ = ((*p4).z + (v3.z * dt));
+  offN = select(offN, vec2f(), needsSnap);
+  curZ = select(curZ, targetZ, needsSnap);
+  v3 = select(v3, vec3f(), needsSnap);
+  let seed = noise_hash12(vec2f((f32(gx) + 0.5f), (f32(gy) + 0.5f)));
+  let seenN = select((*v4).w, 1f, (a > 2e-3f));
+  pos[i] = vec4f(offN.x, offN.y, curZ, seed);
+  vel[i] = vec4f(v3.x, v3.y, v3.z, seenN);
+}"
+`;

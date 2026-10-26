@@ -1,0 +1,22 @@
+/* Deep Chat 검색은 기존 시스템 레이아웃 안에서만 작동합니다. */
+.sejong-deep-search{width:100%;min-width:0}
+.sejong-deep-search-mount{width:100%;min-height:0}
+.sejong-deep-search-mount deep-chat{display:block;width:100%;max-width:100%}
+.sejong-deep-search--compact{max-width:100%}
+.sejong-deep-search-fallback{display:grid;gap:10px;width:100%;padding:12px 0}
+.sejong-deep-search-fallback label{font-size:16px;font-weight:600}
+.sejong-deep-search-fallback-row{display:flex;gap:8px;min-width:0}
+.sejong-deep-search-fallback-row>.sejong-deep-search-field{flex:1;min-width:0}
+.sejong-deep-search-field>input{width:100%;box-sizing:border-box}
+.sejong-deep-search-fallback input{flex:1;min-width:0;padding:12px 14px;font:inherit;font-size:16px;border:1px solid #bcb2c5;border-radius:12px;background:white;color:#251c2c}
+.sejong-deep-search-fallback button{padding:12px 20px;font:inherit;font-size:16px;border:0;border-radius:12px;background:#5f398d;color:white;cursor:pointer}
+.sejong-deep-search-fallback :is(input,button):focus-visible{outline:3px solid #9870b8;outline-offset:2px}
+.sejong-deep-search-fallback p{margin:0;font-size:16px}
+@media (max-width:600px){.sejong-deep-search-fallback-row{flex-direction:column}}
+
+.sejong-deep-search-disclosure{width:100%;min-width:0;margin:12px 0 22px;border:1px solid #dcd2e5;border-radius:16px;background:#fffafc}
+.sejong-deep-search-disclosure>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;cursor:pointer;font-size:16px;font-weight:600;color:#523a65}
+.sejong-deep-search-disclosure>summary span{font-size:14px;font-weight:400;color:#715983}
+.sejong-deep-search-disclosure[open]>summary{border-bottom:1px solid #e8dfed}
+.sejong-deep-search-disclosure>summary:focus-visible{outline:3px solid #a783dd;outline-offset:-3px}
+.sejong-deep-search-disclosure>.sejong-deep-search{padding:16px;box-sizing:border-box}

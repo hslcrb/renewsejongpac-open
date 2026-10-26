@@ -1,0 +1,38 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "results": [
+    {
+      "name": "selected filters retain contrasting foregrounds while hovered and pressed",
+      "passed": true
+    },
+    {
+      "name": "selected disabled controls retain disabled colors even under hover",
+      "passed": true
+    },
+    {
+      "name": "every guide control variant stays readable at rest, hover and pointer press",
+      "passed": true
+    },
+    {
+      "name": "circles contain icons with accessible labels; flow circles have equal 50px axes",
+      "passed": true
+    },
+    {
+      "name": "neutral toggles invert as a pair without a low-contrast transition frame",
+      "passed": true
+    },
+    {
+      "name": "real program and news filters use the same selected-hover contract",
+      "passed": true
+    },
+    {
+      "name": "real circular controls render registered icons before and after playback toggles",
+      "passed": true
+    },
+    {
+      "name": "390px touch keeps circle geometry and avoids sticky hover selection",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

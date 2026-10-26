@@ -1,0 +1,1101 @@
+{
+  "baselineCommit": "bc2296b413dd0bccb2862da0c9e4c6f82f96b251",
+  "verifiedAt": "2026-10-23T06:33:59.733Z",
+  "scope": "Only 89 previously unfinished v5 routes; existing implementations preserved",
+  "pdf": {
+    "parser": "kordoc",
+    "pages": 62,
+    "source": "세종문화회관_분석-www.sejongpac.or.kr-한봄고등학교-이호세.pdf",
+    "diagramPagesVisuallyReviewed": [
+      46,
+      49
+    ]
+  },
+  "preservation": {
+    "sourcesCompared": 149,
+    "sourceChanges": [],
+    "mainRoutesCompared": 70,
+    "mainBytesEqual": true,
+    "mainDifferences": [],
+    "existingCatalogEntitiesUnchanged": true,
+    "priorPageFieldsUnchangedExceptTargetRevision": true,
+    "protectedPagePayloads": 9
+  },
+  "components": {
+    "registered": 50,
+    "productConnected": 50,
+    "guideOnly": 0,
+    "unused": 0,
+    "visualContractIssues": 0,
+    "unknownColorTokens": 0
+  },
+  "database": {
+    "cart": 0,
+    "forms": 16,
+    "goods": 10,
+    "pages": 98,
+    "checksum": "19a5123f4d8e64ef6d7f22891f78ddae",
+    "requests": 0,
+    "completed": 89,
+    "enabledForms": 13,
+    "retentionActive": true,
+    "migration": "20261023061733",
+    "liveSQLRollbackPassed": true,
+    "idempotentImport": true
+  },
+  "publicRest": [
+    {
+      "resource": "sejong_service_forms",
+      "status": 200,
+      "rows": 16
+    },
+    {
+      "resource": "sejong_service_goods",
+      "status": 200,
+      "rows": 10
+    },
+    {
+      "resource": "sejong_service_requests",
+      "status": 401,
+      "rows": null
+    },
+    {
+      "resource": "sejong_service_cart",
+      "status": 401,
+      "rows": null
+    }
+  ],
+  "unitTests": {
+    "total": 145,
+    "passed": 144,
+    "failed": 0,
+    "skipped": 1,
+    "skipReason": "Legacy vanilla hash-router browser test is opt-in via SEJONG_JOURNEYS_BROWSER; separate v5 browser suites ran."
+  },
+  "sql": {
+    "actualDefinitions": 16,
+    "enabled": 13,
+    "closed": 3,
+    "liveRollbackSuitePassed": true,
+    "localPostgresSuitePassed": true,
+    "independentRetryConnections": 24,
+    "retryRows": 1,
+    "independentCartIncrementConnections": 16,
+    "resultingQuantity": 16,
+    "independentOrderConnections": 24,
+    "orderRows": 1,
+    "independentCancelRetryConnections": 24,
+    "finalStatus": "cancelled",
+    "stableExpiry": true
+  },
+  "nativeBrowser": {
+    "base": "http://127.0.0.1:4173/v5/",
+    "mode": "real SDK with Auth/PostgREST HTTP fixtures; live SQL boundaries verified separately",
+    "passed": 5,
+    "failed": 0,
+    "errors": [],
+    "checks": [
+      {
+        "name": "failed response stays retryable with the same key and one saved request",
+        "passed": true
+      },
+      {
+        "name": "a late save from the previous account never appears in the new account",
+        "passed": true
+      },
+      {
+        "name": "adding twice increments the owner cart and checkout retains its receipt",
+        "passed": true
+      },
+      {
+        "name": "closed event applications do not expose an active submission form",
+        "passed": true
+      },
+      {
+        "name": "comparison venue selection survives the rental handoff and invalid date ranges cannot submit",
+        "passed": true
+      }
+    ]
+  },
+  "publicBrowser": {
+    "base": "http://127.0.0.1:4173/v5/",
+    "allRoutes": 89,
+    "allRouteWidths": [
+      320,
+      1440
+    ],
+    "representativeWidths": [
+      390,
+      768,
+      1024
+    ],
+    "passed": 211,
+    "failed": 0,
+    "runtimeErrors": [],
+    "blockedWrites": [],
+    "duplicateMainBodies": [],
+    "publicReads": {
+      "publicCatalogReads": 209,
+      "publicGoodsReads": 6
+    }
+  },
+  "componentBrowser": {
+    "passed": 12,
+    "failed": 0,
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "errors": []
+  },
+  "developmentObservation": {
+    "oneTransientSyntaxError": true,
+    "path": "/news/goods/orders/",
+    "width": 320,
+    "narrowReloadsWithoutError": 5,
+    "staticFullSuiteWithoutError": true,
+    "cause": "Not established; no unsupported root-cause claim."
+  },
+  "staticExport": {
+    "htmlFiles": 160,
+    "references": 9677,
+    "failures": [],
+    "mirrorFiles": 8364,
+    "mirrorBytes": 52181825,
+    "mirrorErrors": [],
+    "obsoleteNextFiles": [],
+    "buildExitCode": 0,
+    "release": "r-f8cca1ccfeee8ee2"
+  },
+  "sources": {
+    "externalUniqueURLs": 177,
+    "httpErrors": 0,
+    "requestFailures": 0,
+    "internalReferences": 163,
+    "missingInternal": 0,
+    "downloadLinksCorrectedToHTMLLinks": [
+      "/rental/guide/eligibility"
+    ]
+  },
+  "limits": [
+    "PG payment, ticket issuance, goods inventory/shipping and automatic submission to institution systems are not implemented.",
+    "Three legacy events, three legacy goods and three lost-property items have no verified matching record; their routes show honest unavailable states.",
+    "Email delivery is not claimed by saved newsletter requests."
+  ],
+  "routes": [
+    {
+      "path": "/about",
+      "title": "세종문화회관",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/arts-center",
+      "title": "꿈의숲아트센터",
+      "sections": 5,
+      "sources": 7,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/companies",
+      "title": "서울시예술단",
+      "sections": 3,
+      "sources": 7,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/companies/ballet",
+      "title": "서울시발레단",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/companies/chorus",
+      "title": "서울시합창단",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/companies/dance",
+      "title": "서울시무용단",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/companies/musical",
+      "title": "서울시뮤지컬단",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/companies/opera",
+      "title": "서울시오페라단",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/companies/theater",
+      "title": "서울시극단",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/companies/traditional",
+      "title": "서울시국악관현악단",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/disclosure",
+      "title": "정보공개",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/disclosure/ethics",
+      "title": "윤리경영",
+      "sections": 4,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/disclosure/management",
+      "title": "경영공시",
+      "sections": 3,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/disclosure/request",
+      "title": "정보공개청구",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/donation",
+      "title": "후원 안내",
+      "sections": 5,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/donation/apply",
+      "title": "후원 상담 신청",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": {
+        "kind": "donation",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/about/esg",
+      "title": "ESG경영",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/esg/environment",
+      "title": "환경경영",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/esg/governance",
+      "title": "투명경영",
+      "sections": 3,
+      "sources": 4,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/esg/social",
+      "title": "사회적 책임",
+      "sections": 4,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/introduction/ci",
+      "title": "CI 소개",
+      "sections": 5,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/introduction/greeting",
+      "title": "CEO 인사말",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/introduction/history",
+      "title": "연혁",
+      "sections": 5,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/introduction/organization",
+      "title": "조직도",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/partners",
+      "title": "협력·협찬",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/about/partners/apply",
+      "title": "협력·협찬 제안",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": {
+        "kind": "partnership",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/english",
+      "title": "Visit Sejong Center",
+      "sections": 5,
+      "sources": 4,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/events",
+      "title": "이벤트",
+      "sections": 3,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/events/autumn-walk",
+      "title": "가을 산책 이벤트 기록 안내",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/events/autumn-walk/apply",
+      "title": "가을 산책 이벤트 신청 안내",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": {
+        "kind": "event",
+        "enabled": false
+      }
+    },
+    {
+      "path": "/news/events/review",
+      "title": "관람 후기 이벤트 기록 안내",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/events/review/apply",
+      "title": "관람 후기 이벤트 신청 안내",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": {
+        "kind": "event",
+        "enabled": false
+      }
+    },
+    {
+      "path": "/news/events/summer-end",
+      "title": "여름 마무리 이벤트 기록 안내",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/events/winners",
+      "title": "당첨자 발표",
+      "sections": 2,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/goods",
+      "title": "세종굿즈",
+      "sections": 3,
+      "sources": 1,
+      "special": "goods",
+      "form": null
+    },
+    {
+      "path": "/news/goods/art-postcards",
+      "title": "아트 엽서 상품 안내",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/goods/canvas-bag",
+      "title": "캔버스백 상품 안내",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/goods/cart",
+      "title": "장바구니",
+      "sections": 2,
+      "sources": 1,
+      "special": "cart",
+      "form": {
+        "kind": "order",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/news/goods/orders",
+      "title": "내 구매 요청",
+      "sections": 2,
+      "sources": 1,
+      "special": "orders",
+      "form": null
+    },
+    {
+      "path": "/news/goods/viewing-journal",
+      "title": "관람 기록 노트 상품 안내",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/magazine",
+      "title": "세종문화N",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/membership",
+      "title": "세종S멤버십",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/membership/benefits",
+      "title": "멤버십 혜택",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/membership/join",
+      "title": "멤버십 가입 안내",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": {
+        "kind": "membership",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/news/newsletter",
+      "title": "뉴스레터",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": {
+        "kind": "newsletter",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/news/newsletter/archive",
+      "title": "지난 뉴스레터",
+      "sections": 3,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/news/notices/recruit/apply",
+      "title": "채용 지원 안내",
+      "sections": 4,
+      "sources": 3,
+      "special": null,
+      "form": {
+        "kind": "recruitment",
+        "enabled": false
+      }
+    },
+    {
+      "path": "/policy/email",
+      "title": "이메일 무단수집 거부",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/policy/privacy",
+      "title": "개인정보 안내",
+      "sections": 5,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/policy/terms",
+      "title": "이용약관 안내",
+      "sections": 4,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/booking-guide",
+      "title": "예매 안내",
+      "sections": 5,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/education/apply-guide",
+      "title": "교육 수강 안내",
+      "sections": 4,
+      "sources": 3,
+      "special": null,
+      "form": {
+        "kind": "education",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/programs/history",
+      "title": "지난 프로그램",
+      "sections": 4,
+      "sources": 5,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/season/classic",
+      "title": "누구나 클래식",
+      "sections": 4,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/season/everyone",
+      "title": "모든 누구나",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/season/orchestra",
+      "title": "누구나 꿈나무오케스트라",
+      "sections": 4,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/season/package",
+      "title": "세종시즌 패키지",
+      "sections": 4,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/season/sejong",
+      "title": "2026 세종시즌",
+      "sections": 4,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/season/summer",
+      "title": "누구나 세종썸머페스티벌",
+      "sections": 4,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/programs/season/sync-next",
+      "title": "Sync Next",
+      "sections": 4,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/rental",
+      "title": "대관",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/rental/apply",
+      "title": "대관신청",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": {
+        "kind": "rental",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/rental/compare",
+      "title": "대관 공간 비교",
+      "sections": 2,
+      "sources": 2,
+      "special": "venue-compare",
+      "form": null
+    },
+    {
+      "path": "/rental/contact",
+      "title": "대관문의",
+      "sections": 2,
+      "sources": 3,
+      "special": null,
+      "form": {
+        "kind": "inquiry",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/rental/equipment",
+      "title": "무대 기술·장비 안내",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/rental/guide",
+      "title": "대관안내",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/rental/guide/eligibility",
+      "title": "대관 대상 및 기준",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/rental/guide/fees",
+      "title": "대관요금",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/rental/process",
+      "title": "대관절차",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/rental/process/documents",
+      "title": "신청서류 및 심사기준",
+      "sections": 3,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/rental/schedule",
+      "title": "대관일정",
+      "sections": 2,
+      "sources": 2,
+      "special": "rental-calendar",
+      "form": null
+    },
+    {
+      "path": "/sitemap",
+      "title": "사이트맵",
+      "sections": 2,
+      "sources": 1,
+      "special": "sitemap",
+      "form": null
+    },
+    {
+      "path": "/visit",
+      "title": "방문 안내",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/accessibility",
+      "title": "접근성 안내",
+      "sections": 4,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/amenities",
+      "title": "편의시설",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/amenities/dining",
+      "title": "식음료 매장",
+      "sections": 3,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/amenities/facilities",
+      "title": "관람 편의시설",
+      "sections": 5,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/directions",
+      "title": "오시는 길",
+      "sections": 5,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/directions/parking",
+      "title": "주차 안내",
+      "sections": 4,
+      "sources": 3,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/etiquette",
+      "title": "관람 예절",
+      "sections": 2,
+      "sources": 2,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/group",
+      "title": "단체관람",
+      "sections": 3,
+      "sources": 2,
+      "special": null,
+      "form": {
+        "kind": "group",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/visit/plan",
+      "title": "관람 준비",
+      "sections": 3,
+      "sources": 4,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/support",
+      "title": "고객지원",
+      "sections": 2,
+      "sources": 4,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/support/faq",
+      "title": "자주 묻는 질문",
+      "sections": 3,
+      "sources": 6,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/support/inquiry",
+      "title": "문의하기",
+      "sections": 3,
+      "sources": 3,
+      "special": null,
+      "form": {
+        "kind": "inquiry",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/visit/support/lost",
+      "title": "분실물 찾기",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": null
+    },
+    {
+      "path": "/visit/support/lost/glasses",
+      "title": "안경 분실 문의",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": {
+        "kind": "inquiry",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/visit/support/lost/scarf",
+      "title": "스카프 분실 문의",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": {
+        "kind": "inquiry",
+        "enabled": true
+      }
+    },
+    {
+      "path": "/visit/support/lost/umbrella",
+      "title": "우산 분실 문의",
+      "sections": 3,
+      "sources": 1,
+      "special": null,
+      "form": {
+        "kind": "inquiry",
+        "enabled": true
+      }
+    }
+  ],
+  "protectedSourceHashes": {
+    "app/about/introduction/page.tsx": "204e0636b77cb09cd06d15fbd77604432ecb291997224d036f18c1c853af7a41",
+    "app/account/applications/page.tsx": "925e5361bf6881194f7319c4f81f006e3b451d8ef6667bef921bfd8beb152f9a",
+    "app/account/bookings/page.tsx": "99137ced4d9eecd69f4c1a87d44d6545dae0c3eabf0f0af0f86548264f1e305b",
+    "app/account/callback/page.tsx": "e3c5f6f2f0da84dfdea0c17d352084b4a36994b9ccd2aa2a4a1e88cf8b0bfb8b",
+    "app/account/favorites/page.tsx": "d2bea5f89a0ac97e625e689f6ecd80e0acf7aa1e52a8687a52d2517408c96412",
+    "app/account/login/page.tsx": "5a87cb1581d7c062211f5ceb1d5532e060466ed00e8e63673269ff7b7d156727",
+    "app/account/page.tsx": "f5824fc2ffdbc361858535b61a49b4cc1f434cd44017e7bb87acaca0405a2160",
+    "app/account/profile/page.tsx": "d7627486ffa619d9780fe41512fbff5ea91979a2d25d03e8e5e00b6c2610987e",
+    "app/account/recovery/page.tsx": "e2bc0fe30e297b6d5dcb752a728da3f7d8544a3f28e8e78eb030548435ff53f2",
+    "app/account/signup/page.tsx": "4495891ffa3c1e092617dc1a285399e7f5a38c6acd73815ab5101277660894f5",
+    "app/booking/[id]/BookingClient.tsx": "80a69d29a44135e0d453d2212b016bff029c31b8efff499d92bae3027bbbc5ad",
+    "app/booking/[id]/page.tsx": "539a8d39a9d741c02b09d5c5a00edd8b5efe627eb101aa5ac38a5ed9315baf98",
+    "app/design-rules/_documentation/ComponentCatalog.tsx": "2fa4b0ccc68fdbcbfa4512c3682e758048aa06f88bb140553dc40904051c2b0c",
+    "app/design-rules/_documentation/LiquidGlassDemo.tsx": "89a3bf910d93864d9edab905d86c8f1abc85d3c22055830313cf5834dfbf3889",
+    "app/design-rules/_documentation/tools.ts": "fc130861aaf82d8d81f34940026da3a18cf9699c52af62a80eba84b5a726bbd4",
+    "app/design-rules/page.tsx": "0190d64fca5c310a743823c95e2236e1839e42cf35bbf496a02d70060a64a528",
+    "app/layout.tsx": "df3211853e68314b54724ffc55e0cacbca6d4842ab16c07b3ab930bc6ed872d6",
+    "app/login/page.tsx": "2cf2d7de5341fa90d3457562cdb4c000ab8702ee421f261168c5fb24467ff2a5",
+    "app/not-found.tsx": "0760fb838639f62125265e634b4941eb3c6d34f3bd2c6a59ce2714f271fd2312",
+    "app/page.tsx": "31ef853ccbb8b761dd955d4d9d8a0a8c9801ea23d98aec2f8931ff5fba0a85c7",
+    "app/programs/[id]/ProgramDetailClient.tsx": "7a6637a6c88b87119ef0b2d9267135c6ff4d3e8911076d5cfd66f692f1b6de4d",
+    "app/programs/[id]/page.tsx": "d133534df722b3a807eedb3577f33368d70148b4163f074b9959e804e1894f6d",
+    "app/programs/page.tsx": "dba53efcd517d72066f09693787f17804f1172c233887517ffae25760a2ccb9c",
+    "components/AccountExperience.tsx": "5f80a623ce819d1edefa3a01bc55e354277c22fece25342f592de0f7d63d397e",
+    "components/AccountMiniRoom.tsx": "eb8f6f85d93095386818f9339cb8549ebc1619b7db81384273cab05c29a3cbde",
+    "components/AccountPanels.tsx": "7736bec737670602d97531884be6d0e48bc50b66788947eb06fa164862dfdfcc",
+    "components/BookingDatePreview.tsx": "2f7f5a7ac7e61376540ddf7b65da20c1a10a1d32b2c47fd3e1213f8aeaeff537",
+    "components/CatalogPage.tsx": "1bfcc2db74b23620e4d5b885c6a27097c212827d1f2b1f7e99026fdb5f35ca2e",
+    "components/ContextMenu.module.css": "bc83e59ec91b086c451d9647c9fdf7ca79a7fc295e2557c885b82ed52c0e80c1",
+    "components/ContextMenu.tsx": "d9ea8eca076b45091d37d74ba8c49090e2df5498eaf7a0566cf0a9b861eea473",
+    "components/FloatingMenu.tsx": "46bbc8aa256b5c43c77681cf98ce3199d46216278ba4befa4b3cc4fd986f69bf",
+    "components/FloatingPanel.tsx": "91104b14d4e37e2759e6b4c41c55b8f32522df7b69405ae34527e563be98912e",
+    "components/Footer.tsx": "cf2768bda21f29cb1cf9a83e4ef4b313864913da9917d9f0a0b87efc6bccbb21",
+    "components/GlassRefraction.tsx": "5848fcce807c662146375495f67cf2dd177c99551c6b61fbd2ad67dc74e16b4e",
+    "components/Header.tsx": "5707d132ae5cf4797fc390ddcc003082094192ad4d9cbe8a8a0b2ba49a196b87",
+    "components/HeroCarousel.tsx": "126aebb4c7a53de18c255f9ea39a6a09c6b4f9a04cfa84ab1a99d018e379e55c",
+    "components/HeroCompanion.tsx": "8c0d9ef7c1b0c558ec6810c33b51b2291b2cb8137ed9b666abe1ff38ef0b45c9",
+    "components/HeroSlide.tsx": "918c951f99fa523e54e40faca1f0613f934deae42bf4cfd87cbae373aede2ed7",
+    "components/HomeAnchorNavigation.tsx": "92063d930af0537265ce2029469b2ab110697e30746d70e6ecdb481612a5206c",
+    "components/HomeBookingControls.tsx": "16c2300644f94e17b9df7cf1c90a5a7db6dc711812b0c8d363416909f198f7c4",
+    "components/Icon.tsx": "d8fe61d514fd9167565fcc7d0fe1aca79f82ef7cf08a0cc5e57e85e42c6df17b",
+    "components/IntroductionExperience.tsx": "b046135a3d42cc831398233e18e0b1253315a1814306fd2859ce4c91ebd8221b",
+    "components/LiquidGlass.tsx": "1ab0f2f16a8b96a5a2b74be15dcf4c7731b8b9298d760c4ea7b5994853c417f5",
+    "components/ProgramCard.tsx": "db79ae1ee50db75344b782c237aad5dcc2d98da515012dc9092821cfb367b445",
+    "components/README.md": "0e10d077b177c2d32860bfa9ccfb4b096b40f2db54a553eaf1f63434059bb9eb",
+    "components/ReturnTop.tsx": "0a92c5ab30c375719a594a3911188f78a8525b7d06a9ab9938854e29d8e38d53",
+    "components/SeasonBanner.tsx": "c6adb7fcd044368781468441718ebae4ca28f5078334b4a1392c88f70a72c722",
+    "components/SiteShell.tsx": "b1995e01cc3e62e1c659a44895c749695a89c0d1ab1b4854290a0e4f92c9927d",
+    "components/SmallNotificationModal.tsx": "b532dd9dbeddcf52e2866f79721c6a8cc71cc04176d14157284ebb9b36f14c16",
+    "components/SystemControlGroup.tsx": "295db80289a0acf4f8b6f056632552663359b7d6d709677eff5df19ab694f7fd",
+    "components/SystemDialog.tsx": "26129d7772bf713d172f53be19888259aa9a79958c83f6a8819acfd4cdca4c01",
+    "components/SystemNavigation.tsx": "57f3315408b1c04067edc8d482da935f07ad7f0429c06bcb99c64bb0e971cca5",
+    "components/SystemPrimitives.tsx": "2fbd6e7dd576de7395fda7b16b0ca8f28f6720a6d2bd53fede3730e5d08a0e43",
+    "components/SystemSurface.tsx": "5684eafb77d8828a6b052521c1f6915499f60b783bf9f8724e403dc781e2cb46",
+    "components/SystemText.tsx": "1c48c98529d88e95ea6cb8efe2b0ca7b9207846f4fad6740041923c9fc29a499",
+    "components/Toast.tsx": "4a8b258659db1988ed22ad74fe8ce894420c3ac5351ed0b087abcfd4e2638d8a",
+    "components/VioletFur.tsx": "32db4a25ff5a57764f9ca23f35e031e5a92fcfccde890d7afa3629b393b6414f",
+    "components/VioletQuickMenu.module.css": "4e37d090c6471b7da4dccfcfdf19e75724fa2524cd883a457cafe0120735f076",
+    "components/VioletQuickMenu.tsx": "e4cd65ea1b7ba305f7276a68acd81cccd89ac34700888c6523a41c3761657443",
+    "components/index.ts": "a8952ea2cab80512bb3c6a358c3db2f0d3e8d4786223b687c6f8f500404ebc3f",
+    "components/introduction.css": "446f31611ee05896ee37e3b9cc800bc5936f4e4ac1e9ddd234a1a277cfcc54f0",
+    "components/useAccountIdentity.ts": "5c5c04796b354e3983ecfcffa52b15a1d34a9caed5eee0a5cfc73eee3a465b0e",
+    "components/useFavorites.ts": "dc64281e2c6f718616081aabad9f847b423dd9eaacbee15b17efadbb1f33442d",
+    "components/useFloatingPanel.ts": "7c5de344519ca8bae617f81281f43d18f706029b4e62079e958822a295be432a",
+    "components/violetFurPhysics.ts": "92b3671600e2ed613773232f154694e02299d097ff9871da5550d482a2709cb0",
+    "src/app-runner.ts": "4c2177d2b73810c5c5636f969ff386f1a11f6b1ebce6f5a041126643ce0ff487",
+    "src/app.ts": "a33f3cc69093022b926324841136add0f05112b1db4b215cfdca82392e25af75",
+    "src/catalog/CatalogProvider.tsx": "e7774bd05c837950385688d6fc04588b2ff641f673f26f090126f2eb862d8303",
+    "src/catalog/page-content.ts": "bd7ed053a176939fec20ba903d7f796c0558be3e48bd83e643c8e69a6b887949",
+    "src/catalog/repository.ts": "7d4a98a766515234d2b2462439902e9a5dbd110e8b17609fa7e628254b3b9cd2",
+    "src/catalog/snapshot.ts": "721aa2c700bc3effe7cb4c68003aec26f4b3bffa0c86be196022d9f0206c16c4",
+    "src/catalog/static-routes.ts": "3f3720bed1545e83742708980d26ebc82dfbec676a3288ea4e7fa8e47d14c376",
+    "src/catalog/types.ts": "d1b629628e557ba12a29e3855415626bb8935a95a6e8b06414c6b4ea5b3ffbbb",
+    "src/components/cards.ts": "a5d8b6c8a631892e8d4256eb1770118a16385e8e5fc744a7f8977d997df9a6d3",
+    "src/components/carousel.ts": "15d7da44a39d80009cf36368464597c1c47e1347f77a4569cb5f1ada2415a447",
+    "src/components/motion.ts": "61da60e6d14db23ee859cd6c3efb4db30d2476c0608c5d2b2c9abf1b81b59894",
+    "src/components/notices.ts": "515da46884382b91b1f7315d81d99ee5a184ab0c7288aecc3b86a4b53c8bbc6a",
+    "src/components/ui.ts": "54c0d20c453287166c6b2d8450b0e7d39af848efde68cf4c1177c44753bcbe39",
+    "src/data/catalog.ts": "43442d73d57bca67b7f1fff2435ceca8fc2796336699769753aac596e9b83bbe",
+    "src/data/design-system.ts": "c9013f2042f829d70d4a78f5b8c3768923f3eafc9536dc0129045708825aa2b5",
+    "src/data/design-tokens.ts": "b381674959b7437e738cf37d839b943933e16edc0dd69fb5273f6ac3d37480c3",
+    "src/data/home-features.ts": "bb29b3c1c20e0e65bc064b44f9d51eb0965ec4a04c3ef437725e70400a9de65b",
+    "src/data/official-media.ts": "c5188b6abf9f67d5338d7b161e36b3b4145e7bace2f99d5624dfa77ca388dbfc",
+    "src/data/ticket-openings.ts": "f794ba4cd4d6df4b78f52008cd722de3a528074cae0993ba0a727b05a50ca084",
+    "src/features/design-rules.ts": "38478b598256032413660a1769cc6d8d27ae847d2749291023af429e1a7082a3",
+    "src/features/flows.ts": "17b5a8896b5d6e357fe0a20922cbd4000a8b63aa27e9533bb9a00d6f45b06d8a",
+    "src/features/goods.ts": "e96a677e2d0979b53306e62db40af1ce05102cfc6061d2dfc750e630a7fb2fd3",
+    "src/features/home-booking.ts": "055eceb898ecfa7c4a2497d54b8c83b69ff63c7855788c5b723b6a050ec727e0",
+    "src/features/home-domain.ts": "7a2a8248ab2482d9e8a10bf5b11bca6ba6ea0c76e8f25ba73023ba8756bf5c23",
+    "src/features/home.ts": "697e2fa50250dd49d5193a2fc99d13aa5ae1b7c5847614ea69acc6b17daecd75",
+    "src/features/journeys.ts": "553aab2fbe49eba5c143b064dbfd2dbc3b584c75270bd679a6960f68fcdc7854",
+    "src/features/pages.ts": "184c565ed4a654dda0fabf3fbb7e19bdf9da0b6afcc7e000190d5f0b657da2bd",
+    "src/features/programs.ts": "cddfe8fd0544a43fc7c939cacde3bd434535c5afbd42a819040173252eeee28f",
+    "src/features/search.ts": "c71bc408775a0fbe2c4c631662a7944ac316134245bc07e7bee5fa676fb50024",
+    "src/features/story.ts": "e45b4efcaac72e59c9c49fbf4297b6fb67bda390512f46166a350c07e5348d13",
+    "src/features/utilities.ts": "b7e128480ee68cfc98c3524aae11ab47c42ca19b503e70f92157df865207cb30",
+    "src/lib/account-db.ts": "a28d6bef93d6dc5e45e71f5bf8d2907312d45e37c665676b19b619e21a1fdd6e",
+    "src/lib/account-space.ts": "e8681979ac48886e60ee0bd58c2df8caa663f324a22ca1d61df3f4abe2b358cf",
+    "src/lib/calendar-preview.ts": "f587f2c95762451576bbb7ae59118f2801d7c4d4266a340d541c9d03449811a2",
+    "src/lib/core.ts": "6a9b9b06f395c31db5efdcb0697a03dabae23ae3f95b596edd207a39317c00b9",
+    "src/lib/discovery.ts": "b654b3f498f9f905c6c514301675be85f6afaf7e384d83ed29aaf11b1d7a1578",
+    "src/lib/favorites.ts": "ca3153fc17f220fd6efea8a313036d0673d5d1c47fc34b320c1151bbb6a26375",
+    "src/lib/floating-panel.ts": "83daeb6927371559c3a66ab1c111db5ffb80cfd5f112b9596c46d7797b1e3996",
+    "src/lib/liquid-glass.ts": "d9176908ab08cbb988272a9cecf6e272a6586295143f2c80e9b714803beb87e3",
+    "src/lib/media.ts": "09ded727eab48cc77d667bab1443f767d078dec630d15c1af688ed6b1ab51319",
+    "src/lib/panel-motion.ts": "ece81970ede722fdcd5cb60f66b22cbddcd682504cbf96e462ec63a95a9cfd5f",
+    "src/lib/panel-snapshot.ts": "ba484cbb190cc97cd705fc56cca33ea8a61e21a26bc50cbb6aabe02dd3a9c4f7",
+    "src/lib/panel-transition.ts": "1ada863ca69d944ed48fa04727c5d15cd2ab988805dc9f72b0f18c120caf5e24",
+    "src/lib/reservations.ts": "e42f2f48e2115747950c35d5827f38f13cf2ac49873bb33b9a96242b260b11c4",
+    "src/lib/supabase.ts": "d45cac1750c46df9425c6f5781d6c54e6afdb35eb56fb1634f2ef2f043ce77c9",
+    "src/lib/ticket-openings.ts": "d645b2aa840f87d10122ff0e8df36df6493fe231398028264ffa70b82d117e36",
+    "src/runtime/readable-app.ts": "c9d0f2e274b4f8dae1fe36649c10c92d3c78a0f83d2a6a7b3cf3d3f897bd91dc",
+    "src/runtime/readable-dom.ts": "8e2546ab5f48f937d9b598e6da42f0d69d139b1344ce81abfa1fc17098221693",
+    "src/system/component-contracts.ts": "d3374c0a22912baea47a63ffde219b65b36bb87fe0f62e4740614eccc8a0f092",
+    "styles/account-mini-room.css": "de066ecaf9ecba003b506b7a4db64a524e11ec295f1edaad42cd85dcfae6d5bb",
+    "styles/account-space.css": "b8a643a72c0477efcb7ed9b09464c738157ba77eb2ce2fd4017aacf58da57f64",
+    "styles/base.css": "536ad6d34110a9a73a67d80cd49f526ce58bd82eacc5278b72bc7505b09813a4",
+    "styles/cards.css": "42619eb01cf2dbc4e4ff80423e985692e34e7cf340b19e4fd630da67049fec08",
+    "styles/compat/flows.css": "31204bdb962058aac2fe8353a1d7e1a76ebb1acd8cb577843547dfca79abcf7c",
+    "styles/compat/pages.css": "37abd8400205e88fd6861a39088403a5c4b4ec1571cb5eed3f2c64ace5bd6858",
+    "styles/compat/programs.css": "d099d7a14fde17281b73fa3a35f745fda8fe94343a3015ca32dcd994df7af49f",
+    "styles/compat/shared.css": "b849da1565ecac347ac788fa626e5c7a543b3a945ef97fe5988f276cba193e77",
+    "styles/component-catalog.css": "52d0548da615ae060ca9c7ab4c4b69c467a887948988b6f5fb9956efdc8a9d74",
+    "styles/components.css": "20e2727f2d8666857b1c7c5fe454e34f31c5e38ae6dc0e0dd058814e2f678df9",
+    "styles/defaults.css": "7036b2f24bc73e2467af45c4f4a41cb0fa5ccaedc77f0d96b68abfb71f75f9a9",
+    "styles/design-system.css": "fd75ec25c6e2fd6429fda150f7f8c504efa43e763de9c0373463be33ea6d55e5",
+    "styles/experience.css": "5966045d918f4e30eb6edc780698a90430a3af46a9af8e9a102d35c6ac6a081a",
+    "styles/experiences.css": "f737ef957ea83c4b1ac1e4f7100e1b0c44a81123704b1e238c16fadfbf64e823",
+    "styles/floating-menu.css": "b79a7403114fc6a510b746d6d811ce683f770dc93f4a2ae3a1c430d4707bfed3",
+    "styles/goods.css": "111add5d2cf4d5932c11cf014db84f50372c67420c0eec240981a692fad31e88",
+    "styles/hero-companion.css": "cd9b0fce336f4d6b5b06fddd771b37059c2e09e00e21426bf3034f0e0ed6de16",
+    "styles/home-v4.css": "e1a2a18ebde291b0c2473407400db822042f1e238a68e49565daf00159e30824",
+    "styles/home.css": "43f0a68382390e08be47a9b58d216ed88bd520fd05a4079f379e203f9fd017d5",
+    "styles/information.css": "d93353a6c8ecc3b205222f20886843dcfade367c0b7b599a17eb29fd09f977f4",
+    "styles/journeys.css": "2755bc2947589d6df09948a7f994f4fe73322042a2860fac1a264884f84fe8ff",
+    "styles/liquid-glass.css": "a4fb678502b04aa180ba0d2b9fde6a96d46664b43bfd1f67a52536fb3d7ff300",
+    "styles/motion.css": "470fbe1e26a8b4845e8315259430c9e6420267d764dd3feb5f1ac1d80c2253be",
+    "styles/notices.css": "9c66597b8dacb58d21f7a90ec505415903c7c8716c70443769f45265218f0389",
+    "styles/page-layout.css": "5fd221085e99dfaa382108f12b19f4ae6e3a589e732f4ac35a1b8506d419bab0",
+    "styles/programs.css": "a656bf94366fd1b2cafef8043c923e270dea035964a494c0f5c500821f44d352",
+    "styles/refinements.css": "38d869bfa5f80ad4c5f6685f271a68768121a39cc191c8837063056bd9dc464b",
+    "styles/small-notification-modal.css": "bde18d5868825af9fd9f47c76f9145303b21b56cb2f9c5c26345c23ead9feeff",
+    "styles/story.css": "3c4fc7243d9660ce3a12a879f56de9e66b7c37cfc4d42a412c96b9b90ae5ea9c",
+    "styles/system-control-group.css": "364c7c5971bd2f81e8cfa21e285077ef716af19644ad04f84884d0120bf22488",
+    "styles/system-primitives.css": "ac06485224208d4deb0ed868810665dbd9fed473a9df26b3881f569fbf6d3d96",
+    "styles/system-surface.css": "b0c0542815a7213ab5292935415343362d2b6f3fbc795bccbdd6a40ae2f53215",
+    "styles/tokens.css": "1117880ed05ea080cac37945e963a609a7c9b9170b0d7033fd203f4ce81f7f58",
+    "styles/transactions.css": "2923a932deca0f8c22c9b95a681a469fdcbc61899f4c8e1bff044fc28b397c34",
+    "styles/typography.css": "71491e63c85660be02fa7505674eb417b5bd94384f199660a3fc261627127355"
+  }
+}

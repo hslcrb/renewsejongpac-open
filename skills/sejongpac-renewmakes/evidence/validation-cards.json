@@ -1,0 +1,92 @@
+{
+  "timestamp": "2026-10-15T07:26:24.093202+00:00",
+  "scope": "Latest user request: card variants, typography, left autoplay and bidirectional pointer drag, decoration audit, precise restoration; local validation only",
+  "base_commit_before_changes": "4fd8ff6cfe0e46efe6f952e2f69679e23bbb1dce",
+  "node": {
+    "command": "node --test tests/*.test.mjs v2/tests/*.test.mjs",
+    "exit_code": 0,
+    "tests": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0
+  },
+  "readability": {
+    "command": "node v2/tests/readability.cjs",
+    "exit_code": 0,
+    "widths": [
+      320,
+      390,
+      768,
+      1024,
+      1440
+    ]
+  },
+  "consistency": {
+    "command": "node v2/tests/design-consistency.cjs",
+    "exit_code": 0,
+    "about_routes": 2,
+    "restored_shapes_each": 3,
+    "toasts": "both versions at desktop and 320px",
+    "dialogs": "search/menu: radius, Escape, focus return"
+  },
+  "cards": {
+    "command": "node v2/tests/cards-carousel.cjs",
+    "exit_code": 0,
+    "checks": [
+      "poster cover/no-padding and whole-card hover/focus",
+      "20px650 visit item and 20px card title",
+      "mouse two-way drag; no post-drag navigation",
+      "touch two-way swipe and visible touch favorite",
+      "native drag blocked; contextmenu allowed",
+      "2700ms start-to-start and intermediate shade fade",
+      "desktop/mobile detail cover/no-padding"
+    ]
+  },
+  "decoration": {
+    "command": "node skills/sejongpac-renewmakes/scripts/check-decoration.cjs",
+    "exit_code": 0,
+    "report": "decoration-audit.json",
+    "unique_routes": 132,
+    "widths": [
+      1440,
+      390,
+      320
+    ],
+    "screen_checks": 396,
+    "banned_labels": 0,
+    "stripe_boxes": 0,
+    "headings_below_20px": 0
+  },
+  "routes": {
+    "full_report": "cards-routes-full.json",
+    "final_mobile_report": "cards-routes-mobile.json",
+    "exit_code": 0,
+    "method": "Combined actual desktop run and final mobile rerun; original per-run reports retained",
+    "desktop_report": "cards-routes-desktop.json",
+    "widths": [
+      1440,
+      390,
+      320
+    ],
+    "screen_checks": 396
+  },
+  "skill_static": {
+    "command": "python3 skills/sejongpac-renewmakes/scripts/check.py",
+    "checks": 19,
+    "failed": 0
+  },
+  "visual_evidence": {
+    "new_pngs": 7,
+    "preserved_earlier_pngs": 7,
+    "manifest": "manifest.json"
+  },
+  "git_diff_check": {
+    "command": "git diff --check",
+    "exit_code": 0
+  },
+  "not_claimed": [
+    "hosting deployment",
+    "environment publication",
+    "all business flows on every route"
+  ]
+}

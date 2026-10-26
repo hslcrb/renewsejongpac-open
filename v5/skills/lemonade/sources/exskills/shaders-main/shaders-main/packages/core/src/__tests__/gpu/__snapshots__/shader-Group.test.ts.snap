@@ -1,0 +1,128 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Group with an active bounding box — boxResamplesContent path > resamples the composite INTO the box (box→content UV map + clip + unpremultiply) > group-boxresamples 1`] = `
+"fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn bboxGenUVContext(uv: vec2f, centerX: f32, centerY: f32, halfWidth: f32, halfHeight: f32, rotation: f32, aspectRatio: f32) -> vec2f {
+  let centeredX = (uv.x - centerX);
+  let centeredY = (uv.y - centerY);
+  let rotRad = -(((rotation * 3.141592653589793f) / 180f));
+  let cosA = cos(rotRad);
+  let sinA = sin(rotRad);
+  let sqX = (centeredX * aspectRatio);
+  let sqY = centeredY;
+  let rotatedX = ((sqX * cosA) - (sqY * sinA));
+  let rotatedY = ((sqX * sinA) + (sqY * cosA));
+  let halfWidthSq = max((halfWidth * aspectRatio), 1e-6f);
+  let halfHeightSq = max(halfHeight, 1e-6f);
+  let localX = ((rotatedX / (halfWidthSq * 2f)) + 0.5f);
+  let localY = ((rotatedY / (halfHeightSq * 2f)) + 0.5f);
+  return vec2f(localX, localY);
+}
+
+struct struct_1 {
+  _opacity: f32,
+  _bbox_centerX: f32,
+  _bbox_centerY: f32,
+  _bbox_halfWidth: f32,
+  _bbox_halfHeight: f32,
+  _bbox_cornerRadius: f32,
+  _bbox_rotation: f32,
+  _bbox_aspectRatio: f32,
+}
+
+struct struct_2 {
+  color: vec4f,
+  radius: f32,
+  softness: f32,
+  center: vec2f,
+  strokeThickness: f32,
+  strokeColor: vec4f,
+  strokePosition: f32,
+  colorSpace: f32,
+  _opacity: f32,
+}
+
+struct struct_3 {
+  color: vec4f,
+  radius: f32,
+  softness: f32,
+  center: vec2f,
+  strokeThickness: f32,
+  strokeColor: vec4f,
+  strokePosition: f32,
+  colorSpace: f32,
+  _opacity: f32,
+}
+
+struct struct_4 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_grp: struct_1,
+  n_a: struct_2,
+  n_b: struct_3,
+  _sys: struct_4,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn bboxClipMask(uv: vec2f, centerX: f32, centerY: f32, halfWidth: f32, halfHeight: f32, cornerRadius: f32, rotation: f32, aspectRatio: f32, aaFeather: f32) -> f32 {
+  let centeredX = (uv.x - centerX);
+  let centeredY = (uv.y - centerY);
+  let rotRad = -(((rotation * 3.141592653589793f) / 180f));
+  let cosA = cos(rotRad);
+  let sinA = sin(rotRad);
+  let sqX = (centeredX * aspectRatio);
+  let sqY = centeredY;
+  let rotatedX = ((sqX * cosA) - (sqY * sinA));
+  let rotatedY = ((sqX * sinA) + (sqY * cosA));
+  let halfWidthSq = (halfWidth * aspectRatio);
+  let halfHeightSq = halfHeight;
+  let innerHalfW = (halfWidthSq - cornerRadius);
+  let innerHalfH = (halfHeightSq - cornerRadius);
+  let qx = (abs(rotatedX) - innerHalfW);
+  let qy = (abs(rotatedY) - innerHalfH);
+  let qClamped = vec2f(max(qx, 0f), max(qy, 0f));
+  let sdf = ((length(qClamped) + min(max(qx, qy), 0f)) - cornerRadius);
+  let feather = max(aaFeather, 1e-7f);
+  let ramp = (1f - smoothstep(-(feather), feather, sdf));
+  let binary = select(0f, 1f, (sdf <= 0f));
+  return select(ramp, binary, (aaFeather <= 0f));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  var composed_0 = vec4f((unpremultiplyAlpha(textureSample(rtt_0, linearClamp, bboxGenUVContext(uv, uniforms.n_grp._bbox_centerX, uniforms.n_grp._bbox_centerY, uniforms.n_grp._bbox_halfWidth, uniforms.n_grp._bbox_halfHeight, uniforms.n_grp._bbox_rotation, uniforms.n_grp._bbox_aspectRatio)))).rgb, ((unpremultiplyAlpha(textureSample(rtt_0, linearClamp, bboxGenUVContext(uv, uniforms.n_grp._bbox_centerX, uniforms.n_grp._bbox_centerY, uniforms.n_grp._bbox_halfWidth, uniforms.n_grp._bbox_halfHeight, uniforms.n_grp._bbox_rotation, uniforms.n_grp._bbox_aspectRatio)))).a * bboxClipMask(uv, uniforms.n_grp._bbox_centerX, uniforms.n_grp._bbox_centerY, uniforms.n_grp._bbox_halfWidth, uniforms.n_grp._bbox_halfHeight, uniforms.n_grp._bbox_cornerRadius, uniforms.n_grp._bbox_rotation, uniforms.n_grp._bbox_aspectRatio, (0.5 / max(uniforms._sys.viewportSize.y, 1.0)))));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

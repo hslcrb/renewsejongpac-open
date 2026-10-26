@@ -1,0 +1,84 @@
+{
+    "schemaVersion": 1,
+    "capturedDate": "2026-10-15",
+    "source": {
+        "id": "code/limsflex",
+        "name": "limsflex",
+        "origin": "User-supplied local directory; Git pointer retained as inert bytes and not followed.",
+        "license": "No license file supplied."
+    },
+    "archive": {
+        "path": "imports/limsflex-originals.zip",
+        "sha256": "05e5485257fa34aefd04197fb2bfb55b6f27acd6957f4a55e638d466508e393c"
+    },
+    "counts": {
+        "files": 9,
+        "bytes": 26732,
+        "skills": 1
+    },
+    "files": [
+        {
+            "originalPath": "limsflex/.git",
+            "storedPath": "imports/limsflex/.git.source",
+            "size": 54,
+            "sha256": "6df1b533eb0c3a13ad9872ec2148fc4a134db04462459dbbfaddbfba39d48867"
+        },
+        {
+            "originalPath": "limsflex/README.md",
+            "storedPath": "imports/limsflex/README.md",
+            "size": 964,
+            "sha256": "8f309e214cedfaaa705cd364dc167b3b53e28b112e323230754f4d6686d13cea"
+        },
+        {
+            "originalPath": "limsflex/SKILL.md",
+            "storedPath": "imports/limsflex/SKILL.source.md",
+            "size": 7085,
+            "sha256": "a10ac3c4ab2cfac30653a248ebb1dbdece63690447bf7118ced442505a6ac894"
+        },
+        {
+            "originalPath": "limsflex/agents/openai.yaml",
+            "storedPath": "imports/limsflex/agents/openai.yaml",
+            "size": 409,
+            "sha256": "764970d3607f43d2e9d5fb13881a9a9b41480e129bc64c0a6b1d3941f126742b"
+        },
+        {
+            "originalPath": "limsflex/assets/default.css",
+            "storedPath": "imports/limsflex/assets/default.css",
+            "size": 1307,
+            "sha256": "fb5a4784d56a088686586af2f9a83a570346d77f895f200f98e7e1e6c0fa5d57"
+        },
+        {
+            "originalPath": "limsflex/assets/icon.svg",
+            "storedPath": "imports/limsflex/assets/icon.svg",
+            "size": 495,
+            "sha256": "b4d267cfe6be1f7dad3e247b7ce6a8ede6393be4930f52965683d8eefca00ca2"
+        },
+        {
+            "originalPath": "limsflex/assets/logo.svg",
+            "storedPath": "imports/limsflex/assets/logo.svg",
+            "size": 645,
+            "sha256": "685d8fccfd1292fe878ac9c0c5884f7c5ee669ef31421728349c7597fa8f1366"
+        },
+        {
+            "originalPath": "limsflex/references/code-contract.md",
+            "storedPath": "imports/limsflex/references/code-contract.md",
+            "size": 11814,
+            "sha256": "5d34d9428a3d4385d564bb3fb601fdc5f9a738fc9ec955de7c985b67624c0c43"
+        },
+        {
+            "originalPath": "limsflex/tests/acceptance.md",
+            "storedPath": "imports/limsflex/tests/acceptance.md",
+            "size": 3959,
+            "sha256": "9f637fe0cb2016bad555f299fc58081b794a3f6818a2e835a1909a3b1faa6d8a"
+        }
+    ],
+    "skills": [
+        {
+            "originalPath": "limsflex/SKILL.md",
+            "storedPath": "imports/limsflex/SKILL.source.md",
+            "sha256": "a10ac3c4ab2cfac30653a248ebb1dbdece63690447bf7118ced442505a6ac894",
+            "name": "limsflex",
+            "description": "Use when creating, extending, or reviewing web UI with unrestricted visual design and strict limstandards conventions for 4-space indentation, kebab-case classes, default CSS, semantic HTML, responsive Flexbox/Grid, and accessibility."
+        }
+    ]
+}

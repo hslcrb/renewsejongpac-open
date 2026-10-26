@@ -1,0 +1,336 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Frost (a) flat analytic ice generator > emits the analytic circle sampler + the shared material parts + the crystal noise, no RTT pass > final-pass 1`] = `
+"fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  center: vec2f,
+  scale: f32,
+  rotation: f32,
+  iceColor: vec4f,
+  ambient: f32,
+  edgeSoftness: f32,
+  density: f32,
+  absorption: f32,
+  scatter: f32,
+  frostAmount: f32,
+  frostDepth: f32,
+  frostScale: f32,
+  frostRoughness: f32,
+  sparkle: f32,
+  gloss: f32,
+  fresnel: f32,
+  lightAngle: f32,
+  speed: f32,
+  _opacity: f32,
+  _animTime: f32,
+  _vfOriginX: f32,
+  _vfOriginY: f32,
+  _vfSpanX: f32,
+  _vfSpanY: f32,
+  _vfActiveRes: f32,
+  _vfRBound: f32,
+  _saRadius: f32,
+  _saSides: f32,
+  _saRounding: f32,
+  _saInnerRatio: f32,
+  _saRotation: f32,
+  _saHeight: f32,
+  _saOffset: f32,
+  _saAperture: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_f: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn circleSdf(dx: f32, dy: f32, radius: f32) -> f32 {
+  return (sqrt(((dx * dx) + (dy * dy))) - radius);
+}
+
+fn analyticSdf_circleSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = circleSdf(rdx, rdy, r);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn outsideShape(sdf: f32, pxH: f32) -> bool {
+  return (sdf > (pxH * 2f));
+}
+
+fn opticalThickness(sdf: f32, volumetric: f32) -> f32 {
+  let thickVol = clamp(((sdf * -1f) * 2f), 0f, 1.2f);
+  let thickFlat = (clamp((sdf * -1f), 0f, 0.5f) * 2f);
+  return select(thickFlat, thickVol, (volumetric > 0.5f));
+}
+
+fn beerLambert(thickness: f32, absorb: vec3f) -> vec3f {
+  return vec3f(exp(((thickness * absorb.x) * -1f)), exp(((thickness * absorb.y) * -1f)), exp(((thickness * absorb.z) * -1f)));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn fieldGradient(surf0: vec4f, surfX: vec4f, surfY: vec4f, eps: f32) -> vec2f {
+  return vec2f(((surfX.x - surf0.x) / eps), ((surfY.x - surf0.x) / eps));
+}
+
+fn patternCoords(sdfUV: vec2f, surf0: vec4f, volumetric: f32) -> vec2f {
+  return vec2f(select((sdfUV.x - 0.5f), surf0.y, (volumetric > 0.5f)), select((sdfUV.y - 0.5f), surf0.z, (volumetric > 0.5f)));
+}
+
+fn mxFade(t: f32) -> f32 {
+  return (((t * t) * t) * ((t * ((t * 6f) - 15f)) + 10f));
+}
+
+fn mxRotl32(x: u32, k: i32) -> u32 {
+  return ((x << u32(k)) | (x >> u32((32i - k))));
+}
+
+fn mxBjfinal(a0: u32, b0: u32, c0: u32) -> u32 {
+  var a = a0;
+  var b = b0;
+  var c = c0;
+  c = (c ^ b);
+  c = (c - mxRotl32(b, 14i));
+  a = (a ^ c);
+  a = (a - mxRotl32(c, 11i));
+  b = (b ^ a);
+  b = (b - mxRotl32(a, 25i));
+  c = (c ^ b);
+  c = (c - mxRotl32(b, 16i));
+  a = (a ^ c);
+  a = (a - mxRotl32(c, 4i));
+  b = (b ^ a);
+  b = (b - mxRotl32(a, 14i));
+  c = (c ^ b);
+  c = (c - mxRotl32(b, 24i));
+  return c;
+}
+
+fn mxHashInt1(x: i32, y: i32) -> u32 {
+  const len = 2u;
+  let seed = ((3735928559u + (len << 2u)) + 13u);
+  let a = (seed + u32(x));
+  let b = (seed + u32(y));
+  return mxBjfinal(a, b, seed);
+}
+
+fn mxGradientFloat2(hash: u32, x: f32, y: f32) -> f32 {
+  let h = (hash & 7u);
+  let u = select(y, x, (h < 4u));
+  let v = (2f * select(x, y, (h < 4u)));
+  let uu = select(u, -(u), ((h & 1u) != 0u));
+  let vv = select(v, -(v), ((h & 2u) != 0u));
+  return (uu + vv);
+}
+
+fn mxBilerp(v0: f32, v1: f32, v2: f32, v3: f32, s: f32, t: f32) -> f32 {
+  let s1 = (1f - s);
+  return (((1f - t) * ((v0 * s1) + (v1 * s))) + (t * ((v2 * s1) + (v3 * s))));
+}
+
+fn mxGradientScale2d(v: f32) -> f32 {
+  return (0.6616f * v);
+}
+
+fn mxPerlinNoiseFloat2(p: vec2f) -> f32 {
+  let X = i32(floor(p.x));
+  let Y = i32(floor(p.y));
+  let fx = (p.x - f32(X));
+  let fy = (p.y - f32(Y));
+  let u = mxFade(fx);
+  let v = mxFade(fy);
+  let result = mxBilerp(mxGradientFloat2(mxHashInt1(X, Y), fx, fy), mxGradientFloat2(mxHashInt1((X + 1i), Y), (fx - 1f), fy), mxGradientFloat2(mxHashInt1(X, (Y + 1i)), fx, (fy - 1f)), mxGradientFloat2(mxHashInt1((X + 1i), (Y + 1i)), (fx - 1f), (fy - 1f)), u, v);
+  return mxGradientScale2d(result);
+}
+
+fn mxNoiseFloat2(p: vec2f) -> f32 {
+  return mxPerlinNoiseFloat2(p);
+}
+
+fn mxHashInt2(x: i32, y: i32, z: i32) -> u32 {
+  const len = 3u;
+  let seed = ((3735928559u + (len << 2u)) + 13u);
+  let a = (seed + u32(x));
+  let b = (seed + u32(y));
+  let c = (seed + u32(z));
+  return mxBjfinal(a, b, c);
+}
+
+fn mxBitsTo01(bits: u32) -> f32 {
+  return (f32(bits) / 4294967296f);
+}
+
+fn mxCellNoiseVec3_2d(p: vec2f) -> vec3f {
+  let ix = i32(floor(p.x));
+  let iy = i32(floor(p.y));
+  return vec3f(mxBitsTo01(mxHashInt2(ix, iy, 0i)), mxBitsTo01(mxHashInt2(ix, iy, 1i)), mxBitsTo01(mxHashInt2(ix, iy, 2i)));
+}
+
+fn mxWorleyDistance2d(p: vec2f, x: i32, y: i32, xoff: i32, yoff: i32, jitter: f32, metric: i32) -> f32 {
+  let tmp = mxCellNoiseVec3_2d(vec2f(f32((x + xoff)), f32((y + yoff))));
+  var off = vec2f(tmp.x, tmp.y);
+  off = (((off - 0.5f) * jitter) + 0.5f);
+  let cellpos = (vec2f(f32(x), f32(y)) + off);
+  let diff = (cellpos - p);
+  if ((metric == 2i)) {
+    return (abs(diff.x) + abs(diff.y));
+  }
+  if ((metric == 3i)) {
+    return max(abs(diff.x), abs(diff.y));
+  }
+  return dot(diff, diff);
+}
+
+fn mxWorleyNoiseFloat2(p: vec2f, jitter: f32, metric: i32) -> f32 {
+  let X = i32(floor(p.x));
+  let Y = i32(floor(p.y));
+  let localpos = vec2f((p.x - f32(X)), (p.y - f32(Y)));
+  var sqdist = 1e+6f;
+  for (var x = -1; (x <= 1i); x++) {
+    for (var y = -1; (y <= 1i); y++) {
+      let dist = mxWorleyDistance2d(localpos, x, y, X, Y, jitter, metric);
+      sqdist = min(sqdist, dist);
+    }
+  }
+  if ((metric == 0i)) {
+    sqdist = sqrt(sqdist);
+  }
+  return sqdist;
+}
+
+fn mxWorleyNoiseFloat2Pub(p: vec2f, jitter: f32) -> f32 {
+  return mxWorleyNoiseFloat2(p, jitter, 1i);
+}
+
+fn nudgeNormal(n: vec3f, dx: f32, dy: f32) -> vec3f {
+  return normalize(vec3f((n.x + dx), (n.y + dy), n.z));
+}
+
+struct KeyLight {
+  L: vec3f,
+  H: vec3f,
+}
+
+fn keyLight(lx: f32, ly: f32, lz: f32) -> KeyLight {
+  let L = normalize(vec3f(lx, ly, lz));
+  let H = normalize((L + vec3f(0, 0, -1)));
+  return KeyLight(L, H);
+}
+
+fn grazingView(n: vec3f) -> f32 {
+  return (1f - clamp((n.z * -1f), 0f, 1f));
+}
+
+fn insideMask(sdf: f32, sharpEdge: f32, pxH: f32, minPixels: f32) -> f32 {
+  let w = max((sharpEdge * 0.03125f), (pxH * minPixels));
+  return clamp(((sdf * -1f) / w), 0f, 1f);
+}
+
+fn silhouetteAlpha(sdf: f32, edgeSoftness: f32, pxH: f32) -> f32 {
+  let sharpEdge = max((edgeSoftness * 0.5f), 1e-3f);
+  return smoothstep(0f, 1f, insideMask(sdf, sharpEdge, pxH, 1.5f));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let sdfUV_3 = sdfSpaceUV(uniforms.n_f.center, uniforms.n_f.scale, uniforms.n_f.rotation, uv, uniforms._sys.aspect);
+  let s0_2 = analyticSdf_circleSDF(sdfUV_3, uniforms.n_f._saRadius, uniforms.n_f._saSides, uniforms.n_f._saRounding, uniforms.n_f._saInnerRatio, uniforms.n_f._saRotation, uniforms.n_f._saHeight, uniforms.n_f._saOffset, uniforms.n_f._saAperture);
+  let sdf_1 = (s0_2.x / uniforms.n_f.scale);
+  let pxH_4 = (1.0 / uniforms._sys.viewportSize.y);
+  var frost_0 = vec4f(0.0, 0.0, 0.0, 0.0);
+  if ((!(outsideShape(sdf_1, pxH_4)))) {
+  let thickness_8 = (opticalThickness(sdf_1, 0.0) * uniforms.n_f.density);
+  let depthT_7 = clamp((thickness_8 * 1.2), 0.0, 1.0);
+  let transmit_9 = beerLambert(thickness_8, (vec3f(1.6, 0.85, 0.45) * uniforms.n_f.absorption));
+  let scatteredRgb_6 = (mix(vec3f(1.0, 1.0, 1.0), uniforms.n_f.iceColor.rgb, vec3f(depthT_7)) * transmit_9);
+  let sX_14 = analyticSdf_circleSDF(offsetUV(sdfUV_3, 0.01, 0.0), uniforms.n_f._saRadius, uniforms.n_f._saSides, uniforms.n_f._saRounding, uniforms.n_f._saInnerRatio, uniforms.n_f._saRotation, uniforms.n_f._saHeight, uniforms.n_f._saOffset, uniforms.n_f._saAperture);
+  let sY_15 = analyticSdf_circleSDF(offsetUV(sdfUV_3, 0.0, 0.01), uniforms.n_f._saRadius, uniforms.n_f._saSides, uniforms.n_f._saRounding, uniforms.n_f._saInnerRatio, uniforms.n_f._saRotation, uniforms.n_f._saHeight, uniforms.n_f._saOffset, uniforms.n_f._saAperture);
+  let grad_13 = fieldGradient(s0_2, sX_14, sY_15, 0.01);
+  let depthNorm_17 = clamp(((sdf_1 * -1.0) / max(0.3, 0.01)), 0.0, 1.0);
+  let bevelSlope_16 = (sqrt(max((1.0 - (depthNorm_17 * depthNorm_17)), 0.0)) * 1.8);
+  let nBase_12 = normalize(vec3f((grad_13.x * bevelSlope_16), (grad_13.y * bevelSlope_16), -1.0));
+  let frostField_20 = ((1.0 - smoothstep(0.0, max((uniforms.n_f.frostDepth * 0.3), 0.01), (sdf_1 * -1.0))) * uniforms.n_f.frostAmount);
+  let pat_21 = patternCoords(sdfUV_3, s0_2, 0.0);
+  let frostScl_22 = (uniforms.n_f.frostScale * 60.0);
+  var frostFx_19 = vec3f(0.0, 0.0, 0.0);
+  if ((frostField_20 > 0.0)) {
+  let fn0_23 = mxNoiseFloat2(vec2f((pat_21.x * frostScl_22), (pat_21.y * frostScl_22)));
+  let frostNormalAmp_24 = ((frostField_20 * uniforms.n_f.frostRoughness) * 1.0);
+  frostFx_19 = vec3f(((((mxNoiseFloat2(vec2f(((pat_21.x + 0.004) * frostScl_22), (pat_21.y * frostScl_22))) - fn0_23) / 0.004) * frostNormalAmp_24) * 0.03), ((((mxNoiseFloat2(vec2f((pat_21.x * frostScl_22), ((pat_21.y + 0.004) * frostScl_22))) - fn0_23) / 0.004) * frostNormalAmp_24) * 0.03), (smoothstep(0.25, 0.0, mxWorleyNoiseFloat2Pub(vec2f((pat_21.x * (uniforms.n_f.frostScale * 40.0)), (pat_21.y * (uniforms.n_f.frostScale * 40.0))), 1.0)) * frostField_20));
+}
+  let fx3_18 = frostFx_19;
+  let n_11 = nudgeNormal(nBase_12, fx3_18.x, fx3_18.y);
+  let light_26 = vec2f(cos((uniforms.n_f.lightAngle * 0.017453292519943295)), sin((uniforms.n_f.lightAngle * 0.017453292519943295)));
+  let kl_25 = keyLight(light_26.x, light_26.y, -0.6);
+  let ndl_10 = dot(n_11, kl_25.L);
+  let ndh_28 = clamp(dot(n_11, kl_25.H), 0.0, 1.0);
+  let broadSpec_27 = ((pow(ndh_28, 16.0) * 0.4) * uniforms.n_f.gloss);
+  let grazing_29 = grazingView(n_11);
+  var sparkleGlint_30 = 0.0;
+  if ((frostField_20 > 0.0)) {
+  let glintField_31 = ((mxNoiseFloat2(vec2f(((pat_21.x * 190.0) + 13.7), ((pat_21.y * 190.0) - 4.3))) * 0.5) + 0.5);
+  sparkleGlint_30 = (((smoothstep(0.72, 0.96, (glintField_31 * ((sin(((uniforms.n_f._animTime * 3.0) + (glintField_31 * 40.0))) * 0.5) + 0.5))) * ((pow(ndh_28, 6.0) * 0.6) + 0.4)) * frostField_20) * uniforms.n_f.sparkle);
+}
+  let iceRgb_5 = ((((((scatteredRgb_6 * ((pow(((ndl_10 * 0.5) + 0.5), 0.7) * 0.6) + 0.5)) + ((((transmit_9 * clamp(((dot(kl_25.L, vec3f(0.0, 0.0, 1.0)) * 0.5) + 0.5), 0.0, 1.0)) * uniforms.n_f.scatter) * (1.0 - (depthT_7 * 0.4))) * 0.5)) + (vec3f(0.4, 0.46, 0.55) * uniforms.n_f.ambient)) + vec3f(broadSpec_27)) + (vec3f(0.85, 0.93, 1.0) * ((pow(grazing_29, 3.0) * uniforms.n_f.fresnel) * 1.5))) + (vec3f(0.95, 0.98, 1.0) * ((fx3_18.z * 0.4) + (sparkleGlint_30 * 4.0))));
+  frost_0 = vec4f(iceRgb_5, silhouetteAlpha(sdf_1, uniforms.n_f.edgeSoftness, pxH_4));
+}
+  var composed_32 = frost_0;
+  return vec4f(linearToSrgb(tone_linear(composed_32.rgb)), composed_32.a);
+}"
+`;

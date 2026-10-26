@@ -1,0 +1,47 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T05:35:20.340Z",
+  "results": [
+    {
+      "name": "phone and small-tablet menus are full-height left drawers with the denser material",
+      "passed": true
+    },
+    {
+      "name": "native disclosure groups expose the complete vertical navigation to touch and keyboard",
+      "passed": true
+    },
+    {
+      "name": "dragging cannot detach the drawer and the complete list scrolls inside it",
+      "passed": true
+    },
+    {
+      "name": "WebGL uses the drawer lens and reverses into the left wall before removing the DOM",
+      "passed": true
+    },
+    {
+      "name": "switching presentations restores the desktop position without moving the mobile drawer",
+      "passed": true
+    },
+    {
+      "name": "reduced motion retains the attached drawer and the short close fade",
+      "passed": true
+    },
+    {
+      "name": "the no-WebGL fallback also enters and exits through the left edge",
+      "passed": true
+    },
+    {
+      "name": "the design registry changes the live material and generated usage code by variant",
+      "passed": true
+    },
+    {
+      "name": "home preserves its headings, shared invitation and three filled participation cards",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

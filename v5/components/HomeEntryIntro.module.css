@@ -1,0 +1,164 @@
+/* v5 첫 진입 연출: 글로벌 디자인 토큰과 원본 SVG를 함께 사용한다. */
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000002;
+    isolation: isolate;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    padding: max(20px, env(safe-area-inset-top, 0px))
+             max(20px, env(safe-area-inset-right, 0px))
+             max(20px, env(safe-area-inset-bottom, 0px))
+             max(20px, env(safe-area-inset-left, 0px));
+    overflow: hidden;
+    background: var(--surface-inverse);
+    color: var(--text-inverse);
+    opacity: 1;
+    box-sizing: border-box;
+    /* 수화가 멈추거나 JS가 비활성화되어도 화면을 영구 차단하지 않는다. */
+    animation: v5EntryFailOpen 0s linear 10s forwards;
+}
+.overlay[data-phase="exit"] {
+    animation: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 850ms ease;
+}
+.stage {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+.artwork {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(94vw, 1060px);
+    max-height: 92%;
+    opacity: 0;
+    pointer-events: none;
+    /* SVG의 배경 사각형과 제품 배경 사이에 하드 엣지가 남지 않게 한다. */
+    -webkit-mask-image: radial-gradient(ellipse 80% 78% at 50% 50%, black 56%, transparent 96%);
+    mask-image: radial-gradient(ellipse 80% 78% at 50% 50%, black 56%, transparent 96%);
+    animation: v5EntryArtApproach 2600ms cubic-bezier(.22, .61, .36, 1) both;
+}
+.artwork img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 72dvh;
+    aspect-ratio: 3 / 2;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.overlay[data-phase="copy"] .artwork,
+.overlay[data-phase="exit"] .artwork {
+    visibility: hidden;
+}
+.copy {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    width: min(100%, 1000px);
+    padding-inline: 12px;
+    opacity: 0;
+    text-align: center;
+    pointer-events: none;
+}
+.overlay[data-phase="copy"] .copy {
+    opacity: 1;
+    animation: v5EntryCopyReveal 420ms ease both;
+}
+.overlay[data-phase="exit"] .copy {
+    opacity: 0;
+    transition: opacity 300ms ease;
+}
+.eyebrow {
+    color: var(--text-inverse);
+    opacity: .75;
+    font-size: max(16px, var(--text-min));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: .14em;
+}
+.message {
+    min-height: 2em;
+    margin: 0;
+    color: var(--text-inverse);
+    font-family: var(--display-font);
+    font-size: clamp(30px, 5vw, 64px);
+    font-weight: var(--weight-heading);
+    line-height: 1.35;
+    letter-spacing: -.045em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+    text-wrap: balance;
+}
+.caret {
+    display: inline-block;
+    width: 2px;
+    height: .9em;
+    margin-inline-start: 4px;
+    vertical-align: -.1em;
+    background: currentColor;
+    animation: v5EntryCaret 900ms steps(1) infinite;
+}
+.skip {
+    position: relative;
+    z-index: 1;
+    justify-self: end;
+    align-self: end;
+    min-height: 44px;
+    font-size: max(16px, var(--text-min));
+}
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+@keyframes v5EntryArtApproach {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(.46); }
+    22%, 72% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.08); }
+}
+@keyframes v5EntryCopyReveal {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes v5EntryCaret {
+    0%, 49% { opacity: .9; }
+    50%, 100% { opacity: 0; }
+}
+@keyframes v5EntryFailOpen {
+    to { visibility: hidden; pointer-events: none; }
+}
+@media (max-width: 600px) {
+    .artwork { width: 116vw; max-width: none; }
+    .copy { gap: 16px; }
+    .eyebrow { letter-spacing: .055em; }
+    .message { font-size: clamp(30px, 7.5vw, 42px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .overlay { display: none; animation: none; transition: none; }
+    .artwork, .copy, .caret { animation: none !important; transition: none !important; }
+}

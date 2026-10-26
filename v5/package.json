@@ -1,0 +1,42 @@
+{
+  "name": "sejongpac-v5",
+  "version": "5.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/prepare-design-system.ts",
+    "dev": "next dev",
+    "prebuild": "node scripts/prepare-design-system.ts --build",
+    "build": "next build",
+    "postbuild": "node scripts/sync-out.ts",
+    "start": "next start",
+    "test:orb": "node tests/violet-quick-menu.cjs",
+    "test:orb:gallery": "node tests/violet-quick-menu-gallery.cjs",
+    "test:orb:smoke": "node tests/violet-quick-menu-smoke.cjs",
+    "test:orb:motion": "node --test tests/quick-menu-fluid.test.ts",
+    "test:home:anchors": "node tests/home-anchors.cjs",
+    "test:scroll": "node --test tests/header-sticky.test.ts tests/scrollbar-style.test.ts",
+    "test:scroll:browser": "node tests/scroll-chrome-browser.ts",
+    "check:system": "node scripts/prepare-design-system.ts --check",
+    "test:system:browser": "node tests/component-system-browser.ts",
+    "test:auth:browser": "node scripts/run-auth-browser.ts",
+    "test:entry-intro": "node --test tests/home-entry-intro.test.ts",
+    "test:entry-intro:browser": "node tests/home-entry-intro-browser.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
+    "animejs": "^4.5.0",
+    "html-to-image": "1.11.13",
+    "next": "14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "parse5": "7.3.0",
+    "playwright": "1.62.1",
+    "typescript": "^5.6.3"
+  }
+}

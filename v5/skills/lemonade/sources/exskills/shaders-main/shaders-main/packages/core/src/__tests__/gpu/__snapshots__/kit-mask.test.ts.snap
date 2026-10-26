@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`mask — resolve gate > all masks resolve to WGSL (snapshot) 1`] = `
+"fn item(target_1: vec4f, mask: vec4f) -> vec4f {
+  return vec4f(target_1.xyz, (target_1.w * mask.w));
+}
+
+fn item_1(target_1: vec4f, mask: vec4f) -> vec4f {
+  return vec4f(target_1.xyz, (target_1.w * (1f - mask.w)));
+}
+
+fn item_2(target_1: vec4f, mask: vec4f) -> vec4f {
+  let lum = dot(mask.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  return vec4f(target_1.xyz, (target_1.w * lum));
+}
+
+fn item_3(target_1: vec4f, mask: vec4f) -> vec4f {
+  let lum = dot(mask.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  return vec4f(target_1.xyz, (target_1.w * (1f - lum)));
+}"
+`;

@@ -1,0 +1,160 @@
+/* [공통 리퀴드 글래스 / Shared liquid glass]
+   맑은 굴절 테두리와 불투명한 중심을 분리합니다. / Separate the clear refracting rim from the frosted center. */
+.liquid-glass {
+    --glass-tint: color-mix(in srgb, var(--color-white) calc(var(--glass-opacity) * 100%), var(--color-transparent));
+    --glass-solid: var(--surface-default);
+    --glass-sheen-start: color-mix(in srgb, var(--color-white) 32%, var(--color-transparent));
+    --glass-sheen-middle: color-mix(in srgb, var(--color-white) 8%, var(--color-transparent));
+    --glass-sheen-end: color-mix(in srgb, var(--color-white) 28%, var(--color-transparent));
+    --glass-reflection-glow: color-mix(in srgb, var(--color-white) 70%, var(--color-transparent));
+    --glass-reflection-edge: color-mix(in srgb, var(--color-white) 90%, var(--color-transparent));
+    --glass-reflection-rim: color-mix(in srgb, var(--color-white) 98%, var(--color-transparent));
+    --glass-reflection-center: color-mix(in srgb, var(--color-white) 56%, var(--color-transparent));
+    --glass-edge-shadow: color-mix(in srgb, var(--color-black) 12%, var(--color-transparent));
+    position: relative;
+    z-index: 0;
+    border: 1px solid var(--glass-edge);
+    border-radius: var(--radius-dialog);
+    color: var(--text-primary);
+    background: var(--color-transparent);
+    box-shadow:
+        var(--glass-shadow),
+        inset 0 1px 0 var(--glass-reflection-rim),
+        inset 0 -2px 1px var(--glass-edge-shadow);
+}
+
+/* [서랍형의 짙고 두꺼운 유리 / Denser, thicker glass for the drawer variant] */
+.liquid-glass[data-glass-variant="drawer"] {
+    --glass-opacity: var(--glass-drawer-opacity);
+    --glass-refraction: var(--glass-drawer-refraction);
+    --glass-blur: var(--glass-drawer-blur);
+    --glass-thickness: var(--glass-drawer-thickness);
+}
+
+/* [히어로 정보의 유리 / Glass for hero information] */
+.liquid-glass[data-glass-variant="hero"] {
+    --glass-opacity: var(--glass-hero-opacity);
+    --glass-refraction: var(--glass-hero-refraction);
+    --glass-blur: var(--glass-hero-blur);
+    --glass-thickness: var(--glass-hero-thickness);
+}
+
+/* [알림소형모달과 같은 렌즈의 흰 유리 / White glass with the notification capsule's lens]
+   인라인 안내에는 옅은 안쪽 경계와 작은 그림자를 사용합니다.
+   Inline notices use a soft inset rim and a compact shadow. */
+.liquid-glass[data-glass-variant="white"] {
+    --glass-opacity: var(--glass-white-opacity);
+    --glass-refraction: var(--glass-white-refraction);
+    --glass-blur: var(--glass-white-blur);
+    --glass-thickness: var(--glass-white-thickness);
+    --glass-shadow: var(--surface-shadow-elevated);
+    border: 0;
+    box-shadow:
+        var(--glass-shadow),
+        inset 0 0 0 var(--stroke-width) var(--glass-edge),
+        inset 0 1px 0 var(--glass-reflection-rim),
+        inset 0 -2px 1px var(--glass-edge-shadow);
+}
+
+/* [브랜드 오프블랙 렌즈와 절제된 반사 / Brand off-black lens with restrained reflections]
+   같은 굴절 지도를 사용하며 재질 밀도와 반사광을 함께 바꿉니다.
+   Reuse the refraction map while changing material density and reflected light. */
+.liquid-glass[data-glass-variant="black"] {
+    --glass-opacity: var(--glass-black-opacity);
+    --glass-refraction: var(--glass-black-refraction);
+    --glass-blur: var(--glass-black-blur);
+    --glass-thickness: var(--glass-black-thickness);
+    --glass-tint: color-mix(in srgb, var(--color-glass-ink) calc(var(--glass-opacity) * 100%), var(--color-transparent));
+    --glass-solid: var(--surface-inverse);
+    --glass-sheen-start: color-mix(in srgb, var(--color-white) 12%, var(--color-transparent));
+    --glass-sheen-middle: color-mix(in srgb, var(--color-white) 2%, var(--color-transparent));
+    --glass-sheen-end: color-mix(in srgb, var(--color-white) 7%, var(--color-transparent));
+    --glass-reflection-glow: color-mix(in srgb, var(--color-white) 6%, var(--color-transparent));
+    --glass-reflection-edge: color-mix(in srgb, var(--color-white) 20%, var(--color-transparent));
+    --glass-reflection-rim: color-mix(in srgb, var(--color-white) 28%, var(--color-transparent));
+    --glass-reflection-center: color-mix(in srgb, var(--color-white) 10%, var(--color-transparent));
+    --glass-edge-shadow: color-mix(in srgb, var(--color-glass-ink) 36%, var(--color-transparent));
+    border-color: var(--color-glass-edge);
+    color: var(--text-inverse);
+}
+
+.glass-lens-definitions {
+    position: absolute;
+    pointer-events: none;
+}
+
+.liquid-glass-optics {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            140deg,
+            var(--glass-sheen-start),
+            var(--color-transparent) 38%,
+            var(--glass-sheen-middle) 66%,
+            var(--glass-sheen-end)
+        ),
+        var(--glass-tint);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+    backdrop-filter: var(--glass-filter, blur(var(--glass-blur))) saturate(var(--glass-saturation));
+}
+
+/* [안쪽 반사와 모서리의 두께 / Inner reflection and the beveled edge] */
+.liquid-glass-optics::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+        inset 0 0 14px var(--glass-reflection-glow),
+        inset 2px 2px 3px var(--glass-reflection-edge),
+        inset -2px -3px 5px var(--glass-edge-shadow);
+}
+.liquid-glass-optics::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        120deg,
+        var(--glass-reflection-rim),
+        var(--color-transparent) 26%,
+        var(--glass-reflection-center) 48%,
+        var(--color-transparent) 72%,
+        var(--glass-reflection-edge)
+    );
+    padding: 2px;
+    -webkit-mask:
+        linear-gradient(var(--color-white) 0 0) content-box,
+        linear-gradient(var(--color-white) 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(var(--color-white) 0 0) content-box,
+        linear-gradient(var(--color-white) 0 0);
+    mask-composite: exclude;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .liquid-glass-optics {
+        background: var(--glass-solid);
+    }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
+    .liquid-glass-optics {
+        background: var(--glass-solid);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+    .liquid-glass-optics::before,
+    .liquid-glass-optics::after {
+        display: none;
+    }
+    .liquid-glass {
+        border-color: currentColor;
+    }
+}

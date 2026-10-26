@@ -1,0 +1,285 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FloatingParticles (a) compute simulation → resolved texture > registers the mote (compute) texture and samples it in the fragment (GENERATOR) > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  particleColor: vec4f,
+  count: f32,
+  particleSize: f32,
+  softness: f32,
+  speed: f32,
+  angle: f32,
+  speedVariance: f32,
+  angleVariance: f32,
+  randomness: f32,
+  twinkle: f32,
+  cursorStrength: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_fp: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = in.uv;
+  var composed_0 = textureSample(compute_0, linearClamp, uv);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`FloatingParticles (c) kernels resolve (D3 rules) > every shape variant of the splat resolves with orbit + twinkle; resolve tints + stores > splatKernel 1`] = `
+"struct SimParams {
+  color: vec4f,
+  count: f32,
+  dt: f32,
+  time: f32,
+  aspect: f32,
+  domainX: f32,
+  driftBase: f32,
+  angleRad: f32,
+  speedVar: f32,
+  angleVarRad: f32,
+  randomness: f32,
+  twinkle: f32,
+  softness: f32,
+  bodyR: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorRadSq: f32,
+  cursorForce: f32,
+  dragMul: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 8192>;
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn noise_hash22(p: vec2f) -> vec2f {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  let h = (u.x ^ u.y);
+  let prod = (vec2u(h, h) * vec2u(3141592653, 1618033988));
+  return (vec2f(f32(prod.x), f32(prod.y)) / 4294967296f);
+}
+
+fn pointSlotOrbitalPlace(fi: f32, stored: vec2f) -> vec2f {
+  let prm = (&params);
+  let h = noise_hash22(vec2f(((fi * 2.41f) + 0.37f), ((fi * 0.577f) + 8.19f)));
+  let rate = (((0.5f + h.x) * 1.4f) * (*prm).randomness);
+  let ph = (h.y * 6.283185307179586f);
+  let rad = ((0.035f * (*prm).randomness) * (0.5f + (h.x * 0.5f)));
+  let t = (((*prm).time * rate) + ph);
+  return (stored + (vec2f(cos(t), sin(t)) * rad));
+}
+
+fn floatBitsToUint1(x: f32) -> u32 { return bitcast<u32>(x); }
+
+fn noise_hash11(p: f32) -> f32 {
+  let u = floatBitsToUint1((p * 3141592653f));
+  return (f32(((u * u) * 3141592653u)) / 4294967296f);
+}
+
+fn agentPresenceVariation(fi: f32) -> f32 {
+  return (0.55f + (noise_hash11(((fi * 1.91f) + 2.53f)) * 0.7f));
+}
+
+fn pointSlotTwinkleBrightness(fi: f32) -> f32 {
+  let prm = (&params);
+  let ph = (noise_hash11(((fi * 3.7f) + 0.93f)) * 6.283185307179586f);
+  let twk = ((sin((((*prm).time * 2f) + ph)) * 0.5f) + 0.5f);
+  return (mix(1f, twk, (*prm).twinkle) * (0.4f + (0.6f * agentPresenceVariation(fi))));
+}
+
+fn pointSlotPresenceRadius(fi: f32) -> f32 {
+  return max((params.bodyR * (0.55f + (0.45f * agentPresenceVariation(fi)))), 1e-6f);
+}
+
+struct SplatWindow {
+  x0: i32,
+  x1: i32,
+  y0: i32,
+  y1: i32,
+}
+
+fn worldSplatWindow(pos: vec2f, reach: f32, aspect: f32, res: f32) -> SplatWindow {
+  let asp = max(aspect, 1e-5f);
+  let cxi = i32(floor(((pos.x / asp) * res)));
+  let cyi = i32(floor((pos.y * res)));
+  let radX = i32(ceil(((reach * res) / asp)));
+  let radY = i32(ceil((reach * res)));
+  let last = (i32(res) - 1i);
+  return SplatWindow(max((cxi - radX), 0i), min((cxi + radX), last), max((cyi - radY), 0i), min((cyi + radY), last));
+}
+
+fn agentCapsuleSdf(t: f32, n: f32, hl: f32, r: f32) -> f32 {
+  let tc = (t - clamp(t, -(hl), hl));
+  return (sqrt(((tc * tc) + (n * n))) - r);
+}
+
+fn agentWeight(t: f32, n: f32, bodyR: f32, aaW: f32, soft: f32) -> f32 {
+  let sd = agentCapsuleSdf(t, n, (bodyR * 0f), (bodyR * 1f));
+  let wHard = (1f - smoothstep(-(aaW), aaW, sd));
+  let gq = (max(sd, 0f) / max((bodyR * 0.75f), 1e-6f));
+  let wSoft = exp(((gq * gq) * -1f));
+  return mix(wHard, wSoft, soft);
+}
+
+fn agentPointWeight(_q: f32, t: f32, n: f32, bodyR: f32, aaW: f32, soft: f32) -> f32 {
+  return agentWeight(t, n, bodyR, aaW, soft);
+}
+
+@group(0) @binding(1) var<storage, read_write> accumE: array<atomic<u32>, 1048576>;
+
+fn floatingParticlesSplat(i: u32) {
+  let prm = (&params);
+  let s4 = (&agents[i]);
+  let fi = f32(i);
+  let pos = pointSlotOrbitalPlace(fi, vec2f((*s4).x, (*s4).y));
+  let bright = pointSlotTwinkleBrightness(fi);
+  let aspect = max((*prm).aspect, 1e-5f);
+  let softV = max((*prm).softness, 0f);
+  let extK = mix(1.2000000476837158f, 2.4f, softV);
+  let gain = mix(637f, 255f, softV);
+  let bodyR = pointSlotPresenceRadius(fi);
+  let invBodyR = (1f / bodyR);
+  let reach = ((bodyR * extK) + 0.00146484375f);
+  let reachQ = ((reach * invBodyR) * (reach * invBodyR));
+  let win = worldSplatWindow(pos, reach, aspect, 1024f);
+  for (var py = win.y0; (py <= win.y1); py++) {
+    let offY = (((f32(py) + 0.5f) * 9.765625e-4f) - pos.y);
+    for (var px = win.x0; (px <= win.x1); px++) {
+      let offX = ((((f32(px) + 0.5f) * 9.765625e-4f) * aspect) - pos.x);
+      let q = ((((offX * offX) + (offY * offY)) * invBodyR) * invBodyR);
+      if ((q < reachQ)) {
+        let w = (agentPointWeight(q, offX, offY, bodyR, 7.32421875e-4f, softV) * bright);
+        let e = u32((w * gain));
+        if ((e > 0u)) {
+          let idx = u32(((py * 1024i) + px));
+          atomicAdd(&accumE[idx], e);
+        }
+      }
+    }
+  }
+}"
+`;
+
+exports[`FloatingParticles (c) kernels resolve (D3 rules) > init / update kernels resolve (drift + gust + toroidal wrap) > updateKernel 1`] = `
+"struct SimParams {
+  color: vec4f,
+  count: f32,
+  dt: f32,
+  time: f32,
+  aspect: f32,
+  domainX: f32,
+  driftBase: f32,
+  angleRad: f32,
+  speedVar: f32,
+  angleVarRad: f32,
+  randomness: f32,
+  twinkle: f32,
+  softness: f32,
+  bodyR: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorRadSq: f32,
+  cursorForce: f32,
+  dragMul: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 8192>;
+
+fn agentCursorFalloff(delta: vec2f, radSq: f32) -> f32 {
+  let dl = dot(delta, delta);
+  return exp(((dl / max(radSq, 1e-5f)) * -1f));
+}
+
+fn agentCursorMagnet(delta: vec2f, radSq: f32, force: f32) -> vec2f {
+  let dl = max(length(delta), 1e-4f);
+  return ((delta / dl) * (agentCursorFalloff(delta, radSq) * force));
+}
+
+fn forceCursorGust(pos: vec2f) -> vec2f {
+  let prm = (&params);
+  var impulse = vec2f();
+  if (((*prm).cursorForce > 1e-5f)) {
+    let delta = (pos - vec2f((*prm).cursorX, (*prm).cursorY));
+    impulse = (agentCursorMagnet(delta, (*prm).cursorRadSq, (*prm).cursorForce) * (*prm).dt);
+  }
+  return impulse;
+}
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn noise_hash22(p: vec2f) -> vec2f {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  let h = (u.x ^ u.y);
+  let prod = (vec2u(h, h) * vec2u(3141592653, 1618033988));
+  return (vec2f(f32(prod.x), f32(prod.y)) / 4294967296f);
+}
+
+fn driftVariedHeading(fi: f32) -> vec2f {
+  let prm = (&params);
+  let h = noise_hash22(vec2f(((fi * 0.7548f) + 0.13f), ((fi * 1.3236f) + 5.71f)));
+  let speedMul = (1f + ((h.x - 0.5f) * (*prm).speedVar));
+  let ang = ((*prm).angleRad + (((h.y - 0.5f) * 2f) * (*prm).angleVarRad));
+  return (vec2f(cos(ang), sin(ang)) * ((*prm).driftBase * speedMul));
+}
+
+fn floatingParticlesUpdate(i: u32) {
+  let prm = (&params);
+  let s = (&agents[i]);
+  let fi = f32(i);
+  let dt = (*prm).dt;
+  var pos = vec2f((*s).x, (*s).y);
+  var gustV = vec2f((*s).z, (*s).w);
+  gustV = (gustV + forceCursorGust(pos));
+  gustV = (gustV * (*prm).dragMul);
+  pos = (pos + ((driftVariedHeading(fi) + gustV) * dt));
+  let wx = (pos.x - (floor((pos.x / max((*prm).domainX, 1e-4f))) * (*prm).domainX));
+  let wy = (pos.y - floor(pos.y));
+  agents[i] = vec4f(wx, wy, gustV.x, gustV.y);
+}"
+`;

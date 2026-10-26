@@ -1,0 +1,261 @@
+{
+  "verifiedAt": "2026-10-21T08:01:46.055Z",
+  "branch": "main",
+  "scope": "v5",
+  "contracts": {
+    "registered": 46,
+    "product": 43,
+    "guideOnly": 3,
+    "unused": 0,
+    "auditIssues": 0,
+    "minimumTextPx": 16
+  },
+  "unit": {
+    "command": "node --test tests/*.test.mjs tests/*.test.ts",
+    "total": 103,
+    "passed": 102,
+    "failed": 0,
+    "skipped": 1
+  },
+  "types": {
+    "command": "npx tsc --noEmit",
+    "passed": true
+  },
+  "browser": {
+    "typographyAndSurfaces": {
+      "base": "http://127.0.0.1:4173/v5/",
+      "verifiedAt": "2026-10-21T07:43:59.471Z",
+      "routes": 157,
+      "viewports": [
+        1440,
+        390
+      ],
+      "routeChecks": 314,
+      "failedRoutes": 0,
+      "interactionChecks": 8,
+      "failedInteractions": 0,
+      "inspectedTextNodes": 11853,
+      "inspectedControls": 1214
+    },
+    "componentVariants": {
+      "base": "http://127.0.0.1:4173/v5/",
+      "verifiedAt": "2026-10-21T07:51:50.344Z",
+      "mode": "browser integration",
+      "passed": 12,
+      "failed": 0
+    },
+    "heroAndLayout": {
+      "base": "http://127.0.0.1:4173/v5/",
+      "verifiedAt": "2026-10-21T07:51:50.172Z",
+      "mode": "browser integration",
+      "passed": 19,
+      "failed": 0
+    },
+    "authentication": {
+      "base": "http://127.0.0.1:4173/v5/",
+      "verifiedAt": "2026-10-21T07:51:28.504Z",
+      "mode": "real SDK with mocked provider; not Google consent verification",
+      "passed": 9,
+      "failed": 0
+    },
+    "memberStorage": {
+      "base": "http://127.0.0.1:4173/v5/",
+      "verifiedAt": "2026-10-21T07:53:59.429Z",
+      "mode": "actual Supabase SDK with mocked Auth and PostgREST; not live RLS verification",
+      "passed": 12,
+      "failed": 0
+    },
+    "opticalSurfaceFixture": {
+      "passed": true,
+      "widths": [
+        1440,
+        390,
+        320
+      ],
+      "checked": [
+        "semantic form props",
+        "black variant refraction",
+        "capsule bounds",
+        "focus retention",
+        "renewed dismissal timer",
+        "reduced motion"
+      ]
+    }
+  },
+  "build": {
+    "nextStaticBuild": "passed",
+    "postbuild": "passed on explicit sync-out retry",
+    "retryReason": "Windows UNKNOWN copyfile on 404/index.html; repeating only sync-out succeeded.",
+    "exportFiles": 8310,
+    "mismatch": [],
+    "chunksExact": true,
+    "contractsSha256": {
+      "styles/tokens.css": "70384df5552ef0f23b2a2f06f73d2e1504cb00b1a20f1469abcc0df2750f362e",
+      "styles/typography.css": "0129341023ba8fc5f6a6330a0db5f2871a31cd9def0a5019558b670fe4ca3011",
+      "styles/system-surface.css": "68a347aa4a94e9c42af07c0dfa94cd44ee2bbef970e01f837e7ded1a8035e546",
+      "src/data/design-tokens.ts": "1b0f7c07adea5052503c89e9ebe682a311cf6c15905ac0760b2609ef9913feae"
+    }
+  },
+  "database": {
+    "project": "cowalyqaoqoclrfmxszp",
+    "projectName": "renewsejongpac-3",
+    "migration": "supabase/migrations/20261021075737_v5_member_data.sql",
+    "ownershipTest": "supabase/tests/member-ownership.sql",
+    "productionMigrationApplied": true,
+    "liveOwnershipTestExecuted": true,
+    "liveVerification": {
+      "verifiedAt": "2026-10-21T08:00:07.946Z",
+      "project": "cowalyqaoqoclrfmxszp",
+      "projectName": "renewsejongpac-3",
+      "migration": {
+        "version": "20261021075737",
+        "name": "v5_member_data",
+        "file": "supabase/migrations/20261021075737_v5_member_data.sql",
+        "applied": true
+      },
+      "tables": [
+        {
+          "name": "public.sejong_profiles",
+          "rls_enabled": true,
+          "rows": 0
+        },
+        {
+          "name": "public.sejong_spaces",
+          "rls_enabled": true,
+          "rows": 0
+        },
+        {
+          "name": "public.sejong_favorites",
+          "rls_enabled": true,
+          "rows": 0
+        },
+        {
+          "name": "public.sejong_notes",
+          "rls_enabled": true,
+          "rows": 0
+        },
+        {
+          "name": "public.sejong_bookings",
+          "rls_enabled": true,
+          "rows": 0
+        }
+      ],
+      "ownershipTest": {
+        "executed": true,
+        "passed": true,
+        "fixtureTransactionRolledBack": true,
+        "checks": [
+          "own profile read and update",
+          "own room insert and update",
+          "own favorite insert and delete",
+          "own note insert and delete",
+          "own booking insert and cancellation",
+          "cross-member profile reads blocked",
+          "cross-member updates blocked",
+          "cross-member inserts blocked",
+          "user_id reassignment blocked",
+          "all tables have RLS",
+          "no anonymous read grants",
+          "no authenticated truncate grants"
+        ],
+        "remainingFixtureUsers": 0
+      },
+      "apiAnonymousAccess": {
+        "expectedStatus": 401,
+        "expectedCode": "42501",
+        "description": "All five exposed REST resources reject anonymous access."
+      },
+      "securityAdvisors": {
+        "newFindings": [],
+        "preExistingFindings": [
+          {
+            "name": "anon_security_definer_function_executable",
+            "title": "Public Can Execute SECURITY DEFINER Function",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable"
+          },
+          {
+            "name": "authenticated_security_definer_function_executable",
+            "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable"
+          },
+          {
+            "name": "auth_leaked_password_protection",
+            "title": "Leaked Password Protection Disabled",
+            "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection"
+          }
+        ],
+        "scope": "Existing project-level settings were recorded before the member schema and are unchanged by this migration."
+      },
+      "performanceAdvisors": {
+        "findings": []
+      },
+      "manualActionRequired": false
+    },
+    "readOnlyProbe": {
+      "verifiedAt": "2026-10-21T07:58:08.936Z",
+      "base": "https://cowalyqaoqoclrfmxszp.supabase.co",
+      "googleEnabled": true,
+      "emailEnabled": true,
+      "results": [
+        {
+          "table": "sejong_profiles",
+          "status": 401,
+          "code": "42501",
+          "exposesAnonymousData": false
+        },
+        {
+          "table": "sejong_spaces",
+          "status": 401,
+          "code": "42501",
+          "exposesAnonymousData": false
+        },
+        {
+          "table": "sejong_favorites",
+          "status": 401,
+          "code": "42501",
+          "exposesAnonymousData": false
+        },
+        {
+          "table": "sejong_notes",
+          "status": 401,
+          "code": "42501",
+          "exposesAnonymousData": false
+        },
+        {
+          "table": "sejong_bookings",
+          "status": 401,
+          "code": "42501",
+          "exposesAnonymousData": false
+        }
+      ]
+    },
+    "fixtureBoundary": "Auth and PostgREST browser checks use the real Supabase SDK with mocked HTTP endpoints. They do not establish deployed RLS correctness."
+  },
+  "production": {
+    "base": "https://renewsejongpac.rhee.life/v5/",
+    "verifiedAt": "2026-10-21T07:59:24.615Z",
+    "routes": 9,
+    "viewports": [
+      1440,
+      390
+    ],
+    "routeChecks": 18,
+    "failedRoutes": 0,
+    "interactionChecks": 8,
+    "failedInteractions": 0,
+    "inspectedTextNodes": 1337,
+    "inspectedControls": 180,
+    "deployment": {
+      "id": "dpl_A2YxHQcJcYjQsvLj9dFvbjDXDwDu",
+      "sha": "9fd349741a01ec424b80861976ab8ea4465c0669",
+      "state": "READY",
+      "aliases": [
+        "renewsejongpac.rhee.life",
+        "renewsejongpac.vercel.app",
+        "renewsejongpac-hslcrbs-projects.vercel.app",
+        "renewsejongpac-git-main-hslcrbs-projects.vercel.app"
+      ],
+      "checkedAt": "2026-10-21T08:01:45.590Z"
+    }
+  }
+}

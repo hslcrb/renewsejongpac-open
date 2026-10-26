@@ -1,0 +1,90 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FilmGrain (a) inline color-filter path (NO RTT) > adds dark-weighted grain inline — no RTT, no unpremultiply, alpha preserved > final-pass 1`] = `
+"fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn hash12(p: vec2f) -> f32 {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  return (f32(((u.x ^ u.y) * 3141592653u)) / 4294967296f);
+}
+
+fn filmGrain(color: vec4f, uv: vec2f, viewport: vec2f, strength: f32, bias: f32, animTime: f32) -> vec4f {
+  let pixelCoord = (uv * viewport);
+  let noiseVal = hash12((pixelCoord + vec2f(animTime, (animTime * 1.6180339f))));
+  let grain = ((noiseVal * 2f) - 1f);
+  let brightness = clamp(dot(color.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023)), 0f, 1f);
+  let darkness = (1f - brightness);
+  let darkFactor = pow((darkness + 1e-6f), bias);
+  let grainIntensity = ((grain * darkFactor) * (strength * 0.1f));
+  let grainedColor = (color.xyz + grainIntensity);
+  return vec4f(grainedColor, color.w);
+}
+
+fn genBody(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  strength: f32,
+  bias: f32,
+  animated: f32,
+  _opacity: f32,
+  animTime: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_fg: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  var composed_0 = filmGrain(genBody(uv), uv, uniforms._sys.viewportSize, uniforms.n_fg.strength, uniforms.n_fg.bias, uniforms.n_fg.animTime);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

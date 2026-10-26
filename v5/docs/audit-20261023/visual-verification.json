@@ -1,0 +1,12 @@
+{
+    "routeChecks": 314,
+    "viewports": [
+        1440,
+        390
+    ],
+    "routes": 157,
+    "failedRoutes": 0,
+    "interactionChecks": 8,
+    "failedInteractions": 0,
+    "mode": "Final static product, followed by focused responsive typography checks after token-only linking"
+}

@@ -1,0 +1,370 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`WGSL resolve snapshots (GPU-free) > fixed Gaussian — horizontal + vertical kernels > fixed-horizontal 1`] = `
+"@group(0) @binding(0) var input: texture_2d<f32>;
+
+@group(0) @binding(1) var intermediate: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(2) var<storage, read> weights: array<f32, 49>;
+
+struct item {
+  activeHalf: i32,
+  inputWidth: f32,
+  inputHeight: f32,
+}
+
+@group(0) @binding(3) var<uniform> params: item;
+
+fn gaussianBlurH(cx: u32, cy: u32) {
+  let p = (&params);
+  let inputCx = ((((f32(cx) + 0.5f) * (*p).inputWidth) / 1024f) - 0.5f);
+  let inputCy = ((((f32(cy) + 0.5f) * (*p).inputHeight) / 640f) - 0.5f);
+  let inputWm1 = i32(((*p).inputWidth - 1f));
+  let inputHm1 = i32(((*p).inputHeight - 1f));
+  let inputCxI = i32(round(inputCx));
+  let inputCyI = clamp(i32(round(inputCy)), 0i, inputHm1);
+  let ah = (*p).activeHalf;
+  let count = ((ah * 2i) + 1i);
+  var sum = vec4f();
+  for (var i = 0; (i < count); i++) {
+    let off = (i - ah);
+    let sampleX = clamp((inputCxI + off), 0i, inputWm1);
+    let texel = textureLoad(input, vec2u(u32(sampleX), u32(inputCyI)), 0);
+    sum = (sum + (texel * weights[(off + 24i)]));
+  }
+  textureStore(intermediate, vec2u(cx, cy), sum);
+}"
+`;
+
+exports[`WGSL resolve snapshots (GPU-free) > fixed Gaussian — horizontal + vertical kernels > fixed-vertical 1`] = `
+"@group(0) @binding(0) var src: texture_storage_2d<rgba16float, read>;
+
+@group(0) @binding(1) var output: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(2) var<storage, read> weights: array<f32, 49>;
+
+struct item {
+  activeHalf: i32,
+}
+
+@group(0) @binding(3) var<uniform> params: item;
+
+fn gaussianBlurV(cx: u32, cy: u32) {
+  let av = params.activeHalf;
+  let count = ((av * 2i) + 1i);
+  let cyi = i32(cy);
+  var sum = vec4f();
+  for (var i = 0; (i < count); i++) {
+    let off = (i - av);
+    let sampleY = clamp((cyi + off), 0i, 639i);
+    let texel = textureLoad(src, vec2u(cx, u32(sampleY)));
+    sum = (sum + (texel * weights[(off + 24i)]));
+  }
+  textureStore(output, vec2u(cx, cy), sum);
+}"
+`;
+
+exports[`WGSL resolve snapshots (GPU-free) > variable Gaussian (chromatic) — three loads per tap, red/blue radii spread by dispersion > variable-horizontal-chromatic 1`] = `
+"@group(0) @binding(0) var blurMap: texture_storage_2d<rgba32float, read>;
+
+@group(0) @binding(1) var input: texture_2d<f32>;
+
+@group(0) @binding(2) var intermediate: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(3) var<storage, read> weights: array<f32, 49>;
+
+struct item {
+  inputWidth: f32,
+  inputHeight: f32,
+  jitter: f32,
+  dispersion: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: item;
+
+fn variableBlurHChromatic(cx: u32, cy: u32) {
+  let p = (&params);
+  let blurRadius = textureLoad(blurMap, vec2u(cx, cy)).r;
+  let inputCx = ((((f32(cx) + 0.5f) * (*p).inputWidth) / 1024f) - 0.5f);
+  let inputCy = ((((f32(cy) + 0.5f) * (*p).inputHeight) / 640f) - 0.5f);
+  let inputWm1 = i32(((*p).inputWidth - 1f));
+  let inputHm1 = i32(((*p).inputHeight - 1f));
+  let inputCyI = clamp(i32(round(inputCy)), 0i, inputHm1);
+  if ((blurRadius < 0.5f)) {
+    let cxClamp = clamp(i32(round(inputCx)), 0i, inputWm1);
+    let texel = textureLoad(input, vec2u(u32(cxClamp), u32(inputCyI)), 0);
+    textureStore(intermediate, vec2u(cx, cy), texel);
+  }
+  else {
+    let jitterH = ((fract((52.9829189f * fract(((f32(cx) * 0.06711056f) + (f32(cy) * 0.00583715f))))) - 0.5f) * (*p).jitter);
+    let radiusR = (blurRadius * (1f + (*p).dispersion));
+    let radiusB = (blurRadius * (1f - (*p).dispersion));
+    var sum = vec4f();
+    for (var i = -24; (i <= 24i); i++) {
+      let t = ((f32(i) + jitterH) * 0.041666666666666664f);
+      let xG = clamp(i32(round((inputCx + (t * blurRadius)))), 0i, inputWm1);
+      let xR = clamp(i32(round((inputCx + (t * radiusR)))), 0i, inputWm1);
+      let xB = clamp(i32(round((inputCx + (t * radiusB)))), 0i, inputWm1);
+      let texG = textureLoad(input, vec2u(u32(xG), u32(inputCyI)), 0);
+      let texR = textureLoad(input, vec2u(u32(xR), u32(inputCyI)), 0);
+      let texB = textureLoad(input, vec2u(u32(xB), u32(inputCyI)), 0);
+      let texel = vec4f(texR.x, texG.y, texB.z, texG.w);
+      sum = (sum + (texel * weights[(i + 24i)]));
+    }
+    textureStore(intermediate, vec2u(cx, cy), sum);
+  }
+}"
+`;
+
+exports[`WGSL resolve snapshots (GPU-free) > variable Gaussian (chromatic) — three loads per tap, red/blue radii spread by dispersion > variable-vertical-chromatic 1`] = `
+"@group(0) @binding(0) var blurMap: texture_storage_2d<rgba32float, read>;
+
+@group(0) @binding(1) var src: texture_storage_2d<rgba16float, read>;
+
+@group(0) @binding(2) var output: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(3) var<storage, read> weights: array<f32, 49>;
+
+struct item {
+  scaleY: f32,
+  jitter: f32,
+  dispersion: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: item;
+
+fn variableBlurVChromatic(cx: u32, cy: u32) {
+  let blurRadius = textureLoad(blurMap, vec2u(cx, cy)).r;
+  if ((blurRadius < 0.5f)) {
+    let texel = textureLoad(src, vec2u(cx, cy));
+    textureStore(output, vec2u(cx, cy), texel);
+  }
+  else {
+    let yi = i32(cy);
+    let p = (&params);
+    let radiusComputeY = (blurRadius / (*p).scaleY);
+    let radiusR = (radiusComputeY * (1f + (*p).dispersion));
+    let radiusB = (radiusComputeY * (1f - (*p).dispersion));
+    let jitterV = ((fract((52.9829189f * fract(((f32(cx) * 0.00583715f) + (f32(cy) * 0.06711056f))))) - 0.5f) * (*p).jitter);
+    var sum = vec4f();
+    for (var i = -24; (i <= 24i); i++) {
+      let t = ((f32(i) + jitterV) * 0.041666666666666664f);
+      let yG = clamp((yi + i32(round((t * radiusComputeY)))), 0i, 639i);
+      let yR = clamp((yi + i32(round((t * radiusR)))), 0i, 639i);
+      let yB = clamp((yi + i32(round((t * radiusB)))), 0i, 639i);
+      let texG = textureLoad(src, vec2u(cx, u32(yG)));
+      let texR = textureLoad(src, vec2u(cx, u32(yR)));
+      let texB = textureLoad(src, vec2u(cx, u32(yB)));
+      let texel = vec4f(texR.x, texG.y, texB.z, texG.w);
+      sum = (sum + (texel * weights[(i + 24i)]));
+    }
+    textureStore(output, vec2u(cx, cy), sum);
+  }
+}"
+`;
+
+exports[`WGSL resolve snapshots (GPU-free) > variable Gaussian — horizontal + vertical kernels (runtime jitter uniform, one load per tap) > variable-horizontal 1`] = `
+"@group(0) @binding(0) var blurMap: texture_storage_2d<rgba32float, read>;
+
+@group(0) @binding(1) var input: texture_2d<f32>;
+
+@group(0) @binding(2) var intermediate: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(3) var<storage, read> weights: array<f32, 49>;
+
+struct item {
+  inputWidth: f32,
+  inputHeight: f32,
+  jitter: f32,
+  dispersion: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: item;
+
+fn variableBlurH(cx: u32, cy: u32) {
+  let p = (&params);
+  let blurRadius = textureLoad(blurMap, vec2u(cx, cy)).r;
+  let inputCx = ((((f32(cx) + 0.5f) * (*p).inputWidth) / 1024f) - 0.5f);
+  let inputCy = ((((f32(cy) + 0.5f) * (*p).inputHeight) / 640f) - 0.5f);
+  let inputWm1 = i32(((*p).inputWidth - 1f));
+  let inputHm1 = i32(((*p).inputHeight - 1f));
+  let inputCyI = clamp(i32(round(inputCy)), 0i, inputHm1);
+  if ((blurRadius < 0.5f)) {
+    let cxClamp = clamp(i32(round(inputCx)), 0i, inputWm1);
+    let texel = textureLoad(input, vec2u(u32(cxClamp), u32(inputCyI)), 0);
+    textureStore(intermediate, vec2u(cx, cy), texel);
+  }
+  else {
+    let jitterH = ((fract((52.9829189f * fract(((f32(cx) * 0.06711056f) + (f32(cy) * 0.00583715f))))) - 0.5f) * (*p).jitter);
+    var sum = vec4f();
+    for (var i = -24; (i <= 24i); i++) {
+      let offset = (((f32(i) + jitterH) * 0.041666666666666664f) * blurRadius);
+      let sampleX = clamp(i32(round((inputCx + offset))), 0i, inputWm1);
+      let texel = textureLoad(input, vec2u(u32(sampleX), u32(inputCyI)), 0);
+      sum = (sum + (texel * weights[(i + 24i)]));
+    }
+    textureStore(intermediate, vec2u(cx, cy), sum);
+  }
+}"
+`;
+
+exports[`WGSL resolve snapshots (GPU-free) > variable Gaussian — horizontal + vertical kernels (runtime jitter uniform, one load per tap) > variable-vertical 1`] = `
+"@group(0) @binding(0) var blurMap: texture_storage_2d<rgba32float, read>;
+
+@group(0) @binding(1) var src: texture_storage_2d<rgba16float, read>;
+
+@group(0) @binding(2) var output: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(3) var<storage, read> weights: array<f32, 49>;
+
+struct item {
+  scaleY: f32,
+  jitter: f32,
+  dispersion: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: item;
+
+fn variableBlurV(cx: u32, cy: u32) {
+  let blurRadius = textureLoad(blurMap, vec2u(cx, cy)).r;
+  if ((blurRadius < 0.5f)) {
+    let texel = textureLoad(src, vec2u(cx, cy));
+    textureStore(output, vec2u(cx, cy), texel);
+  }
+  else {
+    let yi = i32(cy);
+    let radiusComputeY = (blurRadius / params.scaleY);
+    let jitterV = ((fract((52.9829189f * fract(((f32(cx) * 0.00583715f) + (f32(cy) * 0.06711056f))))) - 0.5f) * params.jitter);
+    var sum = vec4f();
+    for (var i = -24; (i <= 24i); i++) {
+      let offset = (((f32(i) + jitterV) * 0.041666666666666664f) * radiusComputeY);
+      let sampleY = clamp((yi + i32(round(offset))), 0i, 639i);
+      let texel = textureLoad(src, vec2u(cx, u32(sampleY)));
+      sum = (sum + (texel * weights[(i + 24i)]));
+    }
+    textureStore(output, vec2u(cx, cy), sum);
+  }
+}"
+`;
+
+exports[`bloom extract graphs (GPU-free) > map-driven extract adds the source tap and the shared remap > bloom-extract-map 1`] = `
+"@group(0) @binding(0) var childTexture: texture_2d<f32>;
+
+@group(0) @binding(1) var source: texture_2d<f32>;
+
+@group(0) @binding(2) var brightMap: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(3) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct Params {
+  threshold: f32,
+  inputWidth: f32,
+  inputHeight: f32,
+  inputMin: f32,
+  inputMax: f32,
+  outputMin: f32,
+  outputMax: f32,
+  curve: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: Params;
+
+fn bloomExtractSoftKnee(childTexture_1: texture_2d<f32>, cx: u32, cy: u32, inputSize: vec2f, computeSize: vec2f, threshold: f32) -> vec4f {
+  let iw = inputSize.x;
+  let ih = inputSize.y;
+  let inputWm1 = i32((iw - 1f));
+  let inputHm1 = i32((ih - 1f));
+  var sample = vec4f();
+  for (var ty = 0; (ty < 4i); ty++) {
+    for (var tx = 0; (tx < 4i); tx++) {
+      let su = ((f32(cx) + ((f32(tx) + 0.5f) / 4f)) / computeSize.x);
+      let sv = ((f32(cy) + ((f32(ty) + 0.5f) / 4f)) / computeSize.y);
+      let sx = clamp(i32((su * iw)), 0i, inputWm1);
+      let sy = clamp(i32((sv * ih)), 0i, inputHm1);
+      sample = (sample + textureLoad(childTexture_1, vec2u(u32(sx), u32(sy)), 0));
+    }
+  }
+  sample = (sample * 0.0625f);
+  let knee = ((threshold * 0.5f) + 1e-4f);
+  let lum = dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  let soft = clamp(((lum - threshold) + knee), 0f, (knee * 2f));
+  let softCurve = ((soft * soft) / (knee * 4f));
+  let mask = (max(softCurve, (lum - threshold)) / max(lum, 1e-4f));
+  return vec4f((sample.xyz * mask), (sample.w * mask));
+}
+
+fn mapSourceScalar_alpha(sample: vec4f) -> f32 {
+  return sample.w;
+}
+
+fn applyRemapWindow(raw: f32, inputMin: f32, inputMax: f32, outputMin: f32, outputMax: f32, curve: f32) -> f32 {
+  let inputRange = max((inputMax - inputMin), 1e-4f);
+  let normalised = clamp(((raw - inputMin) / inputRange), 0f, 1f);
+  let exponent = pow(2f, (-(curve) * 2f));
+  let eased = pow(normalised, exponent);
+  return mix(outputMin, outputMax, eased);
+}
+
+fn testBloomExtractMap(cx: u32, cy: u32) {
+  let p = (&params);
+  let iw = (*p).inputWidth;
+  let ih = (*p).inputHeight;
+  let bright = bloomExtractSoftKnee(childTexture, cx, cy, vec2f(iw, ih), vec2f(1024, 640), (*p).threshold);
+  textureStore(brightMap, vec2u(cx, cy), bright);
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 640f);
+  let srcX = clamp(i32(round((u * iw))), 0i, i32((iw - 1f)));
+  let srcY = clamp(i32(round((v * ih))), 0i, i32((ih - 1f)));
+  let mapSample = textureLoad(source, vec2u(u32(srcX), u32(srcY)), 0);
+  let radius = applyRemapWindow(mapSourceScalar_alpha(mapSample), (*p).inputMin, (*p).inputMax, (*p).outputMin, (*p).outputMax, (*p).curve);
+  textureStore(blurMap, vec2u(cx, cy), vec4f(radius, 0f, 0f, 1f));
+}"
+`;
+
+exports[`bloom extract graphs (GPU-free) > uniform-radius extract resolves, names its kernel, writes bright + radius > bloom-extract-uniform 1`] = `
+"@group(0) @binding(0) var childTexture: texture_2d<f32>;
+
+@group(0) @binding(1) var brightMap: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(2) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct Params {
+  threshold: f32,
+  size: f32,
+  inputWidth: f32,
+  inputHeight: f32,
+}
+
+@group(0) @binding(3) var<uniform> params: Params;
+
+fn bloomExtractSoftKnee(childTexture_1: texture_2d<f32>, cx: u32, cy: u32, inputSize: vec2f, computeSize: vec2f, threshold: f32) -> vec4f {
+  let iw = inputSize.x;
+  let ih = inputSize.y;
+  let inputWm1 = i32((iw - 1f));
+  let inputHm1 = i32((ih - 1f));
+  var sample = vec4f();
+  for (var ty = 0; (ty < 4i); ty++) {
+    for (var tx = 0; (tx < 4i); tx++) {
+      let su = ((f32(cx) + ((f32(tx) + 0.5f) / 4f)) / computeSize.x);
+      let sv = ((f32(cy) + ((f32(ty) + 0.5f) / 4f)) / computeSize.y);
+      let sx = clamp(i32((su * iw)), 0i, inputWm1);
+      let sy = clamp(i32((sv * ih)), 0i, inputHm1);
+      sample = (sample + textureLoad(childTexture_1, vec2u(u32(sx), u32(sy)), 0));
+    }
+  }
+  sample = (sample * 0.0625f);
+  let knee = ((threshold * 0.5f) + 1e-4f);
+  let lum = dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  let soft = clamp(((lum - threshold) + knee), 0f, (knee * 2f));
+  let softCurve = ((soft * soft) / (knee * 4f));
+  let mask = (max(softCurve, (lum - threshold)) / max(lum, 1e-4f));
+  return vec4f((sample.xyz * mask), (sample.w * mask));
+}
+
+fn testBloomExtract(cx: u32, cy: u32) {
+  let p = (&params);
+  let bright = bloomExtractSoftKnee(childTexture, cx, cy, vec2f((*p).inputWidth, (*p).inputHeight), vec2f(1024, 640), (*p).threshold);
+  textureStore(brightMap, vec2u(cx, cy), bright);
+  textureStore(blurMap, vec2u(cx, cy), vec4f((*p).size, 0f, 0f, 1f));
+}"
+`;

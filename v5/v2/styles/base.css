@@ -1,0 +1,123 @@
+/* [가독성 크기 체계 / Readable type scale]
+   보조 글자는 defaults.css의 최소 크기를 사용합니다.
+   Supporting text uses the minimum size defined in defaults.css. */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-padding-top: 100px;
+    color-scheme: light;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: var(--text-body);
+    font-weight: var(--weight-body);
+    line-height: var(--leading-body);
+    letter-spacing: -0.025em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+}
+
+button, a, input, select, textarea {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+img, svg {
+    max-width: 100%;
+}
+
+img {
+    display: block;
+}
+
+svg {
+    flex-shrink: 0;
+}
+
+a {
+    color: inherit;
+}
+
+p {
+    line-height: var(--leading-body);
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--display-font);
+    font-weight: var(--weight-heading);
+    line-height: 1.3;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+}
+
+[hidden]:not([hidden="until-found"]) {
+    display: none !important;
+}
+
+.container {
+    width: min(1320px, calc(100% - var(--page-gutter) * 2));
+    max-width: none;
+    margin-inline: auto;
+}
+
+.page-content {
+    padding-top: 48px;
+    padding-bottom: var(--section-gap);
+}
+
+#main {
+    min-height: 65vh;
+    outline: none;
+}
+
+section[id], main[id] {
+    scroll-margin-top: 100px;
+}
+
+::selection {
+    color: #000000;
+    background: var(--sky);
+}
+
+.skip-link {
+    z-index: 200;
+}
+
+.eyebrow {
+    color: var(--muted);
+    font-size: var(--text-sm);
+    font-weight: 650;
+    letter-spacing: 0.09em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "checked": 8362,
+  "mismatch": [],
+  "releaseFolders": [
+    "r-22f4506764926e86"
+  ],
+  "dateRules": [
+    {
+      "file": "_next\\static\\r-22f4506764926e86\\public\\assets\\icons\\material-symbols_1.css",
+      "rules": [
+        ".quick-date {\n    position: relative;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    min-width: 0;\n    width: min(100%, var(--control-size));\n    justify-self: center;\n    padding: 0;\n    border: 0;\n    border-radius: var(--radius-control);\n    background: var(--color-transparent);\n    color: var(--text-primary);\n    font-size: max(var(--text-min), var(--text-body));\n    font-weight: 500;\n    transition: background var(--duration-fast), color var(--duration-fast);\n}",
+        ".quick-date {\n        transition: none;\n    }"
+      ]
+    }
+  ]
+}

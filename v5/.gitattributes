@@ -1,0 +1,24 @@
+# [정적 산출물 바이트 보존 / Preserve exported bytes across Git checkouts]
+# 실제 미러 경로만 지정하며 app/components/src와 구버전 스냅샷은 제외합니다.
+# Only exported paths are covered; source trees and old-version snapshots retain their rules.
+/out/** -text -whitespace
+/404/** -text -whitespace
+/404.html -text -whitespace
+/about/** -text -whitespace
+/account/** -text -whitespace
+/assets/** -text -whitespace
+/booking/** -text -whitespace
+/design-rules/** -text -whitespace
+/english/** -text -whitespace
+/index.html -text -whitespace
+/index.txt -text -whitespace
+/login/** -text -whitespace
+/news/** -text -whitespace
+/policy/** -text -whitespace
+/programs/** -text -whitespace
+/readable-assets.json -text -whitespace
+/rental/** -text -whitespace
+/search/** -text -whitespace
+/sitemap/** -text -whitespace
+/visit/** -text -whitespace
+/_next/** -text -whitespace

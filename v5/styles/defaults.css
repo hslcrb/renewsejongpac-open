@@ -1,0 +1,33 @@
+/* [읽기와 조작의 기본값 / Readability and interaction defaults]
+   새 화면은 이 크기 체계를 사용하고 보조 정보를 16px 미만으로 줄이지 않습니다.
+   New screens use this scale; supporting text never drops below 1rem. */
+
+html {
+    font-size: max(var(--text-min), 100%);
+}
+
+body {
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+
+small {
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+
+/* [기본 조작 영역과 포커스 / Default control targets and focus]
+   조작 상태는 색과 명확한 테두리로 알리고 요소를 들뜨게 하지 않습니다.
+   State feedback uses color and visible outlines without moving controls. */
+.button, .round-button {
+    min-height: var(--control-size);
+}
+
+.round-button {
+    min-width: var(--control-size);
+}
+
+:focus-visible {
+    outline: var(--focus-width) solid var(--focus-color);
+    outline-offset: var(--focus-offset);
+}

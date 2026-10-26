@@ -1,0 +1,20 @@
+.material-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+  fill: currentColor;
+  stroke: none;
+  pointer-events: none;
+}
+
+.material-icon-filled {
+  display: none;
+}
+
+:is(.favorite-button.selected, .program-icon-button.is-saved) .material-icon-outline {
+  display: none;
+}
+
+:is(.favorite-button.selected, .program-icon-button.is-saved) .material-icon-filled {
+  display: inline;
+}

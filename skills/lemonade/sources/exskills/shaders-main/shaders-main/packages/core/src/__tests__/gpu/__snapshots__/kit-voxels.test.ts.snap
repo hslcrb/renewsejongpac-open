@@ -1,0 +1,2347 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`kit/voxels (a) DDA march resolve gate > all style × gridSpace variants + the kernel + the texel sampler resolve to WGSL (snapshot) 1`] = `
+"struct RotStruct {
+  cx: f32,
+  sx: f32,
+  cy: f32,
+  sy: f32,
+  cz: f32,
+  sz: f32,
+}
+
+struct VoxelMarchParams {
+  @align(16) @size(32) cam: RotStruct,
+  lightDir: vec3f,
+  voxelSize: f32,
+  lightT1: vec3f,
+  fill: f32,
+  lightT2: vec3f,
+  voxelScale: f32,
+  bevel: f32,
+  gridOrigin: f32,
+  gridN: f32,
+  gridW: f32,
+}
+
+@group(0) @binding(0) var<uniform> vox: VoxelMarchParams;
+
+fn rotateVec3(v: vec3f, rot: RotStruct) -> vec3f {
+  let x1 = ((v.x * rot.cy) + (v.z * rot.sy));
+  let z1 = ((v.z * rot.cy) - (v.x * rot.sy));
+  let y2 = ((v.y * rot.cx) - (z1 * rot.sx));
+  let z2 = ((v.y * rot.sx) + (z1 * rot.cx));
+  let x3 = ((x1 * rot.cz) - (y2 * rot.sz));
+  let y3 = ((x1 * rot.sz) + (y2 * rot.cz));
+  return vec3f(x3, y3, z2);
+}
+
+fn viewToGrid(v: vec3f, rot: RotStruct) -> vec3f {
+  return rotateVec3(rotateVec3(v, vox.cam), rot);
+}
+
+struct MarchParams {
+  @align(16) @size(32) rot: RotStruct,
+  rBound: f32,
+  spanX: f32,
+  spanY: f32,
+  originX: f32,
+  originY: f32,
+  activeRes: u32,
+  pA: f32,
+  pB: f32,
+  pC: f32,
+  pD: f32,
+  mb0: vec3f,
+  mb1: vec3f,
+  mb2: vec3f,
+  mb3: vec3f,
+  mb4: vec3f,
+  mb5: vec3f,
+  mb6: vec3f,
+  mb7: vec3f,
+}
+
+@group(1) @binding(1) var<uniform> params: MarchParams;
+
+@group(0) @binding(1) var<storage, read> occ: array<u32, 1769472>;
+
+fn cellValue(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+struct SubHit {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let sx = select(-1f, 1f, (rd.x >= 0f));
+    let sy = select(-1f, 1f, (rd.y >= 0f));
+    let sz = select(-1f, 1f, (rd.z >= 0f));
+    let ix = (sx / max(abs(rd.x), 1e-6f));
+    let iy = (sy / max(abs(rd.y), 1e-6f));
+    let iz = (sz / max(abs(rd.z), 1e-6f));
+    let t1x = (((c.x - h) - ro.x) * ix);
+    let t2x = (((c.x + h) - ro.x) * ix);
+    let t1y = (((c.y - h) - ro.y) * iy);
+    let t2y = (((c.y + h) - ro.y) * iy);
+    let t1z = (((c.z - h) - ro.z) * iz);
+    let t2z = (((c.z + h) - ro.z) * iz);
+    let tIn = max(min(t1x, t2x), max(min(t1y, t2y), min(t1z, t2z)));
+    let tOut = min(max(t1x, t2x), min(max(t1y, t2y), max(t1z, t2z)));
+    if ((tIn <= tOut)) {
+      if ((tOut >= (tNow - 1e-4f))) {
+        hit = 1f;
+        t = max(tIn, tNow);
+      }
+    }
+  }
+  return SubHit(hit, t);
+}
+
+struct DdaHit {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit(ro, rd, cellCentre(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+fn occupied(cx: f32, cy: f32, cz: f32) -> f32 {
+  return select(0f, 1f, (cellValue(cx, cy, cz) < 0.5f));
+}
+
+fn vertexAo(s1: f32, s2: f32, k: f32) -> f32 {
+  let open = ((3f - ((s1 + s2) + k)) / 3f);
+  return select(open, 0f, ((s1 + s2) > 1.5f));
+}
+
+fn voxelFieldMarch_cube_shape(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let ro = viewToGrid(vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f), rot);
+  let rd = viewToGrid(vec3f(0, 0, 1), rot);
+  let b = dot(ro, rd);
+  let perp2 = max((dot(ro, ro) - (b * b)), 0f);
+  let halfSpan = sqrt(max(((rBound * rBound) - perp2), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  let mp = (&params);
+  let texel = (max((*mp).spanX, (*mp).spanY) / f32((*mp).activeRes));
+  var fieldVal = ((sqrt(perp2) - rBound) + texel);
+  var payload = 0f;
+  var cellPacked = 0f;
+  var depth = (tEnd + 0.4f);
+  if ((perp2 < (rBound * rBound))) {
+    let maxSteps = i32(clamp((((rBound * 6f) / v) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda(ro, rd, tStart, tEnd, none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      let hp = (ro + (rd * hh.t));
+      let c = cellCentre(hh.cx, hh.cy, hh.cz);
+      let l = (hp - c);
+      let alx = abs(l.x);
+      let aly = abs(l.y);
+      let alz = abs(l.z);
+      var axis = 0f;
+      if ((aly > alx)) {
+        if ((aly >= alz)) {
+          axis = 1f;
+        }
+        else {
+          axis = 2f;
+        }
+      }
+      else {
+        if ((alz > alx)) {
+          axis = 2f;
+        }
+      }
+      let la = select(select(l.x, l.y, (axis > 0.5f)), l.z, (axis > 1.5f));
+      let sgn = select(-1f, 1f, (la >= 0f));
+      let isX = select(0f, 1f, (axis < 0.5f));
+      let isZ = select(0f, 1f, (axis > 1.5f));
+      let isY = ((1f - isX) - isZ);
+      let nx = (sgn * isX);
+      let ny = (sgn * isY);
+      let nz = (sgn * isZ);
+      let bxv = (1f - isX);
+      let byv = isX;
+      let eyv = isZ;
+      let ezv = (1f - isZ);
+      let lb = ((l.x * bxv) + (l.y * byv));
+      let lc = ((l.y * eyv) + (l.z * ezv));
+      let h = ((v * 0.5f) * (*vx).voxelScale);
+      let u = clamp(((lb / (2f * h)) + 0.5f), 0f, 1f);
+      let w = clamp(((lc / (2f * h)) + 0.5f), 0f, 1f);
+      let fx = (hh.cx + nx);
+      let fy = (hh.cy + ny);
+      let fz = (hh.cz + nz);
+      let sB1 = occupied((fx - bxv), (fy - byv), fz);
+      let sB2 = occupied((fx + bxv), (fy + byv), fz);
+      let sC1 = occupied(fx, (fy - eyv), (fz - ezv));
+      let sC2 = occupied(fx, (fy + eyv), (fz + ezv));
+      let k11 = occupied((fx - bxv), ((fy - byv) - eyv), (fz - ezv));
+      let k21 = occupied((fx + bxv), ((fy + byv) - eyv), (fz - ezv));
+      let k12 = occupied((fx - bxv), ((fy - byv) + eyv), (fz + ezv));
+      let k22 = occupied((fx + bxv), ((fy + byv) + eyv), (fz + ezv));
+      let ao0 = mix(vertexAo(sB1, sC1, k11), vertexAo(sB2, sC1, k21), u);
+      let ao1 = mix(vertexAo(sB1, sC2, k12), vertexAo(sB2, sC2, k22), u);
+      let ao = mix(ao0, ao1, w);
+      let faceId = ((axis * 2f) + max(sgn, 0f));
+      fieldVal = (texel * -1f);
+      payload = ((faceId * 65536f) + (floor(((ao * 255f) + 0.5f)) * 256f));
+      cellPacked = ((hh.cx + (hh.cy * 256f)) + (hh.cz * 65536f));
+      depth = hh.t;
+    }
+    else {
+      fieldVal = (texel + max((hh.minD - v), 0f));
+    }
+  }
+  return vec4f(fieldVal, payload, cellPacked, depth);
+}
+
+fn viewToGrid_1(v: vec3f, rot: RotStruct) -> vec3f {
+  return vec3f(v.x, v.y, v.z);
+}
+
+fn cellValue_1(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre_1(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+struct SubHit_1 {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit_1(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit_1 {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let sx = select(-1f, 1f, (rd.x >= 0f));
+    let sy = select(-1f, 1f, (rd.y >= 0f));
+    let sz = select(-1f, 1f, (rd.z >= 0f));
+    let ix = (sx / max(abs(rd.x), 1e-6f));
+    let iy = (sy / max(abs(rd.y), 1e-6f));
+    let iz = (sz / max(abs(rd.z), 1e-6f));
+    let t1x = (((c.x - h) - ro.x) * ix);
+    let t2x = (((c.x + h) - ro.x) * ix);
+    let t1y = (((c.y - h) - ro.y) * iy);
+    let t2y = (((c.y + h) - ro.y) * iy);
+    let t1z = (((c.z - h) - ro.z) * iz);
+    let t2z = (((c.z + h) - ro.z) * iz);
+    let tIn = max(min(t1x, t2x), max(min(t1y, t2y), min(t1z, t2z)));
+    let tOut = min(max(t1x, t2x), min(max(t1y, t2y), max(t1z, t2z)));
+    if ((tIn <= tOut)) {
+      if ((tOut >= (tNow - 1e-4f))) {
+        hit = 1f;
+        t = max(tIn, tNow);
+      }
+    }
+  }
+  return SubHit_1(hit, t);
+}
+
+struct DdaHit_1 {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda_1(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit_1 {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue_1(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit_1(ro, rd, cellCentre_1(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit_1(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+fn occupied_1(cx: f32, cy: f32, cz: f32) -> f32 {
+  return select(0f, 1f, (cellValue_1(cx, cy, cz) < 0.5f));
+}
+
+fn vertexAo_1(s1: f32, s2: f32, k: f32) -> f32 {
+  let open = ((3f - ((s1 + s2) + k)) / 3f);
+  return select(open, 0f, ((s1 + s2) > 1.5f));
+}
+
+fn voxelFieldMarch_cube_view(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let ro = viewToGrid_1(vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f), rot);
+  let rd = viewToGrid_1(vec3f(0, 0, 1), rot);
+  let b = dot(ro, rd);
+  let perp2 = max((dot(ro, ro) - (b * b)), 0f);
+  let halfSpan = sqrt(max(((rBound * rBound) - perp2), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  let mp = (&params);
+  let texel = (max((*mp).spanX, (*mp).spanY) / f32((*mp).activeRes));
+  var fieldVal = ((sqrt(perp2) - rBound) + texel);
+  var payload = 0f;
+  var cellPacked = 0f;
+  var depth = (tEnd + 0.4f);
+  if ((perp2 < (rBound * rBound))) {
+    let maxSteps = i32(clamp((((rBound * 6f) / v) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda_1(ro, rd, tStart, tEnd, none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      let hp = (ro + (rd * hh.t));
+      let c = cellCentre_1(hh.cx, hh.cy, hh.cz);
+      let l = (hp - c);
+      let alx = abs(l.x);
+      let aly = abs(l.y);
+      let alz = abs(l.z);
+      var axis = 0f;
+      if ((aly > alx)) {
+        if ((aly >= alz)) {
+          axis = 1f;
+        }
+        else {
+          axis = 2f;
+        }
+      }
+      else {
+        if ((alz > alx)) {
+          axis = 2f;
+        }
+      }
+      let la = select(select(l.x, l.y, (axis > 0.5f)), l.z, (axis > 1.5f));
+      let sgn = select(-1f, 1f, (la >= 0f));
+      let isX = select(0f, 1f, (axis < 0.5f));
+      let isZ = select(0f, 1f, (axis > 1.5f));
+      let isY = ((1f - isX) - isZ);
+      let nx = (sgn * isX);
+      let ny = (sgn * isY);
+      let nz = (sgn * isZ);
+      let bxv = (1f - isX);
+      let byv = isX;
+      let eyv = isZ;
+      let ezv = (1f - isZ);
+      let lb = ((l.x * bxv) + (l.y * byv));
+      let lc = ((l.y * eyv) + (l.z * ezv));
+      let h = ((v * 0.5f) * (*vx).voxelScale);
+      let u = clamp(((lb / (2f * h)) + 0.5f), 0f, 1f);
+      let w = clamp(((lc / (2f * h)) + 0.5f), 0f, 1f);
+      let fx = (hh.cx + nx);
+      let fy = (hh.cy + ny);
+      let fz = (hh.cz + nz);
+      let sB1 = occupied_1((fx - bxv), (fy - byv), fz);
+      let sB2 = occupied_1((fx + bxv), (fy + byv), fz);
+      let sC1 = occupied_1(fx, (fy - eyv), (fz - ezv));
+      let sC2 = occupied_1(fx, (fy + eyv), (fz + ezv));
+      let k11 = occupied_1((fx - bxv), ((fy - byv) - eyv), (fz - ezv));
+      let k21 = occupied_1((fx + bxv), ((fy + byv) - eyv), (fz - ezv));
+      let k12 = occupied_1((fx - bxv), ((fy - byv) + eyv), (fz + ezv));
+      let k22 = occupied_1((fx + bxv), ((fy + byv) + eyv), (fz + ezv));
+      let ao0 = mix(vertexAo_1(sB1, sC1, k11), vertexAo_1(sB2, sC1, k21), u);
+      let ao1 = mix(vertexAo_1(sB1, sC2, k12), vertexAo_1(sB2, sC2, k22), u);
+      let ao = mix(ao0, ao1, w);
+      let faceId = ((axis * 2f) + max(sgn, 0f));
+      fieldVal = (texel * -1f);
+      payload = ((faceId * 65536f) + (floor(((ao * 255f) + 0.5f)) * 256f));
+      cellPacked = ((hh.cx + (hh.cy * 256f)) + (hh.cz * 65536f));
+      depth = hh.t;
+    }
+    else {
+      fieldVal = (texel + max((hh.minD - v), 0f));
+    }
+  }
+  return vec4f(fieldVal, payload, cellPacked, depth);
+}
+
+fn viewToGrid_2(v: vec3f, rot: RotStruct) -> vec3f {
+  return rotateVec3(rotateVec3(v, vox.cam), rot);
+}
+
+fn cellValue_2(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre_2(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+struct SubHit_2 {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit_2(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit_2 {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let oc = (ro - c);
+    let b = dot(oc, rd);
+    let cc = (dot(oc, oc) - (h * h));
+    let disc = ((b * b) - cc);
+    if ((disc >= 0f)) {
+      let ts = ((b * -1f) - sqrt(disc));
+      if ((ts >= (tNow - 1e-4f))) {
+        hit = 1f;
+        t = ts;
+      }
+    }
+  }
+  return SubHit_2(hit, t);
+}
+
+struct DdaHit_2 {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda_2(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit_2 {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue_2(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit_2(ro, rd, cellCentre_2(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit_2(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+fn occupied_2(cx: f32, cy: f32, cz: f32) -> f32 {
+  return select(0f, 1f, (cellValue_2(cx, cy, cz) < 0.5f));
+}
+
+fn vertexAo_2(s1: f32, s2: f32, k: f32) -> f32 {
+  let open = ((3f - ((s1 + s2) + k)) / 3f);
+  return select(open, 0f, ((s1 + s2) > 1.5f));
+}
+
+fn voxelFieldMarch_sphere_shape(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let ro = viewToGrid_2(vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f), rot);
+  let rd = viewToGrid_2(vec3f(0, 0, 1), rot);
+  let b = dot(ro, rd);
+  let perp2 = max((dot(ro, ro) - (b * b)), 0f);
+  let halfSpan = sqrt(max(((rBound * rBound) - perp2), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  let mp = (&params);
+  let texel = (max((*mp).spanX, (*mp).spanY) / f32((*mp).activeRes));
+  var fieldVal = ((sqrt(perp2) - rBound) + texel);
+  var payload = 0f;
+  var cellPacked = 0f;
+  var depth = (tEnd + 0.4f);
+  if ((perp2 < (rBound * rBound))) {
+    let maxSteps = i32(clamp((((rBound * 6f) / v) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda_2(ro, rd, tStart, tEnd, none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      let hp = (ro + (rd * hh.t));
+      let c = cellCentre_2(hh.cx, hh.cy, hh.cz);
+      let l = (hp - c);
+      let alx = abs(l.x);
+      let aly = abs(l.y);
+      let alz = abs(l.z);
+      var axis = 0f;
+      if ((aly > alx)) {
+        if ((aly >= alz)) {
+          axis = 1f;
+        }
+        else {
+          axis = 2f;
+        }
+      }
+      else {
+        if ((alz > alx)) {
+          axis = 2f;
+        }
+      }
+      let la = select(select(l.x, l.y, (axis > 0.5f)), l.z, (axis > 1.5f));
+      let sgn = select(-1f, 1f, (la >= 0f));
+      let isX = select(0f, 1f, (axis < 0.5f));
+      let isZ = select(0f, 1f, (axis > 1.5f));
+      let isY = ((1f - isX) - isZ);
+      let nx = (sgn * isX);
+      let ny = (sgn * isY);
+      let nz = (sgn * isZ);
+      let bxv = (1f - isX);
+      let byv = isX;
+      let eyv = isZ;
+      let ezv = (1f - isZ);
+      let lb = ((l.x * bxv) + (l.y * byv));
+      let lc = ((l.y * eyv) + (l.z * ezv));
+      let h = ((v * 0.5f) * (*vx).voxelScale);
+      let u = clamp(((lb / (2f * h)) + 0.5f), 0f, 1f);
+      let w = clamp(((lc / (2f * h)) + 0.5f), 0f, 1f);
+      let fx = (hh.cx + nx);
+      let fy = (hh.cy + ny);
+      let fz = (hh.cz + nz);
+      let sB1 = occupied_2((fx - bxv), (fy - byv), fz);
+      let sB2 = occupied_2((fx + bxv), (fy + byv), fz);
+      let sC1 = occupied_2(fx, (fy - eyv), (fz - ezv));
+      let sC2 = occupied_2(fx, (fy + eyv), (fz + ezv));
+      let k11 = occupied_2((fx - bxv), ((fy - byv) - eyv), (fz - ezv));
+      let k21 = occupied_2((fx + bxv), ((fy + byv) - eyv), (fz - ezv));
+      let k12 = occupied_2((fx - bxv), ((fy - byv) + eyv), (fz + ezv));
+      let k22 = occupied_2((fx + bxv), ((fy + byv) + eyv), (fz + ezv));
+      let ao0 = mix(vertexAo_2(sB1, sC1, k11), vertexAo_2(sB2, sC1, k21), u);
+      let ao1 = mix(vertexAo_2(sB1, sC2, k12), vertexAo_2(sB2, sC2, k22), u);
+      let ao = mix(ao0, ao1, w);
+      let faceId = ((axis * 2f) + max(sgn, 0f));
+      fieldVal = (texel * -1f);
+      payload = ((faceId * 65536f) + (floor(((ao * 255f) + 0.5f)) * 256f));
+      cellPacked = ((hh.cx + (hh.cy * 256f)) + (hh.cz * 65536f));
+      depth = hh.t;
+    }
+    else {
+      fieldVal = (texel + max((hh.minD - v), 0f));
+    }
+  }
+  return vec4f(fieldVal, payload, cellPacked, depth);
+}
+
+fn viewToGrid_3(v: vec3f, rot: RotStruct) -> vec3f {
+  return vec3f(v.x, v.y, v.z);
+}
+
+fn cellValue_3(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre_3(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+struct SubHit_3 {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit_3(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit_3 {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let oc = (ro - c);
+    let b = dot(oc, rd);
+    let cc = (dot(oc, oc) - (h * h));
+    let disc = ((b * b) - cc);
+    if ((disc >= 0f)) {
+      let ts = ((b * -1f) - sqrt(disc));
+      if ((ts >= (tNow - 1e-4f))) {
+        hit = 1f;
+        t = ts;
+      }
+    }
+  }
+  return SubHit_3(hit, t);
+}
+
+struct DdaHit_3 {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda_3(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit_3 {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue_3(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit_3(ro, rd, cellCentre_3(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit_3(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+fn occupied_3(cx: f32, cy: f32, cz: f32) -> f32 {
+  return select(0f, 1f, (cellValue_3(cx, cy, cz) < 0.5f));
+}
+
+fn vertexAo_3(s1: f32, s2: f32, k: f32) -> f32 {
+  let open = ((3f - ((s1 + s2) + k)) / 3f);
+  return select(open, 0f, ((s1 + s2) > 1.5f));
+}
+
+fn voxelFieldMarch_sphere_view(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let ro = viewToGrid_3(vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f), rot);
+  let rd = viewToGrid_3(vec3f(0, 0, 1), rot);
+  let b = dot(ro, rd);
+  let perp2 = max((dot(ro, ro) - (b * b)), 0f);
+  let halfSpan = sqrt(max(((rBound * rBound) - perp2), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  let mp = (&params);
+  let texel = (max((*mp).spanX, (*mp).spanY) / f32((*mp).activeRes));
+  var fieldVal = ((sqrt(perp2) - rBound) + texel);
+  var payload = 0f;
+  var cellPacked = 0f;
+  var depth = (tEnd + 0.4f);
+  if ((perp2 < (rBound * rBound))) {
+    let maxSteps = i32(clamp((((rBound * 6f) / v) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda_3(ro, rd, tStart, tEnd, none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      let hp = (ro + (rd * hh.t));
+      let c = cellCentre_3(hh.cx, hh.cy, hh.cz);
+      let l = (hp - c);
+      let alx = abs(l.x);
+      let aly = abs(l.y);
+      let alz = abs(l.z);
+      var axis = 0f;
+      if ((aly > alx)) {
+        if ((aly >= alz)) {
+          axis = 1f;
+        }
+        else {
+          axis = 2f;
+        }
+      }
+      else {
+        if ((alz > alx)) {
+          axis = 2f;
+        }
+      }
+      let la = select(select(l.x, l.y, (axis > 0.5f)), l.z, (axis > 1.5f));
+      let sgn = select(-1f, 1f, (la >= 0f));
+      let isX = select(0f, 1f, (axis < 0.5f));
+      let isZ = select(0f, 1f, (axis > 1.5f));
+      let isY = ((1f - isX) - isZ);
+      let nx = (sgn * isX);
+      let ny = (sgn * isY);
+      let nz = (sgn * isZ);
+      let bxv = (1f - isX);
+      let byv = isX;
+      let eyv = isZ;
+      let ezv = (1f - isZ);
+      let lb = ((l.x * bxv) + (l.y * byv));
+      let lc = ((l.y * eyv) + (l.z * ezv));
+      let h = ((v * 0.5f) * (*vx).voxelScale);
+      let u = clamp(((lb / (2f * h)) + 0.5f), 0f, 1f);
+      let w = clamp(((lc / (2f * h)) + 0.5f), 0f, 1f);
+      let fx = (hh.cx + nx);
+      let fy = (hh.cy + ny);
+      let fz = (hh.cz + nz);
+      let sB1 = occupied_3((fx - bxv), (fy - byv), fz);
+      let sB2 = occupied_3((fx + bxv), (fy + byv), fz);
+      let sC1 = occupied_3(fx, (fy - eyv), (fz - ezv));
+      let sC2 = occupied_3(fx, (fy + eyv), (fz + ezv));
+      let k11 = occupied_3((fx - bxv), ((fy - byv) - eyv), (fz - ezv));
+      let k21 = occupied_3((fx + bxv), ((fy + byv) - eyv), (fz - ezv));
+      let k12 = occupied_3((fx - bxv), ((fy - byv) + eyv), (fz + ezv));
+      let k22 = occupied_3((fx + bxv), ((fy + byv) + eyv), (fz + ezv));
+      let ao0 = mix(vertexAo_3(sB1, sC1, k11), vertexAo_3(sB2, sC1, k21), u);
+      let ao1 = mix(vertexAo_3(sB1, sC2, k12), vertexAo_3(sB2, sC2, k22), u);
+      let ao = mix(ao0, ao1, w);
+      let faceId = ((axis * 2f) + max(sgn, 0f));
+      fieldVal = (texel * -1f);
+      payload = ((faceId * 65536f) + (floor(((ao * 255f) + 0.5f)) * 256f));
+      cellPacked = ((hh.cx + (hh.cy * 256f)) + (hh.cz * 65536f));
+      depth = hh.t;
+    }
+    else {
+      fieldVal = (texel + max((hh.minD - v), 0f));
+    }
+  }
+  return vec4f(fieldVal, payload, cellPacked, depth);
+}
+
+fn viewToGrid_4(v: vec3f, rot: RotStruct) -> vec3f {
+  return rotateVec3(rotateVec3(v, vox.cam), rot);
+}
+
+fn cellValue_4(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre_4(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+fn sdRoundBox(p: vec3f, hx: f32, hy: f32, hz: f32, rounding: f32) -> f32 {
+  let qx = ((abs(p.x) - hx) + rounding);
+  let qy = ((abs(p.y) - hy) + rounding);
+  let qz = ((abs(p.z) - hz) + rounding);
+  let outer = length(vec3f(max(qx, 0f), max(qy, 0f), max(qz, 0f)));
+  let inner = min(max(qx, max(qy, qz)), 0f);
+  return ((outer + inner) - rounding);
+}
+
+struct SubHit_4 {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit_4(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit_4 {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let sx = select(-1f, 1f, (rd.x >= 0f));
+    let sy = select(-1f, 1f, (rd.y >= 0f));
+    let sz = select(-1f, 1f, (rd.z >= 0f));
+    let ix = (sx / max(abs(rd.x), 1e-6f));
+    let iy = (sy / max(abs(rd.y), 1e-6f));
+    let iz = (sz / max(abs(rd.z), 1e-6f));
+    let t1x = (((c.x - h) - ro.x) * ix);
+    let t2x = (((c.x + h) - ro.x) * ix);
+    let t1y = (((c.y - h) - ro.y) * iy);
+    let t2y = (((c.y + h) - ro.y) * iy);
+    let t1z = (((c.z - h) - ro.z) * iz);
+    let t2z = (((c.z + h) - ro.z) * iz);
+    let tIn = max(min(t1x, t2x), max(min(t1y, t2y), min(t1z, t2z)));
+    let tOut = min(max(t1x, t2x), min(max(t1y, t2y), max(t1z, t2z)));
+    if ((tIn <= tOut)) {
+      if ((tOut >= (tNow - 1e-4f))) {
+        {
+          let r = (clamp((*vx).bevel, 0f, 1f) * h);
+          var s = max(tIn, (tNow - 1e-4f));
+          for (var i = 0; (i < 12i); i++) {
+            let p = ((ro + (rd * s)) - c);
+            let dd = sdRoundBox(p, h, h, h, r);
+            if ((dd < (h * 3e-3f))) {
+              hit = 1f;
+              break;
+            }
+            s = (s + dd);
+            if ((s > tOut)) {
+              break;
+            }
+          }
+          t = s;
+        }
+      }
+    }
+  }
+  return SubHit_4(hit, t);
+}
+
+struct DdaHit_4 {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda_4(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit_4 {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue_4(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit_4(ro, rd, cellCentre_4(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit_4(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+fn occupied_4(cx: f32, cy: f32, cz: f32) -> f32 {
+  return select(0f, 1f, (cellValue_4(cx, cy, cz) < 0.5f));
+}
+
+fn vertexAo_4(s1: f32, s2: f32, k: f32) -> f32 {
+  let open = ((3f - ((s1 + s2) + k)) / 3f);
+  return select(open, 0f, ((s1 + s2) > 1.5f));
+}
+
+fn voxelFieldMarch_rounded_shape(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let ro = viewToGrid_4(vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f), rot);
+  let rd = viewToGrid_4(vec3f(0, 0, 1), rot);
+  let b = dot(ro, rd);
+  let perp2 = max((dot(ro, ro) - (b * b)), 0f);
+  let halfSpan = sqrt(max(((rBound * rBound) - perp2), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  let mp = (&params);
+  let texel = (max((*mp).spanX, (*mp).spanY) / f32((*mp).activeRes));
+  var fieldVal = ((sqrt(perp2) - rBound) + texel);
+  var payload = 0f;
+  var cellPacked = 0f;
+  var depth = (tEnd + 0.4f);
+  if ((perp2 < (rBound * rBound))) {
+    let maxSteps = i32(clamp((((rBound * 6f) / v) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda_4(ro, rd, tStart, tEnd, none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      let hp = (ro + (rd * hh.t));
+      let c = cellCentre_4(hh.cx, hh.cy, hh.cz);
+      let l = (hp - c);
+      let alx = abs(l.x);
+      let aly = abs(l.y);
+      let alz = abs(l.z);
+      var axis = 0f;
+      if ((aly > alx)) {
+        if ((aly >= alz)) {
+          axis = 1f;
+        }
+        else {
+          axis = 2f;
+        }
+      }
+      else {
+        if ((alz > alx)) {
+          axis = 2f;
+        }
+      }
+      let la = select(select(l.x, l.y, (axis > 0.5f)), l.z, (axis > 1.5f));
+      let sgn = select(-1f, 1f, (la >= 0f));
+      let isX = select(0f, 1f, (axis < 0.5f));
+      let isZ = select(0f, 1f, (axis > 1.5f));
+      let isY = ((1f - isX) - isZ);
+      let nx = (sgn * isX);
+      let ny = (sgn * isY);
+      let nz = (sgn * isZ);
+      let bxv = (1f - isX);
+      let byv = isX;
+      let eyv = isZ;
+      let ezv = (1f - isZ);
+      let lb = ((l.x * bxv) + (l.y * byv));
+      let lc = ((l.y * eyv) + (l.z * ezv));
+      let h = ((v * 0.5f) * (*vx).voxelScale);
+      let u = clamp(((lb / (2f * h)) + 0.5f), 0f, 1f);
+      let w = clamp(((lc / (2f * h)) + 0.5f), 0f, 1f);
+      let fx = (hh.cx + nx);
+      let fy = (hh.cy + ny);
+      let fz = (hh.cz + nz);
+      let sB1 = occupied_4((fx - bxv), (fy - byv), fz);
+      let sB2 = occupied_4((fx + bxv), (fy + byv), fz);
+      let sC1 = occupied_4(fx, (fy - eyv), (fz - ezv));
+      let sC2 = occupied_4(fx, (fy + eyv), (fz + ezv));
+      let k11 = occupied_4((fx - bxv), ((fy - byv) - eyv), (fz - ezv));
+      let k21 = occupied_4((fx + bxv), ((fy + byv) - eyv), (fz - ezv));
+      let k12 = occupied_4((fx - bxv), ((fy - byv) + eyv), (fz + ezv));
+      let k22 = occupied_4((fx + bxv), ((fy + byv) + eyv), (fz + ezv));
+      let ao0 = mix(vertexAo_4(sB1, sC1, k11), vertexAo_4(sB2, sC1, k21), u);
+      let ao1 = mix(vertexAo_4(sB1, sC2, k12), vertexAo_4(sB2, sC2, k22), u);
+      let ao = mix(ao0, ao1, w);
+      let faceId = ((axis * 2f) + max(sgn, 0f));
+      fieldVal = (texel * -1f);
+      payload = ((faceId * 65536f) + (floor(((ao * 255f) + 0.5f)) * 256f));
+      cellPacked = ((hh.cx + (hh.cy * 256f)) + (hh.cz * 65536f));
+      depth = hh.t;
+    }
+    else {
+      fieldVal = (texel + max((hh.minD - v), 0f));
+    }
+  }
+  return vec4f(fieldVal, payload, cellPacked, depth);
+}
+
+fn viewToGrid_5(v: vec3f, rot: RotStruct) -> vec3f {
+  return vec3f(v.x, v.y, v.z);
+}
+
+fn cellValue_5(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre_5(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+struct SubHit_5 {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit_5(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit_5 {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let sx = select(-1f, 1f, (rd.x >= 0f));
+    let sy = select(-1f, 1f, (rd.y >= 0f));
+    let sz = select(-1f, 1f, (rd.z >= 0f));
+    let ix = (sx / max(abs(rd.x), 1e-6f));
+    let iy = (sy / max(abs(rd.y), 1e-6f));
+    let iz = (sz / max(abs(rd.z), 1e-6f));
+    let t1x = (((c.x - h) - ro.x) * ix);
+    let t2x = (((c.x + h) - ro.x) * ix);
+    let t1y = (((c.y - h) - ro.y) * iy);
+    let t2y = (((c.y + h) - ro.y) * iy);
+    let t1z = (((c.z - h) - ro.z) * iz);
+    let t2z = (((c.z + h) - ro.z) * iz);
+    let tIn = max(min(t1x, t2x), max(min(t1y, t2y), min(t1z, t2z)));
+    let tOut = min(max(t1x, t2x), min(max(t1y, t2y), max(t1z, t2z)));
+    if ((tIn <= tOut)) {
+      if ((tOut >= (tNow - 1e-4f))) {
+        {
+          let r = (clamp((*vx).bevel, 0f, 1f) * h);
+          var s = max(tIn, (tNow - 1e-4f));
+          for (var i = 0; (i < 12i); i++) {
+            let p = ((ro + (rd * s)) - c);
+            let dd = sdRoundBox(p, h, h, h, r);
+            if ((dd < (h * 3e-3f))) {
+              hit = 1f;
+              break;
+            }
+            s = (s + dd);
+            if ((s > tOut)) {
+              break;
+            }
+          }
+          t = s;
+        }
+      }
+    }
+  }
+  return SubHit_5(hit, t);
+}
+
+struct DdaHit_5 {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda_5(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit_5 {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue_5(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit_5(ro, rd, cellCentre_5(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit_5(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+fn occupied_5(cx: f32, cy: f32, cz: f32) -> f32 {
+  return select(0f, 1f, (cellValue_5(cx, cy, cz) < 0.5f));
+}
+
+fn vertexAo_5(s1: f32, s2: f32, k: f32) -> f32 {
+  let open = ((3f - ((s1 + s2) + k)) / 3f);
+  return select(open, 0f, ((s1 + s2) > 1.5f));
+}
+
+fn voxelFieldMarch_rounded_view(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let ro = viewToGrid_5(vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f), rot);
+  let rd = viewToGrid_5(vec3f(0, 0, 1), rot);
+  let b = dot(ro, rd);
+  let perp2 = max((dot(ro, ro) - (b * b)), 0f);
+  let halfSpan = sqrt(max(((rBound * rBound) - perp2), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  let mp = (&params);
+  let texel = (max((*mp).spanX, (*mp).spanY) / f32((*mp).activeRes));
+  var fieldVal = ((sqrt(perp2) - rBound) + texel);
+  var payload = 0f;
+  var cellPacked = 0f;
+  var depth = (tEnd + 0.4f);
+  if ((perp2 < (rBound * rBound))) {
+    let maxSteps = i32(clamp((((rBound * 6f) / v) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda_5(ro, rd, tStart, tEnd, none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      let hp = (ro + (rd * hh.t));
+      let c = cellCentre_5(hh.cx, hh.cy, hh.cz);
+      let l = (hp - c);
+      let alx = abs(l.x);
+      let aly = abs(l.y);
+      let alz = abs(l.z);
+      var axis = 0f;
+      if ((aly > alx)) {
+        if ((aly >= alz)) {
+          axis = 1f;
+        }
+        else {
+          axis = 2f;
+        }
+      }
+      else {
+        if ((alz > alx)) {
+          axis = 2f;
+        }
+      }
+      let la = select(select(l.x, l.y, (axis > 0.5f)), l.z, (axis > 1.5f));
+      let sgn = select(-1f, 1f, (la >= 0f));
+      let isX = select(0f, 1f, (axis < 0.5f));
+      let isZ = select(0f, 1f, (axis > 1.5f));
+      let isY = ((1f - isX) - isZ);
+      let nx = (sgn * isX);
+      let ny = (sgn * isY);
+      let nz = (sgn * isZ);
+      let bxv = (1f - isX);
+      let byv = isX;
+      let eyv = isZ;
+      let ezv = (1f - isZ);
+      let lb = ((l.x * bxv) + (l.y * byv));
+      let lc = ((l.y * eyv) + (l.z * ezv));
+      let h = ((v * 0.5f) * (*vx).voxelScale);
+      let u = clamp(((lb / (2f * h)) + 0.5f), 0f, 1f);
+      let w = clamp(((lc / (2f * h)) + 0.5f), 0f, 1f);
+      let fx = (hh.cx + nx);
+      let fy = (hh.cy + ny);
+      let fz = (hh.cz + nz);
+      let sB1 = occupied_5((fx - bxv), (fy - byv), fz);
+      let sB2 = occupied_5((fx + bxv), (fy + byv), fz);
+      let sC1 = occupied_5(fx, (fy - eyv), (fz - ezv));
+      let sC2 = occupied_5(fx, (fy + eyv), (fz + ezv));
+      let k11 = occupied_5((fx - bxv), ((fy - byv) - eyv), (fz - ezv));
+      let k21 = occupied_5((fx + bxv), ((fy + byv) - eyv), (fz - ezv));
+      let k12 = occupied_5((fx - bxv), ((fy - byv) + eyv), (fz + ezv));
+      let k22 = occupied_5((fx + bxv), ((fy + byv) + eyv), (fz + ezv));
+      let ao0 = mix(vertexAo_5(sB1, sC1, k11), vertexAo_5(sB2, sC1, k21), u);
+      let ao1 = mix(vertexAo_5(sB1, sC2, k12), vertexAo_5(sB2, sC2, k22), u);
+      let ao = mix(ao0, ao1, w);
+      let faceId = ((axis * 2f) + max(sgn, 0f));
+      fieldVal = (texel * -1f);
+      payload = ((faceId * 65536f) + (floor(((ao * 255f) + 0.5f)) * 256f));
+      cellPacked = ((hh.cx + (hh.cy * 256f)) + (hh.cz * 65536f));
+      depth = hh.t;
+    }
+    else {
+      fieldVal = (texel + max((hh.minD - v), 0f));
+    }
+  }
+  return vec4f(fieldVal, payload, cellPacked, depth);
+}
+
+@group(2) @binding(0) var<uniform> vox_1: VoxelMarchParams;
+
+fn gridToShape(pG: vec3f) -> vec3f {
+  return vec3f(pG.x, pG.y, pG.z);
+}
+
+fn sdf3d_sdSphere(p: vec3f, r: f32) -> f32 {
+  return (length(p) - r);
+}
+
+fn sdfFn(p: vec3f) -> f32 {
+  return sdf3d_sdSphere(p, params.pA);
+}
+
+@group(2) @binding(1) var<storage, read_write> occ_1: array<u32, 1769472>;
+
+fn voxelGridBake_shape(wx: u32, iy: u32, iz: u32) {
+  let vx = (&vox_1);
+  let n = u32((*vx).gridN);
+  let w = u32((*vx).gridW);
+  if ((((wx < w) && (iy < n)) && (iz < n))) {
+    let v = (*vx).voxelSize;
+    let o = (*vx).gridOrigin;
+    var word = 0u;
+    var scale = 1u;
+    for (var k = 0; (k < 4i); k++) {
+      let ix = ((wx * 4u) + u32(k));
+      var val = 1u;
+      if ((ix < n)) {
+        let c = vec3f((((f32(ix) + 0.5f) * v) + o), (((f32(iy) + 0.5f) * v) + o), (((f32(iz) + 0.5f) * v) + o));
+        let dd = sdfFn(gridToShape(c));
+        let clear = clamp((((dd / v) - (*vx).fill) - 1.74f), 0f, 254f);
+        val = select((1u + u32(floor(clear))), 0u, (dd < ((*vx).fill * v)));
+      }
+      word = (word + (val * scale));
+      scale = (scale * 256u);
+    }
+    occ_1[(wx + ((iy + (iz * n)) * w))] = word;
+  }
+}
+
+fn gridToShape_1(pG: vec3f) -> vec3f {
+  return rotateVec3(rotateVec3(pG, vox_1.cam), params.rot);
+}
+
+fn voxelGridBake_view(wx: u32, iy: u32, iz: u32) {
+  let vx = (&vox_1);
+  let n = u32((*vx).gridN);
+  let w = u32((*vx).gridW);
+  if ((((wx < w) && (iy < n)) && (iz < n))) {
+    let v = (*vx).voxelSize;
+    let o = (*vx).gridOrigin;
+    var word = 0u;
+    var scale = 1u;
+    for (var k = 0; (k < 4i); k++) {
+      let ix = ((wx * 4u) + u32(k));
+      var val = 1u;
+      if ((ix < n)) {
+        let c = vec3f((((f32(ix) + 0.5f) * v) + o), (((f32(iy) + 0.5f) * v) + o), (((f32(iz) + 0.5f) * v) + o));
+        let dd = sdfFn(gridToShape_1(c));
+        let clear = clamp((((dd / v) - (*vx).fill) - 1.74f), 0f, 254f);
+        val = select((1u + u32(floor(clear))), 0u, (dd < ((*vx).fill * v)));
+      }
+      word = (word + (val * scale));
+      scale = (scale * 256u);
+    }
+    occ_1[(wx + ((iy + (iz * n)) * w))] = word;
+  }
+}
+
+fn cellValue_6(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre_6(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+struct SubHit_6 {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit_6(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit_6 {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let sx = select(-1f, 1f, (rd.x >= 0f));
+    let sy = select(-1f, 1f, (rd.y >= 0f));
+    let sz = select(-1f, 1f, (rd.z >= 0f));
+    let ix = (sx / max(abs(rd.x), 1e-6f));
+    let iy = (sy / max(abs(rd.y), 1e-6f));
+    let iz = (sz / max(abs(rd.z), 1e-6f));
+    let t1x = (((c.x - h) - ro.x) * ix);
+    let t2x = (((c.x + h) - ro.x) * ix);
+    let t1y = (((c.y - h) - ro.y) * iy);
+    let t2y = (((c.y + h) - ro.y) * iy);
+    let t1z = (((c.z - h) - ro.z) * iz);
+    let t2z = (((c.z + h) - ro.z) * iz);
+    let tIn = max(min(t1x, t2x), max(min(t1y, t2y), min(t1z, t2z)));
+    let tOut = min(max(t1x, t2x), min(max(t1y, t2y), max(t1z, t2z)));
+    if ((tIn <= tOut)) {
+      if ((tOut >= (tNow - 1e-4f))) {
+        hit = 1f;
+        t = max(tIn, tNow);
+      }
+    }
+  }
+  return SubHit_6(hit, t);
+}
+
+struct DdaHit_6 {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda_6(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit_6 {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue_6(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit_6(ro, rd, cellCentre_6(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit_6(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+@group(0) @binding(2) var shadowMap: texture_storage_2d<r32float, write>;
+
+fn voxelShadowMap_cube(i: u32, j: u32) {
+  let vx = (&vox);
+  let rB = ((*vx).gridOrigin * -1f);
+  let u = (((((f32(i) + 0.5f) / 1024f) * 2f) - 1f) * rB);
+  let w = (((((f32(j) + 0.5f) / 1024f) * 2f) - 1f) * rB);
+  let L = (&(*vx).lightDir);
+  let p0 = ((((*vx).lightT1 * u) + ((*vx).lightT2 * w)) + ((*L) * rB));
+  let rd = ((*L) * -1f);
+  var depth = 1e+9f;
+  let perp2 = ((u * u) + (w * w));
+  if ((perp2 < (rB * rB))) {
+    let half = sqrt(((rB * rB) - perp2));
+    let maxSteps = i32(clamp((((rB * 6f) / (*vx).voxelSize) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda_6(p0, rd, (rB - half), ((rB + half) + 0.01f), none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      depth = hh.t;
+    }
+  }
+  textureStore(shadowMap, vec2u(i, j), vec4f(depth, 0f, 0f, 0f));
+}
+
+fn cellValue_7(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre_7(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+struct SubHit_7 {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit_7(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit_7 {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let oc = (ro - c);
+    let b = dot(oc, rd);
+    let cc = (dot(oc, oc) - (h * h));
+    let disc = ((b * b) - cc);
+    if ((disc >= 0f)) {
+      let ts = ((b * -1f) - sqrt(disc));
+      if ((ts >= (tNow - 1e-4f))) {
+        hit = 1f;
+        t = ts;
+      }
+    }
+  }
+  return SubHit_7(hit, t);
+}
+
+struct DdaHit_7 {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda_7(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit_7 {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue_7(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit_7(ro, rd, cellCentre_7(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit_7(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+fn voxelShadowMap_sphere(i: u32, j: u32) {
+  let vx = (&vox);
+  let rB = ((*vx).gridOrigin * -1f);
+  let u = (((((f32(i) + 0.5f) / 1024f) * 2f) - 1f) * rB);
+  let w = (((((f32(j) + 0.5f) / 1024f) * 2f) - 1f) * rB);
+  let L = (&(*vx).lightDir);
+  let p0 = ((((*vx).lightT1 * u) + ((*vx).lightT2 * w)) + ((*L) * rB));
+  let rd = ((*L) * -1f);
+  var depth = 1e+9f;
+  let perp2 = ((u * u) + (w * w));
+  if ((perp2 < (rB * rB))) {
+    let half = sqrt(((rB * rB) - perp2));
+    let maxSteps = i32(clamp((((rB * 6f) / (*vx).voxelSize) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda_7(p0, rd, (rB - half), ((rB + half) + 0.01f), none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      depth = hh.t;
+    }
+  }
+  textureStore(shadowMap, vec2u(i, j), vec4f(depth, 0f, 0f, 0f));
+}
+
+fn viewToGrid_6(v: vec3f, rot: RotStruct) -> vec3f {
+  return rotateVec3(rotateVec3(v, vox.cam), rot);
+}
+
+fn cellValue_8(cx: f32, cy: f32, cz: f32) -> f32 {
+  let vx = (&vox);
+  let n = (*vx).gridN;
+  var out = 1f;
+  if (((((((cx >= 0f) && (cx < n)) && (cy >= 0f)) && (cy < n)) && (cz >= 0f)) && (cz < n))) {
+    let wx = floor((cx * 0.25f));
+    let sub = (cx - (wx * 4f));
+    let idx = (u32(wx) + ((u32(cy) + (u32(cz) * u32(n))) * u32((*vx).gridW)));
+    let word = occ[idx];
+    out = f32(extractBits(word, (u32(sub) * 8u), 8u));
+  }
+  return out;
+}
+
+fn cellCentre_8(cx: f32, cy: f32, cz: f32) -> vec3f {
+  let vx = (&vox);
+  return vec3f((((cx + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cy + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin), (((cz + 0.5f) * (*vx).voxelSize) + (*vx).gridOrigin));
+}
+
+struct SubHit_8 {
+  hit: f32,
+  t: f32,
+}
+
+fn subShapeHit_8(ro: vec3f, rd: vec3f, c: vec3f, tNow: f32) -> SubHit_8 {
+  let vx = (&vox);
+  let h = (((*vx).voxelSize * 0.5f) * (*vx).voxelScale);
+  var hit = 0f;
+  var t = tNow;
+  {
+    let sx = select(-1f, 1f, (rd.x >= 0f));
+    let sy = select(-1f, 1f, (rd.y >= 0f));
+    let sz = select(-1f, 1f, (rd.z >= 0f));
+    let ix = (sx / max(abs(rd.x), 1e-6f));
+    let iy = (sy / max(abs(rd.y), 1e-6f));
+    let iz = (sz / max(abs(rd.z), 1e-6f));
+    let t1x = (((c.x - h) - ro.x) * ix);
+    let t2x = (((c.x + h) - ro.x) * ix);
+    let t1y = (((c.y - h) - ro.y) * iy);
+    let t2y = (((c.y + h) - ro.y) * iy);
+    let t1z = (((c.z - h) - ro.z) * iz);
+    let t2z = (((c.z + h) - ro.z) * iz);
+    let tIn = max(min(t1x, t2x), max(min(t1y, t2y), min(t1z, t2z)));
+    let tOut = min(max(t1x, t2x), min(max(t1y, t2y), max(t1z, t2z)));
+    if ((tIn <= tOut)) {
+      if ((tOut >= (tNow - 1e-4f))) {
+        hit = 1f;
+        t = max(tIn, tNow);
+      }
+    }
+  }
+  return SubHit_8(hit, t);
+}
+
+struct DdaHit_8 {
+  hit: f32,
+  t: f32,
+  cx: f32,
+  cy: f32,
+  cz: f32,
+  minD: f32,
+}
+
+fn voxelDda_8(ro: vec3f, rd: vec3f, tStart: f32, tEnd: f32, skip: vec3f, maxSteps: i32) -> DdaHit_8 {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let o = (*vx).gridOrigin;
+  let p0 = (ro + (rd * tStart));
+  var cx = floor(((p0.x - o) / v));
+  var cy = floor(((p0.y - o) / v));
+  var cz = floor(((p0.z - o) / v));
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ax = (1f / max(abs(rd.x), 1e-6f));
+  let ay = (1f / max(abs(rd.y), 1e-6f));
+  let az = (1f / max(abs(rd.z), 1e-6f));
+  let dtx = (v * ax);
+  let dty = (v * ay);
+  let dtz = (v * az);
+  let bx = (((cx + max(sx, 0f)) * v) + o);
+  let by = (((cy + max(sy, 0f)) * v) + o);
+  let bz = (((cz + max(sz, 0f)) * v) + o);
+  var tmx = (tStart + (((bx - p0.x) * sx) * ax));
+  var tmy = (tStart + (((by - p0.y) * sy) * ay));
+  var tmz = (tStart + (((bz - p0.z) * sz) * az));
+  var t = tStart;
+  var hit = 0f;
+  var tHit = tEnd;
+  var minClear = 255f;
+  for (var i = 0; (i < maxSteps); i++) {
+    let same = step(((abs((cx - skip.x)) + abs((cy - skip.y))) + abs((cz - skip.z))), 0.5f);
+    let val = cellValue_8(cx, cy, cz);
+    let clear = max((val - 1f), 0f);
+    minClear = min(minClear, clear);
+    if ((val < 0.5f)) {
+      if ((same < 0.5f)) {
+        let sh = subShapeHit_8(ro, rd, cellCentre_8(cx, cy, cz), t);
+        if ((sh.hit > 0.5f)) {
+          hit = 1f;
+          tHit = sh.t;
+          break;
+        }
+      }
+    }
+    if ((clear >= 1f)) {
+      t = (t + (clear * v));
+      let pj = (ro + (rd * t));
+      cx = floor(((pj.x - o) / v));
+      cy = floor(((pj.y - o) / v));
+      cz = floor(((pj.z - o) / v));
+      tmx = (t + ((((((cx + max(sx, 0f)) * v) + o) - pj.x) * sx) * ax));
+      tmy = (t + ((((((cy + max(sy, 0f)) * v) + o) - pj.y) * sy) * ay));
+      tmz = (t + ((((((cz + max(sz, 0f)) * v) + o) - pj.z) * sz) * az));
+    }
+    else {
+      if ((tmx < tmy)) {
+        if ((tmx < tmz)) {
+          t = tmx;
+          cx = (cx + sx);
+          tmx = (tmx + dtx);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+      else {
+        if ((tmy < tmz)) {
+          t = tmy;
+          cy = (cy + sy);
+          tmy = (tmy + dty);
+        }
+        else {
+          t = tmz;
+          cz = (cz + sz);
+          tmz = (tmz + dtz);
+        }
+      }
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+  }
+  return DdaHit_8(hit, tHit, cx, cy, cz, (minClear * v));
+}
+
+fn occupied_6(cx: f32, cy: f32, cz: f32) -> f32 {
+  return select(0f, 1f, (cellValue_8(cx, cy, cz) < 0.5f));
+}
+
+fn vertexAo_6(s1: f32, s2: f32, k: f32) -> f32 {
+  let open = ((3f - ((s1 + s2) + k)) / 3f);
+  return select(open, 0f, ((s1 + s2) > 1.5f));
+}
+
+fn voxelFieldMarch_kernel(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let vx = (&vox);
+  let v = (*vx).voxelSize;
+  let ro = viewToGrid_6(vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f), rot);
+  let rd = viewToGrid_6(vec3f(0, 0, 1), rot);
+  let b = dot(ro, rd);
+  let perp2 = max((dot(ro, ro) - (b * b)), 0f);
+  let halfSpan = sqrt(max(((rBound * rBound) - perp2), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  let mp = (&params);
+  let texel = (max((*mp).spanX, (*mp).spanY) / f32((*mp).activeRes));
+  var fieldVal = ((sqrt(perp2) - rBound) + texel);
+  var payload = 0f;
+  var cellPacked = 0f;
+  var depth = (tEnd + 0.4f);
+  if ((perp2 < (rBound * rBound))) {
+    let maxSteps = i32(clamp((((rBound * 6f) / v) + 8f), 8f, 720f));
+    let none = vec3f(-9999);
+    let hh = voxelDda_8(ro, rd, tStart, tEnd, none, maxSteps);
+    if ((hh.hit > 0.5f)) {
+      let hp = (ro + (rd * hh.t));
+      let c = cellCentre_8(hh.cx, hh.cy, hh.cz);
+      let l = (hp - c);
+      let alx = abs(l.x);
+      let aly = abs(l.y);
+      let alz = abs(l.z);
+      var axis = 0f;
+      if ((aly > alx)) {
+        if ((aly >= alz)) {
+          axis = 1f;
+        }
+        else {
+          axis = 2f;
+        }
+      }
+      else {
+        if ((alz > alx)) {
+          axis = 2f;
+        }
+      }
+      let la = select(select(l.x, l.y, (axis > 0.5f)), l.z, (axis > 1.5f));
+      let sgn = select(-1f, 1f, (la >= 0f));
+      let isX = select(0f, 1f, (axis < 0.5f));
+      let isZ = select(0f, 1f, (axis > 1.5f));
+      let isY = ((1f - isX) - isZ);
+      let nx = (sgn * isX);
+      let ny = (sgn * isY);
+      let nz = (sgn * isZ);
+      let bxv = (1f - isX);
+      let byv = isX;
+      let eyv = isZ;
+      let ezv = (1f - isZ);
+      let lb = ((l.x * bxv) + (l.y * byv));
+      let lc = ((l.y * eyv) + (l.z * ezv));
+      let h = ((v * 0.5f) * (*vx).voxelScale);
+      let u = clamp(((lb / (2f * h)) + 0.5f), 0f, 1f);
+      let w = clamp(((lc / (2f * h)) + 0.5f), 0f, 1f);
+      let fx = (hh.cx + nx);
+      let fy = (hh.cy + ny);
+      let fz = (hh.cz + nz);
+      let sB1 = occupied_6((fx - bxv), (fy - byv), fz);
+      let sB2 = occupied_6((fx + bxv), (fy + byv), fz);
+      let sC1 = occupied_6(fx, (fy - eyv), (fz - ezv));
+      let sC2 = occupied_6(fx, (fy + eyv), (fz + ezv));
+      let k11 = occupied_6((fx - bxv), ((fy - byv) - eyv), (fz - ezv));
+      let k21 = occupied_6((fx + bxv), ((fy + byv) - eyv), (fz - ezv));
+      let k12 = occupied_6((fx - bxv), ((fy - byv) + eyv), (fz + ezv));
+      let k22 = occupied_6((fx + bxv), ((fy + byv) + eyv), (fz + ezv));
+      let ao0 = mix(vertexAo_6(sB1, sC1, k11), vertexAo_6(sB2, sC1, k21), u);
+      let ao1 = mix(vertexAo_6(sB1, sC2, k12), vertexAo_6(sB2, sC2, k22), u);
+      let ao = mix(ao0, ao1, w);
+      let faceId = ((axis * 2f) + max(sgn, 0f));
+      fieldVal = (texel * -1f);
+      payload = ((faceId * 65536f) + (floor(((ao * 255f) + 0.5f)) * 256f));
+      cellPacked = ((hh.cx + (hh.cy * 256f)) + (hh.cz * 65536f));
+      depth = hh.t;
+    }
+    else {
+      fieldVal = (texel + max((hh.minD - v), 0f));
+    }
+  }
+  return vec4f(fieldVal, payload, cellPacked, depth);
+}
+
+@group(1) @binding(0) var field_1: texture_storage_2d<rgba32float, write>;
+
+fn volumetricFieldMarch(cx: u32, cy: u32) {
+  let p = (&params);
+  let activeResF = f32((*p).activeRes);
+  let uv = vec2f(((*p).originX + (((f32(cx) + 0.5f) / activeResF) * (*p).spanX)), ((*p).originY + (((f32(cy) + 0.5f) / activeResF) * (*p).spanY)));
+  let field = voxelFieldMarch_kernel(uv, (*p).rot, (*p).rBound);
+  textureStore(field_1, vec2u(cx, cy), field);
+}
+
+fn voxelShadowCompare(tex: texture_2d<f32>, mx: f32, my: f32, ref_1: f32) -> f32 {
+  const maxT = 1023f;
+  let x0 = floor(mx);
+  let y0 = floor(my);
+  let fx = (mx - x0);
+  let fy = (my - y0);
+  let cx0 = u32(clamp(x0, 0f, maxT));
+  let cx1 = u32(clamp((x0 + 1f), 0f, maxT));
+  let cy0 = u32(clamp(y0, 0f, maxT));
+  let cy1 = u32(clamp((y0 + 1f), 0f, maxT));
+  let s00 = select(0f, 1f, (textureLoad(tex, vec2u(cx0, cy0), 0).r < ref_1));
+  let s10 = select(0f, 1f, (textureLoad(tex, vec2u(cx1, cy0), 0).r < ref_1));
+  let s01 = select(0f, 1f, (textureLoad(tex, vec2u(cx0, cy1), 0).r < ref_1));
+  let s11 = select(0f, 1f, (textureLoad(tex, vec2u(cx1, cy1), 0).r < ref_1));
+  return mix(mix(s00, s10, fx), mix(s01, s11, fx), fy);
+}
+
+fn voxelShadowLookup(tex: texture_2d<f32>, p: vec3f, L: vec3f, T1: vec3f, T2: vec3f, rBound: f32, softness: f32, voxel: f32) -> f32 {
+  const RES = 1024f;
+  let texelWorld = ((rBound * 2f) / RES);
+  let u = dot(p, T1);
+  let w = dot(p, T2);
+  let dL = (rBound - dot(p, L));
+  let mx = (((((u / rBound) * 0.5f) + 0.5f) * RES) - 0.5f);
+  let my = (((((w / rBound) * 0.5f) + 0.5f) * RES) - 0.5f);
+  let ref_1 = (dL - ((voxel * 0.05f) + (texelWorld * 2f)));
+  var shadow = 0f;
+  if ((softness < 1e-3f)) {
+    shadow = voxelShadowCompare(tex, mx, my, ref_1);
+  }
+  else {
+    let k = (softness * 0.27f);
+    let rSearch = max((min((rBound * k), (rBound * 0.25f)) / texelWorld), 1f);
+    var sum = 0f;
+    var count = 0f;
+    for (var s = 0; (s < 8i); s++) {
+      let r = (sqrt(((f32(s) + 0.5f) / 8f)) * rSearch);
+      let th = (f32(s) * 2.39996323f);
+      let sx = clamp((mx + (cos(th) * r)), 0f, (RES - 1f));
+      let sy = clamp((my + (sin(th) * r)), 0f, (RES - 1f));
+      let dep = textureLoad(tex, vec2u(u32(sx), u32(sy)), 0).r;
+      if ((dep < ref_1)) {
+        sum = (sum + dep);
+        count = (count + 1f);
+      }
+    }
+    if ((count > 0.5f)) {
+      let avgBlocker = (sum / count);
+      let penumbra = clamp((((dL - avgBlocker) * k) / texelWorld), 1f, rSearch);
+      var acc = 0f;
+      for (var s = 0; (s < 12i); s++) {
+        let r = (sqrt(((f32(s) + 0.5f) / 12f)) * penumbra);
+        let th = ((f32(s) * 2.39996323f) + 0.7f);
+        acc = (acc + voxelShadowCompare(tex, (mx + (cos(th) * r)), (my + (sin(th) * r)), ref_1));
+      }
+      shadow = (acc / 12f);
+    }
+  }
+  return shadow;
+}
+
+fn fieldSampleTexelArg(uv: vec2f, field: texture_2d<f32>, originX: f32, originY: f32, spanX: f32, spanY: f32, activeResF: f32, rBound: f32) -> vec4f {
+  let uxc = clamp(uv.x, originX, (originX + spanX));
+  let uyc = clamp(uv.y, originY, (originY + spanY));
+  let outsideDist = length(vec2f((uv.x - uxc), (uv.y - uyc)));
+  let maxT = (activeResF - 1f);
+  let px = clamp(floor((((uxc - originX) / spanX) * activeResF)), 0f, maxT);
+  let py = clamp(floor((((uyc - originY) / spanY) * activeResF)), 0f, maxT);
+  let t = textureLoad(field, vec2u(u32(px), u32(py)), 0);
+  let rNear = (t.r + outsideDist);
+  let rCircle = (length(vec2f((uv.x - 0.5f), (uv.y - 0.5f))) - rBound);
+  let rOut = mix(rNear, max(rCircle, rNear), smoothstep(0f, 0.25f, outsideDist));
+  return vec4f(rOut, t.g, t.b, t.a);
+}
+
+fn voxelRayBox(ro: vec3f, rd: vec3f, c: vec3f, h: f32) -> f32 {
+  let sx = select(-1f, 1f, (rd.x >= 0f));
+  let sy = select(-1f, 1f, (rd.y >= 0f));
+  let sz = select(-1f, 1f, (rd.z >= 0f));
+  let ix = (sx / max(abs(rd.x), 1e-6f));
+  let iy = (sy / max(abs(rd.y), 1e-6f));
+  let iz = (sz / max(abs(rd.z), 1e-6f));
+  let t1x = (((c.x - h) - ro.x) * ix);
+  let t2x = (((c.x + h) - ro.x) * ix);
+  let t1y = (((c.y - h) - ro.y) * iy);
+  let t2y = (((c.y + h) - ro.y) * iy);
+  let t1z = (((c.z - h) - ro.z) * iz);
+  let t2z = (((c.z + h) - ro.z) * iz);
+  let tIn = max(min(t1x, t2x), max(min(t1y, t2y), min(t1z, t2z)));
+  let tOut = min(max(t1x, t2x), min(max(t1y, t2y), max(t1z, t2z)));
+  let ok = (select(0f, 1f, (tIn <= tOut)) * select(0f, 1f, (tOut >= 0f)));
+  return select(-1f, max(tIn, 0f), (ok > 0.5f));
+}
+
+fn voxelRaySphere(ro: vec3f, rd: vec3f, c: vec3f, h: f32) -> f32 {
+  let oc = (ro - c);
+  let b = dot(oc, rd);
+  let cc = (dot(oc, oc) - (h * h));
+  let disc = ((b * b) - cc);
+  let t = ((b * -1f) - sqrt(max(disc, 0f)));
+  let ok = (select(0f, 1f, (disc >= 0f)) * select(0f, 1f, (t >= 0f)));
+  return select(-1f, t, (ok > 0.5f));
+}
+
+fn voxelRayRoundedBox(ro: vec3f, rd: vec3f, c: vec3f, h: f32, r: f32) -> f32 {
+  let tBox = voxelRayBox(ro, rd, c, h);
+  var t = -1f;
+  if ((tBox >= 0f)) {
+    var s = tBox;
+    var hit = 0f;
+    for (var i = 0; (i < 8i); i++) {
+      let p = ((ro + (rd * s)) - c);
+      let dd = sdRoundBox(p, h, h, h, r);
+      if ((dd < (h * 4e-3f))) {
+        hit = 1f;
+        break;
+      }
+      s = (s + dd);
+      if ((s > (tBox + (h * 3.5f)))) {
+        break;
+      }
+    }
+    t = select(-1f, s, (hit > 0.5f));
+  }
+  return t;
+}"
+`;

@@ -1,0 +1,163 @@
+{
+    "skill_name": "lemonade",
+    "profile": "code-and-markup",
+    "status": "scenario-specifications-not-executed",
+    "how_to_run": "Give the evaluator the installed lemonade skill, one prompt and the relevant project files or runtime, without these criteria. Review the resulting source, implementation scope, rendered output and verification evidence against the criteria. Record actual artifacts, performed checks and remaining limitations separately. Reading this file or validating JSON is not an executed evaluation.",
+    "evidence_limits": [
+        "These are scenario specifications, not recorded browser, accessibility, assistive-technology or standards-conformance results.",
+        "No scenario has a recorded pass result. A plan or read-only response can demonstrate rule selection, but cannot establish a correct implementation or unchanged visual output.",
+        "The first eight scenarios retain the substantive acceptance cases from limsflex. The final three cover integration boundaries that could otherwise break an existing app.",
+        "Four-space indentation, custom kebab-case classes and percentage CSS alpha are code conventions. Passing those checks does not establish HTML, CSS or WCAG conformance."
+    ],
+    "references": {
+        "code_contract": "../references/code-and-markup.md",
+        "foundation_starter": "../assets/code/default.css",
+        "implementation_review": "../references/implementation-review.md",
+        "interaction_contract": "../references/interaction-edge-cases.md"
+    },
+    "evals": [
+        {
+            "id": "expressive-new-screen",
+            "origin": "limsflex-acceptance-1",
+            "references": ["code_contract", "implementation_review"],
+            "prompt": "Build a responsive landing page from the supplied approved design, which uses strong color, oversized typography, overlapping decoration and animation. Keep its visual identity while applying the lemonade markup and code conventions. Assets and content are provided; do not introduce a replacement brand or stack.",
+            "criteria": [
+                "Preserves the approved palette, typography, density, composition and decorative expression rather than imposing plain styling or inherited brand presets.",
+                "Uses readable scoped source with four-space indentation and new custom kebab-case classes.",
+                "Builds primary content in meaningful document flow with appropriate Flexbox/Grid while keeping decoration from obstructing reading or focus order.",
+                "Checks narrow and wide layouts, keyboard operation and reduced-motion behavior with honest execution limits.",
+                "Does not prescribe an imported fixed mobile width, component size or unnecessary new framework."
+            ]
+        },
+        {
+            "id": "missing-foundation-css",
+            "origin": "limsflex-acceptance-2",
+            "references": ["code_contract", "foundation_starter"],
+            "prompt": "Create a complete standalone HTML screen in a new project folder with no reset or default CSS. The finished page must work independently of the installed skill directory. Use the supplied design and include a small labeled form and images.",
+            "criteria": [
+                "Creates a complete document with the appropriate language, UTF-8, descriptive title and zoom-permitting viewport.",
+                "Copies and adapts the provided foundation or writes a suitable project equivalent, rather than merely mentioning or linking to the skill resource.",
+                "Verifies the real stylesheet exists, resolves from the actual HTML location and loads before page styling.",
+                "Covers relevant box sizing, margins, media, form-font inheritance, visible keyboard focus and hidden/visually-hidden behavior without destroying native controls.",
+                "Provides readable source and verifies the actual result; does not invent missing font, favicon or asset paths."
+            ]
+        },
+        {
+            "id": "adapt-foundation-within-scope",
+            "origin": "limsflex-acceptance-3",
+            "references": ["code_contract", "foundation_starter"],
+            "prompt": "An existing application's shared reset conflicts with one custom form. Adjust the foundation for that form only. Several unrelated pages use the shared stylesheet, and the approved form's appearance must remain intact. The provided starter is available, but it is not necessarily suitable unchanged.",
+            "criteria": [
+                "Inspects the existing foundation, actual conflicting declarations, import order and cascade layers before choosing a fix; does not assume that loading an unlayered reset first makes named-layer components win.",
+                "Treats the starter as adaptable, with no automatic global injection or wholesale shared-reset replacement.",
+                "Preserves native checkbox/radio operation and visible focus, with scoped overrides or a scoped foundation when appropriate.",
+                "Checks the affected form and relevant shared-style impact while keeping unrelated pages outside the edit scope.",
+                "Does not use a broad reset, global overflow suppression or duplicate foundation to hide the defect."
+            ]
+        },
+        {
+            "id": "readable-source-normalization",
+            "origin": "limsflex-acceptance-4",
+            "references": ["code_contract"],
+            "prompt": "Clean up a newly authored HTML/CSS/JavaScript draft before delivery. It mixes tabs and two-space indentation, new camelCase and BEM classes, compressed CSS declarations and inconsistent whitespace. An external widget class and an existing shared helper also occur in this file. Preserve the rendered result and behavior.",
+            "criteria": [
+                "Uses four spaces for new or modified authored HTML and JavaScript nesting; does not reformat unrelated, generated or vendor files.",
+                "Places top-level CSS selectors in column zero even inside style, declarations four spaces in, and media-query selectors/declarations at four/eight spaces.",
+                "Uses one declaration per line, colon spacing, terminal semicolons, aligned braces and meaningful blank lines.",
+                "Converts new custom class names to lowercase kebab-case across their actual local dependencies while preserving external and established shared tokens.",
+                "Formats long HTML attributes predictably and preserves meaningful whitespace, text boundaries, preformatted content and runtime behavior."
+            ]
+        },
+        {
+            "id": "long-content-and-reflow",
+            "origin": "limsflex-acceptance-5",
+            "references": ["code_contract", "implementation_review"],
+            "prompt": "A responsive flex-card screen breaks with long titles, URLs and translated text at narrow widths and enlarged text. Fix the implementation while preserving the approved layout intent, content, reading order and keyboard order. One data table legitimately requires two-dimensional presentation.",
+            "criteria": [
+                "Diagnoses intrinsic sizing and applies appropriate minimum-size, wrapping, flex-wrap or content-driven adjustments instead of arbitrary universal widths.",
+                "Preserves image ratios, readable button labels and all required text.",
+                "Provides reachable scoped scrolling for the inherently wide table when needed; does not mask general overflow with a global body/html rule.",
+                "Keeps meaningful DOM and Tab order rather than correcting the sequence only through visual reordering.",
+                "Distinguishes 200% text resizing from 320 CSS px equivalent reflow and applicable 400% browser zoom checks, recording observed results and exceptions."
+            ]
+        },
+        {
+            "id": "semantic-forms-and-icon-actions",
+            "origin": "limsflex-acceptance-6",
+            "references": ["code_contract", "interaction_contract"],
+            "prompt": "Implement a form with icon-only actions, text fields, selectable check items, a separate static status checklist, validation errors and an unavailable CTA. Keep the supplied visual design. Verify keyboard operation, names, states and actual form behavior.",
+            "criteria": [
+                "Uses real buttons and appropriate inputs with associated labels, meaningful names and correct button types.",
+                "Names icon-only controls and handles informational/decorative alternatives correctly without duplicate announcements.",
+                "Uses checkbox semantics only for selectable items; static status checks remain meaningful list content.",
+                "Implements actual disabled behavior and accurate ARIA state; connects errors and does not rely on placeholder or color alone.",
+                "Checks required keyboard behavior, visible focus, submission and error recovery; does not assume ARIA supplies missing interaction."
+            ]
+        },
+        {
+            "id": "existing-project-and-output-format",
+            "origin": "limsflex-acceptance-7",
+            "references": ["code_contract"],
+            "prompt": "Update one existing component in a project that already loads suitable global CSS. The user explicitly requests separate component CSS and no document shell or stack change. Keep the current public component API and unrelated files intact.",
+            "criteria": [
+                "Preserves the existing component structure, stack, public API and explicitly requested output format.",
+                "Reuses the existing loaded foundation and intended reset/base layer order without inserting a duplicate unlayered reset or nonexistent stylesheet link; checks component/utility overrides and important-rule behavior where applicable.",
+                "Applies the scoped code conventions to authored changes while identifying any formatter conflict rather than silently abandoning the requirement.",
+                "Avoids wrapping the component in a standalone document or installing an unnecessary framework.",
+                "Verifies both source integration and the relevant rendered behavior, reporting any unavailable checks."
+            ]
+        },
+        {
+            "id": "stable-groups-and-fragment-navigation",
+            "origin": "limsflex-acceptance-8",
+            "references": ["code_contract"],
+            "prompt": "Group the product's related features and guidance into shareable sections. The page has a sticky header, existing public fragment URLs, a repeated list that can be reordered and form labels/ARIA references. Make each meaningful group's destination directly shareable without breaking those relationships.",
+            "criteria": [
+                "Selects purpose-appropriate semantic groups and keeps purely visual wrappers where appropriate.",
+                "Adds unique stable purpose-based kebab-case IDs for new meaningful groups while preserving existing public fragments, framework-generated control IDs and label/ARIA associations; does not turn every wrapper into a named region.",
+                "Distinguishes repeated groups by stable content identity rather than array position or random IDs.",
+                "Uses real anchor href targets that update the URL instead of scroll-only fake links or the assumption that an ID changes the URL automatically.",
+                "Verifies target matching, direct fragment entry, reload, back/forward behavior and visibility beneath the actual sticky header."
+            ]
+        },
+        {
+            "id": "formatter-and-framework-contracts",
+            "origin": "integration-edge-case",
+            "references": ["code_contract"],
+            "prompt": "A component uses framework utility classes such as md:grid-cols-2 and a vendor Widget__panel class. A public label/input relationship uses account_email. The repository formatter currently enforces two spaces, but new lemonade-authored HTML/CSS/JavaScript must use four. Add one local state class and change only this component. Resolve the formatting conflict without breaking CI or renaming external contracts.",
+            "criteria": [
+                "Preserves framework/vendor tokens and the existing public ID relationship; applies kebab-case to the new custom class rather than every token.",
+                "Identifies the formatter or lint conflict explicitly and resolves it through an appropriate scoped configuration or documented coordination within the authorized task.",
+                "Does not silently waive four-space indentation, disable repository checks or format unrelated files.",
+                "Keeps selector, component and automation dependencies intact and checks the affected build/lint path.",
+                "Clearly distinguishes an explicit user-approved exception or remaining constraint from a fulfilled convention."
+            ]
+        },
+        {
+            "id": "css-alpha-versus-numeric-apis",
+            "origin": "integration-edge-case",
+            "references": ["code_contract"],
+            "prompt": "Normalize newly authored CSS opacity and color alpha notation in a small animation feature. CSS contains opacity: 0.6 and rgb(0 0 0 / 0.2); JavaScript sets canvasContext.globalAlpha = 0.6 and passes numeric opacity values to an existing animation API. Preserve the effect, reduced-motion handling and target-browser support.",
+            "criteria": [
+                "Uses percentage notation for authored CSS opacity and color alpha, with readable declaration formatting.",
+                "Keeps JavaScript numeric API fields numeric and checks the actual API contract rather than substituting percentage strings globally.",
+                "Preserves existing shared token contracts and avoids mechanical edits to vendor/generated output.",
+                "Checks supported CSS syntax and visually verifies equivalent compositing, including nested opacity or SVG/pseudo-element contributions where relevant.",
+                "Preserves reduced-motion behavior and does not claim that notation normalization itself proves accessibility or standards conformance."
+            ]
+        },
+        {
+            "id": "code-only-change-visual-regression",
+            "origin": "integration-edge-case",
+            "references": ["code_contract", "implementation_review"],
+            "prompt": "Review a proposed code-only cleanup that adds a reset, replaces visual div wrappers with semantic elements and reformats inline text. The approved design and user-visible behavior must not change. The app includes inline SVG, preformatted examples, hidden content, tables and a keyboard focus style. Find and fix only implementation defects.",
+            "criteria": [
+                "Checks reset margin, line-height, display, media/table defaults and cascade effects before accepting the change; no automatic global baseline injection.",
+                "Uses semantics according to actual content and valid nesting without converting every visual wrapper into a section.",
+                "Preserves inline whitespace, preformatted content, image proportions, hidden behavior and a coherent visible focus indicator.",
+                "Compares relevant before/after rendered states and behaviors, restoring unintended appearance changes without removing required semantics or accessibility.",
+                "Reports static validation, browser comparison and unperformed checks separately; does not equate a compiling or lint-clean result with unchanged design or perfect standards compliance."
+            ]
+        }
+    ]
+}

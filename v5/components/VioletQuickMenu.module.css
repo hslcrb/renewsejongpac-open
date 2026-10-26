@@ -1,0 +1,243 @@
+/* [원 안에서 흐르는 노랑과 초록 / Yellow and green flowing inside the circle] */
+.experience {
+    --menu-size: min(370px, calc(100vw - 38px), calc(100svh - 190px));
+    --quick-edge: color-mix(in srgb, var(--color-black) 9%, var(--color-transparent));
+    --quick-milk: color-mix(in srgb, var(--color-white) 84%, var(--color-transparent));
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    pointer-events: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    isolation: isolate;
+}
+.experience[data-placement="hero"] {
+    opacity: var(--hero-opacity, 0);
+    visibility: hidden;
+    transition: opacity 180ms ease-out, visibility 0s linear 180ms;
+}
+.experience[data-placement="hero"][data-visible="true"] { visibility: visible; transition-delay: 0s; }
+.experience[data-visible="false"] * { pointer-events: none !important; }
+.dock {
+    position: absolute;
+    left: 50%;
+    bottom: max(20px, env(safe-area-inset-bottom));
+    width: var(--menu-size);
+    height: calc(var(--menu-size) + 80px);
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+/* [메뉴의 열림과 조작 / Menu opening and interaction] */
+.panel {
+    position: absolute;
+    inset: 0 0 auto;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(50px) scale(.24) rotate(-18deg);
+    transform-origin: 50% 105%;
+    transition: transform .58s cubic-bezier(.18, .86, .26, 1.08), opacity .24s ease, visibility .58s;
+    pointer-events: none;
+}
+.experience[data-state="open"] .panel {
+    opacity: 1;
+    visibility: visible;
+    transition-property: transform, opacity;
+    transform: translateY(0) scale(1) rotate(0);
+    pointer-events: auto;
+}
+.instruction {
+    position: absolute;
+    bottom: calc(100% + 19px);
+    left: 50%;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    transform: translateX(-50%);
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--quick-milk);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--quick-edge);
+    color: var(--text-primary);
+    font-size: var(--text-min);
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    backdrop-filter: blur(12px);
+}
+.wheel {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    isolation: isolate;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: var(--color-transparent);
+    box-shadow: 0 12px 36px color-mix(in srgb, var(--color-black) 12%, var(--color-transparent));
+}
+.wheel[data-dragging="true"], .wheel[data-dragging="true"] a { cursor: grabbing; }
+.art {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 30% 15%, var(--color-quick-lemon), var(--color-transparent) 65%), linear-gradient(140deg, var(--color-yellow) 15%, var(--color-quick-mint) 50%, var(--color-quick-green) 85%);
+    z-index: -2;
+    pointer-events: none;
+}
+.fluid { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; z-index: -1; }
+.wheel::after, .toggle::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--quick-edge), inset 0 2px 2px color-mix(in srgb, var(--color-white) 45%, var(--color-transparent));
+    pointer-events: none;
+}
+.rotor { position: absolute; inset: 0; transform: rotate(var(--rotation, 0deg)); transition: transform .65s cubic-bezier(.2, .75, .2, 1); }
+.wheel[data-dragging="true"] .rotor, .wheel[data-dragging="true"] .menuLink { transition: none; }
+.slices { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.slice { fill: color-mix(in srgb, var(--color-white) 8%, var(--color-transparent)); stroke: var(--quick-edge); stroke-width: .8; transition: fill .25s; }
+.slice[data-selected="true"] { fill: color-mix(in srgb, var(--color-white) 55%, var(--color-transparent)); }
+.menuLink {
+    position: absolute;
+    left: var(--item-x);
+    top: var(--item-y);
+    width: 88px;
+    height: 64px;
+    margin: -32px 0 0 -44px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--surface-radius-compact);
+    color: var(--text-primary);
+    text-decoration: none;
+    touch-action: none;
+    -webkit-user-drag: none;
+    transform: rotate(calc(-1 * var(--rotation, 0deg)));
+    transition: transform .65s cubic-bezier(.2, .75, .2, 1);
+}
+.menuLabel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    transition: background .2s;
+    font-size: var(--text-min);
+    font-weight: 650;
+    letter-spacing: -.025em;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+.menuLink:hover .menuLabel, .menuLink:focus-visible .menuLabel { background: color-mix(in srgb, var(--color-white) 45%, var(--color-transparent)); }
+.menuLink:focus-visible, .current:focus-visible, .toggle:focus-visible { outline: var(--focus-width) solid var(--border-focus); outline-offset: var(--focus-offset); }
+.marker { position: absolute; left: calc(50% - 3px); top: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--color-black); pointer-events: none; }
+.current {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 112px;
+    height: 112px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    border-radius: 50%;
+    background: var(--quick-milk);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--quick-edge);
+    backdrop-filter: blur(12px);
+    color: var(--text-primary);
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background .2s;
+}
+.current strong { font-size: max(var(--text-min), var(--text-quick-action)); font-weight: 650; letter-spacing: -.035em; line-height: 1.3; }
+.current:hover { background: var(--color-white); }
+.toggle {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    padding: 0;
+    transform: translateX(-50%);
+    border: 0;
+    border-radius: 50%;
+    isolation: isolate;
+    background: var(--color-transparent);
+    color: var(--text-primary);
+    font: inherit;
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: var(--color-transparent);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--color-black) 10%, var(--color-transparent));
+    transition: width .5s cubic-bezier(.2,.8,.2,1), height .5s cubic-bezier(.2,.8,.2,1), background .4s;
+}
+.toggleLabel { display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: var(--text-min); font-weight: 650; line-height: 1.2; }
+.closedHint { position: absolute; bottom: -19px; left: 50%; width: max-content; transform: translateX(-50%); padding: 3px 8px; border-radius: var(--radius-pill); background: var(--quick-milk); font-size: var(--text-min); font-weight: 500; line-height: 1.2; color: var(--text-primary); transition: opacity .2s; }
+.experience[data-state="open"] .toggle { width: 44px; height: 44px; bottom: 6px; background: var(--quick-milk); backdrop-filter: blur(12px); }
+.experience[data-state="open"] .toggle .art, .experience[data-state="open"] .toggle .fluid, .experience[data-state="open"] .closedHint { opacity: 0; }
+
+/* [문서 안의 동일한 실물과 좁은 화면 / Same live preview and narrow viewports] */
+.experience[data-placement="inline"] { position: relative; inset: auto; z-index: 0; min-height: 34rem; container-type: inline-size; overflow: hidden; border-radius: var(--surface-radius-panel); background: var(--surface-subtle); }
+.experience[data-placement="inline"] .dock { --menu-size: min(370px, calc(100cqi - 38px)); bottom: 24px; }
+.experience[data-placement="inline"] .instruction { max-width: calc(100cqi - 32px); }
+@media (max-width: 600px) {
+    .experience { --menu-size: min(332px, calc(100vw - 38px), calc(100svh - 176px)); }
+    .dock { bottom: max(24px, env(safe-area-inset-bottom)); height: calc(var(--menu-size) + 76px); }
+    .toggle { width: 76px; height: 76px; }
+    .menuLink { width: 76px; height: 56px; margin: -28px 0 0 -38px; }
+    .menuLabel { gap: 4px; }
+    .menuLabel svg { width: 21px; height: 21px; }
+    .current { width: 94px; height: 94px; }
+    .instruction { bottom: calc(100% + 16px); }
+    .experience[data-placement="inline"] { min-height: 32rem; }
+    .experience[data-placement="inline"] .dock { --menu-size: min(332px, calc(100cqi - 38px)); }
+}
+@media (max-height: 550px) and (min-width: 601px) {
+    .experience[data-placement="hero"] { --menu-size: min(280px, calc(100svh - 116px)); z-index: 60; }
+    .experience[data-placement="hero"] .dock { bottom: max(14px, env(safe-area-inset-bottom)); height: calc(var(--menu-size) + 60px); }
+    .experience[data-placement="hero"] .instruction { display: none; }
+    .experience[data-placement="hero"] .current { width: 84px; height: 84px; gap: 3px; }
+    .experience[data-placement="hero"] .menuLink { width: 70px; height: 50px; margin: -25px 0 0 -35px; }
+    .experience[data-placement="hero"] .menuLabel { gap: 2px; }
+    .experience[data-placement="hero"] .menuLabel svg { width: 20px; height: 20px; }
+    .experience[data-placement="hero"] .toggle { width: 68px; height: 68px; }
+}
+@container (max-width: 370px) {
+    .experience[data-placement="inline"] .dock { --menu-size: min(332px, calc(100cqi - 38px)); height: calc(var(--menu-size) + 76px); }
+    .experience[data-placement="inline"] .toggle { width: 76px; height: 76px; }
+    .experience[data-placement="inline"][data-state="open"] .toggle { width: 44px; height: 44px; }
+    .experience[data-placement="inline"] .menuLink { width: 76px; height: 56px; margin: -28px 0 0 -38px; }
+    .experience[data-placement="inline"] .menuLabel { gap: 4px; }
+    .experience[data-placement="inline"] .menuLabel svg { width: 21px; height: 21px; }
+    .experience[data-placement="inline"] .current { width: 94px; height: 94px; }
+    .experience[data-placement="inline"] .instruction { bottom: calc(100% + 16px); }
+}
+@container (max-width: 300px) {
+    .experience[data-placement="inline"] .menuLink { width: 72px; height: 52px; margin: -26px 0 0 -36px; }
+    .experience[data-placement="inline"] .current { width: 76px; height: 76px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .experience, .experience *, .experience *::before, .experience *::after { animation: none !important; transition: none !important; }
+}
+@media (forced-colors: active) {
+    .fluid, .art { display: none; }
+    .wheel, .toggle, .current { background: Canvas; border: 2px solid ButtonText; color: ButtonText; }
+    .menuLink, .menuLabel, .instruction, .closedHint { color: LinkText; }
+    .instruction, .closedHint { background: Canvas; }
+    .slice { stroke: ButtonText; fill: Canvas; }
+}

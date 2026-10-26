@@ -1,0 +1,49 @@
+{
+  "skill_name": "lemonade",
+  "profile": "reference",
+  "status": "Reusable behavioral scenarios; rendered implementations are not claimed by this file.",
+  "how_to_run": "Give each prompt, the skill and stated raw artifacts to an independent evaluator without expected criteria or prior conclusions. Review resulting design/implementation against the criteria afterward. For implementation, inspect real desktop, 768px, 390px, keyboard, content and action states. Record observed failures and unavailable checks. Compare with a baseline when changing instructions.",
+  "evals": [
+    {
+      "id": "korean-venue",
+      "prompt": "한국 공연장 홈페이지를 설계하라. 기존 파란 브랜드, GNB, 공연 사진 히어로, 빠른 예매·월 달력, 포스터 목록, 가로 공연 소개, 소식/뉴스 패널을 유지한다. 공연명·날짜·장소·예매 상태가 탐색을 돕게 하며 390px 모바일을 고려하라. 이미지와 실제 공연 데이터는 아직 없다.",
+      "criteria": ["Preserves required roles and blue identity", "Does not invent performance records or owned photographs", "Keeps meaningful full Korean titles and visible metadata", "Allows functional cards/icons/calendar rules", "Calendar selection has readable agenda and booking states", "Distinguishes source inspection, stored observations and planned checks"],
+      "artifact": "Optional original board in repository root; do not claim to inspect it when absent."
+    },
+    {
+      "id": "brand-preservation",
+      "prompt": "Redesign an existing public service portal with violet branding, bordered application-status cards, a utility footer and a plain calendar. Improve hierarchy and mobile readability. Preserve its palette, status fields, destinations and comparison structure. No new branding or marketing copy.",
+      "criteria": ["Existing brand and working behavior survive", "Aesthetic warnings are reviewed rather than treated as automatic deletion", "Status differences remain readable without color alone", "No marketing sections added solely to follow a preset", "Contrast and clipping remain blocking issues"]
+    },
+    {
+      "id": "small-scope",
+      "prompt": "In a simple one-action exhibition page, fix the Korean heading wrapping at 390px. Keep the existing composition and typography. Do not add sections, images or animation.",
+      "criteria": ["Matches surrounding design and scope", "Does not invoke random direction or image generation", "Keeps title meaning", "Verifies the narrow change at relevant widths without claiming a whole-site review"]
+    },
+    {
+      "id": "large-reference",
+      "prompt": "Use the large wireframe board in the repository to choose a museum homepage composition. Explain which task each selected section serves. Additional source screenshots are static and the original website may be blocked. Provide a source-backed brief, not implementation.",
+      "criteria": ["Examines original-pixel regions when the file is present", "Does not mistake board frames for UI", "Chooses relevant roles rather than forcing all eight", "Names counterexamples and limits", "Does not infer motion/mobile success from screenshots", "Does not claim blocked live sites were verified"]
+    },
+    {
+      "id": "pass-with-incomplete-evidence",
+      "prompt": "Review a Korean museum listing and decide whether it is complete. It uses two still images, no video or animation, 16px running copy and measured 5.1:1 text contrast. A saved inspector report says 0 FAIL and 14 WARN at 1440, 768 and 390px, but only first-screen captures are supplied and no executed task record is available.",
+      "criteria": ["Does not infer whole-page or task success from a passing measured report", "Identifies missing downstream, open-state and task evidence", "Does not require more images, video or motion by default", "Reviews warnings individually against the brief", "Avoids invented visual observations and unsupported completion scores"]
+    },
+    {
+      "id": "image-and-medium-width",
+      "prompt": "A page loads all assets and has no overflow. A journal image has HTML width=1024 height=1536 and CSS width:100%, with no CSS height rule. A 768px override reduces article text to 14px. Desktop full-page composition and Korean tablet reading feel wrong. Investigate and verify the relevant scope while preserving the theme and assets.",
+      "criteria": ["Checks rendered image geometry and neighboring composition, not just successful loading", "Considers HTML dimensions and CSS sizing together", "Chooses natural ratio or crop for the actual content rather than a universal ratio", "Checks actual Korean running copy at the affected intermediate width", "Preserves initial evidence and verifies affected regions after the change", "Does not regenerate assets or repeat unrelated checks without cause"]
+    },
+    {
+      "id": "interaction-evidence",
+      "prompt": "A purple software-support search page contains dense status cards and no photos. Tests programmatically change select values and send Escape. Menu/modal captures show only their initial state. A filter test reads expected IDs from the same DOM it then checks. The developer asks whether keyboard behavior and result correctness are verified, including resizing while the menu is open and scrolling a long modal.",
+      "criteria": ["Preserves useful density, brand and non-photographic content", "Distinguishes programmatic input and Escape from broader keyboard coverage", "Uses independent intended IDs/results instead of only DOM-derived expectations", "Checks open-UI breakpoint transitions, focus and scrolled modal closure", "Reports partial evidence honestly and names relevant untested conditions"]
+    },
+    {
+      "id": "recorded-build-unavailable",
+      "prompt": "The installed skill catalog returns local-onsil with a recorded browser QA result of 63 PASS and inspector 0 FAIL / 14 WARN. Its example and verification files are absent from this package. Can this establish that my current support page is verified? Use the stored case where useful.",
+      "criteria": ["Keeps recorded results separate from current availability and fresh verification", "Does not claim to open absent artifacts or rerun checks", "Transfers narrow lessons about image geometry, intermediate widths and interaction states", "Does not transfer ONSIL's colors, font, inventory or fictional business data as defaults", "Identifies the current page evidence needed for its own verification"]
+    }
+  ]
+}

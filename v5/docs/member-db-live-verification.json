@@ -1,0 +1,88 @@
+{
+  "verifiedAt": "2026-10-21T08:00:07.946Z",
+  "project": "cowalyqaoqoclrfmxszp",
+  "projectName": "renewsejongpac-3",
+  "migration": {
+    "version": "20261021075737",
+    "name": "v5_member_data",
+    "file": "supabase/migrations/20261021075737_v5_member_data.sql",
+    "applied": true
+  },
+  "tables": [
+    {
+      "name": "public.sejong_profiles",
+      "rls_enabled": true,
+      "rows": 0
+    },
+    {
+      "name": "public.sejong_spaces",
+      "rls_enabled": true,
+      "rows": 0
+    },
+    {
+      "name": "public.sejong_favorites",
+      "rls_enabled": true,
+      "rows": 0
+    },
+    {
+      "name": "public.sejong_notes",
+      "rls_enabled": true,
+      "rows": 0
+    },
+    {
+      "name": "public.sejong_bookings",
+      "rls_enabled": true,
+      "rows": 0
+    }
+  ],
+  "ownershipTest": {
+    "executed": true,
+    "passed": true,
+    "fixtureTransactionRolledBack": true,
+    "checks": [
+      "own profile read and update",
+      "own room insert and update",
+      "own favorite insert and delete",
+      "own note insert and delete",
+      "own booking insert and cancellation",
+      "cross-member profile reads blocked",
+      "cross-member updates blocked",
+      "cross-member inserts blocked",
+      "user_id reassignment blocked",
+      "all tables have RLS",
+      "no anonymous read grants",
+      "no authenticated truncate grants"
+    ],
+    "remainingFixtureUsers": 0
+  },
+  "apiAnonymousAccess": {
+    "expectedStatus": 401,
+    "expectedCode": "42501",
+    "description": "All five exposed REST resources reject anonymous access."
+  },
+  "securityAdvisors": {
+    "newFindings": [],
+    "preExistingFindings": [
+      {
+        "name": "anon_security_definer_function_executable",
+        "title": "Public Can Execute SECURITY DEFINER Function",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable"
+      },
+      {
+        "name": "authenticated_security_definer_function_executable",
+        "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable"
+      },
+      {
+        "name": "auth_leaked_password_protection",
+        "title": "Leaked Password Protection Disabled",
+        "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection"
+      }
+    ],
+    "scope": "Existing project-level settings were recorded before the member schema and are unchanged by this migration."
+  },
+  "performanceAdvisors": {
+    "findings": []
+  },
+  "manualActionRequired": false
+}

@@ -1,0 +1,338 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Chrome (a) flat analytic studio-chrome generator > emits the analytic roundedRect sampler + the shared material parts + bevelSin, no RTT pass > final-pass 1`] = `
+"fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  center: vec2f,
+  scale: f32,
+  rotation: f32,
+  tint: vec4f,
+  warmColor: vec4f,
+  coolColor: vec4f,
+  bevelWidth: f32,
+  bevelShape: f32,
+  curvature: f32,
+  waviness: f32,
+  environment: f32,
+  envRotation: f32,
+  softness: f32,
+  spectral: f32,
+  dispersion: f32,
+  shadows: f32,
+  speed: f32,
+  edgeSoftness: f32,
+  _opacity: f32,
+  _animTime: f32,
+  _vfOriginX: f32,
+  _vfOriginY: f32,
+  _vfSpanX: f32,
+  _vfSpanY: f32,
+  _vfActiveRes: f32,
+  _vfRBound: f32,
+  _saRadius: f32,
+  _saSides: f32,
+  _saRounding: f32,
+  _saInnerRatio: f32,
+  _saRotation: f32,
+  _saHeight: f32,
+  _saOffset: f32,
+  _saAperture: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_c: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn roundedRectSdf(dx: f32, dy: f32, width: f32, height: f32, rounding: f32) -> f32 {
+  let qx = ((abs(dx) - width) + rounding);
+  let qy = ((abs(dy) - height) + rounding);
+  let mqx = max(qx, 0f);
+  let mqy = max(qy, 0f);
+  let outerDist = sqrt(((mqx * mqx) + (mqy * mqy)));
+  let innerDist = min(max(qx, qy), 0f);
+  return ((outerDist + innerDist) - rounding);
+}
+
+fn analyticSdf_roundedRectSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = roundedRectSdf(rdx, rdy, r, h, round_1);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn outsideShape(sdf: f32, pxH: f32) -> bool {
+  return (sdf > (pxH * 2f));
+}
+
+fn perspectiveViewRay(uv: vec2f, aspect: f32, fov: f32) -> vec3f {
+  return normalize(vec3f((((uv.x - 0.5f) * aspect) * fov), ((uv.y - 0.5f) * fov), 1f));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn fieldGradient(surf0: vec4f, surfX: vec4f, surfY: vec4f, eps: f32) -> vec2f {
+  return vec2f(((surfX.x - surf0.x) / eps), ((surfY.x - surf0.x) / eps));
+}
+
+fn patternCoords(sdfUV: vec2f, surf0: vec4f, volumetric: f32) -> vec2f {
+  return vec2f(select((sdfUV.x - 0.5f), surf0.y, (volumetric > 0.5f)), select((sdfUV.y - 0.5f), surf0.z, (volumetric > 0.5f)));
+}
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn hash22(p: vec2f) -> vec2f {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  let h = (u.x ^ u.y);
+  let prod = (vec2u(h, h) * vec2u(3141592653, 1618033988));
+  return (vec2f(f32(prod.x), f32(prod.y)) / 4294967296f);
+}
+
+fn perlin12d(p: vec2f) -> vec3f {
+  let i = floor(p);
+  let f = fract(p);
+  let u = (((f * f) * f) * ((f * ((f * 6f) - 15f)) + 10f));
+  let du = (((f * f) * ((f * (f - 2f)) + 1f)) * 30f);
+  let ga = ((hash22((i + vec2f())) * 2f) - 1f);
+  let gb = ((hash22((i + vec2f(1, 0))) * 2f) - 1f);
+  let gc = ((hash22((i + vec2f(0, 1))) * 2f) - 1f);
+  let gd = ((hash22((i + vec2f(1))) * 2f) - 1f);
+  let va = dot(ga, (f - vec2f()));
+  let vb = dot(gb, (f - vec2f(1, 0)));
+  let vc = dot(gc, (f - vec2f(0, 1)));
+  let vd = dot(gd, (f - vec2f(1)));
+  let k = (((va - vb) - vc) + vd);
+  let value = (((va + (u.x * (vb - va))) + (u.y * (vc - va))) + ((u.x * u.y) * k));
+  let deriv = ((((ga + ((gb - ga) * u.x)) + ((gc - ga) * u.y)) + ((((ga - gb) - gc) + gd) * (u.x * u.y))) + (du * (((vec2f(u.y, u.x) * k) + vec2f(vb, vc)) - va)));
+  return vec3f(value, deriv.x, deriv.y);
+}
+
+fn bevelSin(t: f32, shape: f32) -> f32 {
+  let sRound = (1f - t);
+  let k1 = smoothstep(0f, 0.14f, t);
+  let k2 = smoothstep(0.68f, 0.92f, t);
+  let sMach = mix(1f, (0.72f * (1f - k2)), k1);
+  return mix(sRound, sMach, shape);
+}
+
+fn clampedPerlinGrad(q: vec2f, gain: f32) -> vec2f {
+  const gMax = 4f;
+  let nd = perlin12d(q);
+  return vec2f(clamp((nd.y * gain), (gMax * -1f), gMax), clamp((nd.z * gain), (gMax * -1f), gMax));
+}
+
+fn nudgeNormal(n: vec3f, dx: f32, dy: f32) -> vec3f {
+  return normalize(vec3f((n.x + dx), (n.y + dy), n.z));
+}
+
+fn tonemapNeutral(color: vec3f) -> vec3f {
+  let x = min(color.x, min(color.y, color.z));
+  let offset = select(0.04f, (x - ((6.25f * x) * x)), (x < 0.08f));
+  var c = (color - offset);
+  let peak = max(c.x, max(c.y, c.z));
+  if ((peak < 0.76f)) {
+    return c;
+  }
+  const dd = 0.24;
+  let newPeak = (1f - ((dd * dd) / ((peak + dd) - 0.76f)));
+  c = (c * (newPeak / peak));
+  let g = (1f - (1f / ((0.15f * (peak - newPeak)) + 1f)));
+  return mix(c, vec3f(newPeak), g);
+}
+
+fn insideMask(sdf: f32, sharpEdge: f32, pxH: f32, minPixels: f32) -> f32 {
+  let w = max((sharpEdge * 0.03125f), (pxH * minPixels));
+  return clamp(((sdf * -1f) / w), 0f, 1f);
+}
+
+fn silhouetteAlpha(sdf: f32, edgeSoftness: f32, pxH: f32) -> f32 {
+  let sharpEdge = max((edgeSoftness * 0.5f), 1e-3f);
+  return smoothstep(0f, 1f, insideMask(sdf, sharpEdge, pxH, 1.5f));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let sdfUV_3 = sdfSpaceUV(uniforms.n_c.center, uniforms.n_c.scale, uniforms.n_c.rotation, uv, uniforms._sys.aspect);
+  let s0_2 = analyticSdf_roundedRectSDF(sdfUV_3, uniforms.n_c._saRadius, uniforms.n_c._saSides, uniforms.n_c._saRounding, uniforms.n_c._saInnerRatio, uniforms.n_c._saRotation, uniforms.n_c._saHeight, uniforms.n_c._saOffset, uniforms.n_c._saAperture);
+  let sdf_1 = (s0_2.x / uniforms.n_c.scale);
+  let pxH_4 = (1.0 / uniforms._sys.viewportSize.y);
+  var chrome_0 = vec4f(0.0, 0.0, 0.0, 0.0);
+  if ((!(outsideShape(sdf_1, pxH_4)))) {
+  let coolC_6 = uniforms.n_c.coolColor.rgb;
+  let shadows_7 = uniforms.n_c.shadows;
+  let viewI_13 = perspectiveViewRay(uv, (uniforms._sys.viewportSize.x / uniforms._sys.viewportSize.y), 0.55);
+  let sX_20 = analyticSdf_roundedRectSDF(offsetUV(sdfUV_3, 0.01, 0.0), uniforms.n_c._saRadius, uniforms.n_c._saSides, uniforms.n_c._saRounding, uniforms.n_c._saInnerRatio, uniforms.n_c._saRotation, uniforms.n_c._saHeight, uniforms.n_c._saOffset, uniforms.n_c._saAperture);
+  let sY_21 = analyticSdf_roundedRectSDF(offsetUV(sdfUV_3, 0.0, 0.01), uniforms.n_c._saRadius, uniforms.n_c._saSides, uniforms.n_c._saRounding, uniforms.n_c._saInnerRatio, uniforms.n_c._saRotation, uniforms.n_c._saHeight, uniforms.n_c._saOffset, uniforms.n_c._saAperture);
+  let grad_19 = fieldGradient(s0_2, sX_20, sY_21, 0.01);
+  let glen_22 = max(length(grad_19), 0.0001);
+  let gx_18 = (grad_19.x / glen_22);
+  let depth_26 = (sdf_1 * -1.0);
+  let t0_25 = clamp((depth_26 / max(uniforms.n_c.bevelWidth, 0.003)), 0.0, 1.0);
+  let pat_28 = patternCoords(sdfUV_3, s0_2, 0.0);
+  let rimN_27 = perlin12d(vec2f((pat_28.x * 21.0), (pat_28.y * 21.0)));
+  let sBev_24 = bevelSin(clamp((t0_25 + (((((rimN_27.x * uniforms.n_c.waviness) * 0.22) * t0_25) * (1.0 - t0_25)) * 4.0)), 0.0, 1.0), uniforms.n_c.bevelShape);
+  let sEdge_23 = max(sBev_24, ((uniforms.n_c.curvature * 0.14) * (0.0081 / ((depth_26 * depth_26) + 0.0081))));
+  let flen_30 = length(vec2f(pat_28.x, pat_28.y));
+  let dgx_29 = (pat_28.x / max(flen_30, 0.0001));
+  let sSphere_31 = ((uniforms.n_c.curvature * 0.75) * smoothstep(0.0, 0.5, flen_30));
+  let gy_32 = (grad_19.y / glen_22);
+  let dgy_33 = (pat_28.y / max(flen_30, 0.0001));
+  let txy_17 = vec2f(((gx_18 * sEdge_23) + (dgx_29 * sSphere_31)), ((gy_32 * sEdge_23) + (dgy_33 * sSphere_31)));
+  let tl_34 = min(length(txy_17), 0.9995);
+  let tn_16 = (txy_17 * (tl_34 / max(length(txy_17), 0.0001)));
+  let nGeo_15 = vec3f(tn_16.x, tn_16.y, (sqrt((1.0 - (tl_34 * tl_34))) * -1.0));
+  let wg_35 = clampedPerlinGrad(vec2f(((pat_28.x * 1.05) + (uniforms.n_c._animTime * 0.08)), (pat_28.y * 1.05)), 1.0);
+  let wAmt_36 = (uniforms.n_c.waviness * 0.2);
+  let n_14 = nudgeNormal(nGeo_15, (wg_35.x * wAmt_36), (wg_35.y * wAmt_36));
+  let R_12 = reflect(viewI_13, n_14);
+  let rotA_38 = ((uniforms.n_c.envRotation * 0.017453292519943295) + (sin((uniforms.n_c._animTime * 0.23)) * 0.05));
+  let envS_37 = sin(rotA_38);
+  let upY_39 = (R_12.y * -1.0);
+  let envC_40 = cos(rotA_38);
+  let ry0_11 = ((R_12.x * envS_37) + (upY_39 * envC_40));
+  let nod_42 = (sin(((uniforms.n_c._animTime * 0.31) + 0.9)) * 0.12);
+  let nc_41 = cos(nod_42);
+  let orbit_45 = ((sin((uniforms.n_c._animTime * 0.5)) * 0.4) + (sin(((uniforms.n_c._animTime * 0.19) + 1.7)) * 0.2));
+  let oc_44 = cos(orbit_45);
+  let rx0_46 = ((R_12.x * envC_40) - (upY_39 * envS_37));
+  let os_47 = sin(orbit_45);
+  let rz0_43 = ((R_12.z * oc_44) - (rx0_46 * os_47));
+  let ns_48 = sin(nod_42);
+  let ry_10 = ((ry0_11 * nc_41) - (rz0_43 * ns_48));
+  let grazing_50 = (1.0 - clamp((-(dot(n_14, viewI_13))), 0.0, 1.0));
+  let delta_49 = (uniforms.n_c.dispersion * (0.004 + ((grazing_50 * grazing_50) * 0.06)));
+  let ey_9 = (ry_10 + delta_49);
+  let up_8 = smoothstep(-0.65, 1.0, ey_9);
+  let cd_51 = ((ey_9 + 0.45) / 0.2);
+  let spectral_52 = uniforms.n_c.spectral;
+  let rx_56 = ((rx0_46 * oc_44) + (R_12.z * os_47));
+  let ex_55 = rx_56;
+  let horiz_54 = (ex_55 / (length(vec2f(ex_55, ey_9)) + 0.0001));
+  let coolSide_53 = (0.45 + (0.55 * smoothstep(-0.7, 0.7, (horiz_54 * -1.0))));
+  let soft_59 = uniforms.n_c.softness;
+  let softEff_58 = (soft_59 + (smoothstep(0.75, 1.0, (n_14.z * -1.0)) * 0.2));
+  let boxSoft_57 = (0.05 + (softEff_58 * 0.4));
+  let rz_65 = ((rz0_43 * nc_41) + (ry0_11 * ns_48));
+  let ez_64 = rz_65;
+  let pz_63 = max((0.32 - ez_64), 0.06);
+  let px_62 = (ex_55 / pz_63);
+  let bx_61 = (abs(px_62) - 0.62);
+  let py_67 = (ey_9 / pz_63);
+  let by_66 = (abs((py_67 - 0.3)) - 0.28);
+  let dbox_60 = (length(max(vec2f(bx_61, by_66), vec2f(0.0, 0.0))) + min(max(bx_61, by_66), 0.0));
+  let facing_68 = smoothstep(0.18, -0.1, ez_64);
+  let warmC_69 = uniforms.n_c.warmColor.rgb;
+  let dOut_70 = max(dbox_60, 0.0);
+  let gw_71 = (0.065 + (soft_59 * 0.05));
+  let warmSide_72 = (0.35 + (0.65 * smoothstep(-0.7, 0.7, horiz_54)));
+  let fb_73 = ((ey_9 + 0.12) / 0.05);
+  let cbx_75 = (abs(px_62) - 0.7);
+  let cby_76 = (abs((py_67 + 0.78)) - 0.05);
+  let dcard_74 = (length(max(vec2f(cbx_75, cby_76), vec2f(0.0, 0.0))) + min(max(cbx_75, cby_76), 0.0));
+  let envRt_5 = (((((((mix(mix(vec3f(0.17, 0.175, 0.19), ((coolC_6 * 0.03) + vec3f(0.003, 0.003, 0.004)), vec3f(shadows_7)), vec3f(0.56, 0.57, 0.6), vec3f((up_8 * up_8))) + (vec3f(0.55, 0.55, 0.56) * smoothstep(0.3, 0.9, ey_9))) + (coolC_6 * (((exp(((cd_51 * cd_51) * -1.0)) * spectral_52) * 0.2) * coolSide_53))) + (vec3f(2.9, 2.87, 2.82) * (smoothstep(boxSoft_57, (boxSoft_57 * -0.6), dbox_60) * facing_68))) * mix(1.0, mix(0.55, 0.07, shadows_7), smoothstep(0.5, 0.92, abs(ex_55)))) + (warmC_69 * (((((exp((((dOut_70 / gw_71) * (dOut_70 / gw_71)) * -1.0)) * smoothstep(-0.06, 0.1, dbox_60)) * spectral_52) * 1.3) * warmSide_72) * facing_68))) + (warmC_69 * ((((exp(((fb_73 * fb_73) * -1.0)) * spectral_52) * 0.5) * warmSide_72) * (1.0 - facing_68)))) + (vec3f(0.5, 0.5, 0.52) * (smoothstep(boxSoft_57, (boxSoft_57 * -0.6), dcard_74) * facing_68)));
+  let ey_79 = ry_10;
+  let up_78 = smoothstep(-0.65, 1.0, ey_79);
+  let cd_80 = ((ey_79 + 0.45) / 0.2);
+  let ex_83 = rx_56;
+  let horiz_82 = (ex_83 / (length(vec2f(ex_83, ey_79)) + 0.0001));
+  let coolSide_81 = (0.45 + (0.55 * smoothstep(-0.7, 0.7, (horiz_82 * -1.0))));
+  let boxSoft_84 = (0.05 + (softEff_58 * 0.4));
+  let ez_89 = rz_65;
+  let pz_88 = max((0.32 - ez_89), 0.06);
+  let px_87 = (ex_83 / pz_88);
+  let bx_86 = (abs(px_87) - 0.62);
+  let py_91 = (ey_79 / pz_88);
+  let by_90 = (abs((py_91 - 0.3)) - 0.28);
+  let dbox_85 = (length(max(vec2f(bx_86, by_90), vec2f(0.0, 0.0))) + min(max(bx_86, by_90), 0.0));
+  let facing_92 = smoothstep(0.18, -0.1, ez_89);
+  let dOut_93 = max(dbox_85, 0.0);
+  let gw_94 = (0.065 + (soft_59 * 0.05));
+  let warmSide_95 = (0.35 + (0.65 * smoothstep(-0.7, 0.7, horiz_82)));
+  let fb_96 = ((ey_79 + 0.12) / 0.05);
+  let cbx_98 = (abs(px_87) - 0.7);
+  let cby_99 = (abs((py_91 + 0.78)) - 0.05);
+  let dcard_97 = (length(max(vec2f(cbx_98, cby_99), vec2f(0.0, 0.0))) + min(max(cbx_98, cby_99), 0.0));
+  let envG_77 = (((((((mix(mix(vec3f(0.17, 0.175, 0.19), ((coolC_6 * 0.03) + vec3f(0.003, 0.003, 0.004)), vec3f(shadows_7)), vec3f(0.56, 0.57, 0.6), vec3f((up_78 * up_78))) + (vec3f(0.55, 0.55, 0.56) * smoothstep(0.3, 0.9, ey_79))) + (coolC_6 * (((exp(((cd_80 * cd_80) * -1.0)) * spectral_52) * 0.2) * coolSide_81))) + (vec3f(2.9, 2.87, 2.82) * (smoothstep(boxSoft_84, (boxSoft_84 * -0.6), dbox_85) * facing_92))) * mix(1.0, mix(0.55, 0.07, shadows_7), smoothstep(0.5, 0.92, abs(ex_83)))) + (warmC_69 * (((((exp((((dOut_93 / gw_94) * (dOut_93 / gw_94)) * -1.0)) * smoothstep(-0.06, 0.1, dbox_85)) * spectral_52) * 1.3) * warmSide_95) * facing_92))) + (warmC_69 * ((((exp(((fb_96 * fb_96) * -1.0)) * spectral_52) * 0.5) * warmSide_95) * (1.0 - facing_92)))) + (vec3f(0.5, 0.5, 0.52) * (smoothstep(boxSoft_84, (boxSoft_84 * -0.6), dcard_97) * facing_92)));
+  let ey_102 = (ry_10 - delta_49);
+  let up_101 = smoothstep(-0.65, 1.0, ey_102);
+  let cd_103 = ((ey_102 + 0.45) / 0.2);
+  let ex_106 = rx_56;
+  let horiz_105 = (ex_106 / (length(vec2f(ex_106, ey_102)) + 0.0001));
+  let coolSide_104 = (0.45 + (0.55 * smoothstep(-0.7, 0.7, (horiz_105 * -1.0))));
+  let boxSoft_107 = (0.05 + (softEff_58 * 0.4));
+  let ez_112 = rz_65;
+  let pz_111 = max((0.32 - ez_112), 0.06);
+  let px_110 = (ex_106 / pz_111);
+  let bx_109 = (abs(px_110) - 0.62);
+  let py_114 = (ey_102 / pz_111);
+  let by_113 = (abs((py_114 - 0.3)) - 0.28);
+  let dbox_108 = (length(max(vec2f(bx_109, by_113), vec2f(0.0, 0.0))) + min(max(bx_109, by_113), 0.0));
+  let facing_115 = smoothstep(0.18, -0.1, ez_112);
+  let dOut_116 = max(dbox_108, 0.0);
+  let gw_117 = (0.065 + (soft_59 * 0.05));
+  let warmSide_118 = (0.35 + (0.65 * smoothstep(-0.7, 0.7, horiz_105)));
+  let fb_119 = ((ey_102 + 0.12) / 0.05);
+  let cbx_121 = (abs(px_110) - 0.7);
+  let cby_122 = (abs((py_114 + 0.78)) - 0.05);
+  let dcard_120 = (length(max(vec2f(cbx_121, cby_122), vec2f(0.0, 0.0))) + min(max(cbx_121, cby_122), 0.0));
+  let envBt_100 = (((((((mix(mix(vec3f(0.17, 0.175, 0.19), ((coolC_6 * 0.03) + vec3f(0.003, 0.003, 0.004)), vec3f(shadows_7)), vec3f(0.56, 0.57, 0.6), vec3f((up_101 * up_101))) + (vec3f(0.55, 0.55, 0.56) * smoothstep(0.3, 0.9, ey_102))) + (coolC_6 * (((exp(((cd_103 * cd_103) * -1.0)) * spectral_52) * 0.2) * coolSide_104))) + (vec3f(2.9, 2.87, 2.82) * (smoothstep(boxSoft_107, (boxSoft_107 * -0.6), dbox_108) * facing_115))) * mix(1.0, mix(0.55, 0.07, shadows_7), smoothstep(0.5, 0.92, abs(ex_106)))) + (warmC_69 * (((((exp((((dOut_116 / gw_117) * (dOut_116 / gw_117)) * -1.0)) * smoothstep(-0.06, 0.1, dbox_108)) * spectral_52) * 1.3) * warmSide_118) * facing_115))) + (warmC_69 * ((((exp(((fb_119 * fb_119) * -1.0)) * spectral_52) * 0.5) * warmSide_118) * (1.0 - facing_115)))) + (vec3f(0.5, 0.5, 0.52) * (smoothstep(boxSoft_107, (boxSoft_107 * -0.6), dcard_120) * facing_115)));
+  chrome_0 = vec4f(tonemapNeutral(((vec3f(envRt_5.x, envG_77.y, envBt_100.z) * uniforms.n_c.environment) * uniforms.n_c.tint.rgb)), silhouetteAlpha(sdf_1, uniforms.n_c.edgeSoftness, pxH_4));
+}
+  var composed_123 = chrome_0;
+  return vec4f(linearToSrgb(tone_linear(composed_123.rgb)), composed_123.a);
+}"
+`;

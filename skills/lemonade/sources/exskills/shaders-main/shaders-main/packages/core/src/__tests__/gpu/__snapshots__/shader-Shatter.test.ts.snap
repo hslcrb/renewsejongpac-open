@@ -1,0 +1,180 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Shatter (a) Voronoi compute → data-texture crack/refraction fragment > registers a Voronoi compute texture + samples the data texture and child; composites > final-pass 1`] = `
+"fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn crackShardCompose(normalColor: vec4f, rFinal: vec4f, gFinal: vec4f, bFinal: vec4f, crackIntensity: f32, disp: vec2f, shardLighting: f32) -> vec4f {
+  let refractedRGB = vec3f(rFinal.x, gFinal.y, bFinal.z);
+  let shadedRGB = ((normalColor.xyz * (1f - crackIntensity)) + (refractedRGB * crackIntensity));
+  let displacementLength = length(disp);
+  let tiltX = (disp.x / (displacementLength + 1e-3f));
+  let tiltY = (disp.y / (displacementLength + 1e-3f));
+  let normalDot = ((tiltX * 0.4472135954999579f) + (tiltY * 0.8944271909999159f));
+  let lightingFactor = (1f + (normalDot * shardLighting));
+  let lightingIntensity = smoothstep(0f, 0.02f, displacementLength);
+  let finalLighting = (1f + ((lightingFactor - 1f) * lightingIntensity));
+  let finalRGB = (shadedRGB * finalLighting);
+  return vec4f(finalRGB, normalColor.w);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn edgeMirrorUV(uv: vec2f) -> vec2f {
+  let mirrorX = (abs(uv.x) % 2f);
+  let mirrorY = (abs(uv.y) % 2f);
+  return vec2f(select(mirrorX, (2f - mirrorX), (mirrorX >= 1f)), select(mirrorY, (2f - mirrorY), (mirrorY >= 1f)));
+}
+
+struct CrackGeom {
+  crackIntensity: f32,
+  edgeNormal: vec2f,
+  displacedUV: vec2f,
+  disp: vec2f,
+}
+
+fn crackGeom(uv: vec2f, nPosX: f32, nPosY: f32, sPosX: f32, sPosY: f32, dispX: f32, dispY: f32, crackWidth: f32) -> CrackGeom {
+  let nearestPos = vec2f(nPosX, nPosY);
+  let secondPos = vec2f(sPosX, sPosY);
+  let disp = vec2f(dispX, dispY);
+  let fromNearest = (uv - nearestPos);
+  let minDist1 = length(fromNearest);
+  let minDist2 = length((uv - secondPos));
+  let displacementMag = length(disp);
+  let edgeDiff = (minDist2 - minDist1);
+  let crackThreshold = (crackWidth * 5e-3f);
+  let baseCrackIntensity = (1f - smoothstep(0f, crackThreshold, edgeDiff));
+  let displacementFactor = smoothstep(0f, 0.01f, displacementMag);
+  let crackIntensity = (baseCrackIntensity * displacementFactor);
+  let toNearest = (fromNearest / max(minDist1, 1e-5f));
+  let edgeNormal = vec2f((toNearest.y * -1f), toNearest.x);
+  let displacedUV = (uv - disp);
+  return CrackGeom(crackIntensity, edgeNormal, displacedUV, disp);
+}
+
+@group(1) @binding(1) var media_0: texture_2d<f32>;
+
+@group(2) @binding(1) var nearestClamp: sampler;
+
+fn cellLaneUV(idx: f32, field: f32) -> vec2f {
+  return vec2f(((((idx * 4f) + field) + 0.5f) / 64f), 0.5f);
+}
+
+@group(1) @binding(2) var compute_0: texture_2d<f32>;
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  crackWidth: f32,
+  intensity: f32,
+  radius: f32,
+  decay: f32,
+  seed: f32,
+  chromaticSplit: f32,
+  refractionStrength: f32,
+  shardLighting: f32,
+  edges: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_sh: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn crackRefractUV(displacedUV: vec2f, edgeNormal: vec2f, crackIntensity: f32, refractionStrength: f32, chromaticSplit: f32, channel: f32) -> vec2f {
+  let refractionOffset = (edgeNormal * (refractionStrength * 0.01f));
+  let chromaticOffset = (chromaticSplit * 5e-3f);
+  let chromaShift = (edgeNormal * (channel * chromaticOffset));
+  let offset = (refractionOffset + chromaShift);
+  return (displacedUV + (offset * crackIntensity));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = unpremultiplyAlpha(crackShardCompose(textureSample(rtt_0, linearClamp, edgeMirrorUV((crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).displacedUV)), textureSample(rtt_0, linearClamp, edgeMirrorUV(crackRefractUV((crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).displacedUV, (crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).edgeNormal, (crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).crackIntensity, uniforms.n_sh.refractionStrength, uniforms.n_sh.chromaticSplit, 1.0))), textureSample(rtt_0, linearClamp, edgeMirrorUV(crackRefractUV((crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).displacedUV, (crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).edgeNormal, (crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).crackIntensity, uniforms.n_sh.refractionStrength, uniforms.n_sh.chromaticSplit, 0.0))), textureSample(rtt_0, linearClamp, edgeMirrorUV(crackRefractUV((crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).displacedUV, (crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).edgeNormal, (crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).crackIntensity, uniforms.n_sh.refractionStrength, uniforms.n_sh.chromaticSplit, -1.0))), (crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).crackIntensity, (crackGeom(uv, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 0.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).g, 1.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 2.0))).r, (textureSample(media_0, nearestClamp, cellLaneUV((textureSample(compute_0, nearestClamp, uv)).r, 3.0))).r, uniforms.n_sh.crackWidth)).disp, uniforms.n_sh.shardLighting));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`Shatter (b) Voronoi kernel resolves (D3 rules) > the kernel reads the cell-position storage buffer + writes the storage texture > voronoiKernel 1`] = `
+"@group(0) @binding(0) var<storage, read> cellPos: array<f32, 32>;
+
+@group(0) @binding(1) var voronoiTex: texture_storage_2d<rgba16float, write>;
+
+fn voronoiNearest2(cx: u32, cy: u32) {
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 1024f);
+  var d1 = 99999f;
+  var d2 = 99999f;
+  var idx1 = 0f;
+  var idx2 = 0f;
+  for (var i = 0; (i < 16i); i++) {
+    let cellX = cellPos[(i * 2i)];
+    let cellY = cellPos[((i * 2i) + 1i)];
+    let ddx = (u - cellX);
+    let ddy = (v - cellY);
+    let distSq = ((ddx * ddx) + (ddy * ddy));
+    if ((distSq < d1)) {
+      d2 = d1;
+      idx2 = idx1;
+      d1 = distSq;
+      idx1 = f32(i);
+    }
+    else {
+      if ((distSq < d2)) {
+        d2 = distSq;
+        idx2 = f32(i);
+      }
+    }
+  }
+  textureStore(voronoiTex, vec2u(cx, cy), vec4f(idx1, idx2, 0f, 0f));
+}"
+`;

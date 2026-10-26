@@ -1,0 +1,240 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`kit/sdf (e) resolve gate > all SDF primitives + shape helpers resolve to WGSL (snapshot) 1`] = `
+"fn item(dx: f32, dy: f32, radius: f32) -> f32 {
+  return (sqrt(((dx * dx) + (dy * dy))) - radius);
+}
+
+fn item_1(dx: f32, dy: f32, radius: f32, sides: f32) -> f32 {
+  let len = sqrt(((dx * dx) + (dy * dy)));
+  let angle = atan2(dy, dx);
+  let sectorAngle = (6.283185307179586f / sides);
+  let sectorIdx = floor(((angle / sectorAngle) + 0.5f));
+  let canonicalAngle = (angle - (sectorIdx * sectorAngle));
+  return ((len * cos(canonicalAngle)) - radius);
+}
+
+fn item_2(dx: f32, dy: f32, outerRadius: f32, sides: f32, innerRatio: f32) -> f32 {
+  let angle = atan2(dy, dx);
+  let len = sqrt(((dx * dx) + (dy * dy)));
+  let innerRadius = (outerRadius * innerRatio);
+  let tAngle = ((angle * sides) / 6.283185307179586f);
+  let tFrac = (tAngle - floor(tAngle));
+  let t = abs(((tFrac * 2f) - 1f));
+  let boundaryR = (innerRadius + ((outerRadius - innerRadius) * t));
+  return (len - boundaryR);
+}
+
+fn item_3(dx: f32, dy: f32, outerRadius: f32, sides: f32, innerRatio: f32) -> f32 {
+  let innerRadius = (outerRadius * innerRatio);
+  let len = sqrt(((dx * dx) + (dy * dy)));
+  let angle = atan2(dy, dx);
+  let sectorAngle = (6.283185307179586f / sides);
+  let sectorIdx = floor(((angle / sectorAngle) + 0.5f));
+  let bn = (angle - (sectorIdx * sectorAngle));
+  let fpx = abs((len * sin(bn)));
+  let fpy = (len * cos(bn));
+  let an = (3.141592653589793f / sides);
+  let sinAn = sin(an);
+  let cosAn = cos(an);
+  let ex = (innerRadius * sinAn);
+  let ey = ((innerRadius * cosAn) - outerRadius);
+  let qx = fpx;
+  let qy = (fpy - outerRadius);
+  let dotQE = ((qx * ex) + (qy * ey));
+  let dotEE = ((ex * ex) + (ey * ey));
+  let t = clamp((dotQE / dotEE), 0f, 1f);
+  let nx = (fpx - (ex * t));
+  let ny = (fpy - (outerRadius + (ey * t)));
+  let dist = sqrt(((nx * nx) + (ny * ny)));
+  let cross_1 = ((ex * qy) - (ey * qx));
+  return (dist * sign(cross_1));
+}
+
+fn item_4(dx: f32, dy: f32, radius: f32, thickness: f32) -> f32 {
+  let len = sqrt(((dx * dx) + (dy * dy)));
+  return (abs((len - radius)) - thickness);
+}
+
+fn item_5(dx: f32, dy: f32, size: f32, thickness: f32, rounding: f32) -> f32 {
+  let px = abs(dx);
+  let py = abs(dy);
+  let dHoriz = max((px - size), (py - thickness));
+  let dVert = max((py - size), (px - thickness));
+  return (min(dHoriz, dVert) - rounding);
+}
+
+fn item_6(dx: f32, dy: f32, width: f32, height: f32, rounding: f32) -> f32 {
+  let qx = ((abs(dx) - width) + rounding);
+  let qy = ((abs(dy) - height) + rounding);
+  let mqx = max(qx, 0f);
+  let mqy = max(qy, 0f);
+  let outerDist = sqrt(((mqx * mqx) + (mqy * mqy)));
+  let innerDist = min(max(qx, qy), 0f);
+  return ((outerDist + innerDist) - rounding);
+}
+
+fn item_7(dx: f32, dy: f32, radiusX: f32, radiusY: f32) -> f32 {
+  let nx = (dx / radiusX);
+  let ny = (dy / radiusY);
+  let k = sqrt(((nx * nx) + (ny * ny)));
+  return ((k - 1f) * min(radiusX, radiusY));
+}
+
+fn item_8(dx: f32, dy: f32, radius: f32, spread: f32) -> f32 {
+  let px = abs(dx);
+  let py = abs(dy);
+  let dd = (radius * spread);
+  let b = sqrt(max(((radius * radius) - (dd * dd)), 0f));
+  let cond = (((py - b) * dd) > (px * b));
+  let dist1 = sqrt(((px * px) + ((py - b) * (py - b))));
+  let dist2 = (sqrt((((px + dd) * (px + dd)) + (py * py))) - radius);
+  return select(dist2, dist1, cond);
+}
+
+fn item_9(dx: f32, dy: f32, outerRadius: f32, innerRatio: f32, offset: f32) -> f32 {
+  let py = abs(dy);
+  let ra = outerRadius;
+  let rb = (outerRadius * innerRatio);
+  let off = offset;
+  let a = ((((ra * ra) - (rb * rb)) + (off * off)) / max((off * 2f), 1e-3f));
+  let bSq = max(((ra * ra) - (a * a)), 0f);
+  let b = sqrt(bSq);
+  let lhs = (off * ((dx * b) - (py * a)));
+  let rhs = ((off * off) * max((b - py), 0f));
+  let d1x = (dx - a);
+  let d1y = (py - b);
+  let dist1 = sqrt(((d1x * d1x) + (d1y * d1y)));
+  let lenP = sqrt(((dx * dx) + (py * py)));
+  let innerX = (dx - off);
+  let lenInner = sqrt(((innerX * innerX) + (py * py)));
+  let dist2 = max((lenP - ra), ((lenInner - rb) * -1f));
+  return select(dist2, dist1, (lhs > rhs));
+}
+
+fn item_10(dx: f32, dy: f32, r1: f32, r2: f32, he: f32) -> f32 {
+  let px = abs(dx);
+  let k1x = r2;
+  let k1y = he;
+  let k2x = (r2 - r1);
+  let k2y = (he * 2f);
+  let clampWidth = select(r2, r1, (dy < 0f));
+  let cax = (px - min(px, clampWidth));
+  let cay = (abs(dy) - he);
+  let diffX = (k1x - px);
+  let diffY = (k1y - dy);
+  let dotNum = ((diffX * k2x) + (diffY * k2y));
+  let dotDen = max(((k2x * k2x) + (k2y * k2y)), 1e-4f);
+  let t = clamp((dotNum / dotDen), 0f, 1f);
+  let cbx = ((px - k1x) + (k2x * t));
+  let cby = ((dy - k1y) + (k2y * t));
+  let sInner = select(1f, -1f, (cay < 0f));
+  let s = select(1f, sInner, (cbx < 0f));
+  let dca = ((cax * cax) + (cay * cay));
+  let dcb = ((cbx * cbx) + (cby * cby));
+  return (s * sqrt(min(dca, dcb)));
+}
+
+fn item_11(dx: f32, dy: f32, radius: f32) -> f32 {
+  let S = (radius / 0.75f);
+  let px = (abs(dx) / S);
+  let py = (((dy * -1f) / S) + 0.6f);
+  let ax = (px - 0.25f);
+  let ay = (py - 0.75f);
+  let distA = (sqrt(((ax * ax) + (ay * ay))) - 0.35355339059327373f);
+  let b1y = (py - 1f);
+  let dot1 = ((px * px) + (b1y * b1y));
+  let m = (max((px + py), 0f) * 0.5f);
+  let b2x = (px - m);
+  let b2y = (py - m);
+  let dot2v = ((b2x * b2x) + (b2y * b2y));
+  let distB = (sqrt(min(dot1, dot2v)) * sign((px - py)));
+  return (select(distB, distA, ((px + py) > 1f)) * S);
+}
+
+fn item_12(dx: f32, dy: f32, radius: f32, halfAngle: f32) -> f32 {
+  let px = abs(dx);
+  let cx = sin(halfAngle);
+  let cy = cos(halfAngle);
+  let l = (sqrt(((px * px) + (dy * dy))) - radius);
+  let clamped = clamp(((px * cx) + (dy * cy)), 0f, radius);
+  let mx = (px - (cx * clamped));
+  let my = (dy - (cy * clamped));
+  let m = sqrt(((mx * mx) + (my * my)));
+  return max(l, (m * sign(((cy * px) - (cx * dy)))));
+}
+
+fn item_13(dx: f32, dy: f32, radius: f32, h: f32) -> f32 {
+  let mid = ((h - radius) * 0.5f);
+  let qx = abs(dx);
+  let qy = ((dy * -1f) + mid);
+  let hSafe = max(h, 1e-4f);
+  let b = (radius / hSafe);
+  let a = sqrt(max((1f - (b * b)), 0f));
+  let k = ((qx * (b * -1f)) + (qy * a));
+  let cap0 = (sqrt(((qx * qx) + (qy * qy))) - radius);
+  let qyTip = (qy - h);
+  let cap1 = sqrt(((qx * qx) + (qyTip * qyTip)));
+  let body = (((qx * a) + (qy * b)) - radius);
+  return select(select(body, cap1, (k > (a * h))), cap0, (k < 0f));
+}
+
+fn item_14(dx: f32, dy: f32, wi: f32, he: f32, sk: f32) -> f32 {
+  let ex = sk;
+  let ey = he;
+  let flip1 = (dy < 0f);
+  let px0 = select(dx, (dx * -1f), flip1);
+  let py0 = select(dy, (dy * -1f), flip1);
+  let wx0 = (px0 - ex);
+  let wy = (py0 - ey);
+  let wx = (wx0 - clamp(wx0, (wi * -1f), wi));
+  let dX = ((wx * wx) + (wy * wy));
+  let dY = (wy * -1f);
+  let s = ((px0 * ey) - (py0 * ex));
+  let flip2 = (s < 0f);
+  let px = select(px0, (px0 * -1f), flip2);
+  let py = select(py0, (py0 * -1f), flip2);
+  let vx0 = (px - wi);
+  let dotve = ((vx0 * ex) + (py * ey));
+  let dotee = max(((ex * ex) + (ey * ey)), 1e-4f);
+  let tt = clamp((dotve / dotee), -1f, 1f);
+  let vx = (vx0 - (ex * tt));
+  let vy = (py - (ey * tt));
+  let finalX = min(dX, ((vx * vx) + (vy * vy)));
+  let finalY = min(dY, ((wi * he) - abs(s)));
+  return (sqrt(finalX) * sign((finalY * -1f)));
+}
+
+fn item_15(center: vec2f, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let aspectUV = vec2f((uv.x * aspect), uv.y);
+  let centerPos = vec2f((center.x * aspect), (1f - center.y));
+  let dx = (aspectUV.x - centerPos.x);
+  let dy = (aspectUV.y - centerPos.y);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  return vec2f(rdx, rdy);
+}
+
+struct ShapeMask {
+  overallMask: f32,
+  strokeBlend: f32,
+}
+
+fn item_16(dist: f32, softness: f32, strokeThickness: f32, strokePosition: f32) -> ShapeMask {
+  let hasStroke = (strokeThickness > 0f);
+  let isInside = (strokePosition >= 1.5f);
+  let isCenterOrAbove = (strokePosition >= 0.5f);
+  let halfThickness = (strokeThickness * 0.5f);
+  let negThickness = (strokeThickness * -1f);
+  let negHalf = (halfThickness * -1f);
+  let strokeInner = select(select(0f, negHalf, isCenterOrAbove), negThickness, isInside);
+  let strokeOuter = select(select(strokeThickness, halfThickness, isCenterOrAbove), 0f, isInside);
+  let overallMask = (1f - smoothstep((strokeOuter - softness), strokeOuter, dist));
+  let blend = smoothstep((strokeInner - softness), strokeInner, dist);
+  let strokeBlend = select(0f, blend, hasStroke);
+  return ShapeMask(overallMask, strokeBlend);
+}"
+`;

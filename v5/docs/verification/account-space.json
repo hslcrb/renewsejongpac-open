@@ -1,0 +1,63 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T07:06:07.202Z",
+  "results": [
+    {
+      "name": "account guide examples use the real components at all five widths",
+      "passed": true
+    },
+    {
+      "name": "personal space fits 320px with loaded posters and readable controls",
+      "passed": true
+    },
+    {
+      "name": "personal space fits 390px with loaded posters and readable controls",
+      "passed": true
+    },
+    {
+      "name": "personal space fits 768px with loaded posters and readable controls",
+      "passed": true
+    },
+    {
+      "name": "personal space fits 1024px with loaded posters and readable controls",
+      "passed": true
+    },
+    {
+      "name": "personal space fits 1440px with loaded posters and readable controls",
+      "passed": true
+    },
+    {
+      "name": "room drafts cancel safely and applied themes, names and light survive reload",
+      "passed": true
+    },
+    {
+      "name": "actual tabs support arrow keys, hash entry and the direct account destinations",
+      "passed": true
+    },
+    {
+      "name": "dated notes persist real user text and can be removed",
+      "passed": true
+    },
+    {
+      "name": "favorite cards and the posters in the room use the same saved state",
+      "passed": true
+    },
+    {
+      "name": "ticket cancellation has dismiss, Escape and confirmed persistence with useful focus return",
+      "passed": true
+    },
+    {
+      "name": "profile editing and logout preserve the demo boundary and isolate guest notes",
+      "passed": true
+    },
+    {
+      "name": "reduced motion leaves the room readable with no lamp transition",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime or hydration errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

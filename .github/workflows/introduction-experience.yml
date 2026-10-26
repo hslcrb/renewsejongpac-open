@@ -1,0 +1,52 @@
+name: Introduction experience
+on:
+  push:
+    branches: [main, 'feat/sejong-introduction-film-*']
+  pull_request:
+    paths: ['v5/**', '.github/workflows/introduction-experience.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: introduction-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Clone and isolate the tested commit
+        run: |
+          git clone --no-hardlinks . "$RUNNER_TEMP/sejong-clone"
+          git -C "$RUNNER_TEMP/sejong-clone" worktree add --detach "$RUNNER_TEMP/sejong-experience" "$GITHUB_SHA"
+          git -C "$RUNNER_TEMP/sejong-experience" status --short
+          git -C "$RUNNER_TEMP/sejong-clone" worktree list
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: v5/package-lock.json
+      - name: Install and build the actual Next application
+        working-directory: ${{ runner.temp }}/sejong-experience/v5
+        run: |
+          npm ci
+          npm run build
+      - name: Install browser
+        working-directory: ${{ runner.temp }}/sejong-experience/v5
+        run: npx playwright install --with-deps chromium
+      - name: Browser acceptance and screenshots
+        working-directory: ${{ runner.temp }}/sejong-experience
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/sejong-http.log 2>&1 &
+          BASE_URL=http://127.0.0.1:4173 node v5/tests/introduction-experience.cjs
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: introduction-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/sejong-experience/v5/test-results/introduction/
+          if-no-files-found: warn

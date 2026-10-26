@@ -1,0 +1,110 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve gate — geom fns emit valid WGSL > matches WGSL snapshot 1`] = `
+"fn applyUVTransform(uv: vec2f, offsetX: f32, offsetY: f32, rotation: f32, scale: f32, anchorX: f32, anchorY: f32, aspectRatio: f32) -> vec2f {
+  let rotationRad = ((rotation * 3.141592653589793f) / 180f);
+  let cosAngle = cos(rotationRad);
+  let sinAngle = sin(rotationRad);
+  let centeredX = ((uv.x - anchorX) / scale);
+  let centeredY = ((uv.y - anchorY) / scale);
+  let squareX = (centeredX * aspectRatio);
+  let squareY = centeredY;
+  let rotatedSquareX = ((squareX * cosAngle) - (squareY * sinAngle));
+  let rotatedSquareY = ((squareX * sinAngle) + (squareY * cosAngle));
+  let finalX = (((rotatedSquareX / aspectRatio) - offsetX) + anchorX);
+  let finalY = ((rotatedSquareY - offsetY) + anchorY);
+  return vec2f(finalX, finalY);
+}
+
+fn edgeClampUV(uv: vec2f) -> vec2f {
+  return clamp(uv, vec2f(), vec2f(1));
+}
+
+fn edgeMirrorUV(uv: vec2f) -> vec2f {
+  let mirrorX = (abs(uv.x) % 2f);
+  let mirrorY = (abs(uv.y) % 2f);
+  return vec2f(select(mirrorX, (2f - mirrorX), (mirrorX >= 1f)), select(mirrorY, (2f - mirrorY), (mirrorY >= 1f)));
+}
+
+fn edgeWrapUV(uv: vec2f) -> vec2f {
+  return fract(uv);
+}
+
+fn edgeTransparentMask(uv: vec2f) -> f32 {
+  let inX = (step(0f, uv.x) * step(uv.x, 1f));
+  let inY = (step(0f, uv.y) * step(uv.y, 1f));
+  return (inX * inY);
+}
+
+fn applyRectangularClipMask(uv: vec2f, centerX: f32, centerY: f32, halfWidth: f32, halfHeight: f32, cornerRadius: f32, rotation: f32, aspectRatio: f32, aaFeather: f32) -> f32 {
+  let centeredX = (uv.x - centerX);
+  let centeredY = (uv.y - centerY);
+  let rotRad = -(((rotation * 3.141592653589793f) / 180f));
+  let cosA = cos(rotRad);
+  let sinA = sin(rotRad);
+  let sqX = (centeredX * aspectRatio);
+  let sqY = centeredY;
+  let rotatedX = ((sqX * cosA) - (sqY * sinA));
+  let rotatedY = ((sqX * sinA) + (sqY * cosA));
+  let halfWidthSq = (halfWidth * aspectRatio);
+  let halfHeightSq = halfHeight;
+  let innerHalfW = (halfWidthSq - cornerRadius);
+  let innerHalfH = (halfHeightSq - cornerRadius);
+  let qx = (abs(rotatedX) - innerHalfW);
+  let qy = (abs(rotatedY) - innerHalfH);
+  let qClamped = vec2f(max(qx, 0f), max(qy, 0f));
+  let sdf = ((length(qClamped) + min(max(qx, qy), 0f)) - cornerRadius);
+  let feather = max(aaFeather, 1e-7f);
+  let ramp = (1f - smoothstep(-(feather), feather, sdf));
+  let binary = select(0f, 1f, (sdf <= 0f));
+  return select(ramp, binary, (aaFeather <= 0f));
+}
+
+fn boundingBoxToGeneratorUVContext(uv: vec2f, centerX: f32, centerY: f32, halfWidth: f32, halfHeight: f32, rotation: f32, aspectRatio: f32) -> vec2f {
+  let centeredX = (uv.x - centerX);
+  let centeredY = (uv.y - centerY);
+  let rotRad = -(((rotation * 3.141592653589793f) / 180f));
+  let cosA = cos(rotRad);
+  let sinA = sin(rotRad);
+  let sqX = (centeredX * aspectRatio);
+  let sqY = centeredY;
+  let rotatedX = ((sqX * cosA) - (sqY * sinA));
+  let rotatedY = ((sqX * sinA) + (sqY * cosA));
+  let halfWidthSq = max((halfWidth * aspectRatio), 1e-6f);
+  let halfHeightSq = max(halfHeight, 1e-6f);
+  let localX = ((rotatedX / (halfWidthSq * 2f)) + 0.5f);
+  let localY = ((rotatedY / (halfHeightSq * 2f)) + 0.5f);
+  return vec2f(localX, localY);
+}
+
+fn applyInverseUVTransform(uv: vec2f, offsetX: f32, offsetY: f32, rotation: f32, scale: f32, anchorX: f32, anchorY: f32, aspectRatio: f32) -> vec2f {
+  let centeredX = ((uv.x - anchorX) + offsetX);
+  let centeredY = ((uv.y - anchorY) + offsetY);
+  let squareX = (centeredX * aspectRatio);
+  let squareY = centeredY;
+  let rotationRad = -(((rotation * 3.141592653589793f) / 180f));
+  let cosAngle = cos(rotationRad);
+  let sinAngle = sin(rotationRad);
+  let rotatedSquareX = ((squareX * cosAngle) - (squareY * sinAngle));
+  let rotatedSquareY = ((squareX * sinAngle) + (squareY * cosAngle));
+  let scaledX = ((rotatedSquareX / aspectRatio) * scale);
+  let scaledY = (rotatedSquareY * scale);
+  return vec2f((scaledX + anchorX), (scaledY + anchorY));
+}
+
+struct geomProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn geomProbe(_arg_0: geomProbe_Input) -> @location(0) vec4f {
+  let t = applyUVTransform(_arg_0.uv, 0.1f, 0.2f, 30f, 1.2f, 0.5f, 0.5f, 1.5f);
+  let clamped = edgeClampUV(t);
+  let mir = edgeMirrorUV(clamped);
+  let wr = edgeWrapUV(mir);
+  let m = edgeTransparentMask(wr);
+  let clip = applyRectangularClipMask(wr, 0.5f, 0.5f, 0.4f, 0.3f, 0.05f, 15f, 1.5f, 5e-4f);
+  let ctx = boundingBoxToGeneratorUVContext(wr, 0.5f, 0.5f, 0.4f, 0.3f, 15f, 1.5f);
+  let inv = applyInverseUVTransform(ctx, 0.1f, 0.2f, 30f, 1.2f, 0.5f, 0.5f, 1.5f);
+  return vec4f(inv.x, inv.y, m, clip);
+}"
+`;

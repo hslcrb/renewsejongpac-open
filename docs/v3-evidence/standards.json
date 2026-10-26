@@ -1,0 +1,76 @@
+{
+  "at": "2026-10-15T07:53:46.314Z",
+  "tools": {
+    "htmlValidate": "11.16.2",
+    "cssTree": "3.1.0",
+    "propertySupport": "Chromium CSS.supports; font-face descriptors parsed separately and font loading checked in browser suite"
+  },
+  "html": [
+    {
+      "route": "/",
+      "errors": 0,
+      "warnings": 0,
+      "messages": []
+    },
+    {
+      "route": "/v3/",
+      "errors": 0,
+      "warnings": 0,
+      "messages": []
+    },
+    {
+      "route": "/v3/#/news/membership",
+      "errors": 0,
+      "warnings": 0,
+      "messages": []
+    },
+    {
+      "route": "/v3/#/programs/carmen",
+      "errors": 0,
+      "warnings": 0,
+      "messages": []
+    }
+  ],
+  "css": [
+    {
+      "file": "assets/entry.css",
+      "parseErrors": [],
+      "unsupported": [],
+      "declarations": 172,
+      "fontFaceDescriptors": [
+        {
+          "property": "font-family",
+          "value": "\"Pretendard Variable\"",
+          "fontFace": true
+        },
+        {
+          "property": "src",
+          "value": "url(../v2/assets/fonts/PretendardVariable.woff2)format(\"woff2\")",
+          "fontFace": true
+        },
+        {
+          "property": "font-weight",
+          "value": "45 920",
+          "fontFace": true
+        },
+        {
+          "property": "font-style",
+          "value": "normal",
+          "fontFace": true
+        },
+        {
+          "property": "font-display",
+          "value": "swap",
+          "fontFace": true
+        }
+      ]
+    },
+    {
+      "file": "v3/styles/refinements.css",
+      "parseErrors": [],
+      "unsupported": [],
+      "declarations": 90,
+      "fontFaceDescriptors": []
+    }
+  ]
+}

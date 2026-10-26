@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-10-15T07:27:11.671033+00:00",
+  "origin": "http://127.0.0.1:8000",
+  "method": "Combined actual desktop run and final mobile rerun; original per-run reports retained",
+  "source_reports": [
+    "cards-routes-desktop.json",
+    "cards-routes-mobile.json"
+  ],
+  "widths": [
+    {
+      "width": 1440,
+      "count": 132,
+      "failed": [],
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "count": 132,
+      "failed": [],
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "count": 132,
+      "failed": [],
+      "overflow": []
+    }
+  ],
+  "errors": [],
+  "failedResponses": []
+}

@@ -1,0 +1,2223 @@
+
+/* [공통 조작 / Shared controls]
+   기존 색상과 서체를 보존하고 모든 화면의 조작 크기를 토큰으로 통일합니다.
+   Preserve the palette and font while sharing token based control dimensions. */
+.ds-button[data-context] {
+    --control-target-size: var(--control-size);
+    --control-stroke-color: var(--color-transparent);
+    --control-focus-color: var(--border-focus);
+    --control-selected-background: var(--action-primary);
+    --control-selected-color: var(--text-inverse);
+    --control-selected-hover-background: var(--action-primary-hover);
+    --control-selected-focus: var(--focus-on-dark);
+    --control-selected-stroke: var(--color-transparent);
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-width: var(--control-target-size);
+    min-height: var(--control-target-size);
+    padding: 10px 20px;
+    border: 0;
+    border-radius: var(--radius-control);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--control-stroke-color);
+    font: 600 max(var(--text-min), 1rem)/1.5 var(--font);
+    letter-spacing: var(--tracking-body);
+    text-decoration: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color var(--duration-feedback) var(--ease-standard), color var(--duration-feedback) var(--ease-standard), box-shadow var(--duration-feedback) var(--ease-standard);
+}
+.ds-button[data-context="flow"] {
+    --control-target-size: var(--control-flow-button-size);
+    padding: 14px 22px;
+    border-radius: var(--radius-flow);
+    line-height: 1.45;
+}
+.ds-button.ds-button-primary[data-context] {
+    --control-focus-color: var(--focus-on-dark);
+    color: var(--text-inverse);
+    background: var(--action-primary);
+}
+.ds-button.ds-button-secondary[data-context] {
+    --control-stroke-color: var(--stroke-control);
+    color: var(--text-primary);
+    background: var(--surface-default);
+}
+.ds-button.ds-button-accent[data-context] {
+    --control-focus-color: var(--focus-on-brand);
+    color: var(--text-on-brand);
+    background: var(--action-secondary);
+}
+.ds-button.ds-button-highlight[data-context] {
+    --control-focus-color: var(--focus-on-brand);
+    color: var(--text-on-brand);
+    background: var(--accent-highlight);
+}
+.ds-button.ds-button-quiet[data-context] {
+    color: var(--text-primary);
+    background: var(--color-transparent);
+}
+.ds-button.ds-button-inverse[data-context] {
+    color: var(--text-primary);
+    background: var(--surface-default);
+}
+.ds-button.ds-button-inverse-outline[data-context] {
+    --control-focus-color: var(--focus-on-dark);
+    --control-stroke-color: var(--stroke-inverse);
+    color: var(--text-inverse);
+    background: var(--color-transparent);
+}
+.ds-button.ds-button-inverse-quiet[data-context] {
+    --control-focus-color: var(--focus-on-dark);
+    color: var(--text-inverse);
+    background: var(--color-transparent);
+}
+/* [밝은/어두운 토글과 브랜드 선택 / Paired neutral inversion and retained brand fills]
+   배경·전경·초점·경계를 같은 상태에서 결정합니다. / Resolve the whole palette from one state. */
+.ds-button:is(.ds-button-primary, .ds-button-inverse-outline, .ds-button-inverse-quiet)[data-context] {
+    --control-selected-background: var(--surface-default);
+    --control-selected-color: var(--text-primary);
+    --control-selected-hover-background: var(--surface-subtle);
+    --control-selected-focus: var(--border-focus);
+    --control-selected-stroke: var(--stroke-control);
+}
+.ds-button.ds-button-accent[data-context] {
+    --control-selected-background: var(--action-secondary);
+    --control-selected-color: var(--text-on-brand);
+    --control-selected-hover-background: var(--action-secondary);
+    --control-selected-focus: var(--focus-on-brand);
+    --control-selected-stroke: var(--stroke-control);
+}
+.ds-button.ds-button-highlight[data-context] {
+    --control-selected-background: var(--accent-highlight);
+    --control-selected-color: var(--text-on-brand);
+    --control-selected-hover-background: var(--accent-highlight);
+    --control-selected-focus: var(--focus-on-brand);
+    --control-selected-stroke: var(--stroke-control);
+}
+.ds-button[data-context][data-shape="pill"] {
+    border-radius: var(--radius-pill);
+}
+.ds-button[data-context][data-shape="circle"] {
+    flex: none;
+    width: var(--control-target-size);
+    height: var(--control-target-size);
+    padding: 0;
+    border-radius: 50%;
+}
+.ds-button.ds-icon-button[data-context] {
+    flex: none;
+    min-width: var(--control-target-size);
+    min-height: var(--control-target-size);
+    padding: 0;
+}
+@media (hover: hover) {
+    .ds-button.ds-button-primary[data-context]:hover:not(:disabled):not([aria-pressed="true"]) {
+        color: var(--text-inverse);
+        background: var(--action-primary-hover);
+    }
+    .ds-button:is(.ds-button-secondary, .ds-button-quiet, .ds-button-inverse)[data-context]:hover:not(:disabled):not([aria-pressed="true"]) {
+        color: var(--text-primary);
+        background: var(--surface-subtle);
+    }
+    .ds-button:is(.ds-button-accent, .ds-button-highlight)[data-context]:hover:not(:disabled):not([aria-pressed="true"]) {
+        color: var(--text-on-brand);
+        --control-stroke-color: var(--stroke-control);
+    }
+    .ds-button:is(.ds-button-inverse-outline, .ds-button-inverse-quiet)[data-context]:hover:not(:disabled):not([aria-pressed="true"]) {
+        color: var(--text-inverse);
+        background: var(--color-detail-1rqvsa);
+    }
+}
+/* [선택과 hover의 결합 / Selection with hover]
+   선택된 버튼에 기본 hover 팔레트가 섞이지 않게 합니다. / Never mix resting hover with selected foreground. */
+.ds-button[data-context][aria-pressed] {
+    /* 반전 중 중간 회색끼리 겹치는 프레임을 만들지 않습니다.
+       Switch both faces atomically; hover remains a tone change within the selected palette. */
+    transition-property: box-shadow;
+}
+.ds-button[data-context][aria-pressed="true"]:not(:disabled) {
+    --control-focus-color: var(--control-selected-focus);
+    --control-stroke-color: var(--control-selected-stroke);
+    color: var(--control-selected-color);
+    background: var(--control-selected-background);
+}
+@media (hover: hover) {
+    .ds-button[data-context][aria-pressed="true"]:hover:not(:disabled) {
+        color: var(--control-selected-color);
+        background: var(--control-selected-hover-background);
+    }
+}
+.ds-button[data-context]:active:not(:disabled) {
+    filter: brightness(88%);
+}
+.ds-button[data-context]:disabled {
+    --control-stroke-color: var(--color-transparent);
+    color: var(--action-disabled-text);
+    background: var(--action-disabled);
+    cursor: not-allowed;
+    opacity: 1;
+}
+.ds-button[data-context]:focus-visible,
+.ds-tabs [role="tab"]:focus-visible,
+.ds-tabpanel:focus-visible,
+.ds-disclosure summary:focus-visible {
+    outline: var(--focus-width) solid var(--control-focus-color, var(--border-focus));
+    outline-offset: var(--focus-offset);
+}
+/* [폼과 선택 / Forms and selection] */
+.ds-field[data-component="field"] {
+    display: grid;
+    align-content: start;
+    grid-gap: var(--space-2);
+    gap: var(--space-2);
+    min-width: 0;
+}
+.ds-field[data-component="field"] > label {
+    color: var(--text-primary);
+    font-size: max(var(--text-min), 1rem);
+    font-weight: var(--weight-label);
+}
+.ds-field[data-component="field"] > [data-component="field-control"],
+.flow-page .ds-field[data-variant="flow"] > [data-component="field-control"] {
+    --field-stroke-color: var(--stroke-control);
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: var(--control-size);
+    padding: 11px 14px;
+    border: 0;
+    border-radius: var(--radius-control);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--field-stroke-color);
+    color: var(--text-primary);
+    background: var(--surface-default);
+    font: 400 max(var(--text-min), 1rem)/1.5 var(--font);
+    transition: box-shadow var(--duration-feedback) var(--ease-standard), background-color var(--duration-feedback) var(--ease-standard), color var(--duration-feedback) var(--ease-standard);
+}
+.ds-field[data-component="field"][data-variant="flow"] > [data-component="field-control"],
+.flow-page .ds-field[data-variant="flow"] > [data-component="field-control"] {
+    min-height: var(--control-flow-field-size, 54px);
+    padding: 14px 16px;
+    border-radius: var(--radius-flow);
+}
+.ds-field[data-component="field"] > textarea {
+    resize: vertical;
+}
+.ds-field[data-component="field"] > [data-component="field-control"]::placeholder {
+    color: var(--text-secondary);
+    opacity: 1;
+}
+.ds-field[data-component="field"] > [data-component="field-control"]:disabled {
+    color: var(--text-secondary);
+    background: var(--surface-subtle);
+    cursor: not-allowed;
+}
+.ds-field[data-component="field"] > [data-component="field-control"]:focus,
+.flow-page .ds-field[data-variant="flow"] > [data-component="field-control"]:focus {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+.ds-field[data-component="field"] > [data-component="field-control"][aria-invalid="true"],
+.flow-page .ds-field[data-variant="flow"] > [data-component="field-control"][aria-invalid="true"] {
+    --field-stroke-color: var(--semantic-error-border);
+}
+.ds-field[data-component="field"] > :is(.ds-field-error, .ds-field-hint) {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), 1rem);
+    line-height: 1.5;
+}
+.ds-field[data-component="field"] > .ds-field-error {
+    color: var(--semantic-error);
+    font-weight: 500;
+}
+.ds-check[data-component="checkbox"] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: var(--control-size);
+    font-size: max(var(--text-min), 1rem);
+    cursor: pointer;
+}
+.ds-check[data-component="checkbox"] input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    min-height: 0;
+    margin: 0;
+    accent-color: var(--text-primary);
+}
+.ds-check[data-component="checkbox"] input:focus-visible {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+.ds-check[data-component="checkbox"]:has(input:disabled) {
+    color: var(--action-disabled-text);
+    cursor: not-allowed;
+}
+.ds-field.site-search-field {
+    flex: 1 1;
+    min-width: 0;
+}
+.site-search .ds-field > input[data-component="field-control"] {
+    --field-stroke-color: var(--color-transparent);
+    padding: 14px 0;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-detail-j5afio);
+    font-size: max(var(--text-min), clamp(18px, 2vw, 26px));
+}
+.ds-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    -webkit-clip-path: inset(50%) !important;
+    clip-path: inset(50%) !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+/* [상태와 안내 / Status and feedback] */
+.ds-badge[data-component="badge"] {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    background: var(--surface-subtle);
+    font: 500 max(var(--text-min), 1rem)/1.5 var(--font);
+}
+.ds-badge.ds-badge-highlight[data-component="badge"] {
+    background: var(--accent-highlight);
+}
+.ds-badge.ds-badge-info[data-component="badge"] {
+    background: var(--accent-information);
+}
+.ds-badge[data-component="badge"][data-appearance="plain"] {
+    padding: 0;
+    border-radius: 0;
+    background: var(--color-detail-j5afio);
+}
+.ds-notice[data-component="notice"] {
+    --notice-stroke-color: var(--border-default);
+    --glass-edge: var(--notice-stroke-color);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-transparent);
+    color: var(--text-primary);
+    font: 400 max(var(--text-min), 1rem)/1.5 var(--font);
+}
+.ds-notice[data-component="notice"] > svg {
+    flex: none;
+}
+.ds-notice[data-component="notice"] > div {
+    min-width: 0;
+}
+.ds-notice[data-component="notice"] strong {
+    display: block;
+    font-size: max(var(--text-min), 1rem);
+    line-height: 1.5;
+}
+.ds-notice .ds-notice-content {
+    color: var(--text-primary);
+    font-size: max(var(--text-min), 1rem);
+    line-height: 1.5;
+}
+.ds-notice strong + .ds-notice-content {
+    margin-top: 6px;
+}
+.ds-notice .ds-notice-content > p {
+    margin: 0;
+}
+.ds-notice[data-component="notice"][data-variant="flow"] {
+    display: block;
+    padding: 20px 22px;
+    border-radius: var(--radius-flow);
+    line-height: 1.7;
+}
+.ds-notice[data-component="notice"][data-variant="flow"][data-error="true"] {
+    --notice-stroke-color: var(--semantic-error-border);
+    padding: 14px 18px;
+    margin: 0 0 22px;
+    color: var(--semantic-error);
+}
+.ds-notice[data-component="notice"][data-variant="flow"][data-error="true"] .ds-notice-content {
+    color: inherit;
+}
+.ds-notice[data-component="notice"]:focus {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+.ds-notice[data-component="notice"][hidden] {
+    display: none;
+}
+/* [탭과 기본 펼침 / Tabs and native disclosure] */
+.ds-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    border-bottom: 1px solid var(--border-default);
+}
+.ds-tabs[aria-orientation="vertical"] {
+    flex-direction: column;
+}
+.ds-tabs [role="tab"] {
+    min-width: var(--control-size);
+    min-height: var(--control-size);
+    padding: 8px 12px;
+    border: 0;
+    border-radius: var(--radius-control) var(--radius-control) 0 0;
+    color: var(--text-secondary);
+    background: var(--color-transparent);
+    font: 400 max(var(--text-min), 1rem)/1.5 var(--font);
+    cursor: pointer;
+}
+.ds-tabs [role="tab"][aria-selected="true"] {
+    color: var(--text-primary);
+    box-shadow: inset 0 -2px 0 var(--stroke-selected);
+    background: var(--surface-subtle);
+    font-weight: 700;
+}
+.ds-tabs [role="tab"]:disabled {
+    color: var(--action-disabled-text);
+    cursor: not-allowed;
+}
+.ds-tabpanel {
+    min-height: 110px;
+    padding: 24px 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), 1rem);
+}
+.ds-tabpanel[hidden] {
+    display: none;
+}
+.ds-disclosure[data-component="disclosure"] {
+    border-block: 1px solid var(--border-default);
+    background: var(--surface-default);
+}
+.ds-disclosure[data-component="disclosure"] > summary {
+    min-height: 56px;
+    padding: 16px;
+    font-size: max(var(--text-min), 1rem);
+    font-weight: 600;
+    cursor: pointer;
+}
+.ds-disclosure[data-component="disclosure"] > p {
+    margin: 0;
+    padding: 0 16px 20px;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), 1rem);
+}
+/* [네이티브 모달 / Native modal]
+   탐색 모달은 기존 너비를 유지하고 일반 모달만 공통 기본값을 사용합니다.
+   Navigation dialogs retain their existing dimensions. */
+.ds-dialog[data-component="dialog"]:not(.navigation-dialog):not(.ds-navigation-dialog) {
+    max-height: calc(100dvh - 48px);
+    overflow: auto;
+    padding: 28px;
+    border: 0;
+    border-radius: var(--radius-dialog);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--border-default);
+    color: var(--text-primary);
+    background: var(--surface-default);
+}
+.ds-dialog[data-component="dialog"]:not(.navigation-dialog):not(.ds-search-dialog):not(.ds-navigation-dialog) {
+    width: min(560px, calc(100% - 32px));
+}
+.ds-dialog[data-component="dialog"]:not(.navigation-dialog)::-webkit-backdrop {
+    background: var(--color-detail-1iq0iqd);
+}
+.ds-dialog[data-component="dialog"]:not(.navigation-dialog)::backdrop {
+    background: var(--color-detail-1iq0iqd);
+}
+.ds-dialog.navigation-dialog {
+    width: min(1100px, calc(100% - 40px));
+    max-height: calc(100dvh - 80px);
+    padding: clamp(24px, 4vw, 56px);
+}
+.ds-dialog.navigation-dialog::-webkit-backdrop {
+    background: var(--color-detail-179bjkg);
+}
+.ds-dialog.navigation-dialog::backdrop {
+    background: var(--color-detail-179bjkg);
+}
+.ds-dialog[data-component="dialog"][open] {
+    animation: ds-dialog-enter var(--duration-feedback) var(--ease-standard);
+}
+@keyframes ds-dialog-enter {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .ds-button[data-context],
+    .ds-field[data-component="field"] > [data-component="field-control"] {
+        transition: none;
+    }
+    .ds-dialog[data-component="dialog"][open] {
+        animation: none;
+    }
+}
+@media (max-width: 600px) {
+    .ds-dialog[data-component="dialog"]:not(.navigation-dialog):not(.ds-navigation-dialog) {
+        padding: 20px;
+    }
+}
+@media (max-width: 700px) {
+    .ds-dialog.navigation-dialog {
+        max-height: calc(100dvh - 32px);
+        width: calc(100% - 24px);
+        padding: 24px;
+    }
+}
+/* [공통 비율 분배 / Shared proportional control layout]
+   픽셀 폭 대신 전체 너비에서 간격을 뺀 비율을 사용합니다.
+   Divide the available width after gaps instead of assigning pixel widths. */
+.system-control-group {
+    --control-group-gap: var(--space-3);
+    --control-group-columns: var(--control-group-columns-compact);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--control-group-gap);
+    inline-size: 100%;
+    min-inline-size: 0;
+    margin-inline: 0;
+    padding: 0;
+    list-style: none;
+}
+.system-control-group > .system-control-group-item {
+    display: flex;
+    flex: 1 1 calc((100% - var(--control-group-gap) * (var(--control-group-columns) - 1)) / var(--control-group-columns));
+    min-inline-size: 0;
+    max-inline-size: 100%;
+}
+.system-control-group-item > :is(a, button) {
+    flex: 1 1 auto;
+    align-self: stretch;
+    inline-size: 100%;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    min-block-size: var(--control-size);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+/* [중간 화면과 넓은 화면 / Medium and wide viewports] */
+@media (min-width: 48rem) {
+    .system-control-group {
+        --control-group-columns: var(--control-group-columns-medium);
+    }
+}
+@media (min-width: 64rem) {
+    .system-control-group {
+        --control-group-columns: var(--control-group-columns-wide);
+    }
+}
+/* [실제 구현으로 만드는 등록부 / Catalog composed from actual implementations] */
+.component-catalog {
+    min-width: 0;
+}
+.component-counts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-gap: var(--space-4);
+    gap: var(--space-4);
+    margin: var(--space-8) 0;
+}
+.component-counts > div {
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--surface-subtle);
+}
+.component-counts dt {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.component-counts dd {
+    margin: var(--space-2) 0 0;
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: var(--weight-heading);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+.component-table-scroll {
+    max-width: 100%;
+    overflow: auto;
+    margin-block: var(--space-6) var(--space-12);
+}
+.component-table {
+    width: 100%;
+    min-width: 42rem;
+    border-collapse: collapse;
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-body);
+    text-align: left;
+}
+.component-table :is(th, td) {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--border-default);
+    vertical-align: top;
+}
+.component-table thead {
+    background: var(--surface-subtle);
+}
+.component-table th {
+    font-weight: var(--weight-action);
+}
+.component-table :is(code, td > span) {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: max(var(--text-min), var(--text-sm));
+    overflow-wrap: anywhere;
+    font-weight: var(--weight-body);
+}
+.component-table :is(p, ul) {
+    margin: 0 0 var(--space-2);
+}
+.component-table summary {
+    cursor: pointer;
+    min-height: var(--control-size);
+    padding-block: var(--space-3);
+}
+.component-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-block: var(--space-5);
+}
+.component-hero-preview {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-dialog);
+}
+.component-hero-preview .season-slide {
+    width: 100%;
+    min-width: 0;
+}
+.component-companion-preview {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: var(--space-6);
+    border-radius: var(--radius-dialog);
+}
+.component-preview-background {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.component-companion-preview .hero-companion {
+    position: relative;
+    inset: auto;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    width: 100%;
+    margin: 0;
+}
+.component-booking-preview {
+    max-width: 35rem;
+}
+.component-booking-preview .quick-program {
+    width: 100%;
+    margin-top: var(--space-4);
+}
+.component-exceptions {
+    padding-left: var(--space-5);
+}
+.component-exceptions li {
+    margin-bottom: var(--space-4);
+}
+.component-exceptions span {
+    display: block;
+    margin-top: var(--space-1);
+}
+.component-route-preview iframe {
+    display: block;
+    width: 100%;
+    height: 34rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+}
+@media (max-width: 700px) {
+    .component-counts {
+        grid-template-columns: 1fr 1fr;
+    }
+    .component-companion-preview {
+        padding: var(--space-3);
+    }
+    .component-companion-preview .hero-companion {
+        grid-template-columns: 1fr;
+    }
+}
+/* [개인 공연장 소재와 테마 / Personal theatre materials and themes] */
+.account-mini-room {
+    --mini-room-wall-left: var(--color-detail-edefe1);
+    --mini-room-wall-right: var(--color-detail-dfe5d4);
+    --mini-room-curtain: var(--color-ochre);
+    --mini-room-chair: var(--color-sky);
+    --mini-room-scene: var(--color-detail-f4f3eb);
+    --mini-room-scene-light: var(--color-detail-fffced);
+    min-width: 0;
+    color: var(--text-primary);
+}
+.account-mini-room[data-theme="sky"] {
+    --mini-room-wall-left: var(--color-detail-e2eef0);
+    --mini-room-wall-right: var(--color-detail-cedfe0);
+    --mini-room-curtain: var(--color-detail-527c7d);
+    --mini-room-scene: var(--color-detail-eff5f3);
+    --mini-room-scene-light: var(--color-detail-f7f9ec);
+}
+.account-mini-room[data-theme="sun"] {
+    --mini-room-wall-left: var(--color-detail-f6edcb);
+    --mini-room-wall-right: var(--color-detail-e8d9ac);
+    --mini-room-curtain: var(--color-detail-b86939);
+    --mini-room-scene: var(--color-detail-f8f2e4);
+    --mini-room-scene-light: var(--color-detail-fff8dc);
+}
+/* [제목과 공통 컨트롤 배치 / Heading and shared-control layout] */
+.mini-room-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-bottom: var(--space-4);
+}
+.mini-room-header h2 {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    word-break: keep-all;
+}
+.mini-room-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-2);
+}
+/* [한마디와 반응형 고정 구성 장면 / Personal note and responsive authored scene] */
+.mini-room-figure {
+    margin: 0;
+}
+.mini-room-scene {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-media);
+    background: radial-gradient(ellipse at 55% 38%, var(--mini-room-scene-light), var(--mini-room-scene) 75%);
+    transition: border-color var(--duration-panel) var(--ease-standard);
+}
+.account-mini-room:focus-within .mini-room-scene {
+    border-color: var(--border-default);
+}
+.mini-room-note {
+    position: absolute;
+    z-index: 1;
+    top: var(--space-8);
+    left: var(--space-8);
+    width: 27%;
+    max-width: 17rem;
+    margin: 0;
+    padding-left: var(--space-4);
+    border-left: 1px solid var(--border-default);
+    overflow-wrap: anywhere;
+}
+.mini-room-note p {
+    margin: 0 0 var(--space-3);
+    font-size: max(var(--text-min), var(--text-lead));
+    font-weight: var(--weight-label);
+    line-height: var(--leading-label);
+    word-break: keep-all;
+}
+.mini-room-note cite {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-style: normal;
+    line-height: var(--leading-label);
+}
+.mini-room-scene[data-note-layout="flow"] .mini-room-note {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    max-width: none;
+    margin: var(--space-8) var(--space-8) 0;
+}
+.mini-room-art {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 96 / 71;
+}
+.mini-room-wall-left {
+    fill: var(--mini-room-wall-left);
+}
+.mini-room-wall-right {
+    fill: var(--mini-room-wall-right);
+}
+/* [실제 조명 상태의 재질과 빛 전환 / Material and light changes follow the real light state] */
+.mini-room-glow {
+    opacity: 100%;
+    transition: opacity var(--duration-panel) var(--ease-standard);
+}
+.mini-room-light-strip {
+    stroke: var(--color-detail-fff2ba);
+    transition: stroke var(--duration-panel) var(--ease-standard);
+}
+.mini-room-lampshade {
+    fill: var(--color-detail-f7e7b2);
+    transition: fill var(--duration-panel) var(--ease-standard);
+}
+.mini-room-bulb {
+    fill: var(--color-detail-fff5cb);
+    transition: fill var(--duration-panel) var(--ease-standard);
+}
+.mini-room-dusk {
+    fill: var(--color-detail-283d48);
+    opacity: 0%;
+    pointer-events: none;
+    transition: opacity var(--duration-panel) var(--ease-standard);
+}
+.account-mini-room[data-light="off"] .mini-room-glow {
+    opacity: 0%;
+}
+.account-mini-room[data-light="off"] .mini-room-light-strip {
+    stroke: var(--color-detail-7a806a);
+}
+.account-mini-room[data-light="off"] .mini-room-lampshade {
+    fill: var(--color-detail-d4c9a8);
+}
+.account-mini-room[data-light="off"] .mini-room-bulb {
+    fill: var(--color-detail-aa9d79);
+}
+.account-mini-room[data-light="off"] .mini-room-dusk {
+    opacity: 19%;
+}
+/* [정확한 포스터 출처와 조명 상태 / Honest poster context and light status] */
+.mini-room-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+.mini-room-caption p {
+    margin: 0;
+    word-break: keep-all;
+}
+.mini-room-light-status {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+/* [좁은 패널에서 메모와 장면을 분리 / Give the note its own flow in narrower panels] */
+@media (max-width: 1100px) {
+    .mini-room-note {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: auto;
+        max-width: none;
+        margin: var(--space-6) var(--space-6) 0;
+    }
+}
+@media (max-width: 640px) {
+    .mini-room-header {
+        flex-wrap: wrap;
+        gap: var(--space-4);
+    }
+    .mini-room-art {
+        margin-top: var(--space-2);
+    }
+    .mini-room-caption {
+        flex-wrap: wrap;
+        gap: var(--space-2) var(--space-4);
+    }
+}
+/* [동작 감소 설정에서도 즉시 읽히는 상태 / Readable state changes with reduced motion] */
+@media (prefers-reduced-motion: reduce) {
+    .mini-room-scene,
+    .mini-room-glow,
+    .mini-room-light-strip,
+    .mini-room-lampshade,
+    .mini-room-bulb,
+    .mini-room-dusk {
+        transition: none;
+    }
+}
+/* [개인 공간의 편집형 지면 / Editorial layout for a personal account] */
+.account-experience {
+    padding-bottom: var(--space-24);
+    background: var(--surface-default);
+    color: var(--text-primary);
+}
+.account-page-heading {
+    padding-block: var(--space-8) var(--space-12);
+}
+.account-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+.account-breadcrumbs a {
+    color: inherit;
+}
+.account-page-heading h1 {
+    margin: 0 0 var(--space-4);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-title));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+.account-page-heading > .container > p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-lead));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+.account-layout {
+    display: grid;
+    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+    align-items: start;
+    grid-gap: var(--space-12);
+    gap: var(--space-12);
+}
+.account-profile-aside {
+    min-width: 0;
+}
+.account-main {
+    min-width: 0;
+}
+.account-loading {
+    padding-block: var(--space-12);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+/* [프로필과 사실에 근거한 멤버십 / Profile and factual membership navigation] */
+.account-identity {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-5);
+}
+.account-identity-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+.account-avatar {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    flex: 0 0 auto;
+    border-radius: var(--radius-pill);
+    background: var(--accent-highlight);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+}
+.account-identity h2 {
+    margin: var(--space-2) 0 0;
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    overflow-wrap: anywhere;
+}
+.account-identity h2 span {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-label);
+    letter-spacing: var(--tracking-body);
+}
+.account-status-message {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+}
+.account-profile-counts {
+    display: grid;
+    grid-gap: var(--space-4);
+    gap: var(--space-4);
+    margin: var(--space-3) 0 0;
+    padding-block: var(--space-6);
+    border-block: 1px solid var(--border-default);
+}
+.account-profile-counts > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+.account-profile-counts dt {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+.account-profile-counts dd {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-label);
+    white-space: nowrap;
+}
+.account-profile-counts dd span {
+    margin-left: var(--space-1);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-body);
+}
+.account-membership-guide h3 {
+    margin: 0 0 var(--space-2);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+}
+.account-membership-guide p {
+    margin: 0 0 var(--space-3);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+.account-identity-session {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-default);
+}
+/* [공통 탭의 가로 탐색과 패널 간격 / Horizontal shared tabs and panel spacing] */
+.account-tab-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+    padding-inline: var(--space-1);
+    padding-bottom: var(--space-1);
+}
+.account-tab-list > [role="tab"] {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+.account-tab-panel {
+    padding-block: var(--space-8) 0;
+}
+.account-space-panel {
+    display: grid;
+    grid-gap: var(--space-12);
+    gap: var(--space-12);
+}
+.account-section-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+}
+.account-section-heading h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    word-break: keep-all;
+}
+.account-section-heading p {
+    margin: var(--space-2) 0 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+.account-section-heading > a:not([data-component="link"]) {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: var(--space-2);
+    min-height: var(--control-size);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-action);
+    line-height: var(--leading-label);
+    text-underline-offset: 0.2em;
+}
+.account-section-heading > span {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+.account-section-heading .account-section-kicker {
+    margin: 0 0 var(--space-2);
+}
+/* [티켓의 종이 구조와 예매 상태 / Paper ticket structure and booking status] */
+.account-ticket {
+    display: grid;
+    grid-template-columns: 76px 84px minmax(0, 1fr);
+    align-items: start;
+    grid-gap: var(--space-6);
+    gap: var(--space-6);
+    padding-block: var(--space-6);
+    border-block: 1px solid var(--border-default);
+    color: var(--text-primary);
+}
+.account-ticket-list {
+    display: grid;
+    grid-gap: var(--space-6);
+    gap: var(--space-6);
+}
+.account-ticket-date {
+    display: grid;
+    align-content: start;
+    grid-gap: var(--space-2);
+    gap: var(--space-2);
+    min-height: 108px;
+    padding-right: var(--space-4);
+    border-right: 1px dashed var(--border-default);
+}
+.account-ticket-date strong {
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+.account-ticket-date span {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+.account-ticket-poster {
+    display: block;
+    width: 84px;
+    height: 112px;
+    padding: 0;
+    border-radius: var(--radius-media);
+    object-fit: cover;
+}
+.account-ticket-body {
+    min-width: 0;
+}
+.account-ticket-body h3 {
+    margin: var(--space-3) 0 var(--space-2);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+}
+.account-ticket-body h3 a {
+    color: inherit;
+    text-decoration: none;
+    text-underline-offset: 0.2em;
+}
+.account-ticket-body h3 a:hover {
+    text-decoration: underline;
+}
+.account-ticket-body p {
+    margin: var(--space-1) 0 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+    overflow-wrap: anywhere;
+}
+.account-ticket-body .account-ticket-reference {
+    margin-top: var(--space-3);
+}
+.account-ticket-action {
+    grid-column: 3;
+    justify-self: start;
+}
+.account-ticket[data-cancelled="true"] .account-ticket-poster {
+    filter: grayscale(100%);
+}
+.account-booking-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+}
+.account-local-note {
+    margin: var(--space-4) 0 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+/* [실제 프로그램과 솔직한 빈 상태 / Real programmes and honest empty states] */
+.account-program-grid,
+.account-experience .account-list.account-program-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: var(--space-8) var(--space-6);
+    gap: var(--space-8) var(--space-6);
+}
+.account-program-grid > article {
+    min-width: 0;
+}
+.account-empty-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+    border-block: 1px solid var(--border-default);
+}
+.account-empty-inline h3,
+.account-empty h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+    word-break: keep-all;
+}
+.account-empty-inline p,
+.account-empty p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+.account-empty-inline > a {
+    flex-shrink: 0;
+}
+.account-empty {
+    display: grid;
+    justify-items: start;
+    grid-gap: var(--space-4);
+    gap: var(--space-4);
+    padding: var(--space-12) 0;
+    border-top: 1px solid var(--border-default);
+}
+.account-empty-note {
+    margin: 0;
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+/* [관람노트와 프로필 양식 / Diary and profile forms] */
+.account-note-form,
+.account-profile-form,
+.account-space-form {
+    display: grid;
+    grid-gap: var(--space-6);
+    gap: var(--space-6);
+}
+.account-profile-form {
+    max-width: var(--content-form-width);
+}
+.account-form-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    grid-gap: var(--space-5);
+    gap: var(--space-5);
+}
+.account-note-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+}
+.account-note-form-footer p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+    word-break: keep-all;
+}
+.account-note-form-footer > button {
+    flex-shrink: 0;
+}
+.account-note-list {
+    display: grid;
+    margin-top: var(--space-10);
+}
+.account-note {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--border-default);
+}
+.account-note > div {
+    min-width: 0;
+}
+.account-note-preview {
+    padding-left: var(--space-6);
+    border-left: 1px solid var(--border-default);
+}
+.account-note time,
+.account-note-preview time {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+.account-note h3,
+.account-note-preview h3 {
+    margin: var(--space-3) 0;
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+    word-break: keep-all;
+}
+.account-note p,
+.account-note-preview p {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+.account-form-actions {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: var(--space-2);
+}
+/* [공식 서비스로 이어지는 평면 목록 / Flat navigation to official services] */
+.account-service-list {
+    display: grid;
+}
+.account-service-list > article {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--border-default);
+}
+.account-service-list h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+}
+.account-service-list p {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+.account-service-list > article > a {
+    flex-shrink: 0;
+}
+/* [공통 모달 안의 내용 배치 / Content layout inside shared dialogs] */
+.account-dialog-heading h2 {
+    margin: 0 0 var(--space-3);
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+.account-dialog-heading p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+.account-theme-picker {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.account-theme-picker legend {
+    padding: 0;
+    margin-bottom: var(--space-3);
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: var(--weight-label);
+    line-height: var(--leading-label);
+}
+.account-theme-picker > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+.account-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+.account-cancel-dialog .account-dialog-actions {
+    margin-top: var(--space-8);
+}
+/* [태블릿과 휴대전화의 자연스러운 재배치 / Natural reflow for tablets and phones] */
+@media (max-width: 1100px) {
+    .account-layout {
+        grid-template-columns: minmax(13rem, 15rem) minmax(0, 1fr);
+        gap: var(--space-8);
+    }
+    .account-profile-aside {
+        padding-right: var(--space-5);
+    }
+    .account-program-grid,
+    .account-experience .account-list.account-program-grid {
+        gap: var(--space-8) var(--space-4);
+    }
+    .account-empty-inline,
+    .account-service-list > article {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+@media (max-width: 900px) {
+    .account-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-8);
+    }
+    .account-profile-aside {
+        padding: 0 0 var(--space-8);
+        border-right: 0;
+        border-bottom: 1px solid var(--border-default);
+    }
+    .account-identity {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-gap: var(--space-4) var(--space-6);
+        gap: var(--space-4) var(--space-6);
+    }
+    .account-identity-top {
+        justify-content: flex-start;
+    }
+    .account-identity h2 {
+        grid-column: 1;
+        margin: 0;
+    }
+    .account-identity > button {
+        grid-column: 2;
+        grid-row: 2;
+        align-self: start;
+    }
+    .account-status-message {
+        grid-column: 1 / -1;
+    }
+    .account-profile-counts {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding-block: var(--space-5);
+        margin: 0;
+    }
+    .account-profile-counts > div {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+    .account-membership-guide {
+        grid-column: 1 / -1;
+    }
+    .account-identity-session {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: center;
+        padding: 0;
+        border: 0;
+    }
+    .account-tab-panel {
+        padding-top: var(--space-6);
+    }
+}
+@media (max-width: 600px) {
+    .account-experience {
+        padding-bottom: var(--space-16);
+    }
+    .account-page-heading {
+        padding-block: var(--space-6) var(--space-8);
+    }
+    .account-breadcrumbs {
+        margin-bottom: var(--space-6);
+    }
+    .account-identity {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .account-identity > button,
+    .account-identity-session {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: start;
+    }
+    .account-identity-session {
+        border-top: 1px solid var(--border-default);
+        padding-top: var(--space-3);
+        justify-self: stretch;
+    }
+    .account-identity-top {
+        justify-content: space-between;
+    }
+    .account-space-panel {
+        gap: var(--space-10);
+    }
+    .account-section-heading {
+        flex-wrap: wrap;
+        gap: var(--space-3);
+    }
+    .account-ticket {
+        grid-template-columns: 64px minmax(0, 1fr);
+        gap: var(--space-4);
+    }
+    .account-ticket-date {
+        grid-column: 1;
+        min-height: 0;
+        padding: 0;
+        border: 0;
+    }
+    .account-ticket-poster {
+        grid-column: 1;
+        grid-row: 2;
+        width: 64px;
+        height: 88px;
+    }
+    .account-ticket-body {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+    }
+    .account-ticket-action {
+        grid-column: 1 / -1;
+    }
+    .account-program-grid,
+    .account-experience .account-list.account-program-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .account-form-pair {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .account-note-form-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .account-dialog-actions > button {
+        flex: 1 1 auto;
+    }
+}
+@media (max-width: 380px) {
+    .account-program-grid,
+    .account-experience .account-list.account-program-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .account-profile-counts {
+        gap: var(--space-3);
+    }
+}
+/* [모든 주요 경로가 공유하는 넓은 지면 / A shared wide frame for primary routes]
+   외부 폭과 여백은 전역 토큰을 따르고, 높이는 내용과 줄바꿈으로 결정합니다.
+   The outer frame follows global tokens while content and wrapping determine height. */
+.page-layout {
+    min-width: 0;
+    padding-block: var(--space-12) var(--space-24);
+}
+.page-layout-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+.page-layout-breadcrumbs > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+.page-layout-breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+}
+.page-layout-breadcrumbs a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+.page-layout-breadcrumbs [aria-current] {
+    color: var(--text-primary);
+    font-weight: var(--weight-action);
+}
+.page-layout-heading {
+    display: grid;
+    grid-gap: var(--space-4);
+    gap: var(--space-4);
+    min-width: 0;
+    margin-bottom: var(--space-10);
+}
+.page-layout-heading h1 {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-title));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    overflow-wrap: anywhere;
+}
+.page-layout-heading > p {
+    max-width: var(--content-reading-width);
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-lead));
+    line-height: var(--leading-body);
+}
+.page-layout-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+.page-layout-actions > :is(a, button) {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+/* [읽는 글과 사실 정보의 폭 / Reading measure and intrinsic fact columns]
+   문단과 입력에는 읽기 폭을 두되 제목과 카드 목록은 넓은 지면을 사용합니다.
+   Prose retains a reading measure while headings and card collections use the full frame. */
+.page-layout-prose {
+    max-width: var(--content-reading-width);
+    min-width: 0;
+}
+.page-layout-prose h2,
+.booking-page-panel h2,
+.page-layout-empty h2 {
+    margin: 0 0 var(--space-4);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+}
+.page-layout-prose p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+.page-layout-prose p + p {
+    margin-top: var(--space-4);
+}
+.page-layout-facts {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    grid-gap: var(--space-4) var(--space-6);
+    gap: var(--space-4) var(--space-6);
+    min-width: 0;
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+.page-layout-facts dt {
+    color: var(--text-secondary);
+    font-weight: var(--weight-label);
+}
+.page-layout-facts dd {
+    min-width: 0;
+    margin: 0;
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+}
+/* [프로그램 목록의 자동 열 배치 / Automatic columns for the program collection] */
+.programs-page-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+}
+.programs-page-search {
+    flex: 1 1 18rem;
+    min-width: 0;
+    max-width: 30rem;
+}
+.programs-page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    grid-gap: var(--space-10) var(--space-6);
+    gap: var(--space-10) var(--space-6);
+}
+.programs-page-grid > * {
+    min-width: 0;
+}
+.page-layout-empty {
+    padding: var(--space-16) var(--space-6);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-media);
+    background: var(--surface-subtle);
+    text-align: center;
+}
+.page-layout-empty p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+}
+/* [원본 비율의 포스터와 유연한 상세 열 / Natural poster ratio and flexible details] */
+.program-detail-page-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    align-items: start;
+    grid-gap: clamp(2rem, 5vw, 5rem);
+    gap: clamp(2rem, 5vw, 5rem);
+}
+.program-detail-page-poster {
+    width: 100%;
+    max-width: 42rem;
+    overflow: hidden;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-media);
+}
+.program-detail-page-poster img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.program-detail-page-summary {
+    min-width: 0;
+}
+.program-detail-page-facts {
+    padding-block: var(--space-6);
+    border-block: 1px solid var(--border-default);
+}
+.program-detail-page-description {
+    margin-block: var(--space-8);
+}
+.program-detail-page-actions > a:first-child {
+    flex: 1 1 15rem;
+}
+/* [높이를 고정하지 않는 예매 양식 / Booking forms that grow with their content]
+   양식은 한눈에 값을 비교할 수 있는 폭을 유지하고 페이지 바깥 지면은 공통 폭을 사용합니다.
+   Forms keep related values within reading distance inside the shared page frame. */
+.booking-page-content {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    min-width: 0;
+}
+.booking-page-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-8);
+    margin: 0 0 var(--space-8);
+    padding: 0 0 var(--space-6);
+    border-bottom: 1px solid var(--border-default);
+    list-style: none;
+}
+.booking-page-steps li {
+    display: flex;
+    flex: 1 1 12rem;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-label);
+}
+.booking-page-steps li > span {
+    display: grid;
+    flex: 0 0 auto;
+    min-width: 2rem;
+    min-height: 2rem;
+    padding: var(--space-1);
+    place-items: center;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-pill);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+.booking-page-steps [aria-current="step"] {
+    color: var(--text-primary);
+    font-weight: var(--weight-action);
+}
+.booking-page-steps [aria-current="step"] > span {
+    color: var(--text-inverse);
+    background: var(--action-primary);
+    border-color: var(--stroke-selected);
+}
+.booking-page-panel {
+    display: grid;
+    grid-gap: var(--space-6);
+    gap: var(--space-6);
+    min-width: 0;
+}
+.booking-page-panel h2 {
+    margin: 0;
+}
+.booking-page-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    align-items: start;
+    grid-gap: var(--space-6);
+    gap: var(--space-6);
+    min-width: 0;
+}
+.booking-page-section-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+}
+.booking-page-section-heading p,
+.booking-page-seat-help {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    overflow-wrap: anywhere;
+}
+.booking-page-actions {
+    justify-content: flex-end;
+}
+.booking-page-actions > :is(a, button) {
+    flex: 0 1 auto;
+}
+.booking-page-review {
+    padding: var(--space-6);
+    border-radius: var(--radius-control);
+    background: var(--surface-subtle);
+}
+.booking-page-total {
+    margin-top: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-default);
+    font-weight: var(--weight-action);
+}
+.booking-page-total strong {
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+}
+.booking-page-complete {
+    justify-items: center;
+    text-align: center;
+}
+.booking-page-complete > p {
+    max-width: var(--content-reading-width);
+    margin: 0;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+}
+.booking-page-complete .page-layout-actions {
+    justify-content: center;
+}
+/* [좌석의 공간 관계와 48px 조작 크기 / Spatial seat relationships with 48px targets]
+   좌석의 최소 크기는 공통 조작 토큰을 따르며 좁은 화면에서는 내부만 스크롤합니다.
+   Seat targets follow the shared control token and scroll inside their own viewport. */
+.booking-page-seat-scroll {
+    min-width: 0;
+    max-width: 100%;
+    padding: var(--space-2);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    border-radius: var(--radius-control);
+}
+.booking-page-seat-scroll:focus-visible {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+.booking-page-seat-canvas {
+    width: max-content;
+    min-width: 100%;
+}
+.booking-page-stage {
+    padding: var(--space-3);
+    margin-bottom: var(--space-8);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    background: var(--surface-subtle);
+    color: var(--text-secondary);
+    text-align: center;
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-action);
+}
+.booking-page-seat-rows {
+    display: grid;
+    justify-content: center;
+    grid-gap: var(--space-2);
+    gap: var(--space-2);
+}
+.booking-page-seat-row {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(var(--control-size), max-content));
+    grid-gap: var(--space-2);
+    gap: var(--space-2);
+}
+.booking-page-seat {
+    min-width: var(--control-size);
+    min-height: var(--control-size);
+    padding: var(--space-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-control);
+    background: var(--surface-default);
+    color: var(--text-primary);
+    font: var(--weight-action) max(var(--text-min), var(--text-body))/var(--leading-label) var(--font);
+    transition: background-color var(--duration-feedback), border-color var(--duration-feedback), color var(--duration-feedback);
+}
+.booking-page-seat[aria-pressed="true"] {
+    color: var(--text-inverse);
+    background: var(--action-primary);
+    border-color: var(--stroke-selected);
+    box-shadow: inset 0 0 0 1px var(--stroke-selected);
+}
+.booking-page-seat:focus-visible {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+@media (hover: hover) {
+    .booking-page-seat:not([aria-pressed="true"]):hover {
+        background: var(--state-hover);
+    }
+}
+/* [안내 페이지의 넓은 탐색과 좁은 문단 / Wide information navigation with readable prose] */
+.catalog-page-heading {
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--border-default);
+}
+.catalog-page-category {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-action);
+}
+.catalog-page-navigation {
+    margin-top: var(--space-2);
+}
+.catalog-page-navigation a[aria-current="page"] {
+    border-color: var(--stroke-selected);
+    background: var(--action-primary);
+    color: var(--text-inverse);
+    font-weight: var(--weight-action);
+}
+.catalog-page-content {
+    min-width: 0;
+    padding-block: var(--space-4);
+}
+.catalog-page-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+    margin-bottom: var(--space-6);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.catalog-page-actions {
+    margin-top: var(--space-8);
+}
+/* [작은 화면과 글자 확대의 재배치 / Reflow for smaller screens and enlarged text] */
+@media (max-width: 56rem) {
+    .program-detail-page-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .program-detail-page-poster {
+        max-width: 36rem;
+    }
+}
+@media (max-width: 37.5rem) {
+    .page-layout {
+        padding-block: var(--space-8) var(--space-16);
+    }
+    .page-layout-heading {
+        margin-bottom: var(--space-8);
+    }
+    .programs-page-search {
+        max-width: none;
+    }
+    .booking-page-steps li {
+        flex-basis: 100%;
+    }
+    .booking-page-actions > :is(a, button),
+    .program-detail-page-actions > a {
+        flex: 1 1 100%;
+    }
+    .booking-page-review {
+        padding: var(--space-4);
+    }
+    .booking-page-review {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-2);
+    }
+    .booking-page-review dd {
+        margin-bottom: var(--space-4);
+    }
+    .booking-page-review .booking-page-total {
+        margin: 0;
+    }
+    .booking-page-review dd.booking-page-total {
+        padding-top: 0;
+        border-top: 0;
+    }
+}
+/* [확대된 소식 문구의 자연스러운 줄바꿈 / Intrinsic news copy when text is enlarged] */
+.home-news-layout > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+/* [정보 블록의 반응형 배치 / Responsive information blocks] */
+.catalog-content-block {
+    display: grid;
+    grid-gap: 24px;
+    gap: 24px;
+    margin-block: 32px 48px;
+}
+.catalog-space-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    grid-gap: 24px;
+    gap: 24px;
+    margin-block: 32px;
+}
+.catalog-space-grid h2 {
+    margin-bottom: 16px;
+}
+.catalog-space-grid p {
+    margin-bottom: 20px;
+}
+.page-layout-facts > div {
+    display: contents;
+}
+.catalog-timeline {
+    display: grid;
+    grid-gap: 32px;
+    gap: 32px;
+    list-style: none;
+    padding: 0;
+}
+.catalog-content-source {
+    margin-block: 40px;
+    color: var(--text-secondary);
+}
+.renewal-header[data-header-variant="inverse"] {
+    background: var(--surface-inverse);
+    color: var(--text-inverse);
+}
+.renewal-header[data-header-variant="inverse"] .sejong-wordmark {
+    filter: invert(1);
+}
+.renewal-header[data-header-variant="inverse"] .desktop-nav a,
+.renewal-header[data-header-variant="inverse"] .masthead-actions > a {
+    color: var(--text-inverse);
+}
+/* [공통 패널의 부드러운 경계 / Soft boundaries for shared panels]
+   색상과 곡률은 중앙 토큰을 사용합니다. / Colors and radii use central tokens. */
+.system-surface {
+    --surface-stroke-color: var(--surface-border);
+    box-sizing: border-box;
+    min-inline-size: 0;
+    padding: var(--space-6);
+    border: 0;
+    border-radius: var(--surface-radius-panel);
+    background: var(--surface-panel);
+    color: var(--text-primary);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--surface-stroke-color);
+}
+.system-surface[data-surface-variant="subtle"] {
+    --surface-stroke-color: var(--surface-border-subtle);
+    background: var(--surface-subtle);
+}
+.system-surface[data-surface-variant="inset"] {
+    --surface-stroke-color: var(--surface-border-subtle);
+    background: var(--surface-inset);
+}
+.system-surface[data-surface-variant="banner"] {
+    --surface-stroke-color: var(--surface-border-subtle);
+    background: var(--surface-banner);
+}
+.system-surface[data-surface-variant="elevated"] {
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--surface-stroke-color), var(--surface-shadow-elevated);
+}
+/* [내용과 역할에 맞춘 여백과 곡률 / Padding and curvature by content role] */
+.system-surface[data-surface-padding="none"] {
+    padding: 0;
+}
+.system-surface[data-surface-padding="sm"] {
+    padding: var(--space-4);
+}
+.system-surface[data-surface-padding="lg"] {
+    padding: clamp(var(--space-6), 3vw, var(--space-8));
+}
+.system-surface[data-surface-radius="compact"] {
+    border-radius: var(--surface-radius-compact);
+}
+.system-surface[data-surface-radius="dialog"] {
+    border-radius: var(--surface-radius-dialog);
+}
+/* [공유 텍스트 역할과 최소 가독성 / Shared text roles and minimum readability]
+   src/data/design-tokens.ts에서 생성됩니다. / Generated from src/data/design-tokens.ts.
+   data-text는 기존 요소의 위계를 보존합니다. / Native data-text annotations preserve existing hierarchy. */
+:where(h5, h6, small, sub, sup) {
+    font-size: max(var(--text-min), 1em);
+}
+[data-text="display"] {
+    font-size: max(var(--text-min), var(--text-display));
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+}
+[data-text="title"] {
+    font-size: max(var(--text-min), var(--text-title));
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
+}
+[data-text="heading"] {
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
+}
+[data-text="subheading"] {
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
+}
+[data-text="item-title"] {
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: -0.025em;
+}
+[data-text="lead"] {
+    font-size: max(var(--text-min), var(--text-lead));
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: -0.015em;
+}
+[data-text="body"] {
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: -0.015em;
+}
+[data-text="label"] {
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+[data-text="caption"] {
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+[data-text="action"] {
+    font-size: max(var(--text-min), var(--text-action));
+    font-weight: 600;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+[data-text="meta"] {
+    font-size: max(var(--text-min), var(--text-meta));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+[data-text="navigation"] {
+    font-size: max(var(--text-min), var(--text-navigation));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+[data-text="utility"] {
+    font-size: max(var(--text-min), var(--text-utility));
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+[data-text][data-text-size="display"] {
+    font-size: max(var(--text-min), var(--text-display));
+}
+[data-text][data-text-size="title"] {
+    font-size: max(var(--text-min), var(--text-title));
+}
+[data-text][data-text-size="heading"] {
+    font-size: max(var(--text-min), var(--text-heading));
+}
+[data-text][data-text-size="subheading"] {
+    font-size: max(var(--text-min), var(--text-subheading));
+}
+[data-text][data-text-size="item-title"] {
+    font-size: max(var(--text-min), var(--text-item-title));
+}
+[data-text][data-text-size="lead"] {
+    font-size: max(var(--text-min), var(--text-lead));
+}
+[data-text][data-text-size="body"] {
+    font-size: max(var(--text-min), var(--text-body));
+}
+[data-text][data-text-size="label"] {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+[data-text][data-text-size="caption"] {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+[data-text][data-text-size="action"] {
+    font-size: max(var(--text-min), var(--text-action));
+}
+[data-text][data-text-size="meta"] {
+    font-size: max(var(--text-min), var(--text-meta));
+}
+[data-text][data-text-size="navigation"] {
+    font-size: max(var(--text-min), var(--text-navigation));
+}
+[data-text][data-text-size="utility"] {
+    font-size: max(var(--text-min), var(--text-utility));
+}
+[data-text][data-text-size="control"] {
+    font-size: max(var(--text-min), 1rem);
+}
+[data-text][data-text-size="hero-with-companion"] {
+    font-size: max(var(--text-min), var(--text-hero-with-companion));
+}
+[data-text][data-text-size="hero-standalone"] {
+    font-size: max(var(--text-min), var(--text-hero-standalone));
+}
+[data-text][data-text-size="quick-action"] {
+    font-size: max(var(--text-min), var(--text-quick-action));
+}
+/* [헤더 전용 Material 아이콘 그룹 / Header-only Material icon group]
+   SVG 비례와 원형 48px 조작 영역을 유지합니다. / Retain SVG proportions and the 48px circular target. */
+.material-icon[data-icon-group="header-action"] {
+    width: var(--icon-header-action-size);
+    height: var(--icon-header-action-size);
+    flex-shrink: 0;
+}
+
+/*# sourceMappingURL=account-mini-room_1.css.map*/

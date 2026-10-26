@@ -1,0 +1,68 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T07:07:18.064Z",
+  "components": {
+    "total": 44,
+    "product": 42,
+    "documentationOnly": 2,
+    "unused": 0
+  },
+  "widths": [
+    320,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "results": [
+    {
+      "name": "the real registry lists every implementation, computed usage and the missing production patterns",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 320px",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 390px",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 768px",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 1024px",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 1440px",
+      "passed": true
+    },
+    {
+      "name": "home patterns and the scroll heading are connected without changing wording or anchors",
+      "passed": true
+    },
+    {
+      "name": "search uses the shared modal with input focus, Escape return and keyboard containment",
+      "passed": true
+    },
+    {
+      "name": "signup validates and persists the same profile through shared fields, consent and actions",
+      "passed": true
+    },
+    {
+      "name": "recovery retains its accessible result and flow field",
+      "passed": true
+    },
+    {
+      "name": "booking fields retain date/time control and the seat map uses documented spatial controls",
+      "passed": true
+    },
+    {
+      "name": "no hydration or runtime errors occurred",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

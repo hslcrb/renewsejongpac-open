@@ -1,0 +1,99 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve gate — lightfields emit valid WGSL > matches WGSL snapshot 1`] = `
+"fn lightfields_seamlessAngularField(delta: vec2f) -> vec3f {
+  let angle = atan2(delta.y, delta.x);
+  let angleWrapped = (angle - (6.283185307179586f * floor((angle / 6.283185307179586f))));
+  let blend = smoothstep(-0.15f, 0.15f, delta.x);
+  return vec3f(angle, angleWrapped, blend);
+}
+
+fn lightfields_angularSineLobes(angle: f32, count: f32, phase: f32, sharpness: f32) -> f32 {
+  let t = ((sin(((angle * count) + phase)) * 0.5f) + 0.5f);
+  return pow(t, sharpness);
+}
+
+fn lightfields_angularCosineSpikes(angle: f32, halfCount: f32, power: f32) -> f32 {
+  return pow(abs(cos((angle * halfCount))), power);
+}
+
+fn lightfields_radialGaussianFalloff(dist: f32, sharpness: f32) -> f32 {
+  return exp(-(((dist * dist) * sharpness)));
+}
+
+fn lightfields_anisotropicGaussianSpot(du: f32, dv: f32, sharpness: f32) -> f32 {
+  return exp((((du * du) + (dv * dv)) * -(sharpness)));
+}
+
+fn lightfields_radialGaussianGlow(uv: vec2f, aspect: f32, lx: f32, ly: f32, sizeSq: f32) -> f32 {
+  let dx = ((uv.x - lx) * aspect);
+  let dy = (uv.y - ly);
+  let dd2 = ((dx * dx) + (dy * dy));
+  return exp(((-0.5f * dd2) / sizeSq));
+}
+
+fn lightfields_chromaticRingBand(dist: f32, center: f32, spread: f32, width: f32) -> vec3f {
+  let w = max(width, 1e-4f);
+  let r = (1f - smoothstep(0f, w, abs((dist - (center + spread)))));
+  let g = (1f - smoothstep(0f, w, abs((dist - center))));
+  let b = (1f - smoothstep(0f, w, abs((dist - (center - spread)))));
+  return vec3f(r, g, b);
+}
+
+fn lightfields_pointToSegment(p: vec2f, a: vec2f, b: vec2f) -> vec2f {
+  let lineVec = vec2f((b.x - a.x), (b.y - a.y));
+  let toPoint = vec2f((p.x - a.x), (p.y - a.y));
+  let dotProduct = ((toPoint.x * lineVec.x) + (toPoint.y * lineVec.y));
+  let lineLengthSq = ((lineVec.x * lineVec.x) + (lineVec.y * lineVec.y));
+  let t = clamp((dotProduct / max(lineLengthSq, 1e-4f)), 0f, 1f);
+  let closestPoint = vec2f((a.x + (lineVec.x * t)), (a.y + (lineVec.y * t)));
+  let distVec = vec2f((p.x - closestPoint.x), (p.y - closestPoint.y));
+  return vec2f(t, sqrt(((distVec.x * distVec.x) + (distVec.y * distVec.y))));
+}
+
+fn lightfields_taperedSegmentGlow(dist: f32, t: f32, startThickness: f32, endThickness: f32, startSoftness: f32, endSoftness: f32) -> vec2f {
+  let thickness = mix(startThickness, endThickness, t);
+  let softness = max(mix(startSoftness, endSoftness, t), 1e-4f);
+  let normalizedDist = (dist / max(thickness, 1e-4f));
+  let edgeEnd = (1f + softness);
+  let alphaBase = (1f - smoothstep(1f, edgeEnd, normalizedDist));
+  let softnessFactor = (1f + (softness * 1.5f));
+  let alpha = pow(alphaBase, softnessFactor);
+  let colorGradientStart = (1f - softness);
+  let colorGradientEnd = (1f + softness);
+  let colorT = smoothstep(colorGradientStart, colorGradientEnd, normalizedDist);
+  return vec2f(colorT, alpha);
+}
+
+fn lightfields_beamLocalFrame(uv: vec2f, aspect: f32, anchorRaw: vec2f) -> vec2f {
+  let pA = vec2f((uv.x * aspect), uv.y);
+  let anchor = vec2f((anchorRaw.x * aspect), (1f - anchorRaw.y));
+  let toCenter = (vec2f((aspect * 0.5f), 0.5f) - anchor);
+  let cLen = length(toCenter);
+  let dirX = select((toCenter.x / max(cLen, 1e-3f)), 1f, (cLen < 0.02f));
+  let dirY = select((toCenter.y / max(cLen, 1e-3f)), 0f, (cLen < 0.02f));
+  let relX = (pA.x - anchor.x);
+  let relY = (pA.y - anchor.y);
+  return vec2f(((relX * dirX) + (relY * dirY)), ((relY * dirX) - (relX * dirY)));
+}
+
+struct lightfieldsProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn lightfieldsProbe(_arg_0: lightfieldsProbe_Input) -> @location(0) vec4f {
+  let delta = (_arg_0.uv - vec2f(0.5));
+  let dist = length(delta);
+  let ang = lightfields_seamlessAngularField(delta);
+  let rays = lightfields_angularSineLobes(ang.x, 12f, 0f, 2f);
+  let spikes = lightfields_angularCosineSpikes(ang.y, 3f, 3.5f);
+  let glare = lightfields_radialGaussianFalloff(dist, 20f);
+  let spot = lightfields_anisotropicGaussianSpot(delta.x, delta.y, 1.9f);
+  let glow = lightfields_radialGaussianGlow(_arg_0.uv, 1.5f, 0.3f, 0.3f, 0.02f);
+  let ring = lightfields_chromaticRingBand(dist, 0.4f, 0.05f, 0.02f);
+  let proj = lightfields_pointToSegment(_arg_0.uv, vec2f(0.20000000298023224, 0.5), vec2f(0.800000011920929, 0.5));
+  let beam = lightfields_taperedSegmentGlow(proj.y, proj.x, 0.1f, 0.05f, 0.5f, 0.5f);
+  let frame = lightfields_beamLocalFrame(_arg_0.uv, 1.5f, vec2f(0.949999988079071, 0.4000000059604645));
+  return vec4f(((rays * spikes) + ring.x), ((glare + spot) + glow), (beam.x * beam.y), ((frame.x + frame.y) + ang.z));
+}"
+`;

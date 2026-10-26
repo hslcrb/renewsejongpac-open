@@ -1,0 +1,9 @@
+{
+  "verifiedAt": "2026-10-21T06:20:24.288Z",
+  "googleEnabled": true,
+  "authorizeStatus": 302,
+  "authorizationHost": "accounts.google.com",
+  "supabaseCallbackCorrect": true,
+  "appRedirectAllowlistVerified": false,
+  "googleConsentAndReturnVerified": false
+}

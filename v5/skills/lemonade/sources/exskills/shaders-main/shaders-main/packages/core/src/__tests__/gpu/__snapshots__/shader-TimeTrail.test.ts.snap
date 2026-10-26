@@ -1,0 +1,182 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TimeTrail (a) feedback compute → display copy → crisp-over-trail composite > RTTs the child, registers a display (compute) texture, samples both + the composite fn > final-pass 1`] = `
+"@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn unpremultiplyOut(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn overComposite(base: vec4f, blended: vec3f, overlayAlpha: f32) -> vec4f {
+  let baseWeight = (base.w * (1f - overlayAlpha));
+  let finalAlpha = (overlayAlpha + baseWeight);
+  let rgb = ((blended * overlayAlpha) + (base.xyz * baseWeight));
+  return vec4f(rgb, finalAlpha);
+}
+
+fn trailBlend_normal(base: vec4f, overlay2: vec4f, opacity: f32) -> vec4f {
+  let overlayAlpha = (overlay2.w * opacity);
+  return overComposite(base, overlay2.xyz, overlayAlpha);
+}
+
+@group(1) @binding(1) var rtt_0: texture_2d<f32>;
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  trailSource: f32,
+  motionThreshold: f32,
+  trailLength: f32,
+  diffusion: f32,
+  trailOpacity: f32,
+  driftX: f32,
+  driftY: f32,
+  zoom: f32,
+  tintMode: f32,
+  tint: vec4f,
+  speed: f32,
+  _opacity: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_tt: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let trail_0 = textureSample(compute_0, linearClamp, uv);
+  var composed_1 = unpremultiplyOut(trailBlend_normal(unpremultiplyOut(textureSample(rtt_0, linearClamp, uv)), unpremultiplyOut(trail_0), uniforms.n_tt.trailOpacity));
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;
+
+exports[`TimeTrail (d) kernel + helpers resolve (compute-simulation rules) > the feedback kernel resolves with textureStore + the named step > timeTrailKernel 1`] = `
+"fn timeTrailTexelUv(cx: u32, cy: u32) -> vec2f {
+  const r = 640f;
+  return vec2f(((f32(cx) + 0.5f) / r), ((f32(cy) + 0.5f) / r));
+}
+
+struct FeedbackTrailParams {
+  persistence: f32,
+  diffusion: f32,
+  driftX: f32,
+  driftY: f32,
+  dt: f32,
+  zoom: f32,
+  hueRate: f32,
+  blendMode: f32,
+  motionThreshold: f32,
+}
+
+@group(0) @binding(7) var<uniform> params: FeedbackTrailParams;
+
+fn timeTrailFeedbackUv(uv: vec2f) -> vec2f {
+  let P = (&params);
+  let zoom = max((*P).zoom, 0.01f);
+  return vec2f(((((uv.x - 0.5f) / zoom) + 0.5f) - (((*P).driftX * (*P).dt) * 0.5f)), ((((uv.y - 0.5f) / zoom) + 0.5f) - (((*P).driftY * (*P).dt) * 0.5f)));
+}
+
+@group(0) @binding(1) var prev: texture_2d<f32>;
+
+@group(0) @binding(6) var samp: sampler;
+
+fn timeTrailSampleHistory(uvx: f32, uvy: f32) -> vec4f {
+  return textureSampleLevel(prev, samp, vec2f(uvx, uvy), 0f);
+}
+
+fn timeTrailDecayed(bx: f32, by: f32) -> vec4f {
+  let P = (&params);
+  let h = ((*P).diffusion * 0.001953125f);
+  let sum = (((timeTrailSampleHistory((bx - h), (by - h)) + timeTrailSampleHistory((bx + h), (by - h))) + timeTrailSampleHistory((bx - h), (by + h))) + timeTrailSampleHistory((bx + h), (by + h)));
+  return (sum * ((*P).persistence * 0.25f));
+}
+
+@group(0) @binding(0) var src: texture_2d<f32>;
+
+fn timeTrailSampleLive(uvx: f32, uvy: f32) -> vec4f {
+  return textureSampleLevel(src, samp, vec2f(uvx, uvy), 0f);
+}
+
+@group(0) @binding(4) var prevLive: texture_2d<f32>;
+
+fn frameDiffMask(live: vec4f, prev_1: vec4f, threshold: f32) -> f32 {
+  let dRgb = abs((live.xyz - prev_1.xyz));
+  let dA = abs((live.w - prev_1.w));
+  let diff = (dot(dRgb, vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464)) + dA);
+  return smoothstep(threshold, ((threshold * 2f) + 1e-3f), diff);
+}
+
+fn timeTrailStamp(live: vec4f, m: f32, trail: vec4f) -> vec4f {
+  let P = (&params);
+  let s = vec4f((live.xyz * m), (live.w * m));
+  let outA = (s.w + (trail.w * (1f - s.w)));
+  let rgbNormal = (s.xyz + (trail.xyz * (1f - s.w)));
+  let rgbScreen = ((s.xyz + trail.xyz) - (s.xyz * trail.xyz));
+  let rgbAdd = (s.xyz + trail.xyz);
+  let rgbSN = select(rgbNormal, rgbScreen, ((*P).blendMode > 0.5f));
+  return vec4f(select(rgbSN, rgbAdd, ((*P).blendMode > 1.5f)), outA);
+}
+
+@group(0) @binding(2) var next: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(3) var display: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(5) var prevLiveOut: texture_storage_2d<rgba16float, write>;
+
+fn timeTrailStep(cx: u32, cy: u32) {
+  let uv = timeTrailTexelUv(cx, cy);
+  let b = timeTrailFeedbackUv(uv);
+  let trail = timeTrailDecayed(b.x, b.y);
+  let live = timeTrailSampleLive(uv.x, uv.y);
+  let pl = textureLoad(prevLive, vec2u(cx, cy), 0);
+  let m = frameDiffMask(live, pl, params.motionThreshold);
+  textureStore(next, vec2u(cx, cy), timeTrailStamp(live, m, trail));
+  textureStore(display, vec2u(cx, cy), trail);
+  textureStore(prevLiveOut, vec2u(cx, cy), live);
+}"
+`;

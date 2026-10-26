@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve gate — tone fns emit valid WGSL > matches WGSL snapshot 1`] = `
+"fn luma709(rgb: vec3f) -> f32 {
+  return (((rgb.x * 0.2126f) + (rgb.y * 0.7152f)) + (rgb.z * 0.0722f));
+}
+
+fn luma601(rgb: vec3f) -> f32 {
+  return (((rgb.x * 0.299f) + (rgb.y * 0.587f)) + (rgb.z * 0.114f));
+}
+
+fn pivotContrast(x: f32, contrast: f32, pivot: f32) -> f32 {
+  return clamp((((x - pivot) * contrast) + pivot), 0f, 1f);
+}
+
+fn signedToUnit(v: f32) -> f32 {
+  return ((v * 0.5f) + 0.5f);
+}
+
+fn ridged(v: f32) -> f32 {
+  return (1f - abs(v));
+}
+
+struct toneProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn toneProbe(_arg_0: toneProbe_Input) -> @location(0) vec4f {
+  let rgb = vec3f(_arg_0.uv.x, _arg_0.uv.y, 0.5f);
+  let l709 = luma709(rgb);
+  let l601 = luma601(rgb);
+  let c = pivotContrast(l709, 1.5f, 0.5f);
+  let u = signedToUnit(((l601 * 2f) - 1f));
+  let r = ridged(((u * 2f) - 1f));
+  return vec4f(l709, c, u, r);
+}"
+`;

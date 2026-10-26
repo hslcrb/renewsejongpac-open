@@ -1,0 +1,82 @@
+# Changelog
+
+## v4.0.4
+
+[compare changes](https://github.com/shader-effects-inc/shaders/compare/v4.0.3...v4.0.4)
+
+### Features
+
+- Added dispersion effects to blur category ([#19](https://github.com/shader-effects-inc/shaders/pull/19))
+
+### Contributors
+
+- Simon Le Marchant
+
+## v4.0.3
+
+[compare changes](https://github.com/shader-effects-inc/shaders/compare/v4.0.2...v4.0.3)
+
+### Features
+
+- Introduced the `Satin` shader ([#16](https://github.com/shader-effects-inc/shaders/pull/16))
+
+### Fixes
+
+- Animations skip frames on 60Hz displays ([#15](https://github.com/shader-effects-inc/shaders/pull/15))
+- Update ESLint config to include test paths and clean up test imports ([#17](https://github.com/shader-effects-inc/shaders/pull/17))
+
+### Contributors
+
+- Simon Le Marchant ([@marchantweb](https://github.com/marchantweb))
+- Sebastian Danielsson ([@sebdanielsson](https://github.com/sebdanielsson))
+
+## v4.0.2
+
+[compare changes](https://github.com/shader-effects-inc/shaders/compare/v4.0.1...v4.0.2)
+
+### Features
+
+- Frame-locked renderFrame({deltaSeconds}) on createRendererFromJSON for deterministic offline rendering ([#13](https://github.com/shader-effects-inc/shaders/pull/13))
+
+### Contributors
+
+- Simon Le Marchant
+
+## v4.0.1
+
+[compare changes](https://github.com/shader-effects-inc/shaders/compare/v4.0.0...v4.0.1)
+
+### Features
+
+- Add agent skill and npx shaders guided flow in the CLI ([#10](https://github.com/shader-effects-inc/shaders/pull/10))
+
+### Contributors
+
+- Simon Le Marchant
+
+## v4.0.0
+
+[compare changes](https://github.com/shader-effects-inc/shaders/compare/v3.2.475...v4.0.0)
+
+### Features
+
+- Add docs-manifest for documentation generation on the dotcom site ([#2](https://github.com/shader-effects-inc/shaders/pull/2))
+- Default all shape effects to spheres ([#3](https://github.com/shader-effects-inc/shaders/pull/3))
+- Added the "Sparkle" stylize effect ([#6](https://github.com/shader-effects-inc/shaders/pull/6))
+
+### Fixes
+
+- Update default shape presets to use `sphere3D` in the JS package ([#5](https://github.com/shader-effects-inc/shaders/pull/5))
+
+### Documentation
+
+- Revamp README with detailed usage, framework examples, and Pro features ([#4](https://github.com/shader-effects-inc/shaders/pull/4))
+- Add essential community and contribution guidelines ([#7](https://github.com/shader-effects-inc/shaders/pull/7))
+
+### Contributors
+
+- Simon Le Marchant ([@marchantweb](https://github.com/marchantweb))
+
+## v3.2.475
+
+The last closed-source release of Shaders. Everything that follows is open source under the MIT license.

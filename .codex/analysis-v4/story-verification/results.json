@@ -1,0 +1,72 @@
+{
+  "target": "http://127.0.0.1:8764/v4/index.html",
+  "checks": [
+    {
+      "name": "About renders its own title and all first-frame media",
+      "status": "passed"
+    },
+    {
+      "name": "Story jump scrolls and moves keyboard focus to the next chapter",
+      "status": "passed"
+    },
+    {
+      "name": "Native arrow keys change the selected venue and keep its next action accurate",
+      "status": "passed"
+    },
+    {
+      "name": "Live reduced-motion preference restores a static hero and cancels story animation",
+      "status": "passed",
+      "detail": {
+        "transform": "none",
+        "clip": "none",
+        "active": 0
+      }
+    },
+    {
+      "name": "About at 390px retains readable controls without horizontal overflow",
+      "status": "passed",
+      "detail": {
+        "width": 390,
+        "scrollWidth": 390,
+        "labels": [
+          48,
+          48,
+          48,
+          48,
+          48
+        ],
+        "bodySize": "18px"
+      }
+    },
+    {
+      "name": "About at 320px retains readable controls without horizontal overflow",
+      "status": "passed",
+      "detail": {
+        "width": 320,
+        "scrollWidth": 320,
+        "labels": [
+          48,
+          48,
+          48,
+          48,
+          48
+        ],
+        "bodySize": "18px"
+      }
+    },
+    {
+      "name": "Leaving About releases observers and returning restores an independent default selection",
+      "status": "passed"
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "C:\\Users\\hi\\renewsejongpac-2\\.codex\\analysis-v4\\story-verification\\about-1440-hero.png",
+    "C:\\Users\\hi\\renewsejongpac-2\\.codex\\analysis-v4\\story-verification\\about-1440-spaces.png",
+    "C:\\Users\\hi\\renewsejongpac-2\\.codex\\analysis-v4\\story-verification\\about-390-hero.png",
+    "C:\\Users\\hi\\renewsejongpac-2\\.codex\\analysis-v4\\story-verification\\about-390-spaces.png",
+    "C:\\Users\\hi\\renewsejongpac-2\\.codex\\analysis-v4\\story-verification\\about-320-hero.png",
+    "C:\\Users\\hi\\renewsejongpac-2\\.codex\\analysis-v4\\story-verification\\about-320-spaces.png"
+  ],
+  "status": "passed"
+}

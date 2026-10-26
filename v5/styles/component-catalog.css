@@ -1,0 +1,164 @@
+/* [실제 구현으로 만드는 등록부 / Catalog composed from actual implementations] */
+.component-catalog {
+    min-width: 0;
+}
+
+.component-counts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-8) 0;
+}
+
+.component-counts > div {
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--surface-subtle);
+}
+
+.component-counts dt {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.component-counts dd {
+    margin: var(--space-2) 0 0;
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: var(--weight-heading);
+    font-variant-numeric: tabular-nums;
+}
+
+.component-table-scroll {
+    max-width: 100%;
+    overflow: auto;
+    margin-block: var(--space-6) var(--space-12);
+}
+
+.component-table {
+    width: 100%;
+    min-width: 42rem;
+    border-collapse: collapse;
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-body);
+    text-align: left;
+}
+
+.component-table :is(th, td) {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--border-default);
+    vertical-align: top;
+}
+
+.component-table thead {
+    background: var(--surface-subtle);
+}
+
+.component-table th {
+    font-weight: var(--weight-action);
+}
+
+.component-table :is(code, td > span) {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: max(var(--text-min), var(--text-sm));
+    overflow-wrap: anywhere;
+    font-weight: var(--weight-body);
+}
+
+.component-table :is(p, ul) {
+    margin: 0 0 var(--space-2);
+}
+
+.component-table summary {
+    cursor: pointer;
+    min-height: var(--control-size);
+    padding-block: var(--space-3);
+}
+
+.component-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-block: var(--space-5);
+}
+
+.component-hero-preview {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-dialog);
+}
+
+.component-hero-preview .season-slide {
+    width: 100%;
+    min-width: 0;
+}
+
+.component-companion-preview {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: var(--space-6);
+    border-radius: var(--radius-dialog);
+}
+
+.component-preview-background {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.component-companion-preview .hero-companion {
+    position: relative;
+    inset: auto;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    width: 100%;
+    margin: 0;
+}
+
+.component-booking-preview {
+    max-width: 35rem;
+}
+
+.component-booking-preview .quick-program {
+    width: 100%;
+    margin-top: var(--space-4);
+}
+
+.component-exceptions {
+    padding-left: var(--space-5);
+}
+
+.component-exceptions li {
+    margin-bottom: var(--space-4);
+}
+
+.component-exceptions span {
+    display: block;
+    margin-top: var(--space-1);
+}
+
+.component-route-preview iframe {
+    display: block;
+    width: 100%;
+    height: 34rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+}
+
+@media (max-width: 700px) {
+    .component-counts {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .component-companion-preview {
+        padding: var(--space-3);
+    }
+
+    .component-companion-preview .hero-companion {
+        grid-template-columns: 1fr;
+    }
+}

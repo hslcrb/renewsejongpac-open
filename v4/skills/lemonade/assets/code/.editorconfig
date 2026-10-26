@@ -1,0 +1,8 @@
+# Merge deliberately; do not replace an existing project configuration.
+root = true
+
+[*.{html,htm,css,js,mjs,cjs,jsx,ts,tsx,vue,svelte,astro}]
+indent_style = space
+indent_size = 4
+charset = utf-8
+insert_final_newline = true

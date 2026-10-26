@@ -1,0 +1,355 @@
+{
+  "target": "http://127.0.0.1:8765/v5/",
+  "startedAt": "2026-10-20T01:42:02.789Z",
+  "checks": [
+    {
+      "name": "initial fragment URLs reveal stateful content with accessible focus",
+      "status": "passed",
+      "details": [
+        {
+          "id": "home-feature-carmen",
+          "top": 117.375,
+          "bottom": 678.96875,
+          "headerBottom": 101.375,
+          "gap": 16,
+          "focus": "H2",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 38,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-carmen"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        },
+        {
+          "id": "home-program-ballet",
+          "top": 117.03125,
+          "bottom": 704.203125,
+          "headerBottom": 101.375,
+          "gap": 15.65625,
+          "focus": "H3",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 2433,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-dance"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        },
+        {
+          "id": "home-notice-access",
+          "top": 116.890625,
+          "bottom": 231.078125,
+          "headerBottom": 101.375,
+          "gap": 15.515625,
+          "focus": "home-notice-access",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 4622,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-dance"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        },
+        {
+          "id": "home-booking-date-2026-11-01",
+          "top": 117.046875,
+          "bottom": 173.046875,
+          "headerBottom": 101.375,
+          "gap": 15.671875,
+          "focus": "home-booking-date-2026-11-01",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 1320,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-dance"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        },
+        {
+          "id": "home-visit-accessibility",
+          "top": 117.796875,
+          "bottom": 222.796875,
+          "headerBottom": 101.375,
+          "gap": 16.421875,
+          "focus": "home-visit-accessibility",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 3923,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-dance"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "hashchange reveals the same carousel, card, notice, date and visit targets",
+      "status": "passed",
+      "details": [
+        {
+          "id": "home-feature-carmen",
+          "top": 117.375,
+          "bottom": 678.96875,
+          "headerBottom": 101.375,
+          "gap": 16,
+          "focus": "H2",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 38,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-carmen"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        },
+        {
+          "id": "home-program-ballet",
+          "top": 117.03125,
+          "bottom": 704.203125,
+          "headerBottom": 101.375,
+          "gap": 15.65625,
+          "focus": "H3",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 2433,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-carmen"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        },
+        {
+          "id": "home-notice-access",
+          "top": 116.890625,
+          "bottom": 231.078125,
+          "headerBottom": 101.375,
+          "gap": 15.515625,
+          "focus": "home-notice-access",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 4622,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-carmen"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        },
+        {
+          "id": "home-booking-date-2026-11-01",
+          "top": 117.046875,
+          "bottom": 173.046875,
+          "headerBottom": 101.375,
+          "gap": 15.671875,
+          "focus": "home-booking-date-2026-11-01",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 1320,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-carmen"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        },
+        {
+          "id": "home-visit-accessibility",
+          "top": 117.796875,
+          "bottom": 222.796875,
+          "headerBottom": 101.375,
+          "gap": 16.421875,
+          "focus": "home-visit-accessibility",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 3923,
+          "atBottom": false,
+          "viewportHeight": 1000,
+          "ids": {
+            "duplicates": [],
+            "activeSlideIds": [
+              "home-feature-carmen"
+            ],
+            "hiddenSlideIds": [],
+            "tabbableClones": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "browser history restores anchors and carousel renders do not reset them",
+      "status": "passed",
+      "details": {
+        "before": {
+          "url": "http://127.0.0.1:8765/v5/#home-feature-carmen",
+          "length": 20,
+          "scrollY": 38
+        },
+        "after": {
+          "url": "http://127.0.0.1:8765/v5/#home-feature-carmen",
+          "length": 20,
+          "scrollY": 38
+        },
+        "back": {
+          "id": "plan-your-visit",
+          "top": 117.1875,
+          "bottom": 1040.59375,
+          "headerBottom": 101.375,
+          "gap": 15.8125,
+          "focus": "visit-heading",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 3311,
+          "atBottom": false,
+          "viewportHeight": 1000
+        },
+        "forward": {
+          "id": "home-membership",
+          "top": 116.890625,
+          "bottom": 643.640625,
+          "headerBottom": 101.375,
+          "gap": 15.515625,
+          "focus": "membership-heading",
+          "ownsFocus": true,
+          "hidden": false,
+          "scrollX": 0,
+          "scrollY": 4552,
+          "atBottom": false,
+          "viewportHeight": 1000
+        }
+      }
+    },
+    {
+      "name": "unknown and malformed fragments preserve state without exceptions",
+      "status": "passed",
+      "details": {
+        "checkedFragments": [
+          "missing-home-target",
+          "home-booking-date-not-a-date",
+          "home-booking-date-2026-13-01",
+          "home-booking-date-2026-02-30",
+          "home-booking-date-2026-11",
+          "home-booking-date-",
+          "%E0%A4%A"
+        ],
+        "initialMalformedDates": true,
+        "initialMalformedEncoding": true
+      }
+    },
+    {
+      "name": "original Seoul SVG is served unchanged and the footer fits desktop and mobile",
+      "status": "passed",
+      "details": {
+        "sha256": "b61dbe568378b352018e96c35c10e9011b2bac45954abfaca5b964768fe25216",
+        "layouts": [
+          {
+            "viewport": 1440,
+            "x": 1044.859375,
+            "y": 775.6875,
+            "width": 227,
+            "height": 36.78125,
+            "phoneBottom": 744.078125,
+            "familyTop": 846.078125,
+            "overflow": 0
+          },
+          {
+            "viewport": 390,
+            "x": 205,
+            "y": 337.703125,
+            "width": 165,
+            "height": 26.734375,
+            "phoneBottom": 301.078125,
+            "familyTop": 403.078125,
+            "overflow": 0
+          },
+          {
+            "viewport": 320,
+            "x": 170,
+            "y": 274.359375,
+            "width": 130,
+            "height": 21.0625,
+            "phoneBottom": 234.890625,
+            "familyTop": 336.890625,
+            "overflow": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "anchor navigation completes without browser or asset errors",
+      "status": "passed",
+      "details": {
+        "browserErrors": 0,
+        "httpErrors": 0
+      }
+    }
+  ],
+  "browserErrors": [],
+  "httpErrors": [],
+  "screenshots": [
+    "/tmp/vf4-qa/anchors/footer-citybrand-1440.png",
+    "/tmp/vf4-qa/anchors/footer-citybrand-390.png",
+    "/tmp/vf4-qa/anchors/footer-citybrand-320.png"
+  ],
+  "browser": "151.0.7922.34",
+  "finishedAt": "2026-10-20T01:42:09.679Z"
+}

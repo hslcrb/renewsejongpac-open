@@ -1,0 +1,27 @@
+# Sejong Center Renewal / 세종문화회관 리뉴얼
+
+> Active application: v5. Next.js 14 App Router, React 18, TypeScript, Node.js 24. Supabase for authentication and data; Vercel for static hosting.
+
+## Mandatory collaboration rule / 브랜치 필수
+
+All humans and models MUST edit on task branches. Use separate worktrees or clones for concurrent work. Main is integration-only. Merge reviewed branches with --no-ff; use normal pushes. Preserve history and existing work.
+
+사람과 모든 모델은 작업 브랜치를 반드시 사용하며 검토 후 main에 --no-ff로 통합합니다. 이전 main 직접 수정 규칙은 대체되었습니다.
+
+## Instructions and references
+
+- [Repository instructions](AGENTS.md): Branches, automatic commits and export preservation.
+- [v5 instructions](v5/AGENTS.md): Product, design and TypeScript contracts.
+- [LLM Reference](LLM_REFERENCE.md): Current project facts and source map.
+- [Human contribution guide](CONTRIBUTING.md): Setup, review, verification and commits.
+- [Claude entry](CLAUDE.md): Claude reading order and collaboration requirements.
+- [Codex entry](.codex/README.md): Codex reference and historical-material boundaries.
+- [Project overview](README.md): Features, architecture SVG and colored Mermaid ERDs.
+- [Component connections](v5/docs/component-connections.md): Generated implementation-usage report.
+- [Asset provenance](docs/readme/ASSETS.md): Official logos, favicon and SVG generation.
+- [Branch consolidation](docs/branch-consolidation-20261026.md): 2026-10-26 repository branch consolidation and cleanup record.
+- [Open snapshot repository](docs/open-mirror.md): renewsejongpac-open orphan initial snapshot guide.
+
+## Commit convention
+
+`**<branch>** English type: Korean description` (Always wrap current branch name in double asterisks at the very beginning). Commit and push the task branch; integrate reviewed work into main with --no-ff. Do not treat a push as proof of deployment.

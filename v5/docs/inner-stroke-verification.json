@@ -1,0 +1,164 @@
+{
+  "verifiedAt": "2026-10-23T01:09:06.773Z",
+  "baseCommit": "938d6b068c77ae86cf5daa22f456c7cd27136d51",
+  "scope": "v5; main; no reset or force push",
+  "contract": {
+    "stroke": "1px inset; native section borders stay inside border-box",
+    "controlStroke": "#D9D7CF",
+    "focusWidth": "3px",
+    "focusOffset": "-3px",
+    "radiiPx": {
+      "control": 12,
+      "flow": 14,
+      "media": 16,
+      "banner": 20,
+      "panel": 20,
+      "compact": 16,
+      "dialog": 28
+    },
+    "textMinimumPx": 16,
+    "responsiveGroup": "(100% - gap * (columns - 1)) / columns; wrapping; equal row heights; last row fills available width"
+  },
+  "components": {
+    "total": 47,
+    "product": 44,
+    "documentationOnly": 3,
+    "unused": 0
+  },
+  "unitTests": {
+    "total": 108,
+    "passed": 107,
+    "failed": 0,
+    "skipped": 1,
+    "skipReason": "Existing journey controls legacy-storage assertion remains explicitly skipped."
+  },
+  "typeCheck": {
+    "command": "npx.cmd tsc --noEmit --incremental false",
+    "exitCode": 0
+  },
+  "systemAudit": {
+    "command": "node scripts/prepare-design-system.ts --check",
+    "issues": 0
+  },
+  "staticBuild": {
+    "command": "npm.cmd run build",
+    "exitCode": 0,
+    "staticPages": 161,
+    "mirror": {
+      "exportFiles": 8310,
+      "mismatch": [],
+      "chunksExact": true
+    }
+  },
+  "browsers": {
+    "base": "http://127.0.0.1:4173/v5/",
+    "innerStroke": {
+      "passed": 31,
+      "failed": 0,
+      "widths": [
+        320,
+        390,
+        768,
+        1024,
+        1440
+      ]
+    },
+    "componentSystem": {
+      "passed": 12,
+      "failed": 0,
+      "runtimeErrors": []
+    },
+    "allRoutes": {
+      "routes": 157,
+      "viewports": [
+        1440,
+        390
+      ],
+      "routeChecks": 314,
+      "failedRoutes": 0,
+      "interactionChecks": 8,
+      "failedInteractions": 0,
+      "inspectedTextNodes": 11848,
+      "inspectedControls": 1209
+    },
+    "geometry": [
+      {
+        "viewportPx": 320,
+        "columns": 2,
+        "rows": 3,
+        "gapPx": 12,
+        "groupWidthPx": 280,
+        "itemWidthPx": 134,
+        "itemHeightPx": 48
+      },
+      {
+        "viewportPx": 390,
+        "columns": 2,
+        "rows": 3,
+        "gapPx": 12,
+        "groupWidthPx": 350,
+        "itemWidthPx": 169,
+        "itemHeightPx": 48
+      },
+      {
+        "viewportPx": 768,
+        "columns": 3,
+        "rows": 2,
+        "gapPx": 12,
+        "groupWidthPx": 728,
+        "itemWidthPx": 234.65625,
+        "itemHeightPx": 48
+      },
+      {
+        "viewportPx": 1024,
+        "columns": 6,
+        "rows": 1,
+        "gapPx": 12,
+        "groupWidthPx": 972.796875,
+        "itemWidthPx": 152.125,
+        "itemHeightPx": 48
+      },
+      {
+        "viewportPx": 1440,
+        "columns": 6,
+        "rows": 1,
+        "gapPx": 12,
+        "groupWidthPx": 1368,
+        "itemWidthPx": 218,
+        "itemHeightPx": 48
+      }
+    ],
+    "focusContrast": [
+      {
+        "variant": "primary",
+        "ratio": 9.891854394630743
+      },
+      {
+        "variant": "accent",
+        "ratio": 4.951180146508952
+      },
+      {
+        "variant": "highlight",
+        "ratio": 6.67651159668913
+      },
+      {
+        "variant": "inverse",
+        "ratio": 3.233272619169593
+      }
+    ],
+    "checks": [
+      "200% text expansion without horizontal overflow",
+      "guide/product variant parity",
+      "hover/focus/press/pending/error geometry",
+      "modal Escape and focus restoration",
+      "signup OTP stub without sending email",
+      "booking controls and seat selection"
+    ]
+  },
+  "reproduction": [
+    "node --test tests/*.test.mjs tests/*.test.ts",
+    "node tests/inner-stroke-browser.ts <static-base-URL>",
+    "node tests/component-system-browser.ts <static-base-URL>",
+    "node tests/visual-contract-browser.ts <static-base-URL>"
+  ]
+}

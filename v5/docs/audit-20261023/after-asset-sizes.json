@@ -1,0 +1,17 @@
+{
+    "js": {
+        "files": 42,
+        "rawBytes": 4489022,
+        "gzipBytes": 823697
+    },
+    "css": {
+        "files": 8,
+        "rawBytes": 499517,
+        "gzipBytes": 91013
+    },
+    "map": {
+        "files": 50,
+        "rawBytes": 4893561,
+        "gzipBytes": 1267487
+    }
+}

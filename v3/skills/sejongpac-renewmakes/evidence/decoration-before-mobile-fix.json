@@ -1,0 +1,3113 @@
+{
+  "timestamp": "2026-10-15T07:21:37.865Z",
+  "origin": "http://127.0.0.1:8000",
+  "routes": [
+    {
+      "width": 1440,
+      "route": "/",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/performance",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/exhibition",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/education",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/season",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/tour",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/history",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/guide",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/venues",
+      "eyebrows": [
+        "01 / 공연장",
+        "02 / 공연장",
+        "03 / 공연장",
+        "04 / 공연장",
+        "05 / 전시장"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/rental/schedule",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/process",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/contact",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/spaces",
+      "eyebrows": [
+        "01 / 공연장",
+        "02 / 공연장",
+        "03 / 공연장",
+        "04 / 공연장",
+        "05 / 전시장"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/visit/directions",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/amenities",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/accessibility",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/etiquette",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/support",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news",
+      "eyebrows": [
+        "티켓오픈 · 2026-10-13"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/news/notices",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/events",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/newsletter",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/membership",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/goods",
+      "eyebrows": [
+        "엽서",
+        "가방",
+        "노트"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/about",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/introduction",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/companies",
+      "eyebrows": [
+        "국악",
+        "무용",
+        "뮤지컬",
+        "합창",
+        "오페라",
+        "연극",
+        "발레"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/about/esg",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/disclosure",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/partners",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/donation",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/booking-guide",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/education/apply-guide",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/season/sejong",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/season/sync-next",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/season/everyone",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/season/package",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/season/classic",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/season/orchestra",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/season/summer",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/guide/fees",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/guide/eligibility",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/process/documents",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/equipment",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/directions/parking",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/amenities/dining",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/amenities/facilities",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/support/faq",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/support/inquiry",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/support/lost",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/group",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/events/winners",
+      "eyebrows": [
+        "2026.09.07 / 예시 발표"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/news/newsletter/archive",
+      "eyebrows": [
+        "2026.10",
+        "2026.09",
+        "2026.08"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/news/magazine",
+      "eyebrows": [
+        "2026.10",
+        "2026.09",
+        "2026.08"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/news/membership/benefits",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/membership/join",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/introduction/greeting",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/introduction/history",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/introduction/organization",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/introduction/ci",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/esg/environment",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/esg/social",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/esg/governance",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/disclosure/management",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/disclosure/request",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/disclosure/ethics",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/donation/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/partners/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/arts-center",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/account/login",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/account/signup",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/account/recovery",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/account",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/account/bookings",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/account/favorites",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/account/applications",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/account/profile",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/search",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/sitemap",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/policy/privacy",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/policy/terms",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/policy/email",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/english",
+      "eyebrows": [
+        "WELCOME TO SEJONG",
+        "GETTING HERE"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/programs/autumn",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/carmen",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/dance",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/chamber-autumn",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/sumire",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/hypnosis",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/light",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/art-goods",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/academy",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/art-class",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/ballet",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/choral",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/everyone-classic",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/programs/winter",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/venues/grand",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/spaces/grand",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/venues/m-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/spaces/m-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/venues/s-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/spaces/s-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/venues/chamber",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/spaces/chamber",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/rental/venues/gallery",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/spaces/gallery",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/companies/traditional",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/companies/dance",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/companies/musical",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/companies/chorus",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/companies/opera",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/companies/theater",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/about/companies/ballet",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/notices/season-open",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/notices/rental-2027",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/notices/parking",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/notices/recruit",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/notices/academy-notice",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/notices/access",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/events/autumn-walk",
+      "eyebrows": [
+        "진행중"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/news/events/review",
+      "eyebrows": [
+        "진행중"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/news/events/summer-end",
+      "eyebrows": [
+        "종료"
+      ]
+    },
+    {
+      "width": 1440,
+      "route": "/news/events/autumn-walk/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/news/events/review/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/support/lost/umbrella",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/support/lost/scarf",
+      "eyebrows": []
+    },
+    {
+      "width": 1440,
+      "route": "/visit/support/lost/glasses",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/performance",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/exhibition",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/education",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/season",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/tour",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/history",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/guide",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/venues",
+      "eyebrows": [
+        "01 / 공연장",
+        "02 / 공연장",
+        "03 / 공연장",
+        "04 / 공연장",
+        "05 / 전시장"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/rental/schedule",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/process",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/contact",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/spaces",
+      "eyebrows": [
+        "01 / 공연장",
+        "02 / 공연장",
+        "03 / 공연장",
+        "04 / 공연장",
+        "05 / 전시장"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/directions",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/amenities",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/accessibility",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/etiquette",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/support",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news",
+      "eyebrows": [
+        "티켓오픈 · 2026-10-13"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/notices",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/events",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/newsletter",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/membership",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/goods",
+      "eyebrows": [
+        "엽서",
+        "가방",
+        "노트"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/about",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/introduction",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/companies",
+      "eyebrows": [
+        "국악",
+        "무용",
+        "뮤지컬",
+        "합창",
+        "오페라",
+        "연극",
+        "발레"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/about/esg",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/disclosure",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/partners",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/donation",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/booking-guide",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/education/apply-guide",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/season/sejong",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/season/sync-next",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/season/everyone",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/season/package",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/season/classic",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/season/orchestra",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/season/summer",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/guide/fees",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/guide/eligibility",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/process/documents",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/equipment",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/directions/parking",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/amenities/dining",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/amenities/facilities",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/faq",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/inquiry",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/lost",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/group",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/events/winners",
+      "eyebrows": [
+        "2026.09.07 / 예시 발표"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/newsletter/archive",
+      "eyebrows": [
+        "2026.10",
+        "2026.09",
+        "2026.08"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/magazine",
+      "eyebrows": [
+        "2026.10",
+        "2026.09",
+        "2026.08"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/membership/benefits",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/membership/join",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/introduction/greeting",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/introduction/history",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/introduction/organization",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/introduction/ci",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/esg/environment",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/esg/social",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/esg/governance",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/disclosure/management",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/disclosure/request",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/disclosure/ethics",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/donation/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/partners/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/arts-center",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/account/login",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/account/signup",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/account/recovery",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/account",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/account/bookings",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/account/favorites",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/account/applications",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/account/profile",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/search",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/sitemap",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/policy/privacy",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/policy/terms",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/policy/email",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/english",
+      "eyebrows": [
+        "WELCOME TO SEJONG",
+        "GETTING HERE"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/programs/autumn",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/carmen",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/dance",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/chamber-autumn",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/sumire",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/hypnosis",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/light",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/art-goods",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/academy",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/art-class",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/ballet",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/choral",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/everyone-classic",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/programs/winter",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/venues/grand",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/spaces/grand",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/venues/m-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/spaces/m-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/venues/s-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/spaces/s-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/venues/chamber",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/spaces/chamber",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/rental/venues/gallery",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/spaces/gallery",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/companies/traditional",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/companies/dance",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/companies/musical",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/companies/chorus",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/companies/opera",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/companies/theater",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/about/companies/ballet",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/notices/season-open",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/notices/rental-2027",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/notices/parking",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/notices/recruit",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/notices/academy-notice",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/notices/access",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/events/autumn-walk",
+      "eyebrows": [
+        "진행중"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/events/review",
+      "eyebrows": [
+        "진행중"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/events/summer-end",
+      "eyebrows": [
+        "종료"
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/events/autumn-walk/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/news/events/review/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/lost/umbrella",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/lost/scarf",
+      "eyebrows": []
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/lost/glasses",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/performance",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/exhibition",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/education",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/season",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/tour",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/history",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/guide",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/venues",
+      "eyebrows": [
+        "01 / 공연장",
+        "02 / 공연장",
+        "03 / 공연장",
+        "04 / 공연장",
+        "05 / 전시장"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/rental/schedule",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/process",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/contact",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/spaces",
+      "eyebrows": [
+        "01 / 공연장",
+        "02 / 공연장",
+        "03 / 공연장",
+        "04 / 공연장",
+        "05 / 전시장"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/directions",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/amenities",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/accessibility",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/etiquette",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/support",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news",
+      "eyebrows": [
+        "티켓오픈 · 2026-10-13"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/notices",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/events",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/newsletter",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/membership",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/goods",
+      "eyebrows": [
+        "엽서",
+        "가방",
+        "노트"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/about",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/introduction",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/companies",
+      "eyebrows": [
+        "국악",
+        "무용",
+        "뮤지컬",
+        "합창",
+        "오페라",
+        "연극",
+        "발레"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/about/esg",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/disclosure",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/partners",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/donation",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/booking-guide",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/education/apply-guide",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/season/sejong",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/season/sync-next",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/season/everyone",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/season/package",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/season/classic",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/season/orchestra",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/season/summer",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/guide/fees",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/guide/eligibility",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/process/documents",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/equipment",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/directions/parking",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/amenities/dining",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/amenities/facilities",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/faq",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/inquiry",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/lost",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/group",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/events/winners",
+      "eyebrows": [
+        "2026.09.07 / 예시 발표"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/newsletter/archive",
+      "eyebrows": [
+        "2026.10",
+        "2026.09",
+        "2026.08"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/magazine",
+      "eyebrows": [
+        "2026.10",
+        "2026.09",
+        "2026.08"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/membership/benefits",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/membership/join",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/introduction/greeting",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/introduction/history",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/introduction/organization",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/introduction/ci",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/esg/environment",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/esg/social",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/esg/governance",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/disclosure/management",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/disclosure/request",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/disclosure/ethics",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/donation/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/partners/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/arts-center",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/account/login",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/account/signup",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/account/recovery",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/account",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/account/bookings",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/account/favorites",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/account/applications",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/account/profile",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/search",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/sitemap",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/policy/privacy",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/policy/terms",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/policy/email",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/english",
+      "eyebrows": [
+        "WELCOME TO SEJONG",
+        "GETTING HERE"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/programs/autumn",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/carmen",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/dance",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/chamber-autumn",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/sumire",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/hypnosis",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/light",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/art-goods",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/academy",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/art-class",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/ballet",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/choral",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/everyone-classic",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/programs/winter",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/venues/grand",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/spaces/grand",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/venues/m-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/spaces/m-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/venues/s-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/spaces/s-theater",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/venues/chamber",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/spaces/chamber",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/rental/venues/gallery",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/spaces/gallery",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/companies/traditional",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/companies/dance",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/companies/musical",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/companies/chorus",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/companies/opera",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/companies/theater",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/about/companies/ballet",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/notices/season-open",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/notices/rental-2027",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/notices/parking",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/notices/recruit",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/notices/academy-notice",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/notices/access",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/events/autumn-walk",
+      "eyebrows": [
+        "진행중"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/events/review",
+      "eyebrows": [
+        "진행중"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/events/summer-end",
+      "eyebrows": [
+        "종료"
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/events/autumn-walk/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/news/events/review/apply",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/lost/umbrella",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/lost/scarf",
+      "eyebrows": []
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/lost/glasses",
+      "eyebrows": []
+    }
+  ],
+  "banned": [],
+  "boxes": [],
+  "smallHeadings": [
+    {
+      "width": 390,
+      "route": "/programs/tour",
+      "items": [
+        {
+          "text": "만남과 시작",
+          "size": "17px"
+        },
+        {
+          "text": "무대를 만드는 공간",
+          "size": "17px"
+        },
+        {
+          "text": "보이지 않던 발견",
+          "size": "17px"
+        },
+        {
+          "text": "함께 나누는 이야기",
+          "size": "17px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/rental/process",
+      "items": [
+        {
+          "text": "공간·일정 확인",
+          "size": "18px"
+        },
+        {
+          "text": "공고 확인·신청",
+          "size": "18px"
+        },
+        {
+          "text": "심사·결과 안내",
+          "size": "18px"
+        },
+        {
+          "text": "계약·사용료 납부",
+          "size": "18px"
+        },
+        {
+          "text": "기술 회의·행사 운영",
+          "size": "18px"
+        },
+        {
+          "text": "철수·정산",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/accessibility",
+      "items": [
+        {
+          "text": "휠체어석·동반인 좌석",
+          "size": "18px"
+        },
+        {
+          "text": "출입구·이동 경로",
+          "size": "18px"
+        },
+        {
+          "text": "접근성 프로그램",
+          "size": "18px"
+        },
+        {
+          "text": "현장 지원",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/etiquette",
+      "items": [
+        {
+          "text": "관람 연령을 확인해 주세요",
+          "size": "18px"
+        },
+        {
+          "text": "조금 일찍 도착해 주세요",
+          "size": "18px"
+        },
+        {
+          "text": "휴대전화는 잠시 쉬어갑니다",
+          "size": "18px"
+        },
+        {
+          "text": "촬영은 허용된 순간에만",
+          "size": "18px"
+        },
+        {
+          "text": "음식물과 큰 짐은 객석 밖에",
+          "size": "18px"
+        },
+        {
+          "text": "안내원의 안내를 따라주세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/goods",
+      "items": [
+        {
+          "text": "공연의 한 장면",
+          "size": "19px"
+        },
+        {
+          "text": "예술을 담는 가방",
+          "size": "19px"
+        },
+        {
+          "text": "나만의 관람 기록",
+          "size": "19px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/about/partners",
+      "items": [
+        {
+          "text": "협력 제안",
+          "size": "18px"
+        },
+        {
+          "text": "적합성 검토·협의",
+          "size": "18px"
+        },
+        {
+          "text": "실행·결과 공유",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/programs/booking-guide",
+      "items": [
+        {
+          "text": "프로그램 선택",
+          "size": "17px"
+        },
+        {
+          "text": "날짜·좌석 선택",
+          "size": "17px"
+        },
+        {
+          "text": "예약 정보 입력",
+          "size": "17px"
+        },
+        {
+          "text": "예약 확인",
+          "size": "17px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/programs/education/apply-guide",
+      "items": [
+        {
+          "text": "강좌 선택",
+          "size": "17px"
+        },
+        {
+          "text": "신청 정보 입력",
+          "size": "17px"
+        },
+        {
+          "text": "내용 확인",
+          "size": "17px"
+        },
+        {
+          "text": "접수 확인",
+          "size": "17px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/directions/parking",
+      "items": [
+        {
+          "text": "관람 내역 확인",
+          "size": "18px"
+        },
+        {
+          "text": "요금 정산",
+          "size": "18px"
+        },
+        {
+          "text": "여유 있는 출차",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/amenities/dining",
+      "items": [
+        {
+          "text": "공연 시작 전",
+          "size": "18px"
+        },
+        {
+          "text": "인터미션",
+          "size": "18px"
+        },
+        {
+          "text": "공연이 끝난 뒤",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/lost",
+      "items": [
+        {
+          "text": "물품 정보를 정리하세요",
+          "size": "18px"
+        },
+        {
+          "text": "고객지원으로 문의하세요",
+          "size": "18px"
+        },
+        {
+          "text": "확인 후 수령하세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/newsletter/archive",
+      "items": [
+        {
+          "text": "가을의 빛, 무대의 온도",
+          "size": "19px"
+        },
+        {
+          "text": "예술이 일상이 되는 순간",
+          "size": "19px"
+        },
+        {
+          "text": "도시의 여름, 열린 무대",
+          "size": "19px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/magazine",
+      "items": [
+        {
+          "text": "가을의 빛, 무대의 온도",
+          "size": "19px"
+        },
+        {
+          "text": "예술이 일상이 되는 순간",
+          "size": "19px"
+        },
+        {
+          "text": "도시의 여름, 열린 무대",
+          "size": "19px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/membership/benefits",
+      "items": [
+        {
+          "text": "회원 정보 확인",
+          "size": "18px"
+        },
+        {
+          "text": "프로그램별 조건 확인",
+          "size": "18px"
+        },
+        {
+          "text": "할인 증빙 준비",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/about/introduction/history",
+      "items": [
+        {
+          "text": "세종문화회관 개관",
+          "size": "18px"
+        },
+        {
+          "text": "재단법인으로 새로운 출발",
+          "size": "18px"
+        },
+        {
+          "text": "세종·충무공 이야기",
+          "size": "18px"
+        },
+        {
+          "text": "세종S씨어터 개관",
+          "size": "18px"
+        },
+        {
+          "text": "예술로 열리는 일상",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/about/esg/environment",
+      "items": [
+        {
+          "text": "자원 사용을 줄이는 운영",
+          "size": "18px"
+        },
+        {
+          "text": "다시 쓰는 제작 문화",
+          "size": "18px"
+        },
+        {
+          "text": "관객과 함께하는 실천",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/about/esg/social",
+      "items": [
+        {
+          "text": "문화예술 접근성",
+          "size": "18px"
+        },
+        {
+          "text": "시민과의 만남",
+          "size": "18px"
+        },
+        {
+          "text": "예술가와의 동행",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/about/esg/governance",
+      "items": [
+        {
+          "text": "투명한 정보",
+          "size": "18px"
+        },
+        {
+          "text": "공정한 절차",
+          "size": "18px"
+        },
+        {
+          "text": "함께 지키는 윤리",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/notices/recruit",
+      "items": [
+        {
+          "text": "서류 확인",
+          "size": "18px"
+        },
+        {
+          "text": "전형 안내",
+          "size": "18px"
+        },
+        {
+          "text": "결과 확인",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/events/autumn-walk",
+      "items": [
+        {
+          "text": "프로그램 둘러보기",
+          "size": "18px"
+        },
+        {
+          "text": "관심 프로그램 저장",
+          "size": "18px"
+        },
+        {
+          "text": "이벤트 참여하기",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/events/review",
+      "items": [
+        {
+          "text": "관람한 작품 찾기",
+          "size": "18px"
+        },
+        {
+          "text": "감상 기록하기",
+          "size": "18px"
+        },
+        {
+          "text": "후기 참여하기",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/news/events/summer-end",
+      "items": [
+        {
+          "text": "여름을 함께한 관객",
+          "size": "18px"
+        },
+        {
+          "text": "이어지는 만남",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/lost/umbrella",
+      "items": [
+        {
+          "text": "관람 정보를 준비하세요",
+          "size": "18px"
+        },
+        {
+          "text": "소유 확인에 필요한 특징",
+          "size": "18px"
+        },
+        {
+          "text": "안내를 받은 뒤 방문하세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/lost/scarf",
+      "items": [
+        {
+          "text": "관람 정보를 준비하세요",
+          "size": "18px"
+        },
+        {
+          "text": "소유 확인에 필요한 특징",
+          "size": "18px"
+        },
+        {
+          "text": "안내를 받은 뒤 방문하세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/visit/support/lost/glasses",
+      "items": [
+        {
+          "text": "관람 정보를 준비하세요",
+          "size": "18px"
+        },
+        {
+          "text": "소유 확인에 필요한 특징",
+          "size": "18px"
+        },
+        {
+          "text": "안내를 받은 뒤 방문하세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/programs/tour",
+      "items": [
+        {
+          "text": "만남과 시작",
+          "size": "17px"
+        },
+        {
+          "text": "무대를 만드는 공간",
+          "size": "17px"
+        },
+        {
+          "text": "보이지 않던 발견",
+          "size": "17px"
+        },
+        {
+          "text": "함께 나누는 이야기",
+          "size": "17px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/rental/process",
+      "items": [
+        {
+          "text": "공간·일정 확인",
+          "size": "18px"
+        },
+        {
+          "text": "공고 확인·신청",
+          "size": "18px"
+        },
+        {
+          "text": "심사·결과 안내",
+          "size": "18px"
+        },
+        {
+          "text": "계약·사용료 납부",
+          "size": "18px"
+        },
+        {
+          "text": "기술 회의·행사 운영",
+          "size": "18px"
+        },
+        {
+          "text": "철수·정산",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/accessibility",
+      "items": [
+        {
+          "text": "휠체어석·동반인 좌석",
+          "size": "18px"
+        },
+        {
+          "text": "출입구·이동 경로",
+          "size": "18px"
+        },
+        {
+          "text": "접근성 프로그램",
+          "size": "18px"
+        },
+        {
+          "text": "현장 지원",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/etiquette",
+      "items": [
+        {
+          "text": "관람 연령을 확인해 주세요",
+          "size": "18px"
+        },
+        {
+          "text": "조금 일찍 도착해 주세요",
+          "size": "18px"
+        },
+        {
+          "text": "휴대전화는 잠시 쉬어갑니다",
+          "size": "18px"
+        },
+        {
+          "text": "촬영은 허용된 순간에만",
+          "size": "18px"
+        },
+        {
+          "text": "음식물과 큰 짐은 객석 밖에",
+          "size": "18px"
+        },
+        {
+          "text": "안내원의 안내를 따라주세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/goods",
+      "items": [
+        {
+          "text": "공연의 한 장면",
+          "size": "19px"
+        },
+        {
+          "text": "예술을 담는 가방",
+          "size": "19px"
+        },
+        {
+          "text": "나만의 관람 기록",
+          "size": "19px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/about/partners",
+      "items": [
+        {
+          "text": "협력 제안",
+          "size": "18px"
+        },
+        {
+          "text": "적합성 검토·협의",
+          "size": "18px"
+        },
+        {
+          "text": "실행·결과 공유",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/programs/booking-guide",
+      "items": [
+        {
+          "text": "프로그램 선택",
+          "size": "17px"
+        },
+        {
+          "text": "날짜·좌석 선택",
+          "size": "17px"
+        },
+        {
+          "text": "예약 정보 입력",
+          "size": "17px"
+        },
+        {
+          "text": "예약 확인",
+          "size": "17px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/programs/education/apply-guide",
+      "items": [
+        {
+          "text": "강좌 선택",
+          "size": "17px"
+        },
+        {
+          "text": "신청 정보 입력",
+          "size": "17px"
+        },
+        {
+          "text": "내용 확인",
+          "size": "17px"
+        },
+        {
+          "text": "접수 확인",
+          "size": "17px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/directions/parking",
+      "items": [
+        {
+          "text": "관람 내역 확인",
+          "size": "18px"
+        },
+        {
+          "text": "요금 정산",
+          "size": "18px"
+        },
+        {
+          "text": "여유 있는 출차",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/amenities/dining",
+      "items": [
+        {
+          "text": "공연 시작 전",
+          "size": "18px"
+        },
+        {
+          "text": "인터미션",
+          "size": "18px"
+        },
+        {
+          "text": "공연이 끝난 뒤",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/lost",
+      "items": [
+        {
+          "text": "물품 정보를 정리하세요",
+          "size": "18px"
+        },
+        {
+          "text": "고객지원으로 문의하세요",
+          "size": "18px"
+        },
+        {
+          "text": "확인 후 수령하세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/newsletter/archive",
+      "items": [
+        {
+          "text": "가을의 빛, 무대의 온도",
+          "size": "19px"
+        },
+        {
+          "text": "예술이 일상이 되는 순간",
+          "size": "19px"
+        },
+        {
+          "text": "도시의 여름, 열린 무대",
+          "size": "19px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/magazine",
+      "items": [
+        {
+          "text": "가을의 빛, 무대의 온도",
+          "size": "19px"
+        },
+        {
+          "text": "예술이 일상이 되는 순간",
+          "size": "19px"
+        },
+        {
+          "text": "도시의 여름, 열린 무대",
+          "size": "19px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/membership/benefits",
+      "items": [
+        {
+          "text": "회원 정보 확인",
+          "size": "18px"
+        },
+        {
+          "text": "프로그램별 조건 확인",
+          "size": "18px"
+        },
+        {
+          "text": "할인 증빙 준비",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/about/introduction/history",
+      "items": [
+        {
+          "text": "세종문화회관 개관",
+          "size": "18px"
+        },
+        {
+          "text": "재단법인으로 새로운 출발",
+          "size": "18px"
+        },
+        {
+          "text": "세종·충무공 이야기",
+          "size": "18px"
+        },
+        {
+          "text": "세종S씨어터 개관",
+          "size": "18px"
+        },
+        {
+          "text": "예술로 열리는 일상",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/about/esg/environment",
+      "items": [
+        {
+          "text": "자원 사용을 줄이는 운영",
+          "size": "18px"
+        },
+        {
+          "text": "다시 쓰는 제작 문화",
+          "size": "18px"
+        },
+        {
+          "text": "관객과 함께하는 실천",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/about/esg/social",
+      "items": [
+        {
+          "text": "문화예술 접근성",
+          "size": "18px"
+        },
+        {
+          "text": "시민과의 만남",
+          "size": "18px"
+        },
+        {
+          "text": "예술가와의 동행",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/about/esg/governance",
+      "items": [
+        {
+          "text": "투명한 정보",
+          "size": "18px"
+        },
+        {
+          "text": "공정한 절차",
+          "size": "18px"
+        },
+        {
+          "text": "함께 지키는 윤리",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/notices/recruit",
+      "items": [
+        {
+          "text": "서류 확인",
+          "size": "18px"
+        },
+        {
+          "text": "전형 안내",
+          "size": "18px"
+        },
+        {
+          "text": "결과 확인",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/events/autumn-walk",
+      "items": [
+        {
+          "text": "프로그램 둘러보기",
+          "size": "18px"
+        },
+        {
+          "text": "관심 프로그램 저장",
+          "size": "18px"
+        },
+        {
+          "text": "이벤트 참여하기",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/events/review",
+      "items": [
+        {
+          "text": "관람한 작품 찾기",
+          "size": "18px"
+        },
+        {
+          "text": "감상 기록하기",
+          "size": "18px"
+        },
+        {
+          "text": "후기 참여하기",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/news/events/summer-end",
+      "items": [
+        {
+          "text": "여름을 함께한 관객",
+          "size": "18px"
+        },
+        {
+          "text": "이어지는 만남",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/lost/umbrella",
+      "items": [
+        {
+          "text": "관람 정보를 준비하세요",
+          "size": "18px"
+        },
+        {
+          "text": "소유 확인에 필요한 특징",
+          "size": "18px"
+        },
+        {
+          "text": "안내를 받은 뒤 방문하세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/lost/scarf",
+      "items": [
+        {
+          "text": "관람 정보를 준비하세요",
+          "size": "18px"
+        },
+        {
+          "text": "소유 확인에 필요한 특징",
+          "size": "18px"
+        },
+        {
+          "text": "안내를 받은 뒤 방문하세요",
+          "size": "18px"
+        }
+      ]
+    },
+    {
+      "width": 320,
+      "route": "/visit/support/lost/glasses",
+      "items": [
+        {
+          "text": "관람 정보를 준비하세요",
+          "size": "18px"
+        },
+        {
+          "text": "소유 확인에 필요한 특징",
+          "size": "18px"
+        },
+        {
+          "text": "안내를 받은 뒤 방문하세요",
+          "size": "18px"
+        }
+      ]
+    }
+  ]
+}

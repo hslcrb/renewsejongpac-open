@@ -1,0 +1,46 @@
+{
+  "verifiedAt": "2026-10-21T07:09:53.341Z",
+  "baseCommit": "66c5c92058e9bbb8d7008f0f16f8469dfe33bb9c",
+  "components": {
+    "total": 44,
+    "product": 42,
+    "documentationOnly": 2,
+    "unused": 0
+  },
+  "widths": [
+    320,
+    390,
+    768,
+    1024,
+    1440,
+    1920,
+    2560
+  ],
+  "textZoomPercent": 200,
+  "unit": {
+    "total": 97,
+    "passed": 96,
+    "failed": 0,
+    "skipped": 1
+  },
+  "browser": {
+    "hero-layout.json": 19,
+    "account-space.json": 14,
+    "account-auth.json": 10,
+    "component-system.json": 12,
+    "design-system.json": 22,
+    "hero-companion.json": 11,
+    "floating-menu.json": 15,
+    "media-feedback.json": 10
+  },
+  "browserPassed": 113,
+  "productionBuild": true,
+  "exportFiles": 8307,
+  "htmlPages": 160,
+  "modernPages": 160,
+  "mirrorExact": true,
+  "obsoleteAppChunks": [],
+  "exportErrors": [],
+  "googleLogin": "Successful real login reported by the user; automated OAuth checks use a mocked provider.",
+  "branchWorkflow": "codex/hero-room-layout → codex/integration → main, both merges --no-ff"
+}

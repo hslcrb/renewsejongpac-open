@@ -1,0 +1,330 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ReactionDiffusion (a) generator (childless) path > registers the field texture, samples it, and dispatches seed + reactions + output > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  feed: f32,
+  kill: f32,
+  diffusionRatio: f32,
+  featureSize: f32,
+  speed: f32,
+  brushSize: f32,
+  brushStrength: f32,
+  colorA: vec4f,
+  colorC: vec4f,
+  colorB: vec4f,
+  contrast: f32,
+  threshold: f32,
+  colorSpace: f32,
+  relief: f32,
+  lightAngle: f32,
+  childInfluence: f32,
+  childContrast: f32,
+  childThreshold: f32,
+  childInvert: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_rd: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn p3ToSRGB(p3: vec3f) -> vec3f {
+  let r = (((p3.x * 1.2249401f) - (p3.y * 0.2249404f)) - (p3.z * 0f));
+  let g = (((p3.x * -0.0420569f) + (p3.y * 1.0420571f)) + (p3.z * 0f));
+  let b = (((p3.x * -0.0196376f) - (p3.y * 0.0786361f)) + (p3.z * 1.0982735f));
+  return vec3f(r, g, b);
+}
+
+fn rgbToOklab(rgb: vec3f) -> vec3f {
+  let r = rgb.x;
+  let g = rgb.y;
+  let b = rgb.z;
+  let l = (((r * 0.4122214708f) + (g * 0.5363325363f)) + (b * 0.0514459929f));
+  let m = ((r * 0.2119034982f) + ((g * 0.6806995451f) + (b * 0.1073969566f)));
+  let s = (((r * 0.0883024619f) + (g * 0.2817188376f)) + (b * 0.6299787005f));
+  let l_ = (sign(l) * pow(abs(l), 0.3333333333333333f));
+  let m_ = (sign(m) * pow(abs(m), 0.3333333333333333f));
+  let s_ = (sign(s) * pow(abs(s), 0.3333333333333333f));
+  return vec3f((((l_ * 0.2104542553f) + (m_ * 0.793617785f)) - (s_ * 0.0040720468f)), (((l_ * 1.9779984951f) - (m_ * 2.428592205f)) + (s_ * 0.4505937099f)), (((l_ * 0.0259040371f) + (m_ * 0.7827717662f)) - (s_ * 0.808675766f)));
+}
+
+fn oklabToOklch(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let C = sqrt(((a * a) + (b * b)));
+  let h = atan2(b, a);
+  return vec3f(L, C, h);
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklchToOklab(lch: vec3f) -> vec3f {
+  let L = lch.x;
+  let C = lch.y;
+  let h = lch.z;
+  return vec3f(L, (C * cos(h)), (C * sin(h)));
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixColors(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let oklchA = oklabToOklch(rgbToOklab(p3ToSRGB(colorA.xyz)));
+  let oklchB = oklabToOklch(rgbToOklab(p3ToSRGB(colorB.xyz)));
+  let mixed = awMix(oklchA, oklchB, weightA, weightB, safeWeight);
+  let rgb = sRGBToP3(oklabToRgb(oklchToOklab(mixed)));
+  return vec4f(rgb, totalWeight);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let rampW_2 = max((0.6 - (uniforms.n_rd.contrast * 0.55)), 0.02);
+  let view_4 = (1.0 / uniforms.n_rd.featureSize);
+  let sampleUV_3 = vec2f(((((uv.x - 0.5) * min(uniforms._sys.aspect, 1.0)) * view_4) + 0.5), ((((uv.y - 0.5) * min((1.0 / uniforms._sys.aspect), 1.0)) * view_4) + 0.5));
+  let rampT_1 = smoothstep((uniforms.n_rd.threshold - rampW_2), (uniforms.n_rd.threshold + rampW_2), (textureSample(compute_0, linearClamp, sampleUV_3)).y);
+  let rampColor_0 = select(mixColors(uniforms.n_rd.colorA, uniforms.n_rd.colorC, clamp((rampT_1 * 2.0), 0.0, 1.0)), mixColors(uniforms.n_rd.colorC, uniforms.n_rd.colorB, clamp(((rampT_1 * 2.0) - 1.0), 0.0, 1.0)), (rampT_1 > 0.5));
+  let reliefN_5 = normalize(vec3f((-((((textureSample(compute_0, linearClamp, (sampleUV_3 + vec2f(0.0029296875, 0.0)))).y - (textureSample(compute_0, linearClamp, (sampleUV_3 + vec2f(-0.0029296875, 0.0)))).y) * 6.0))), (-((((textureSample(compute_0, linearClamp, (sampleUV_3 + vec2f(0.0, 0.0029296875)))).y - (textureSample(compute_0, linearClamp, (sampleUV_3 + vec2f(0.0, -0.0029296875)))).y) * 6.0))), 1.0));
+  let lightAng_7 = (uniforms.n_rd.lightAngle * 0.017453292519943295);
+  let lightDir_6 = normalize(vec3f((cos(lightAng_7) * 0.85), (sin(lightAng_7) * 0.85), 0.55));
+  var composed_8 = vec4f(mix(rampColor_0.rgb, ((rampColor_0.rgb * (0.42 + (0.5800000000000001 * clamp(dot(reliefN_5, lightDir_6), 0.0, 1.0)))) + vec3f((pow(clamp(dot(reliefN_5, normalize((lightDir_6 + vec3f(0.0, 0.0, 1.0)))), 0.0, 1.0), 18.0) * 0.35))), uniforms.n_rd.relief), rampColor_0.a);
+  return vec4f(linearToSrgb(tone_linear(composed_8.rgb)), composed_8.a);
+}"
+`;
+
+exports[`ReactionDiffusion (c) kernels resolve (one factory, two variants) > the generator variant carries no drive map; the child variant does > reactionKernel 1`] = `
+"struct GrayScottParams {
+  feed: f32,
+  kill: f32,
+  dv: f32,
+  brushRadSq: f32,
+  brushStrength: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorActive: f32,
+  driveInfluence: f32,
+  driveContrast: f32,
+  driveThreshold: f32,
+  driveInvert: f32,
+  driveMapX: f32,
+  driveMapY: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: GrayScottParams;
+
+@group(0) @binding(0) var<storage, read> readBuf: array<vec2f, 262144>;
+
+fn reactionDiffusionNbr(ii: i32, ji: i32, di: i32, dj: i32) -> vec2f {
+  let row = clamp((ii + di), 0i, 511i);
+  let col = clamp((ji + dj), 0i, 511i);
+  return readBuf[u32(((row * 512i) + col))];
+}
+
+fn reactionDiffusionRates(feed: f32, kill: f32, _arg_2: u32, _arg_3: u32) -> vec2f {
+  return vec2f(feed, kill);
+}
+
+@group(0) @binding(1) var<storage, read_write> writeBuf: array<vec2f, 262144>;
+
+fn reactionDiffusionReact(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 512u) + cx);
+  let self_1 = (&readBuf[idx]);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let L = reactionDiffusionNbr(ii, ji, 0i, -1i);
+  let R = reactionDiffusionNbr(ii, ji, 0i, 1i);
+  let T = reactionDiffusionNbr(ii, ji, -1i, 0i);
+  let B = reactionDiffusionNbr(ii, ji, 1i, 0i);
+  let TL = reactionDiffusionNbr(ii, ji, -1i, -1i);
+  let TR = reactionDiffusionNbr(ii, ji, -1i, 1i);
+  let BL = reactionDiffusionNbr(ii, ji, 1i, -1i);
+  let BR = reactionDiffusionNbr(ii, ji, 1i, 1i);
+  let lapU = ((((((L.x + R.x) + T.x) + B.x) * 0.2f) + ((((TL.x + TR.x) + BL.x) + BR.x) * 0.05f)) - (*self_1).x);
+  let lapV = ((((((L.y + R.y) + T.y) + B.y) * 0.2f) + ((((TL.y + TR.y) + BL.y) + BR.y) * 0.05f)) - (*self_1).y);
+  let fk = reactionDiffusionRates((*p).feed, (*p).kill, cx, cy);
+  let feedCell = fk.x;
+  let killCell = fk.y;
+  let U = (*self_1).x;
+  let V = (*self_1).y;
+  let uvv = ((U * V) * V);
+  var newU = (U + ((lapU - uvv) + (feedCell * (1f - U))));
+  var newV = (V + ((((*p).dv * lapV) + uvv) - ((feedCell + killCell) * V)));
+  if (((*p).cursorActive > 0f)) {
+    let cellX = (f32(cx) + 0.5f);
+    let cellY = (f32(cy) + 0.5f);
+    let dxp = (cellX - (*p).cursorX);
+    let dyp = (cellY - (*p).cursorY);
+    let distSq = ((dxp * dxp) + (dyp * dyp));
+    let inf = (exp(((distSq / max((*p).brushRadSq, 1f)) * -1f)) * (*p).cursorActive);
+    newV = min((newV + (inf * (*p).brushStrength)), 1f);
+  }
+  newU = clamp(newU, 0f, 1f);
+  newV = clamp(newV, 0f, 1f);
+  writeBuf[idx] = vec2f(newU, newV);
+}"
+`;
+
+exports[`ReactionDiffusion (c) kernels resolve (one factory, two variants) > the generator variant carries no drive map; the child variant does > reactionKernelChild 1`] = `
+"struct GrayScottParams {
+  feed: f32,
+  kill: f32,
+  dv: f32,
+  brushRadSq: f32,
+  brushStrength: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorActive: f32,
+  driveInfluence: f32,
+  driveContrast: f32,
+  driveThreshold: f32,
+  driveInvert: f32,
+  driveMapX: f32,
+  driveMapY: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: GrayScottParams;
+
+@group(0) @binding(0) var<storage, read> readBuf: array<vec2f, 262144>;
+
+fn reactionDiffusionNbrDrive(ii: i32, ji: i32, di: i32, dj: i32) -> vec2f {
+  let row = clamp((ii + di), 0i, 511i);
+  let col = clamp((ji + dj), 0i, 511i);
+  return readBuf[u32(((row * 512i) + col))];
+}
+
+@group(0) @binding(3) var driveTex: texture_2d<f32>;
+
+fn reactionDiffusionDriveMap(cx: u32, cy: u32) -> f32 {
+  let p = (&params);
+  let dims = textureDimensions(driveTex);
+  let fw = f32(dims.x);
+  let fh = f32(dims.y);
+  let fx = ((f32(cx) + 0.5f) / 512f);
+  let fy = ((f32(cy) + 0.5f) / 512f);
+  let cu = clamp((((fx - 0.5f) * (*p).driveMapX) + 0.5f), 0f, 1f);
+  let cv = clamp((((fy - 0.5f) * (*p).driveMapY) + 0.5f), 0f, 1f);
+  let px = u32(min((cu * fw), (fw - 1f)));
+  let py = u32(min((cv * fh), (fh - 1f)));
+  let texel = textureLoad(driveTex, vec2u(px, py), 0);
+  let cov = clamp(texel.w, 0f, 1f);
+  let rgb = (texel.xyz / max(texel.w, 0.0010000000474974513f));
+  let luma = dot(rgb, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  let gain = (1f + ((*p).driveContrast * 8f));
+  let shaped = clamp((((luma - (*p).driveThreshold) * gain) + 0.5f), 0f, 1f);
+  var signed = ((shaped - 0.5f) * 2f);
+  signed = select(signed, (signed * -1f), ((*p).driveInvert > 0.5f));
+  return (signed * cov);
+}
+
+fn reactionDiffusionRatesDrive(feed: f32, kill: f32, cx: u32, cy: u32) -> vec2f {
+  let mod_1 = (reactionDiffusionDriveMap(cx, cy) * params.driveInfluence);
+  return vec2f(clamp((feed + (mod_1 * 0.02199999988079071f)), 0.00800000037997961f, 0.10999999940395355f), clamp((kill - (mod_1 * 0.014000000432133675f)), 0.029999999329447746f, 0.07500000298023224f));
+}
+
+@group(0) @binding(1) var<storage, read_write> writeBuf: array<vec2f, 262144>;
+
+fn reactionDiffusionReactDrive(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 512u) + cx);
+  let self_1 = (&readBuf[idx]);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let L = reactionDiffusionNbrDrive(ii, ji, 0i, -1i);
+  let R = reactionDiffusionNbrDrive(ii, ji, 0i, 1i);
+  let T = reactionDiffusionNbrDrive(ii, ji, -1i, 0i);
+  let B = reactionDiffusionNbrDrive(ii, ji, 1i, 0i);
+  let TL = reactionDiffusionNbrDrive(ii, ji, -1i, -1i);
+  let TR = reactionDiffusionNbrDrive(ii, ji, -1i, 1i);
+  let BL = reactionDiffusionNbrDrive(ii, ji, 1i, -1i);
+  let BR = reactionDiffusionNbrDrive(ii, ji, 1i, 1i);
+  let lapU = ((((((L.x + R.x) + T.x) + B.x) * 0.2f) + ((((TL.x + TR.x) + BL.x) + BR.x) * 0.05f)) - (*self_1).x);
+  let lapV = ((((((L.y + R.y) + T.y) + B.y) * 0.2f) + ((((TL.y + TR.y) + BL.y) + BR.y) * 0.05f)) - (*self_1).y);
+  let fk = reactionDiffusionRatesDrive((*p).feed, (*p).kill, cx, cy);
+  let feedCell = fk.x;
+  let killCell = fk.y;
+  let U = (*self_1).x;
+  let V = (*self_1).y;
+  let uvv = ((U * V) * V);
+  var newU = (U + ((lapU - uvv) + (feedCell * (1f - U))));
+  var newV = (V + ((((*p).dv * lapV) + uvv) - ((feedCell + killCell) * V)));
+  if (((*p).cursorActive > 0f)) {
+    let cellX = (f32(cx) + 0.5f);
+    let cellY = (f32(cy) + 0.5f);
+    let dxp = (cellX - (*p).cursorX);
+    let dyp = (cellY - (*p).cursorY);
+    let distSq = ((dxp * dxp) + (dyp * dyp));
+    let inf = (exp(((distSq / max((*p).brushRadSq, 1f)) * -1f)) * (*p).cursorActive);
+    newV = min((newV + (inf * (*p).brushStrength)), 1f);
+  }
+  newU = clamp(newU, 0f, 1f);
+  newV = clamp(newV, 0f, 1f);
+  writeBuf[idx] = vec2f(newU, newV);
+}"
+`;

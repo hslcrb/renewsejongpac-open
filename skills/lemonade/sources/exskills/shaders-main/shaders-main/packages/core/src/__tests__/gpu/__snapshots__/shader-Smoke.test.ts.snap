@@ -1,0 +1,154 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Smoke (a) Stable-Fluids compute generator → age-colored fragment > registers a compute texture (no RTT); ordered dispatch = splat..10×jacobi..output (20 steps) > final-pass 1`] = `
+"fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn mixColors(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let rgb = awMix(colorA.xyz, colorB.xyz, weightA, weightB, safeWeight);
+  return vec4f(rgb, totalWeight);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  colorA: vec4f,
+  colorB: vec4f,
+  colorsArray: array<vec4f, 8>,
+  positionsArray: array<vec4f, 2>,
+  convertedColorsArray: array<vec3f, 8>,
+  stopCount: f32,
+  emitFrom: vec2f,
+  direction: f32,
+  speed: f32,
+  spread: f32,
+  emitRadius: f32,
+  intensity: f32,
+  dissipation: f32,
+  detail: f32,
+  gravity: f32,
+  colorDecay: f32,
+  mouseInfluence: f32,
+  mouseRadius: f32,
+  colorSpace: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_smoke: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = vec4f((mixColors(uniforms.n_smoke.colorA, uniforms.n_smoke.colorB, (textureSample(compute_0, linearClamp, uv)).y)).rgb, ((mixColors(uniforms.n_smoke.colorA, uniforms.n_smoke.colorB, (textureSample(compute_0, linearClamp, uv)).y)).a * (textureSample(compute_0, linearClamp, uv)).x));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`Smoke (c) kernels resolve (D3 rules) > splat / jacobi / output kernels resolve with storage buffers + textureStore > splatKernel 1`] = `
+"struct FluidParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FluidParams;
+
+fn gaussianBrushSq(distSq: f32, radiusSq: f32) -> f32 {
+  return exp(((distSq / radiusSq) * -1f));
+}
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeSplat(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let cellX = (f32(cx) + 0.5f);
+  let cellY = (f32(cy) + 0.5f);
+  let dx = (cellX - (*p).emitX);
+  let dy = (cellY - (*p).emitY);
+  let distSq = ((dx * dx) + (dy * dy));
+  let radSq = max(((*p).emitRad * (*p).emitRad), 1f);
+  let influence = gaussianBrushSq(distSq, radSq);
+  let cell = (&dyeA[idx]);
+  let oldDens = (*cell).x;
+  let addDens = ((((*p).emitIntensity * influence) * (*p).dt) * 8f);
+  let newDens = min((oldDens + addDens), 1f);
+  let rejuvenate = (addDens / max(newDens, 0.0010000000474974513f));
+  dyeA[idx] = vec4f(newDens, ((*cell).y * (1f - min(rejuvenate, 1f))), 0f, 0f);
+  let vel = (&velA[idx]);
+  let perpOff = (((dx * (*p).perpDirX) + (dy * (*p).perpDirY)) / max((*p).emitRad, 1f));
+  let vmSq = max((((*p).emitVelX * (*p).emitVelX) + ((*p).emitVelY * (*p).emitVelY)), 1f);
+  let tvx = ((*p).emitVelX + ((((*p).perpDirX * perpOff) * (*p).spreadFactor) * sqrt(vmSq)));
+  let tvy = ((*p).emitVelY + ((((*p).perpDirY * perpOff) * (*p).spreadFactor) * sqrt(vmSq)));
+  let br = min(((influence * (*p).dt) * 3f), 1f);
+  let gravForce = ((((*p).gravity * oldDens) * (*p).dt) * 20.48f);
+  let cursorDX = (cellX - (*p).cursorX);
+  let cursorDY = (cellY - (*p).cursorY);
+  let cursorDistSq = ((cursorDX * cursorDX) + (cursorDY * cursorDY));
+  let cursorInf = (gaussianBrushSq(cursorDistSq, max((*p).mouseRadSq, 1f)) * (*p).mouseActive);
+  velA[idx] = vec4f((mix((*vel).x, tvx, br) + ((*p).cursorVelX * cursorInf)), ((mix((*vel).y, tvy, br) + gravForce) + ((*p).cursorVelY * cursorInf)), (*vel).z, 0f);
+}"
+`;

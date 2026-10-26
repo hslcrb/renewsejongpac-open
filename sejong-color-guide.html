@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="세종문화회관 기존 5색과 웹용 중립색 3색을 연결한 컬러 가이드. Figma Primitives·Semantic 변수표와 실제 UI 적용 예시.">
+  <title>세종문화회관 | 웹 컬러 & Figma Variables 가이드</title>
+  <!-- 공식 Pretendard 웹폰트. 인터넷에 연결되지 않으면 기기의 고딕 글꼴로 표시됩니다. -->
+  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    :root {
+      /* 01. Primitives: 기존 5색 + 신규 중립색 3색. 색상 원본은 여기에서 관리합니다. */
+      --color-black: #000000;
+      --color-sky: #54C8E8;
+      --color-yellow: #FFE800;
+      --color-ochre: #C36D15;
+      --color-white: #FFFFFF;
+      --color-gray-050: #F7F7F5;
+      --color-gray-300: #D9D9D4;
+      --color-gray-600: #626262;
+
+      /* 02. Semantic: 원본 색을 var()로 참조합니다. HEX를 다시 적지 않습니다. */
+      --background-page: var(--color-gray-050);
+      --surface-default: var(--color-white);
+      --surface-subtle: var(--color-gray-050);
+      --surface-inverse: var(--color-black);
+      --text-primary: var(--color-black);
+      --text-secondary: var(--color-gray-600);
+      --text-inverse: var(--color-white);
+      --text-on-brand: var(--color-black);
+      --border-default: var(--color-gray-300);
+      --border-strong: var(--color-gray-600);
+      --border-focus: var(--color-black);
+      --action-primary: var(--color-black);
+      --action-primary-hover: var(--color-gray-600);
+      --action-secondary: var(--color-sky);
+      --action-tertiary: var(--color-white);
+      --action-disabled: var(--color-gray-300);
+      --action-disabled-text: var(--color-gray-600);
+      --accent-highlight: var(--color-yellow);
+      --accent-heritage: var(--color-ochre);
+      --accent-information: var(--color-sky);
+    }
+
+    /* 기본 문서: 레이아웃용 Grid/Flex 외에 별도 라이브러리를 사용하지 않습니다. */
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:28px; }
+    body { margin:0; background:var(--surface-default); color:var(--text-primary); font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans CJK KR","Malgun Gothic",sans-serif; font-size:16px; line-height:1.6; word-break:keep-all; overflow-wrap:break-word; }
+    h1,h2,h3,h4,p,figure,dl,dd { margin:0; }
+    a { color:inherit; text-underline-offset:4px; }
+    button,input { font:inherit; }
+    button { cursor:pointer; color:inherit; }
+    button:disabled { cursor:not-allowed; }
+    a,button,input { -webkit-tap-highlight-color:var(--accent-highlight); }
+    a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible,[tabindex]:focus-visible { outline:3px solid var(--border-focus); outline-offset:3px; box-shadow:0 0 0 3px var(--surface-default); }
+    ::selection { background:var(--accent-highlight); color:var(--text-on-brand); }
+    code { font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace; font-size:.9em; font-weight:500; word-break:normal; }
+    .wrap { width:min(1240px,calc(100% - 80px)); margin-inline:auto; }
+    .muted { color:var(--text-secondary); }
+    .eyebrow { font-size:12px; font-weight:700; letter-spacing:.13em; line-height:1.4; }
+    .skip-link { position:absolute; left:20px; top:-100px; z-index:20; padding:12px 20px; background:var(--surface-inverse); color:var(--text-inverse); }
+    .skip-link:focus { top:12px; }
+    .site-header { min-height:88px; display:flex; justify-content:space-between; align-items:center; gap:24px; border-bottom:1px solid var(--border-strong); }
+    .brand-name { font-size:20px; font-weight:800; letter-spacing:-.05em; }
+    .brand-name small { display:block; font-size:10px; font-weight:600; letter-spacing:.14em; }
+    .site-nav { display:flex; gap:26px; align-items:center; font-size:14px; font-weight:600; }
+    .site-nav a { text-decoration:none; padding-block:12px; }
+    .site-nav a:hover { text-decoration:underline; }
+    .hero { padding:64px 0 48px; display:grid; grid-template-columns:1.7fr 1fr; align-items:end; gap:56px; }
+    .hero h1 { font-size:clamp(36px,4.5vw,62px); line-height:1.14; font-weight:800; letter-spacing:-.065em; margin:16px 0 22px; }
+    .hero h1 span { box-shadow:inset 0 -.22em 0 var(--accent-highlight); }
+    .hero .lede { max-width:630px; color:var(--text-secondary); font-size:17px; }
+    .hero-meta { border-top:8px solid var(--text-primary); padding-top:20px; }
+    .hero-meta > .eyebrow { margin-bottom:18px; }
+    .meta-row { display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; border-bottom:1px solid var(--border-default); gap:20px; }
+    .meta-row dt { font-size:14px; color:var(--text-secondary); }
+    .meta-row dd { font-size:20px; font-weight:700; }
+    .brand-strip { display:grid; grid-template-columns:2.2fr 1fr 1fr 1fr .8fr; height:26px; border:1px solid var(--border-strong); }
+    .strip-black { background:var(--color-black); }
+    .strip-sky { background:var(--color-sky); }
+    .strip-yellow { background:var(--color-yellow); }
+    .strip-ochre { background:var(--color-ochre); }
+    .strip-white { background:var(--color-white); }
+    .section { padding:56px 0; border-bottom:1px solid var(--border-default); }
+    .section-heading { display:flex; justify-content:space-between; align-items:end; gap:28px; margin-bottom:28px; }
+    .section-heading h2 { font-size:29px; letter-spacing:-.045em; line-height:1.25; margin-top:9px; }
+    .section-heading > p { font-size:14px; color:var(--text-secondary); max-width:460px; }
+    .insights { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:32px; }
+    .insight { border-top:2px solid var(--text-primary); padding-top:20px; }
+    .insight-tag { font-size:12px; color:var(--text-secondary); margin-bottom:8px; }
+    .insight h3 { font-size:20px; margin-bottom:12px; letter-spacing:-.035em; }
+    .insight p { font-size:14px; line-height:1.8; }
+    .ref { font-size:11px; font-weight:600; vertical-align:super; margin-left:3px; text-decoration:none; }
+    .type-note { display:flex; flex-wrap:wrap; align-items:center; gap:14px 28px; background:var(--surface-subtle); padding:18px 22px; margin-top:28px; font-size:13px; }
+    .type-note strong { font-size:20px; letter-spacing:-.03em; }
+    .type-note .font-use { margin-left:auto; color:var(--text-secondary); }
+    .legend { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .origin { display:inline-block; flex-shrink:0; padding:3px 7px; border:1px solid var(--border-strong); font-size:10px; line-height:1.3; color:var(--text-primary); }
+    .origin.new { border-style:dashed; }
+    .palette-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; }
+    .color-card { border:1px solid var(--border-default); background:var(--surface-default); min-width:0; }
+    .color-swatch { height:142px; background:var(--swatch); color:var(--swatch-ink); position:relative; display:flex; align-items:center; justify-content:center; border-bottom:1px solid var(--border-default); }
+    .swatch-index { position:absolute; top:14px; left:16px; font-size:11px; font-weight:600; }
+    .swatch-sample { font-size:53px; font-weight:600; letter-spacing:-.07em; line-height:1; }
+    .color-body { padding:18px; }
+    .color-topline { display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:12px; }
+    .role-name { font-size:11px; font-weight:700; line-height:1.4; }
+    .color-body h3 { font-size:19px; letter-spacing:-.035em; }
+    .color-body p { font-size:13px; color:var(--text-secondary); margin-top:12px; min-height:63px; line-height:1.65; }
+    .hex-copy,.code-copy { border:0; background:var(--surface-default); padding:4px 0; display:inline-flex; gap:10px; align-items:center; text-align:left; min-height:32px; }
+    .hex-copy { font-size:18px; }
+    .hex-copy:hover code,.code-copy:hover code { text-decoration:underline; text-underline-offset:4px; }
+    .copy-mark { color:var(--text-secondary); font-size:13px; }
+    .note { font-size:13px; color:var(--text-secondary); line-height:1.8; margin-top:20px; }
+    .note strong { color:var(--text-primary); }
+    details { margin-top:14px; font-size:13px; color:var(--text-secondary); }
+    summary { cursor:pointer; width:fit-content; color:var(--text-primary); padding:6px 0; }
+    details p { padding:12px 0 0; max-width:1000px; }
+    .variables-intro { margin-bottom:34px; }
+    .alias-flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:22px; margin-top:26px; padding:24px; background:var(--surface-subtle); border:1px solid var(--border-default); }
+    .flow-box .eyebrow { color:var(--text-secondary); margin-bottom:8px; font-size:10px; }
+    .flow-box code { font-size:16px; }
+    .flow-box p { margin-top:4px; font-size:12px; color:var(--text-secondary); }
+    .flow-arrow { font-size:23px; }
+    .flow-ui { display:flex; flex-direction:column; align-items:start; gap:6px; }
+    .flow-ui small { font-size:11px; color:var(--text-secondary); }
+    .collection-title { display:flex; justify-content:space-between; align-items:end; gap:22px; margin:34px 0 16px; }
+    .collection-title h3 { font-size:24px; letter-spacing:-.03em; line-height:1.3; }
+    .collection-title p { font-size:13px; color:var(--text-secondary); margin-top:5px; }
+    .collection-meta { font-size:11px; font-weight:600; white-space:nowrap; }
+    .table-scroll { overflow-x:auto; border:1px solid var(--border-default); }
+    table { width:100%; border-collapse:collapse; text-align:left; font-size:13px; }
+    caption { text-align:left; padding:12px 16px; background:var(--surface-subtle); font-size:12px; color:var(--text-secondary); border-bottom:1px solid var(--border-default); }
+    thead { background:var(--surface-subtle); }
+    th,td { padding:14px 16px; vertical-align:middle; border-bottom:1px solid var(--border-default); }
+    thead th { font-weight:700; font-size:12px; white-space:nowrap; }
+    tbody th { font-weight:600; }
+    tbody tr:last-child > * { border-bottom:0; }
+    #primitives-table { min-width:900px; }
+    #semantic-table { min-width:850px; }
+    .collection-cell { white-space:nowrap; font-size:11px; color:var(--text-secondary); width:130px; }
+    .usage-cell { min-width:240px; font-size:12px; }
+    .color-cell { display:flex; align-items:center; gap:12px; min-width:155px; }
+    .mini-swatch { display:inline-block; width:32px; height:32px; flex-shrink:0; background:var(--swatch); border:1px solid var(--border-strong); }
+    .mini-swatch.small { width:16px; height:16px; }
+    .origin-text { display:block; font-size:10px; font-weight:400; color:var(--text-secondary); }
+    .alias-link { display:inline-flex; align-items:center; gap:10px; white-space:nowrap; text-decoration:none; min-height:32px; }
+    .alias-link:hover code { text-decoration:underline; }
+    table .code-copy { font-size:13px; background:inherit; white-space:nowrap; }
+    tbody tr:target { background:var(--surface-subtle); outline:2px solid var(--border-focus); outline-offset:-2px; }
+    .group-start > * { border-top:2px solid var(--border-strong); }
+    .register-guide { margin-top:24px; padding:22px 24px; border-left:4px solid var(--text-primary); background:var(--surface-subtle); }
+    .register-guide h4 { font-size:16px; margin-bottom:12px; }
+    .register-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:26px; }
+    .register-steps p { font-size:13px; }
+    .register-steps p > strong:first-child { display:block; margin-bottom:4px; }
+    .contrast-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; }
+    .contrast-card { border:1px solid var(--border-default); }
+    .contrast-sample { height:94px; display:flex; align-items:center; justify-content:center; background:var(--sample-bg); color:var(--sample-ink); font-size:40px; line-height:1; font-weight:700; }
+    .contrast-label { padding:12px 14px; font-size:12px; }
+    .contrast-label strong { display:block; font-size:21px; letter-spacing:-.04em; margin-top:2px; }
+    .contrast-label small { display:block; font-size:10px; color:var(--text-secondary); margin-top:1px; }
+    .rule-grid { display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:24px; }
+    .rule-grid p { font-size:13px; color:var(--text-secondary); line-height:1.8; }
+    .rule-grid strong { display:block; color:var(--text-primary); font-size:14px; margin-bottom:4px; }
+    .button { display:inline-flex; justify-content:center; align-items:center; gap:20px; padding:12px 20px; min-height:48px; border:1px solid var(--text-primary); border-radius:2px; font-weight:600; font-size:14px; text-decoration:none; line-height:1.4; }
+    .button-primary { background:var(--action-primary); color:var(--text-inverse); }
+    .button-primary:hover:not(:disabled) { background:var(--action-primary-hover); border-color:var(--action-primary-hover); }
+    .button-secondary { background:var(--action-secondary); color:var(--text-on-brand); }
+    .button-secondary:hover:not(:disabled),.button-tertiary:hover:not(:disabled) { text-decoration:underline; text-underline-offset:4px; }
+    .button-tertiary { background:var(--action-tertiary); color:var(--text-primary); }
+    .button:disabled { background:var(--action-disabled); color:var(--action-disabled-text); border-color:var(--action-disabled); }
+    .demo-window { border:1px solid var(--border-strong); background:var(--background-page); }
+    .demo-topbar { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 28px; background:var(--surface-default); border-bottom:1px solid var(--border-default); }
+    .demo-topbar strong { font-size:19px; font-weight:800; letter-spacing:-.05em; }
+    .demo-nav { display:flex; gap:24px; font-size:12px; }
+    .demo-nav .selected { font-weight:700; border-bottom:2px solid var(--text-primary); }
+    .demo-body { padding:32px; }
+    .demo-heading { display:flex; align-items:end; justify-content:space-between; margin-bottom:22px; gap:20px; }
+    .demo-heading h3 { font-size:27px; letter-spacing:-.055em; margin-top:7px; line-height:1.35; }
+    .demo-heading p { font-size:11px; color:var(--text-secondary); }
+    .demo-main { display:grid; grid-template-columns:1.9fr 1fr; gap:20px; align-items:stretch; }
+    .program-card { background:var(--surface-default); border:1px solid var(--border-default); display:grid; grid-template-columns:210px 1fr; min-width:0; }
+    .program-poster { position:relative; background:var(--surface-inverse); color:var(--text-inverse); padding:24px; min-height:280px; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; }
+    .program-poster .eyebrow { font-size:10px; letter-spacing:.16em; }
+    .poster-title { font-size:38px; font-weight:800; letter-spacing:-.07em; line-height:1.15; z-index:1; }
+    .poster-bars { height:56px; display:grid; grid-template-columns:repeat(3,1fr); gap:9px; align-items:end; margin-top:22px; }
+    .poster-bars span:nth-child(1) { height:100%; background:var(--accent-information); }
+    .poster-bars span:nth-child(2) { height:68%; background:var(--accent-highlight); }
+    .poster-bars span:nth-child(3) { height:86%; background:var(--accent-heritage); }
+    .program-body { display:flex; flex-direction:column; align-items:start; padding:26px; }
+    .badge { display:inline-flex; padding:4px 9px; font-size:11px; line-height:1.4; font-weight:600; background:var(--accent-highlight); color:var(--text-on-brand); }
+    .program-body h4 { font-size:23px; letter-spacing:-.05em; line-height:1.4; margin:13px 0 10px; }
+    .program-body p { color:var(--text-secondary); font-size:13px; line-height:1.8; }
+    .program-actions { display:flex; flex-wrap:wrap; gap:10px; padding-top:24px; margin-top:auto; }
+    .program-actions .button { font-size:13px; padding:12px 16px; gap:14px; }
+    .demo-side { display:flex; flex-direction:column; gap:16px; }
+    .info-card { background:var(--accent-information); color:var(--text-on-brand); padding:24px; flex:1; }
+    .info-card h4 { font-size:22px; line-height:1.4; letter-spacing:-.04em; margin:9px 0 12px; }
+    .info-card p { font-size:12px; margin-bottom:16px; }
+    .info-card .button { min-height:40px; font-size:12px; padding:9px 14px; }
+    .heritage-card { background:var(--accent-heritage); color:var(--text-on-brand); padding:17px 22px; display:flex; gap:20px; justify-content:space-between; align-items:center; }
+    .heritage-card strong { font-size:15px; }
+    .heritage-card span { font-size:11px; }
+    .component-row { display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:24px; border-top:1px solid var(--border-default); padding-top:22px; }
+    .input-demo label { display:block; font-size:12px; font-weight:600; margin-bottom:8px; }
+    .input-demo input { width:100%; border:1px solid var(--border-strong); border-radius:2px; padding:12px 14px; min-height:46px; font-size:13px; color:var(--text-primary); background:var(--surface-default); }
+    .input-demo input::placeholder { color:var(--text-secondary); opacity:1; }
+    .input-demo small { display:block; font-size:11px; margin-top:7px; color:var(--text-secondary); }
+    .state-demo { display:flex; flex-wrap:wrap; align-content:start; align-items:center; gap:10px; }
+    .state-demo > span { flex-basis:100%; font-size:12px; font-weight:600; margin-bottom:2px; }
+    .state-demo .button { min-height:46px; padding:10px 15px; font-size:13px; }
+    .demo-feedback { padding:14px 20px; border-top:1px solid var(--border-default); background:var(--surface-default); font-size:12px; color:var(--text-secondary); min-height:49px; }
+    .demo-caption { display:flex; gap:18px; flex-wrap:wrap; margin-top:15px; font-size:12px; color:var(--text-secondary); }
+    .demo-caption b { color:var(--text-primary); font-weight:600; }
+    .footer { padding:36px 0 46px; }
+    .footer-head { display:flex; justify-content:space-between; gap:24px; align-items:baseline; margin-bottom:16px; }
+    .footer-head h2 { font-size:16px; }
+    .footer-head span { font-size:11px; color:var(--text-secondary); }
+    .source-links { display:flex; gap:8px 24px; flex-wrap:wrap; font-size:12px; }
+    .footer p { font-size:12px; color:var(--text-secondary); margin-top:16px; line-height:1.8; }
+    .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--surface-inverse); color:var(--text-inverse); border:1px solid var(--surface-default); padding:12px 20px; max-width:calc(100% - 32px); width:max-content; font-size:13px; z-index:30; }
+    .toast:empty { display:none; }
+    @media (max-width:1050px) {
+      .wrap { width:calc(100% - 48px); }
+      .hero { grid-template-columns:1.6fr 1fr; gap:32px; }
+      .palette-grid { gap:14px; }
+      .color-topline { flex-wrap:wrap; align-items:start; gap:7px; }
+      .program-card { grid-template-columns:170px 1fr; }
+      .program-body { padding:20px; }
+      .program-poster { padding:20px; }
+      .demo-main { grid-template-columns:1.8fr 1fr; }
+      .demo-body { padding:24px; }
+    }
+    @media (max-width:800px) {
+      .hero { padding-top:42px; gap:24px; }
+      .hero h1 { font-size:43px; }
+      .hero .lede { font-size:15px; }
+      .hero-meta { border-top-width:5px; }
+      .meta-row dd { font-size:17px; }
+      .insights { gap:20px; }
+      .insight h3 { font-size:17px; }
+      .palette-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .color-topline { flex-wrap:nowrap; }
+      .color-body p { min-height:43px; }
+      .section-heading { align-items:start; }
+      .section-heading > p { max-width:310px; font-size:13px; }
+      .contrast-grid { gap:9px; }
+      .contrast-label { padding:10px; }
+      .contrast-label strong { font-size:19px; }
+      .alias-flow { gap:14px; padding:20px; }
+      .flow-box code { font-size:13px; }
+      .demo-main { grid-template-columns:1fr; }
+      .program-card { grid-template-columns:200px 1fr; }
+      .demo-side { display:grid; grid-template-columns:1.5fr 1fr; }
+      .heritage-card { display:flex; flex-direction:column; justify-content:center; align-items:start; }
+    }
+    @media (max-width:580px) {
+      .wrap { width:calc(100% - 32px); }
+      .site-header { min-height:96px; flex-direction:column; align-items:start; gap:5px; padding:15px 0 8px; }
+      .brand-name { font-size:18px; }
+      .brand-name small { display:none; }
+      .site-nav { gap:22px; width:100%; font-size:12px; }
+      .site-nav a { padding:8px 0; }
+      .hero { display:block; padding:36px 0 28px; }
+      .hero h1 { font-size:clamp(34px,9vw,48px); margin:13px 0 16px; }
+      .hero-meta { margin-top:28px; padding-top:14px; }
+      .hero-meta > .eyebrow { margin-bottom:8px; }
+      .hero-meta dl { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; }
+      .meta-row { flex-direction:column; gap:2px; border:0; padding:6px 0; }
+      .meta-row dt { font-size:11px; }
+      .meta-row dd { font-size:15px; }
+      .brand-strip { height:20px; }
+      .section { padding:36px 0; }
+      .section-heading { display:block; margin-bottom:22px; }
+      .section-heading h2 { font-size:25px; }
+      .section-heading > p,.section-heading > .legend { margin-top:14px; max-width:none; }
+      .insights { grid-template-columns:1fr; gap:22px; }
+      .insight { padding-top:14px; }
+      .insight h3 { font-size:19px; margin-bottom:8px; }
+      .insight-tag { margin-bottom:4px; }
+      .type-note { padding:16px; gap:10px 18px; }
+      .type-note .font-use { margin-left:0; }
+      .palette-grid { gap:12px; }
+      .color-swatch { height:112px; }
+      .swatch-sample { font-size:42px; }
+      .color-body { padding:13px; }
+      .color-topline { flex-wrap:wrap; gap:6px; margin-bottom:9px; }
+      .color-body h3 { font-size:16px; }
+      .role-name { font-size:10px; flex-basis:100%; }
+      .color-body p { font-size:12px; min-height:0; line-height:1.65; }
+      .hex-copy { font-size:16px; gap:7px; }
+      .alias-flow { grid-template-columns:1fr; gap:13px; }
+      .flow-arrow { display:none; }
+      .flow-box,.flow-ui { border-bottom:1px solid var(--border-default); padding-bottom:12px; }
+      .flow-ui { border:0; padding:0; }
+      .flow-box code { font-size:16px; }
+      .collection-title { display:block; margin-top:28px; }
+      .collection-title h3 { font-size:23px; }
+      .collection-meta { display:block; margin-top:8px; }
+      .register-guide { padding:18px; }
+      .register-steps { grid-template-columns:1fr; gap:16px; }
+      .contrast-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+      .contrast-grid .contrast-card:last-child { grid-column:1/-1; }
+      .contrast-grid .contrast-card:last-child .contrast-sample { height:76px; }
+      .contrast-label { padding:12px; }
+      .rule-grid { grid-template-columns:1fr; gap:18px; }
+      .demo-topbar { padding:14px 16px; }
+      .demo-topbar strong { font-size:17px; }
+      .demo-nav { gap:12px; font-size:10px; }
+      .demo-nav span:last-child { display:none; }
+      .demo-body { padding:20px 16px; }
+      .demo-heading { display:block; }
+      .demo-heading h3 { font-size:23px; }
+      .demo-heading p { margin-top:7px; }
+      .program-card { grid-template-columns:1fr; }
+      .program-poster { min-height:260px; padding:22px; display:block; }
+      .poster-bars { width:100%; height:44px; position:static; margin-top:24px; }
+      .poster-title { margin-top:24px; }
+      .program-body { padding:22px; }
+      .program-body h4 { font-size:22px; }
+      .program-actions { gap:8px; }
+      .program-actions .button { font-size:12px; padding:12px 13px; gap:10px; }
+      .demo-side { grid-template-columns:1fr; gap:14px; }
+      .heritage-card { flex-direction:row; align-items:center; justify-content:space-between; }
+      .info-card { padding:22px; }
+      .component-row { grid-template-columns:1fr; gap:22px; }
+      .demo-caption { gap:6px 16px; }
+      .footer-head { display:block; }
+      .footer-head span { display:block; margin-top:6px; }
+      .source-links { gap:9px 18px; }
+    }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+    @media print {
+      body { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .wrap { width:100%; }
+      .site-nav,.toast,.copy-mark { display:none; }
+      .hero { padding-top:24px; }
+      .section { padding:26px 0; }
+      .table-scroll { overflow:visible; }
+      #primitives-table,#semantic-table { min-width:0; }
+      table { font-size:10px; }
+      th,td { padding:8px; }
+      .collection-cell { font-size:9px; width:auto; }
+      .usage-cell,.color-cell { min-width:0; }
+      .color-card,.contrast-card,.insight { break-inside:avoid; }
+      .code-copy { font-size:10px !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="site-header wrap">
+    <div class="brand-name">세종문화회관<small>WEB COLOR SYSTEM / DESIGN PROPOSAL</small></div>
+    <nav class="site-nav" aria-label="가이드 목차">
+      <a href="#identity">브랜드 분석</a><a href="#palette">컬러 팔레트</a><a href="#variables">변수표</a><a href="#ui-demo">UI 예시</a>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <section class="hero" aria-labelledby="guide-title">
+      <div>
+        <p class="eyebrow">SEJONG CENTER · COLOR & VARIABLES</p>
+        <h1 id="guide-title">색은 그대로.<br>경험은 <span>더 선명하게.</span></h1>
+        <p class="lede">기존 브랜드의 천·지·인을 지키고,<br>웹에서 읽고, 찾고, 예매하기 쉬운 컬러 역할을 더합니다.</p>
+      </div>
+      <aside class="hero-meta" aria-label="제안 범위">
+        <p class="eyebrow">RENEWAL GUIDE / 2026.10.19</p>
+        <dl>
+          <div class="meta-row"><dt>컬러 구성</dt><dd>기존 5 + 신규 3</dd></div>
+          <div class="meta-row"><dt>Figma Variables</dt><dd>8 Primitives / 20 Aliases</dd></div>
+          <div class="meta-row"><dt>적용 범위</dt><dd>Pretendard · Light</dd></div>
+        </dl>
+      </aside>
+    </section>
+    <div class="brand-strip" aria-label="기존 검정·하늘·노랑·황토·흰색 유지"><span class="strip-black"></span><span class="strip-sky"></span><span class="strip-yellow"></span><span class="strip-ochre"></span><span class="strip-white"></span></div>
+
+    <section class="section" id="identity" aria-labelledby="identity-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">A / IDENTITY</p><h2 id="identity-title">브랜드에서 UI로.</h2></div>
+        <p>확인된 브랜드 정보와 디자인 해석,<br>이번 리뉴얼의 제안을 구분했습니다.</p>
+      </div>
+      <div class="insights">
+        <article class="insight"><div class="insight-tag">01 / 첨부 관찰 · 공식 설명</div><h3>보와 기둥, 천·지·인</h3><p>첨부 로고는 굵은 가로획 아래 여섯 음절과 원형·직선이 반복됩니다. 공식 CI는 건축물의 보와 여섯 기둥을 로고 구조로 확장합니다.<a class="ref" href="#source-logo" aria-label="출처 1 로고">[1]</a> 검정이 주조색이며, 하늘·황토·노랑은 각각 천·지·인을 나타냅니다.<a class="ref" href="#source-color" aria-label="출처 2 컬러">[2]</a></p></article>
+        <article class="insight"><div class="insight-tag">02 / 디자인 해석</div><h3>단단한 틀, 열린 무대</h3><p>로고의 검정과 반복 구조는 단단한 인상을, 세 가지 유채색은 다양성을 표현하는 장치로 읽힙니다. 따라서 화면 전체를 여러 색으로 채우기보다, 콘텐츠가 돋보이는 정돈된 틀을 만드는 방향이 적합하다고 판단했습니다.</p></article>
+        <article class="insight"><div class="insight-tag">03 / 웹 적용 제안</div><h3>로고는 보존, 정보는 정돈</h3><p>공식 로고를 일반 글꼴로 다시 만들지 않습니다. 메뉴·본문에는 Pretendard를 적용하고, 검정은 핵심 행동에 고정합니다. 새 유채색 대신 중립색 3개만 보완해 배경·설명·구분선을 구별합니다.</p></article>
+      </div>
+      <div class="type-note"><strong>Pretendard</strong><span>제목 700</span><span>버튼 600</span><span>본문 400 · 16px / 1.6</span><span class="font-use">UI용 제안 · 로고 대체 아님<a class="ref" href="#source-font" aria-label="출처 3 폰트">[3]</a></span></div>
+    </section>
+
+    <section class="section" id="palette" aria-labelledby="palette-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">B / COLOR PALETTE</p><h2 id="palette-title">8개의 색, 분명한 역할.</h2></div>
+        <div class="legend"><span class="origin existing">기존 유지 5</span><span class="origin new">신규 중립색 3</span><span class="muted" style="font-size:12px">HEX를 누르면 복사</span></div>
+      </div>
+      <div class="palette-grid">
+      <article class="color-card existing" data-roles="Primary Text">
+        <div class="color-swatch" style="--swatch:var(--color-black);--swatch-ink:var(--text-inverse);" aria-label="브랜드 블랙 #000000 컬러칩">
+          <span class="swatch-index">01</span><span class="swatch-sample" aria-hidden="true">Aa</span>
+        </div>
+        <div class="color-body">
+          <div class="color-topline"><span class="role-name">Primary · Text</span><span class="origin existing">기존 유지</span></div>
+          <h3>브랜드 블랙</h3>
+          <button type="button" class="hex-copy" data-copy="#000000" aria-label="브랜드 블랙 HEX 복사"><code>#000000</code><span class="copy-mark" aria-hidden="true">↗</span></button>
+          <p>로고의 중심색. 제목·본문과 예매 등 핵심 행동에 사용합니다.</p>
+        </div>
+      </article>
+      <article class="color-card existing" data-roles="Secondary">
+        <div class="color-swatch" style="--swatch:var(--color-sky);--swatch-ink:var(--text-on-brand);" aria-label="하늘색 · 천 #54C8E8 컬러칩">
+          <span class="swatch-index">02</span><span class="swatch-sample" aria-hidden="true">天</span>
+        </div>
+        <div class="color-body">
+          <div class="color-topline"><span class="role-name">Secondary</span><span class="origin existing">기존 유지</span></div>
+          <h3>하늘색 · 천</h3>
+          <button type="button" class="hex-copy" data-copy="#54C8E8" aria-label="하늘색 · 천 HEX 복사"><code>#54C8E8</code><span class="copy-mark" aria-hidden="true">↗</span></button>
+          <p>보조 버튼과 탐색·안내 영역에 사용합니다. 글자는 검정으로 고정합니다.</p>
+        </div>
+      </article>
+      <article class="color-card existing" data-roles="Accent">
+        <div class="color-swatch" style="--swatch:var(--color-yellow);--swatch-ink:var(--text-on-brand);" aria-label="노란색 · 인 #FFE800 컬러칩">
+          <span class="swatch-index">03</span><span class="swatch-sample" aria-hidden="true">人</span>
+        </div>
+        <div class="color-body">
+          <div class="color-topline"><span class="role-name">Accent / Highlight</span><span class="origin existing">기존 유지</span></div>
+          <h3>노란색 · 인</h3>
+          <button type="button" class="hex-copy" data-copy="#FFE800" aria-label="노란색 · 인 HEX 복사"><code>#FFE800</code><span class="copy-mark" aria-hidden="true">↗</span></button>
+          <p>추천 배지와 짧은 강조에 사용합니다. 기본 예매 버튼을 대체하지 않습니다.</p>
+        </div>
+      </article>
+      <article class="color-card existing" data-roles="Accent">
+        <div class="color-swatch" style="--swatch:var(--color-ochre);--swatch-ink:var(--text-on-brand);" aria-label="황토색 · 지 #C36D15 컬러칩">
+          <span class="swatch-index">04</span><span class="swatch-sample" aria-hidden="true">地</span>
+        </div>
+        <div class="color-body">
+          <div class="color-topline"><span class="role-name">Accent / Heritage</span><span class="origin existing">기존 유지</span></div>
+          <h3>황토색 · 지</h3>
+          <button type="button" class="hex-copy" data-copy="#C36D15" aria-label="황토색 · 지 HEX 복사"><code>#C36D15</code><span class="copy-mark" aria-hidden="true">↗</span></button>
+          <p>문화 이야기·브랜드 콘텐츠의 제한적 강조색입니다. 작은 본문색으로 쓰지 않습니다.</p>
+        </div>
+      </article>
+      <article class="color-card existing" data-roles="Surface">
+        <div class="color-swatch" style="--swatch:var(--color-white);--swatch-ink:var(--text-on-brand);" aria-label="퓨어 화이트 #FFFFFF 컬러칩">
+          <span class="swatch-index">05</span><span class="swatch-sample" aria-hidden="true">Aa</span>
+        </div>
+        <div class="color-body">
+          <div class="color-topline"><span class="role-name">Surface</span><span class="origin existing">기존 유지</span></div>
+          <h3>퓨어 화이트</h3>
+          <button type="button" class="hex-copy" data-copy="#FFFFFF" aria-label="퓨어 화이트 HEX 복사"><code>#FFFFFF</code><span class="copy-mark" aria-hidden="true">↗</span></button>
+          <p>카드·헤더·정보 패널의 표면과 어두운 배경 위 글자에 사용합니다.</p>
+        </div>
+      </article>
+      <article class="color-card new" data-roles="Background">
+        <div class="color-swatch" style="--swatch:var(--color-gray-050);--swatch-ink:var(--text-on-brand);" aria-label="웜 그레이 050 #F7F7F5 컬러칩">
+          <span class="swatch-index">06</span><span class="swatch-sample" aria-hidden="true">Aa</span>
+        </div>
+        <div class="color-body">
+          <div class="color-topline"><span class="role-name">Background</span><span class="origin new">신규 제안</span></div>
+          <h3>웜 그레이 050</h3>
+          <button type="button" class="hex-copy" data-copy="#F7F7F5" aria-label="웜 그레이 050 HEX 복사"><code>#F7F7F5</code><span class="copy-mark" aria-hidden="true">↗</span></button>
+          <p>페이지의 기본 배경. 흰색 카드가 놓이는 바탕을 부드럽게 구분합니다.</p>
+        </div>
+      </article>
+      <article class="color-card new" data-roles="Border">
+        <div class="color-swatch" style="--swatch:var(--color-gray-300);--swatch-ink:var(--text-on-brand);" aria-label="웜 그레이 300 #D9D9D4 컬러칩">
+          <span class="swatch-index">07</span><span class="swatch-sample" aria-hidden="true">Aa</span>
+        </div>
+        <div class="color-body">
+          <div class="color-topline"><span class="role-name">Border</span><span class="origin new">신규 제안</span></div>
+          <h3>웜 그레이 300</h3>
+          <button type="button" class="hex-copy" data-copy="#D9D9D4" aria-label="웜 그레이 300 HEX 복사"><code>#D9D9D4</code><span class="copy-mark" aria-hidden="true">↗</span></button>
+          <p>카드의 장식 테두리·구분선에 사용합니다. 입력창의 유일한 경계로는 쓰지 않습니다.</p>
+        </div>
+      </article>
+      <article class="color-card new" data-roles="Text">
+        <div class="color-swatch" style="--swatch:var(--color-gray-600);--swatch-ink:var(--text-inverse);" aria-label="그레이 600 #626262 컬러칩">
+          <span class="swatch-index">08</span><span class="swatch-sample" aria-hidden="true">Aa</span>
+        </div>
+        <div class="color-body">
+          <div class="color-topline"><span class="role-name">Text / Secondary</span><span class="origin new">신규 제안</span></div>
+          <h3>그레이 600</h3>
+          <button type="button" class="hex-copy" data-copy="#626262" aria-label="그레이 600 HEX 복사"><code>#626262</code><span class="copy-mark" aria-hidden="true">↗</span></button>
+          <p>날짜·설명·보조 본문에 사용합니다. 입력창 경계와 검정 버튼의 호버에도 재사용합니다.</p>
+        </div>
+      </article>
+      </div>
+      <p class="note"><strong>검정은 Primary, 하늘색은 Secondary.</strong> 노랑·황토는 Accent로 제한합니다. 페이지 배경은 웜 그레이 050, 카드 표면은 흰색, 본문은 검정, 보조 설명은 그레이 600, 장식 구분선은 웜 그레이 300을 사용합니다. 하나의 색은 여러 역할에 재사용할 수 있습니다.</p>
+      <details><summary>기존 컬러의 값은 어떻게 정했나요?</summary><p>첨부 자료와 공식 CI의 RGB 값을 그대로 HEX로 변환했습니다. 하늘색 84·200·232 → <code>#54C8E8</code>, 노랑 255·232·0 → <code>#FFE800</code>, 황토 195·109·21 → <code>#C36D15</code>입니다. 캡처 이미지의 픽셀색을 추출하거나 Pantone을 임의 변환하지 않았습니다. 자료의 흰색에 하늘색과 같은 “PANTONE 305 C”가 기재되어 있으므로 이 표기는 사용하지 않고, 흰색 RGB 255·255·255 → <code>#FFFFFF</code>를 기준으로 삼았습니다.<a class="ref" href="#source-color" aria-label="출처 2 컬러">[2]</a></p></details>
+    </section>
+
+    <section class="section" id="variables" aria-labelledby="variables-title">
+      <div class="section-heading variables-intro">
+        <div><p class="eyebrow">C / FIGMA VARIABLES</p><h2 id="variables-title">원본값과 사용 역할을 분리합니다.</h2></div>
+        <p><strong>Primitive</strong>는 색의 원본값,<br><strong>Semantic</strong>은 그 색이 맡는 역할입니다.</p>
+      </div>
+      <p style="font-size:14px">Alias는 다른 변수의 값을 연결해서 쓰는 방식입니다. 아래 Semantic은 모두 <strong>01. Primitives의 변수</strong>를 직접 참조하며, 새 HEX 값을 만들지 않습니다.<a class="ref" href="#source-figma" aria-label="출처 4 Figma">[4]</a></p>
+      <div class="alias-flow" aria-label="원본 색상에서 역할을 거쳐 버튼으로 적용하는 과정">
+        <div class="flow-box"><div class="eyebrow">01. PRIMITIVES / 원본값</div><code>color/black</code><p>#000000</p></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div class="flow-box"><div class="eyebrow">02. SEMANTIC / 사용 역할</div><code>action/primary</code><p>Alias → color/black</p></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div class="flow-ui"><a class="button button-primary" href="#ui-demo">예매하기 <span aria-hidden="true">↗</span></a><small>핵심 버튼에 적용 · UI 예시로 이동</small></div>
+      </div>
+
+      <div class="collection-title"><div><h3>01. Primitives</h3><p>색 원본 8개. 변수명을 누르면 복사할 수 있습니다.</p></div><span class="collection-meta">TYPE: COLOR · MODE: light</span></div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Primitives 변수표, 좁은 화면에서는 가로로 스크롤">
+        <table id="primitives-table">
+          <caption>Collection 이름은 별도 필드입니다. 변수명에는 <code>color/black</code>처럼 이름만 입력합니다.</caption>
+          <thead><tr><th scope="col">Collection</th><th scope="col">컬러칩 · 색상</th><th scope="col">변수명</th><th scope="col">HEX 코드</th><th scope="col">사용 목적</th></tr></thead>
+          <tbody>
+          <tr id="p-black" data-variable="color/black" data-hex="#000000" data-origin="existing">
+            <td class="collection-cell">01. Primitives</td>
+            <th scope="row"><span class="color-cell"><span class="mini-swatch" style="--swatch:var(--color-black)" aria-hidden="true"></span><span>브랜드 블랙<small class="origin-text">기존</small></span></span></th>
+            <td><button type="button" class="code-copy" data-copy="color/black" aria-label="color/black 복사"><code>color/black</code><span class="copy-mark" aria-hidden="true">↗</span></button></td>
+            <td><code>#000000</code></td>
+            <td class="usage-cell">로고의 중심색. 제목·본문과 예매 등 핵심 행동에 사용합니다.</td>
+          </tr>
+          <tr id="p-sky" data-variable="color/sky" data-hex="#54C8E8" data-origin="existing">
+            <td class="collection-cell">01. Primitives</td>
+            <th scope="row"><span class="color-cell"><span class="mini-swatch" style="--swatch:var(--color-sky)" aria-hidden="true"></span><span>하늘색 · 천<small class="origin-text">기존</small></span></span></th>
+            <td><button type="button" class="code-copy" data-copy="color/sky" aria-label="color/sky 복사"><code>color/sky</code><span class="copy-mark" aria-hidden="true">↗</span></button></td>
+            <td><code>#54C8E8</code></td>
+            <td class="usage-cell">보조 버튼과 탐색·안내 영역에 사용합니다. 글자는 검정으로 고정합니다.</td>
+          </tr>
+          <tr id="p-yellow" data-variable="color/yellow" data-hex="#FFE800" data-origin="existing">
+            <td class="collection-cell">01. Primitives</td>
+            <th scope="row"><span class="color-cell"><span class="mini-swatch" style="--swatch:var(--color-yellow)" aria-hidden="true"></span><span>노란색 · 인<small class="origin-text">기존</small></span></span></th>
+            <td><button type="button" class="code-copy" data-copy="color/yellow" aria-label="color/yellow 복사"><code>color/yellow</code><span class="copy-mark" aria-hidden="true">↗</span></button></td>
+            <td><code>#FFE800</code></td>
+            <td class="usage-cell">추천 배지와 짧은 강조에 사용합니다. 기본 예매 버튼을 대체하지 않습니다.</td>
+          </tr>
+          <tr id="p-ochre" data-variable="color/ochre" data-hex="#C36D15" data-origin="existing">
+            <td class="collection-cell">01. Primitives</td>
+            <th scope="row"><span class="color-cell"><span class="mini-swatch" style="--swatch:var(--color-ochre)" aria-hidden="true"></span><span>황토색 · 지<small class="origin-text">기존</small></span></span></th>
+            <td><button type="button" class="code-copy" data-copy="color/ochre" aria-label="color/ochre 복사"><code>color/ochre</code><span class="copy-mark" aria-hidden="true">↗</span></button></td>
+            <td><code>#C36D15</code></td>
+            <td class="usage-cell">문화 이야기·브랜드 콘텐츠의 제한적 강조색입니다. 작은 본문색으로 쓰지 않습니다.</td>
+          </tr>
+          <tr id="p-white" data-variable="color/white" data-hex="#FFFFFF" data-origin="existing">
+            <td class="collection-cell">01. Primitives</td>
+            <th scope="row"><span class="color-cell"><span class="mini-swatch" style="--swatch:var(--color-white)" aria-hidden="true"></span><span>퓨어 화이트<small class="origin-text">기존</small></span></span></th>
+            <td><button type="button" class="code-copy" data-copy="color/white" aria-label="color/white 복사"><code>color/white</code><span class="copy-mark" aria-hidden="true">↗</span></button></td>
+            <td><code>#FFFFFF</code></td>
+            <td class="usage-cell">카드·헤더·정보 패널의 표면과 어두운 배경 위 글자에 사용합니다.</td>
+          </tr>
+          <tr id="p-gray-050" data-variable="color/gray/050" data-hex="#F7F7F5" data-origin="new">
+            <td class="collection-cell">01. Primitives</td>
+            <th scope="row"><span class="color-cell"><span class="mini-swatch" style="--swatch:var(--color-gray-050)" aria-hidden="true"></span><span>웜 그레이 050<small class="origin-text">신규</small></span></span></th>
+            <td><button type="button" class="code-copy" data-copy="color/gray/050" aria-label="color/gray/050 복사"><code>color/gray/050</code><span class="copy-mark" aria-hidden="true">↗</span></button></td>
+            <td><code>#F7F7F5</code></td>
+            <td class="usage-cell">페이지의 기본 배경. 흰색 카드가 놓이는 바탕을 부드럽게 구분합니다.</td>
+          </tr>
+          <tr id="p-gray-300" data-variable="color/gray/300" data-hex="#D9D9D4" data-origin="new">
+            <td class="collection-cell">01. Primitives</td>
+            <th scope="row"><span class="color-cell"><span class="mini-swatch" style="--swatch:var(--color-gray-300)" aria-hidden="true"></span><span>웜 그레이 300<small class="origin-text">신규</small></span></span></th>
+            <td><button type="button" class="code-copy" data-copy="color/gray/300" aria-label="color/gray/300 복사"><code>color/gray/300</code><span class="copy-mark" aria-hidden="true">↗</span></button></td>
+            <td><code>#D9D9D4</code></td>
+            <td class="usage-cell">카드의 장식 테두리·구분선에 사용합니다. 입력창의 유일한 경계로는 쓰지 않습니다.</td>
+          </tr>
+          <tr id="p-gray-600" data-variable="color/gray/600" data-hex="#626262" data-origin="new">
+            <td class="collection-cell">01. Primitives</td>
+            <th scope="row"><span class="color-cell"><span class="mini-swatch" style="--swatch:var(--color-gray-600)" aria-hidden="true"></span><span>그레이 600<small class="origin-text">신규</small></span></span></th>
+            <td><button type="button" class="code-copy" data-copy="color/gray/600" aria-label="color/gray/600 복사"><code>color/gray/600</code><span class="copy-mark" aria-hidden="true">↗</span></button></td>
+            <td><code>#626262</code></td>
+            <td class="usage-cell">날짜·설명·보조 본문에 사용합니다. 입력창 경계와 검정 버튼의 호버에도 재사용합니다.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="collection-title"><div><h3>02. Semantic</h3><p>역할 변수 20개. 연결할 Primitive를 누르면 원본 행으로 이동합니다.</p></div><span class="collection-meta">TYPE: COLOR · MODE: light</span></div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Semantic 변수표, 좁은 화면에서는 가로로 스크롤">
+        <table id="semantic-table">
+          <caption>모든 Alias의 대상 Collection은 <strong>01. Primitives</strong>입니다. 이 표의 Semantic 값에 HEX를 직접 입력하지 않습니다.</caption>
+          <thead><tr><th scope="col">Collection</th><th scope="col">변수명</th><th scope="col">연결할 Primitive / Alias</th><th scope="col">사용 목적</th></tr></thead>
+          <tbody>
+          <tr class="" data-variable="background/page" data-alias="color/gray/050">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="background/page" aria-label="background/page 복사"><code>background/page</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-gray-050" aria-label="color/gray/050 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-gray-050)" aria-hidden="true"></span><code>color/gray/050</code><span aria-hidden="true">↗</span></a></td>
+            <td>페이지 전체 배경</td>
+          </tr>
+          <tr class="group-start" data-variable="surface/default" data-alias="color/white">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="surface/default" aria-label="surface/default 복사"><code>surface/default</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-white" aria-label="color/white 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-white)" aria-hidden="true"></span><code>color/white</code><span aria-hidden="true">↗</span></a></td>
+            <td>카드·헤더·기본 정보 패널</td>
+          </tr>
+          <tr class="" data-variable="surface/subtle" data-alias="color/gray/050">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="surface/subtle" aria-label="surface/subtle 복사"><code>surface/subtle</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-gray-050" aria-label="color/gray/050 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-gray-050)" aria-hidden="true"></span><code>color/gray/050</code><span aria-hidden="true">↗</span></a></td>
+            <td>카드 안의 보조 영역·예시 무대 배경</td>
+          </tr>
+          <tr class="" data-variable="surface/inverse" data-alias="color/black">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="surface/inverse" aria-label="surface/inverse 복사"><code>surface/inverse</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-black" aria-label="color/black 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-black)" aria-hidden="true"></span><code>color/black</code><span aria-hidden="true">↗</span></a></td>
+            <td>어두운 콘텐츠 패널·푸터</td>
+          </tr>
+          <tr class="group-start" data-variable="text/primary" data-alias="color/black">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="text/primary" aria-label="text/primary 복사"><code>text/primary</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-black" aria-label="color/black 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-black)" aria-hidden="true"></span><code>color/black</code><span aria-hidden="true">↗</span></a></td>
+            <td>제목·본문·필수 정보</td>
+          </tr>
+          <tr class="" data-variable="text/secondary" data-alias="color/gray/600">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="text/secondary" aria-label="text/secondary 복사"><code>text/secondary</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-gray-600" aria-label="color/gray/600 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-gray-600)" aria-hidden="true"></span><code>color/gray/600</code><span aria-hidden="true">↗</span></a></td>
+            <td>흰색·밝은 회색 위 설명·날짜</td>
+          </tr>
+          <tr class="" data-variable="text/inverse" data-alias="color/white">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="text/inverse" aria-label="text/inverse 복사"><code>text/inverse</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-white" aria-label="color/white 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-white)" aria-hidden="true"></span><code>color/white</code><span aria-hidden="true">↗</span></a></td>
+            <td>검정·어두운 회색 위 글자, Primary 버튼 글자</td>
+          </tr>
+          <tr class="" data-variable="text/on/brand" data-alias="color/black">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="text/on/brand" aria-label="text/on/brand 복사"><code>text/on/brand</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-black" aria-label="color/black 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-black)" aria-hidden="true"></span><code>color/black</code><span aria-hidden="true">↗</span></a></td>
+            <td>하늘·노랑·황토 배경 위 글자</td>
+          </tr>
+          <tr class="group-start" data-variable="border/default" data-alias="color/gray/300">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="border/default" aria-label="border/default 복사"><code>border/default</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-gray-300" aria-label="color/gray/300 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-gray-300)" aria-hidden="true"></span><code>color/gray/300</code><span aria-hidden="true">↗</span></a></td>
+            <td>장식용 카드 경계·구분선</td>
+          </tr>
+          <tr class="" data-variable="border/strong" data-alias="color/gray/600">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="border/strong" aria-label="border/strong 복사"><code>border/strong</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-gray-600" aria-label="color/gray/600 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-gray-600)" aria-hidden="true"></span><code>color/gray/600</code><span aria-hidden="true">↗</span></a></td>
+            <td>입력창 등 식별에 필요한 경계</td>
+          </tr>
+          <tr class="" data-variable="border/focus" data-alias="color/black">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="border/focus" aria-label="border/focus 복사"><code>border/focus</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-black" aria-label="color/black 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-black)" aria-hidden="true"></span><code>color/black</code><span aria-hidden="true">↗</span></a></td>
+            <td>키보드 포커스 외곽선; 흰색 간격과 함께 사용</td>
+          </tr>
+          <tr class="group-start" data-variable="action/primary" data-alias="color/black">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="action/primary" aria-label="action/primary 복사"><code>action/primary</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-black" aria-label="color/black 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-black)" aria-hidden="true"></span><code>color/black</code><span aria-hidden="true">↗</span></a></td>
+            <td>예매·신청 등 가장 중요한 버튼 배경</td>
+          </tr>
+          <tr class="" data-variable="action/primary/hover" data-alias="color/gray/600">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="action/primary/hover" aria-label="action/primary/hover 복사"><code>action/primary/hover</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-gray-600" aria-label="color/gray/600 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-gray-600)" aria-hidden="true"></span><code>color/gray/600</code><span aria-hidden="true">↗</span></a></td>
+            <td>Primary 버튼 호버 배경; 글자는 흰색 유지</td>
+          </tr>
+          <tr class="" data-variable="action/secondary" data-alias="color/sky">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="action/secondary" aria-label="action/secondary 복사"><code>action/secondary</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-sky" aria-label="color/sky 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-sky)" aria-hidden="true"></span><code>color/sky</code><span aria-hidden="true">↗</span></a></td>
+            <td>공연 안내·탐색 등 보조 버튼 배경</td>
+          </tr>
+          <tr class="" data-variable="action/tertiary" data-alias="color/white">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="action/tertiary" aria-label="action/tertiary 복사"><code>action/tertiary</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-white" aria-label="color/white 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-white)" aria-hidden="true"></span><code>color/white</code><span aria-hidden="true">↗</span></a></td>
+            <td>우선순위가 낮은 외곽선 버튼 배경</td>
+          </tr>
+          <tr class="" data-variable="action/disabled" data-alias="color/gray/300">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="action/disabled" aria-label="action/disabled 복사"><code>action/disabled</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-gray-300" aria-label="color/gray/300 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-gray-300)" aria-hidden="true"></span><code>color/gray/300</code><span aria-hidden="true">↗</span></a></td>
+            <td>사용할 수 없는 버튼 배경</td>
+          </tr>
+          <tr class="" data-variable="action/disabled/text" data-alias="color/gray/600">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="action/disabled/text" aria-label="action/disabled/text 복사"><code>action/disabled/text</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-gray-600" aria-label="color/gray/600 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-gray-600)" aria-hidden="true"></span><code>color/gray/600</code><span aria-hidden="true">↗</span></a></td>
+            <td>비활성 버튼 글자; 실제 disabled 속성과 함께 사용</td>
+          </tr>
+          <tr class="group-start" data-variable="accent/highlight" data-alias="color/yellow">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="accent/highlight" aria-label="accent/highlight 복사"><code>accent/highlight</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-yellow" aria-label="color/yellow 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-yellow)" aria-hidden="true"></span><code>color/yellow</code><span aria-hidden="true">↗</span></a></td>
+            <td>추천·기획 배지와 짧은 강조</td>
+          </tr>
+          <tr class="" data-variable="accent/heritage" data-alias="color/ochre">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="accent/heritage" aria-label="accent/heritage 복사"><code>accent/heritage</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-ochre" aria-label="color/ochre 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-ochre)" aria-hidden="true"></span><code>color/ochre</code><span aria-hidden="true">↗</span></a></td>
+            <td>문화·브랜드 이야기의 강조 면</td>
+          </tr>
+          <tr class="" data-variable="accent/information" data-alias="color/sky">
+            <td class="collection-cell">02. Semantic</td>
+            <th scope="row"><button type="button" class="code-copy" data-copy="accent/information" aria-label="accent/information 복사"><code>accent/information</code><span class="copy-mark" aria-hidden="true">↗</span></button></th>
+            <td><a class="alias-link" href="#p-sky" aria-label="color/sky 원본 변수 확인"><span class="mini-swatch small" style="--swatch:var(--color-sky)" aria-hidden="true"></span><code>color/sky</code><span aria-hidden="true">↗</span></a></td>
+            <td>탐색·안내 패널의 강조 면</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="register-guide">
+        <h4>Figma 등록 순서<a class="ref" href="#source-figma" aria-label="출처 4 Figma">[4]</a></h4>
+        <div class="register-steps">
+          <p><strong>1. 원본값 등록</strong>Variables에서 <code>01. Primitives</code> Collection을 만듭니다. Color 타입으로 변수 8개와 HEX 값을 입력합니다.</p>
+          <p><strong>2. 역할 연결</strong><code>02. Semantic</code>에 Color 변수를 만듭니다. 값에서 <strong>Create alias</strong>를 선택하고 표에 적힌 Primitive를 검색해 연결합니다.</p>
+          <p><strong>3. 화면에 적용</strong>버튼·카드·텍스트에는 Semantic을 적용합니다. 예: 버튼 배경은 <code>action/primary</code>, 버튼 글자는 <code>text/inverse</code>.</p>
+        </div>
+      </div>
+      <p class="note">두 Collection 모두 모드는 <code>light</code> 하나로 시작합니다. <strong>이 HTML은 수동 등록용 명세이며 Figma에 자동 등록하지 않습니다.</strong> 복사 버튼은 문자열을 복사할 뿐, Alias 연결 자체를 생성하지 않습니다.</p>
+    </section>
+
+    <section class="section" id="contrast" aria-labelledby="contrast-title">
+      <div class="section-heading"><div><p class="eyebrow">D / CONTRAST & RULES</p><h2 id="contrast-title">예쁜 색보다, 읽히는 조합.</h2></div><p>아래는 지정한 HEX로 계산한 글자·배경 대비입니다.<br>일반 본문은 최소 4.5:1을 기준으로 선택했습니다.<a class="ref" href="#source-contrast" aria-label="출처 5 대비">[5]</a></p></div>
+      <div class="contrast-grid">
+        <div class="contrast-card"><div class="contrast-sample" style="--sample-bg:var(--action-primary);--sample-ink:var(--text-inverse)">Aa</div><div class="contrast-label">흰 글자 / 검정<strong>21.00 : 1</strong><small>일반 본문 AA 기준 충족</small></div></div>
+        <div class="contrast-card"><div class="contrast-sample" style="--sample-bg:var(--action-secondary);--sample-ink:var(--text-on-brand)">Aa</div><div class="contrast-label">검정 글자 / 하늘<strong>10.80 : 1</strong><small>일반 본문 AA 기준 충족</small></div></div>
+        <div class="contrast-card"><div class="contrast-sample" style="--sample-bg:var(--accent-highlight);--sample-ink:var(--text-on-brand)">Aa</div><div class="contrast-label">검정 글자 / 노랑<strong>16.79 : 1</strong><small>일반 본문 AA 기준 충족</small></div></div>
+        <div class="contrast-card"><div class="contrast-sample" style="--sample-bg:var(--accent-heritage);--sample-ink:var(--text-on-brand)">Aa</div><div class="contrast-label">검정 글자 / 황토<strong>5.52 : 1</strong><small>일반 본문 AA 기준 충족</small></div></div>
+        <div class="contrast-card"><div class="contrast-sample" style="--sample-bg:var(--surface-default);--sample-ink:var(--text-secondary)">Aa</div><div class="contrast-label">그레이 600 / 흰색<strong>6.10 : 1</strong><small>일반 본문 AA 기준 충족</small></div></div>
+      </div>
+      <div class="rule-grid">
+        <p><strong>유채색 위 작은 흰색 글자는 피하기</strong>흰색 / 하늘은 1.94:1, 흰색 / 노랑은 1.25:1, 흰색 / 황토는 3.81:1로 일반 본문 4.5:1에 미달합니다. 세 색 위에는 검정을 사용합니다. 보조 글자 그레이 600은 페이지 배경 위에서도 5.69:1입니다. 계산값은 소수점 둘째 자리 표시이며, 전체 페이지의 접근성 인증을 뜻하지는 않습니다.<a class="ref" href="#source-contrast" aria-label="출처 5 대비">[5]</a></p>
+        <p><strong>장식선과 조작 경계를 구분하기</strong>웜 그레이 300 / 흰색은 1.42:1이므로 장식선에만 사용합니다. 입력창처럼 경계 인지가 필요한 UI는 그레이 600이나 검정을 쓰고, 키보드 포커스는 검정 외곽선과 흰색 간격으로 표시합니다. 식별에 필요한 비텍스트 요소는 인접 배경과 3:1 이상을 확보합니다.<a class="ref" href="#source-nontext" aria-label="출처 6 비텍스트 대비">[6]</a></p>
+      </div>
+      <p class="note"><strong>운영 규칙 제안:</strong> 한 영역에서는 주된 강조색 하나를 선택합니다. 버튼 호버는 기존 색과 밑줄로 표현하고, 색을 계속 늘리지 않습니다. 노랑을 자동으로 ‘경고’에 배정하지 않습니다. 이 기본안에는 성공·오류 전용색과 다크 모드를 추가하지 않았습니다.</p>
+    </section>
+
+    <section class="section" id="ui-demo" aria-labelledby="ui-title">
+      <div class="section-heading"><div><p class="eyebrow">E / UI IN PRACTICE</p><h2 id="ui-title">실제 화면에서는 이렇게.</h2></div><p>배경·카드·버튼·배지·입력창을 함께 비교하세요.<br>버튼을 누르면 적용된 변수 조합을 확인할 수 있습니다.</p></div>
+      <div class="demo-window">
+        <div class="demo-topbar"><strong>세종문화회관</strong><div class="demo-nav" aria-label="장식용 메뉴 예시"><span class="selected">공연·전시</span><span>이용안내</span><span>소식</span></div></div>
+        <div class="demo-body">
+          <div class="demo-heading"><div><div class="eyebrow">DISCOVER YOUR STAGE</div><h3>오늘, 예술을 만나는 시간.</h3></div><p>가상 UI · 실제 공연 정보가 아닙니다</p></div>
+          <div class="demo-main">
+            <article class="program-card">
+              <div class="program-poster" aria-label="색상 적용을 위한 가상 공연 포스터">
+                <span class="eyebrow">SEJONG / SAMPLE</span><div class="poster-title">새로운<br>울림</div>
+                <div class="poster-bars" aria-hidden="true"><span></span><span></span><span></span></div>
+              </div>
+              <div class="program-body"><span class="badge">기획 공연 · 예시</span><h4>무대가 열리는 순간</h4><p>포스터가 시선을 끌고,<br>정보는 흰색 카드 안에서 읽힙니다.<br>가장 중요한 행동은 검정으로.</p>
+                <div class="program-actions"><button type="button" class="button button-primary" data-demo="예매하기 · 배경: action/primary → color/black / 글자: text/inverse → color/white">예매하기 <span aria-hidden="true">↗</span></button><button type="button" class="button button-secondary" data-demo="공연 안내 · 배경: action/secondary → color/sky / 글자: text/on/brand → color/black">공연 안내</button></div>
+              </div>
+            </article>
+            <aside class="demo-side">
+              <div class="info-card"><div class="eyebrow">INFORMATION</div><h4>나에게 맞는<br>공연을 찾아보세요.</h4><p>하늘색은 탐색과 안내의 보조 면으로.</p><button type="button" class="button button-tertiary" data-demo="둘러보기 · 배경: action/tertiary → color/white / 패널: accent/information → color/sky">둘러보기 <span aria-hidden="true">→</span></button></div>
+              <div class="heritage-card"><strong>문화 이야기</strong><span>황토색의 작은 강조 면</span></div>
+            </aside>
+          </div>
+          <div class="component-row">
+            <div class="input-demo"><label for="sample-search">입력창 예시</label><input id="sample-search" type="text" placeholder="관심 있는 공연을 입력해 보세요" aria-describedby="input-description"><small id="input-description">검색 기능 없는 디자인 예시 · 경계: border/strong · Tab 키로 포커스 확인</small></div>
+            <div class="state-demo"><span>버튼 상태 예시</span><button type="button" class="button button-primary" data-demo="Primary 호버 · 배경: action/primary/hover → color/gray/600 / 흰 글자 유지 · 대비 6.10:1">마우스를 올려보세요</button><button type="button" class="button" disabled>예매 준비 중</button></div>
+          </div>
+        </div>
+        <p class="demo-feedback" id="demo-feedback" role="status" aria-live="polite">예시 버튼을 누르면 이곳에 색상 변수 연결이 표시됩니다. 실제 예매나 외부 전송은 이루어지지 않습니다.</p>
+      </div>
+      <div class="demo-caption"><span><b>배경</b> background/page</span><span><b>카드</b> surface/default</span><span><b>제목</b> text/primary</span><span><b>설명</b> text/secondary</span><span><b>배지</b> accent/highlight</span></div>
+      <p class="note">이 HTML의 CSS도 <code>원본 색 → 역할 변수 → 컴포넌트</code> 구조입니다. <code>:root</code>의 Primitive에서만 색을 정의하고, 버튼·카드는 <code>var(--action-primary)</code>처럼 Semantic을 참조합니다. 팔레트와 변수표의 컬러칩만 원본값을 직접 보여줍니다.</p>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <div class="footer-head"><h2>출처와 적용 범위</h2><span>확인일 2026.10.19 · 리뉴얼 제안 v1.0</span></div>
+    <div class="source-links">
+      <a id="source-logo" href="https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200508" target="_blank" rel="noopener noreferrer">[1] 공식 CI · 로고</a>
+      <a id="source-color" href="https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200510" target="_blank" rel="noopener noreferrer">[2] 공식 CI · 컬러</a>
+      <a id="source-font" href="https://github.com/orioncactus/pretendard" target="_blank" rel="noopener noreferrer">[3] Pretendard 공식 문서</a>
+      <a id="source-figma" href="https://help.figma.com/hc/en-us/articles/15145852043927-Create-and-manage-variables-and-collections" target="_blank" rel="noopener noreferrer">[4] Figma · Variables & Alias</a>
+      <a id="source-contrast" href="https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html" target="_blank" rel="noopener noreferrer">[5] WCAG 2.2 · 글자 대비</a>
+      <a id="source-nontext" href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html" target="_blank" rel="noopener noreferrer">[6] WCAG 2.2 · 비텍스트 대비</a>
+    </div>
+    <p>기존 컬러와 로고 설명은 첨부 자료 및 공식 CI를 기준으로 했습니다. 중립색 3개, 역할 배정, 변수명, UI 예시는 이번 리뉴얼을 위한 제안이며 공식 브랜드 규정이 아닙니다. 상단과 UI 예시의 기관명은 문서용 텍스트이며 공식 로고를 재제작한 것이 아닙니다. 운영 사이트에서는 승인된 로고 원본을 사용하세요.</p>
+    <p>파일은 HTML 하나로 구성되어 설치 없이 열 수 있습니다. Pretendard 웹폰트 로드에는 인터넷 연결이 필요하며, 연결되지 않으면 기기의 기본 고딕 글꼴로 표시됩니다. 외부 폰트 로드 외에 입력값을 전송하거나 저장하지 않습니다.</p>
+  </footer>
+  <div class="toast" id="copy-status" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    // 복사 기능만 보조합니다. JavaScript가 꺼져 있어도 가이드와 표는 그대로 보입니다.
+    const copyStatus = document.getElementById('copy-status');
+    let copyTimer;
+    document.querySelectorAll('[data-copy]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const value = button.dataset.copy;
+        if (!value) return;
+        window.clearTimeout(copyTimer);
+        try {
+          if (!navigator.clipboard || !window.isSecureContext) throw new Error('Clipboard unavailable');
+          await navigator.clipboard.writeText(value);
+          copyStatus.textContent = value + ' 복사 완료';
+        } catch (error) {
+          // 파일 열기 환경에서 자동 복사가 제한되면 값을 선택하여 수동 복사를 돕습니다.
+          const target = button.querySelector('code');
+          const selection = window.getSelection();
+          if (target && selection) {
+            const range = document.createRange();
+            range.selectNodeContents(target);
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+          copyStatus.textContent = '자동 복사가 제한되어 값을 선택했어요. Ctrl+C 또는 ⌘C로 복사하세요.';
+        }
+        copyTimer = window.setTimeout(() => { copyStatus.textContent = ''; }, 5000);
+      });
+    });
+    // 데모 버튼은 색상 연결만 설명합니다. 예약·결제·데이터 전송 기능은 없습니다.
+    document.querySelectorAll('[data-demo]').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.getElementById('demo-feedback').textContent = button.dataset.demo;
+      });
+    });
+  </script>
+</body>
+</html>

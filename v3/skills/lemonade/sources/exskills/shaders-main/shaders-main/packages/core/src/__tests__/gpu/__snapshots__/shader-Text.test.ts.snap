@@ -1,0 +1,122 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Text (a) glyph media-texture sampling + placement > registers a media glyph texture, samples it at the placement body, reads half-extents > final-pass 1`] = `
+"fn orientedBoxField(uv: vec2f, aspect: f32, center: vec2f, rotationDeg: f32, halfW: f32, halfH: f32) -> vec3f {
+  let aspectUV = vec2f((uv.x * aspect), uv.y);
+  let centerPos = vec2f((center.x * aspect), (1f - center.y));
+  let dx = (aspectUV.x - centerPos.x);
+  let dy = (aspectUV.y - centerPos.y);
+  let rotRad = (rotationDeg * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  let localU = ((rdx / (halfW * 2f)) + 0.5f);
+  let localV = ((rdy / (halfH * 2f)) + 0.5f);
+  let insideMask = (((step(0f, localU) * step(localU, 1f)) * step(0f, localV)) * step(localV, 1f));
+  return vec3f(localU, localV, insideMask);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  fontWeight: f32,
+  italic: f32,
+  fontSize: f32,
+  letterSpacing: f32,
+  lineHeight: f32,
+  width: f32,
+  color: vec4f,
+  center: vec2f,
+  rotation: f32,
+  halfW: f32,
+  halfH: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_txt: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var media_0: texture_2d<f32>;
+
+fn catmullRomAxisPositions(uv: f32, texSize: f32) -> vec3f {
+  let samplePos = (uv * texSize);
+  let texPos1 = (floor((samplePos - 0.5f)) + 0.5f);
+  let f = (samplePos - texPos1);
+  let w1 = (1f + ((f * f) * (-2.5f + (1.5f * f))));
+  let w2 = (f * (0.5f + (f * (2f - (1.5f * f)))));
+  let w12 = max((w1 + w2), 1e-6f);
+  let offset12 = (w2 / w12);
+  return vec3f(((texPos1 - 1f) / texSize), ((texPos1 + offset12) / texSize), ((texPos1 + 2f) / texSize));
+}
+
+fn catmullRomAxisWeights(uv: f32, texSize: f32) -> vec3f {
+  let samplePos = (uv * texSize);
+  let texPos1 = (floor((samplePos - 0.5f)) + 0.5f);
+  let f = (samplePos - texPos1);
+  let w0 = (f * (-0.5f + (f * (1f - (0.5f * f)))));
+  let w1 = (1f + ((f * f) * (-2.5f + (1.5f * f))));
+  let w2 = (f * (0.5f + (f * (2f - (1.5f * f)))));
+  let w3 = ((f * f) * (-0.5f + (0.5f * f)));
+  return vec3f(w0, (w1 + w2), w3);
+}
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let crUV_0 = (orientedBoxField(uv, uniforms._sys.aspect, uniforms.n_txt.center, uniforms.n_txt.rotation, uniforms.n_txt.halfW, uniforms.n_txt.halfH)).xy;
+  let crSize_1 = vec2f(textureDimensions(media_0));
+  let crPosX_2 = catmullRomAxisPositions(crUV_0.x, crSize_1.x);
+  let crPosY_3 = catmullRomAxisPositions(crUV_0.y, crSize_1.y);
+  let crWx_4 = catmullRomAxisWeights(crUV_0.x, crSize_1.x);
+  let crWy_5 = catmullRomAxisWeights(crUV_0.y, crSize_1.y);
+  var crOut_6 = vec4f(0.0, 0.0, 0.0, 0.0);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.x)) * (crWx_4.x * crWy_5.x);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.x)) * (crWx_4.y * crWy_5.x);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.x)) * (crWx_4.z * crWy_5.x);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.y)) * (crWx_4.x * crWy_5.y);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.y)) * (crWx_4.y * crWy_5.y);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.y)) * (crWx_4.z * crWy_5.y);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.z)) * (crWx_4.x * crWy_5.z);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.z)) * (crWx_4.y * crWy_5.z);
+  crOut_6 += textureSample(media_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.z)) * (crWx_4.z * crWy_5.z);
+  crOut_6 = clamp(crOut_6, vec4f(0.0, 0.0, 0.0, 0.0), vec4f(1.0, 1.0, 1.0, 1.0));
+  var composed_7 = vec4f(uniforms.n_txt.color.rgb, ((crOut_6.a * uniforms.n_txt.color.a) * (orientedBoxField(uv, uniforms._sys.aspect, uniforms.n_txt.center, uniforms.n_txt.rotation, uniforms.n_txt.halfW, uniforms.n_txt.halfH)).z));
+  return vec4f(linearToSrgb(tone_linear(composed_7.rgb)), composed_7.a);
+}"
+`;

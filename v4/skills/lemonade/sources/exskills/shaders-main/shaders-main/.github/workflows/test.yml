@@ -1,0 +1,86 @@
+name: Tests
+
+# Engine tests + library build. This workflow moves to the public repo as-is; anything
+# platform-specific (previews, prompts, dotcom) belongs in platform.yml.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    name: Core Renderer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.20.x'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run core package tests
+        run: pnpm --filter shaders-core test:run
+
+      - name: Build shaders library
+        run: pnpm lib:build
+
+      # The build rewrites tracked files (the shader registry, each framework's Preview list,
+      # the JS codegen defaults, the package.json exports maps). A PR that changes a shader
+      # without committing those leaves main inconsistent, so the diff after a build must be empty.
+      - name: Generated files are committed
+        run: |
+          if ! git diff --quiet; then
+            echo "::error::The build changed tracked files that aren't in this PR. Run 'pnpm lib:build' locally and commit the result."
+            git --no-pager diff --stat
+            exit 1
+          fi
+
+  # A release PR (prepared by `pnpm release`) bumps packages/shaders/package.json. Merging
+  # it publishes, so the changelog entry has to be there before the merge, not after.
+  release-check:
+    name: Release PR check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Changelog entry matches the version
+        run: |
+          VERSION=$(node -p "require('./packages/shaders/package.json').version")
+          if git rev-parse -q --verify "refs/tags/v$VERSION" > /dev/null; then
+            echo "v$VERSION is already released; not a release PR."
+            exit 0
+          fi
+          if grep -Eq "^## v${VERSION//./\\.}( |$)" CHANGELOG.md; then
+            echo "Release PR for v$VERSION: changelog entry present."
+          else
+            echo "::error file=CHANGELOG.md::package.json says $VERSION but CHANGELOG.md has no '## v$VERSION' entry. Prepare releases with 'pnpm release'."
+            exit 1
+          fi

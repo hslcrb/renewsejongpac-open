@@ -1,0 +1,37 @@
+/* [새 신청 화면 안의 배치 / Layout confined to the new request surfaces] */
+.service-request { display: grid; gap: var(--space-5); min-width: 0; }
+.service-request-form { display: grid; gap: var(--space-6); }
+.service-request-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+.service-request-wide { grid-column: 1 / -1; }
+.service-request-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.service-request-actions p { margin: 0; }
+.service-request-history { display: grid; gap: var(--space-4); }
+.service-request-privacy { margin: 0 0 var(--space-4); }
+.service-request-privacy > div { display: grid; grid-template-columns: minmax(8rem, .3fr) minmax(0, 1fr); gap: var(--space-4); padding-block: var(--space-3); }
+.service-request-privacy dd { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+.service-request :is(h2,h3) { margin-block: 0; }
+
+/* [상품·장바구니·미결제 요청 / Goods, account carts and unpaid requests] */
+.service-goods { display: grid; gap: var(--space-6); min-width: 0; }
+.service-goods-toolbar { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
+.service-goods-toolbar .ds-field { flex: 1 1 18rem; max-width: 34rem; }
+.service-goods-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+.service-goods-card { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.service-goods-card p { margin: 0; }
+.service-goods-card .service-request-actions { margin-top: auto; }
+.service-goods-image { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; border-radius: var(--radius-media); background: var(--surface-subtle); }
+.service-cart-lines { display: grid; gap: var(--space-4); }
+.service-cart-line { display: grid; grid-template-columns: minmax(0, 1fr) minmax(7rem, .2fr) auto; align-items: center; gap: var(--space-5); }
+.service-cart-line h3 { margin-block: 0 var(--space-2); }
+.service-cart-line p { margin: 0; }
+.service-cart-total { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-4); padding-block: var(--space-5); box-shadow: inset 0 var(--stroke-width) 0 var(--border-default); }
+.service-cart-total strong { font-variant-numeric: tabular-nums; }
+.service-order-lines { display: grid; gap: var(--space-3); padding: 0; list-style: none; }
+.service-order-lines li { display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+@media (max-width: 900px) { .service-goods-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+    .service-request-fields, .service-goods-grid { grid-template-columns: minmax(0, 1fr); }
+    .service-request-privacy > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+    .service-cart-line { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .service-request-actions > .ds-button { flex: 1 1 auto; }
+}

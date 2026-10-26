@@ -1,0 +1,260 @@
+/* [배경을 덮지 않는 유리 창 / A glass window without a page-covering layer]
+   헤더 밖의 독립된 표면만 그립니다. / Only the detached menu paints a surface. */
+.floating-panel {
+    position: fixed;
+    z-index: 140;
+    inset: 0 auto auto 0;
+    display: grid;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    width: min(1180px, calc(100vw - 24px));
+    max-height: calc(100dvh - 24px);
+    margin: 0;
+    padding: 0;
+    visibility: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.floating-panel[data-ready] {
+    visibility: visible;
+}
+.floating-panel[data-phase="open"] {
+    opacity: 1;
+    pointer-events: auto;
+}
+.floating-panel-webgl {
+    position: fixed;
+    inset: 0;
+    z-index: 141;
+    width: 100vw;
+    height: 100dvh;
+    pointer-events: none;
+    visibility: hidden;
+}
+/* [왼쪽 벽에 붙는 세로 메뉴 / Vertical navigation attached to the left edge] */
+.floating-panel[data-presentation="drawer"] {
+    width: min(24rem, calc(100vw - 24px));
+    height: 100dvh;
+    max-height: 100dvh;
+    grid-template-rows: auto minmax(0, 1fr);
+    border-left: 0;
+    border-radius: 0 var(--radius-dialog) var(--radius-dialog) 0;
+    cursor: default;
+}
+.floating-panel[data-presentation="drawer"] .glass-menu-content a { cursor: pointer; }
+.floating-panel[data-dragging] {
+    cursor: grabbing;
+    will-change: transform;
+}
+.floating-panel[data-dragging] * {
+    cursor: grabbing !important;
+}
+.floating-panel[data-move-mode] {
+    touch-action: none;
+}
+.glass-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-8) var(--space-10) var(--space-6);
+    touch-action: none;
+}
+.glass-menu-brand {
+    margin: 0 0 var(--space-1);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-label);
+}
+.glass-menu-header h2 {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-title));
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    font-weight: var(--weight-heading);
+}
+.glass-menu-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+}
+.glass-menu-actions .round-button {
+    width: var(--control-size);
+    height: var(--control-size);
+}
+.glass-menu-move {
+    flex-shrink: 0;
+}
+
+/* [정보 위계와 내부 스크롤 / Information hierarchy and an independently scrolling body] */
+.glass-menu-content {
+    grid-row: 4;
+    min-height: 0;
+    padding: 0 var(--space-10) var(--space-6);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-detail-139beaa) var(--color-detail-j5afio);
+    border-radius: 0 0 var(--radius-dialog) var(--radius-dialog);
+}
+.glass-menu-content a {
+    color: var(--text-primary);
+    cursor: grab;
+}
+.glass-menu-journeys {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+    margin-bottom: var(--space-6);
+}
+.glass-menu-journeys a {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4) 0 var(--space-5);
+    border-block: 1px solid var(--border-default);
+}
+.glass-menu-journeys span {
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+.glass-menu-journeys strong {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+.glass-menu-columns {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-5);
+}
+.glass-menu-columns > div {
+    display: grid;
+    align-content: start;
+    gap: 0;
+    min-width: 0;
+}
+.glass-menu-columns a {
+    display: flex;
+    align-items: center;
+    min-height: var(--control-size);
+    padding-block: var(--space-2);
+    font-size: max(var(--text-min), var(--text-menu-link));
+    line-height: var(--leading-label);
+    font-weight: var(--weight-label);
+    overflow-wrap: anywhere;
+}
+.glass-menu-columns .glass-menu-title {
+    margin-bottom: var(--space-2);
+    font-size: max(var(--text-min), var(--text-menu-group));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+.glass-menu-utilities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-6);
+    margin-top: var(--space-6);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border-default);
+}
+.glass-menu-utilities a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-size);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-label);
+}
+.glass-menu a:hover {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 1px;
+}
+.glass-menu a:active {
+    text-decoration-thickness: 2px;
+}
+.glass-menu-actions .round-button:hover {
+    background: var(--color-detail-14lw51r);
+}
+
+@media (max-width: 1100px) {
+    .glass-menu-columns {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--space-6);
+    }
+}
+@media (max-width: 700px) {
+    .glass-menu-header {
+        padding: var(--space-5) var(--space-5) var(--space-4);
+        gap: var(--space-2);
+    }
+    .glass-menu-header h2 {
+        font-size: max(var(--text-min), var(--text-heading));
+    }
+    .glass-menu-content {
+        padding: 0 var(--space-5) var(--space-4);
+    }
+    .glass-menu-move {
+        padding: var(--space-2);
+    }
+    .glass-menu-move span {
+        display: none;
+    }
+    .glass-menu-journeys {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .glass-menu-journeys a {
+        gap: var(--space-1);
+        padding-block: var(--space-4);
+    }
+    .glass-menu-journeys a + a {
+        border-top: 0;
+    }
+    .glass-menu-journeys strong {
+        font-size: max(var(--text-min), var(--text-subheading));
+    }
+    .glass-menu-columns {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .glass-menu-columns .glass-menu-title {
+        font-size: max(var(--text-min), var(--text-item-title));
+    }
+    .glass-menu-utilities {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    .glass-menu-journeys span { display: none; }
+    .glass-menu-journeys strong { font-size: max(var(--text-min), var(--text-item-title)); }
+    .glass-menu-group { border-bottom: 1px solid var(--border-default); }
+    .glass-menu-group summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 64px;
+        gap: var(--space-3);
+        font-size: max(var(--text-min), var(--text-item-title));
+        font-weight: var(--weight-heading);
+        cursor: pointer;
+        list-style: none;
+    }
+    .glass-menu-group summary::-webkit-details-marker { display: none; }
+    .glass-menu-group summary svg { transition: transform 180ms var(--ease-out); }
+    .glass-menu-group[open] summary svg { transform: rotate(90deg); }
+    .glass-menu-group-links { display: grid; padding: 0 0 var(--space-4) var(--space-3); }
+    .glass-menu-group-links a { font-size: max(var(--text-min), var(--text-body)); }
+    .glass-menu-group-links .glass-menu-overview { color: var(--text-secondary); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .glass-menu-group summary svg { transition: none; }
+}

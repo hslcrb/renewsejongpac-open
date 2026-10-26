@@ -1,0 +1,57 @@
+{
+    "releaseId": "r-2e2ede029b480b49",
+    "conditions": "Headless Chromium, Windows, localhost:4173, 1440x900 DPR1, reduced motion, CDP cache disabled, fresh context per run, no CPU/network throttle. Remote API timing uncontrolled; local-resource bytes reported separately. Gzip sizes are theoretical gzipSync output, not an assertion that server uses gzip. Source maps are not automatically fetched.",
+    "baseline": {
+        "domContentLoadedMs": 26.799999952316284,
+        "loadMs": 288.8000000715256,
+        "htmlTransferBytes": 88626,
+        "localResourceTransferBytes": 13804909,
+        "jsCssFiles": 26,
+        "jsCssRawBytes": 1204542,
+        "jsCssGzipBytes": 316790
+    },
+    "after": {
+        "domContentLoadedMs": 24.100000023841858,
+        "loadMs": 285.7999999523163,
+        "htmlTransferBytes": 206610,
+        "localResourceTransferBytes": 15560309,
+        "jsCssFiles": 28,
+        "jsCssRawBytes": 3471692,
+        "jsCssGzipBytes": 631214
+    },
+    "baselineAssets": {
+        "js": {
+            "files": 41,
+            "rawBytes": 1426576,
+            "gzipBytes": 434862
+        },
+        "css": {
+            "files": 8,
+            "rawBytes": 374723,
+            "gzipBytes": 70508
+        },
+        "map": {
+            "files": 0,
+            "rawBytes": 0,
+            "gzipBytes": 0
+        }
+    },
+    "afterAssets": {
+        "js": {
+            "files": 42,
+            "rawBytes": 4489022,
+            "gzipBytes": 823697
+        },
+        "css": {
+            "files": 8,
+            "rawBytes": 499517,
+            "gzipBytes": 91013
+        },
+        "map": {
+            "files": 50,
+            "rawBytes": 4893561,
+            "gzipBytes": 1267487
+        }
+    },
+    "note": "Baseline 8919dfb3 and the complete final implementation differ in DB snapshots, catalog/booking features, fonts, source maps and readable output; increases cannot be attributed to beautification alone. Localhost timings do not establish remote Vercel performance."
+}

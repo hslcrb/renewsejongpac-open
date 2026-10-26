@@ -1,0 +1,21 @@
+{
+  "source_commit": "a5db6d34fee7b54ff6235351c3b6dadd2dd90b4f",
+  "method": "isolated temporary index with selected diagram patch, followed by git restore --worktree for two paths",
+  "files": {
+    "v2/src/features/pages.js": {
+      "before_sha256": "30134fc9a5306a0a3686c99a353e8dc85b8aa9b434b5725aa702f23ee248e0db",
+      "after_sha256": "e5fd36cd91a9e9fc2355d94e9262518f3a88106ac1f5b20495d01e7f68fc64bc"
+    },
+    "v2/styles/information.css": {
+      "before_sha256": "472c3361adf5b48b499521e9f7ab5df0e21c54dc894471b9b6012099dad99b53",
+      "after_sha256": "310a91806938f1a4765121550198912a1e9ee2d44597af1cd69d1e470b6de55e"
+    }
+  },
+  "preserved": [
+    "removed English eyebrows",
+    "removed address caption",
+    "plain about navigation",
+    "hidden decorative header marks"
+  ],
+  "real_index_unchanged": true
+}

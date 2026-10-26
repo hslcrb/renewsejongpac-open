@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Grayscale (a) inline color-filter path (NO RTT) > operates on the composed child inline — no RTT, no unpremultiply > final-pass 1`] = `
+"fn grayscale(color: vec4f) -> vec4f {
+  let luminance = dot(color.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  return vec4f(luminance, luminance, luminance, color.w);
+}
+
+fn genBody(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  var composed_0 = grayscale(genBody(uv));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

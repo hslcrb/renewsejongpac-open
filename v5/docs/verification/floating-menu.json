@@ -1,0 +1,66 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "results": [
+    {
+      "name": "opening paints only the floating panel and preserves the header and page",
+      "passed": true
+    },
+    {
+      "name": "actual backdrop refraction, type hierarchy and 48px navigation targets",
+      "passed": true
+    },
+    {
+      "name": "every menu destination opens an exported document",
+      "passed": true
+    },
+    {
+      "name": "the heading follows a free drag in both axes",
+      "passed": true
+    },
+    {
+      "name": "dragging a navigation label moves the panel without following its link",
+      "passed": true
+    },
+    {
+      "name": "keyboard movement is precise and Home restores the starting position",
+      "passed": true
+    },
+    {
+      "name": "the full panel clamps at every viewport edge",
+      "passed": true
+    },
+    {
+      "name": "close and Escape restore focus; reopening retains the chosen position",
+      "passed": true
+    },
+    {
+      "name": "background scrolling remains available while the menu holds its position",
+      "passed": true
+    },
+    {
+      "name": "desktop, tablet and mobile reflow keep controls and all links reachable",
+      "passed": true
+    },
+    {
+      "name": "high contrast uses an opaque readable surface",
+      "passed": true
+    },
+    {
+      "name": "a regular link still navigates and dismisses the menu",
+      "passed": true
+    },
+    {
+      "name": "the design guide demonstrates the same floating menu and restores its trigger",
+      "passed": true
+    },
+    {
+      "name": "native touch scrolls the body, drags the title and cancels a gesture cleanly",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

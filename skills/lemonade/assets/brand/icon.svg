@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 80 80" role="img" aria-labelledby="title">
+  <title id="title">lemonade / 레모네이드</title>
+  <rect width="80" height="80" rx="20" fill="#F4DF4E"/>
+  <path fill="#173B2C" d="M29 10C13 10 12 29 4 32C12 35 13 54 29 54ZM35 10C51 10 52 29 60 32C52 35 51 54 35 54Z" transform="translate(8 8) rotate(-35 32 32)"/>
+</svg>

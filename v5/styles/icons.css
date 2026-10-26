@@ -1,0 +1,7 @@
+/* [헤더 전용 Material 아이콘 그룹 / Header-only Material icon group]
+   SVG 비례와 원형 48px 조작 영역을 유지합니다. / Retain SVG proportions and the 48px circular target. */
+.material-icon[data-icon-group="header-action"] {
+    width: var(--icon-header-action-size);
+    height: var(--icon-header-action-size);
+    flex-shrink: 0;
+}

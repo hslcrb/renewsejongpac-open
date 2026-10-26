@@ -1,0 +1,83 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T07:08:19.382Z",
+  "results": [
+    {
+      "name": "both neighbouring works remain visible with readable program titles",
+      "passed": true
+    },
+    {
+      "name": "peer clicks, keyboard activation and wraparound keep names, images and destinations together",
+      "passed": true
+    },
+    {
+      "name": "phone peeks keep both titles in reachable navigation and both primary actions inside the card",
+      "passed": true
+    },
+    {
+      "name": "horizontal dragging advances exactly one work and cancelled gestures return without navigation",
+      "passed": true
+    },
+    {
+      "name": "explicit playback resumes while the play button retains keyboard focus",
+      "passed": true
+    },
+    {
+      "name": "releasing a gesture outside the stage before capture does not block playback",
+      "passed": true
+    },
+    {
+      "name": "registered inverse-quiet example matches the actual photo-overlay controls",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: home",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: programs/",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: programs/dance/",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: booking/dance/",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: visit/directions/",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: news/notices/",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: account/",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: account/login/",
+      "passed": true
+    },
+    {
+      "name": "intrinsic layout, readable type and neutral copy across seven widths: design-rules/",
+      "passed": true
+    },
+    {
+      "name": "mobile seats scroll inside their map and the complete booking record remains usable",
+      "passed": true
+    },
+    {
+      "name": "content reflows with 200 percent text without a page-wide horizontal scroll",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

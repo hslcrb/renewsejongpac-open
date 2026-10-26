@@ -1,0 +1,191 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "results": [
+    {
+      "width": 320,
+      "companion": 30,
+      "standalone": 34,
+      "productHero": {
+        "font": 30,
+        "size": "hero-with-companion"
+      },
+      "productQuick": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "companionAxis": {
+        "font": 30,
+        "size": "hero-with-companion"
+      },
+      "standaloneAxis": {
+        "font": 34,
+        "size": "hero-standalone"
+      },
+      "quickAxis": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "guideCompanion": {
+        "font": 30,
+        "size": "hero-with-companion"
+      },
+      "guideStandalone": {
+        "font": 34,
+        "size": "hero-standalone"
+      },
+      "guideQuick": {
+        "font": 16,
+        "size": "quick-action"
+      }
+    },
+    {
+      "width": 390,
+      "companion": 30,
+      "standalone": 34,
+      "productHero": {
+        "font": 30,
+        "size": "hero-with-companion"
+      },
+      "productQuick": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "companionAxis": {
+        "font": 30,
+        "size": "hero-with-companion"
+      },
+      "standaloneAxis": {
+        "font": 34,
+        "size": "hero-standalone"
+      },
+      "quickAxis": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "guideCompanion": {
+        "font": 30,
+        "size": "hero-with-companion"
+      },
+      "guideStandalone": {
+        "font": 34,
+        "size": "hero-standalone"
+      },
+      "guideQuick": {
+        "font": 16,
+        "size": "quick-action"
+      }
+    },
+    {
+      "width": 768,
+      "companion": 40,
+      "standalone": 46,
+      "productHero": {
+        "font": 40,
+        "size": "hero-with-companion"
+      },
+      "productQuick": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "companionAxis": {
+        "font": 40,
+        "size": "hero-with-companion"
+      },
+      "standaloneAxis": {
+        "font": 46,
+        "size": "hero-standalone"
+      },
+      "quickAxis": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "guideCompanion": {
+        "font": 40,
+        "size": "hero-with-companion"
+      },
+      "guideStandalone": {
+        "font": 46,
+        "size": "hero-standalone"
+      },
+      "guideQuick": {
+        "font": 16,
+        "size": "quick-action"
+      }
+    },
+    {
+      "width": 1024,
+      "companion": 40,
+      "standalone": 44.032,
+      "productHero": {
+        "font": 40,
+        "size": "hero-with-companion"
+      },
+      "productQuick": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "companionAxis": {
+        "font": 40,
+        "size": "hero-with-companion"
+      },
+      "standaloneAxis": {
+        "font": 44.032,
+        "size": "hero-standalone"
+      },
+      "quickAxis": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "guideCompanion": {
+        "font": 40,
+        "size": "hero-with-companion"
+      },
+      "guideStandalone": {
+        "font": 44.032,
+        "size": "hero-standalone"
+      },
+      "guideQuick": {
+        "font": 16,
+        "size": "quick-action"
+      }
+    },
+    {
+      "width": 1440,
+      "companion": 53.28,
+      "standalone": 61.92,
+      "productHero": {
+        "font": 53.28,
+        "size": "hero-with-companion"
+      },
+      "productQuick": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "companionAxis": {
+        "font": 53.28,
+        "size": "hero-with-companion"
+      },
+      "standaloneAxis": {
+        "font": 61.92,
+        "size": "hero-standalone"
+      },
+      "quickAxis": {
+        "font": 16,
+        "size": "quick-action"
+      },
+      "guideCompanion": {
+        "font": 53.28,
+        "size": "hero-with-companion"
+      },
+      "guideStandalone": {
+        "font": 61.92,
+        "size": "hero-standalone"
+      },
+      "guideQuick": {
+        "font": 16,
+        "size": "quick-action"
+      }
+    }
+  ],
+  "errors": []
+}

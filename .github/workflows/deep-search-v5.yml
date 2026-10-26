@@ -1,0 +1,61 @@
+name: Verify Deep Chat search and isolated vendors
+
+on:
+  push:
+    branches:
+      - "chatgpt-extrahigh/**"
+    paths:
+      - "v5/**"
+      - "assets/entry.js"
+      - "assets/entry.css"
+      - "index.html"
+      - "plugins/**"
+      - ".github/workflows/deep-search-v5.yml"
+  pull_request:
+    paths:
+      - "v5/**"
+      - "assets/entry.js"
+      - "assets/entry.css"
+      - "index.html"
+      - "plugins/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deep-search-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: v5/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: v5
+        run: npm ci --no-audit --no-fund
+
+      - name: Search and vendor integration contract tests
+        working-directory: v5
+        run: |
+          node --test tests/deep-search-integration.test.mjs tests/vendor-plugins.test.mjs tests/ai-chat-integration.test.mjs
+
+      - name: TypeScript compilation contract
+        working-directory: v5
+        run: npx tsc --noEmit
+
+      - name: Verify static export
+        working-directory: v5
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: npm run build

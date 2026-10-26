@@ -1,0 +1,830 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`kit/sdf3d (f) resolve gate > all 18 SDF primitives resolve to WGSL (snapshot) 1`] = `
+"fn sdf3d_sdSphere(p: vec3f, r: f32) -> f32 {
+  return (length(p) - r);
+}
+
+fn sdf3d_sdRoundBox(p: vec3f, hx: f32, hy: f32, hz: f32, rounding: f32) -> f32 {
+  let qx = ((abs(p.x) - hx) + rounding);
+  let qy = ((abs(p.y) - hy) + rounding);
+  let qz = ((abs(p.z) - hz) + rounding);
+  let outer = length(vec3f(max(qx, 0f), max(qy, 0f), max(qz, 0f)));
+  let inner = min(max(qx, max(qy, qz)), 0f);
+  return ((outer + inner) - rounding);
+}
+
+fn item(p: vec3f, ringR: f32, tubeR: f32) -> f32 {
+  let qx = (length(vec2f(p.x, p.z)) - ringR);
+  return (length(vec2f(qx, p.y)) - tubeR);
+}
+
+fn item_1(p: vec3f, s: f32) -> f32 {
+  return ((((abs(p.x) + abs(p.y)) + abs(p.z)) - s) * 0.57735027f);
+}
+
+fn item_2(p: vec3f, r: f32, h: f32, rounding: f32) -> f32 {
+  let dx = ((length(vec2f(p.x, p.z)) - r) + rounding);
+  let dy = ((abs(p.y) - h) + rounding);
+  let inner = min(max(dx, dy), 0f);
+  let outer = length(vec2f(max(dx, 0f), max(dy, 0f)));
+  return ((inner + outer) - rounding);
+}
+
+fn item_3(p: vec3f, r: f32, h: f32) -> f32 {
+  let cyc = clamp(p.y, (h * -1f), h);
+  return (length(vec3f(p.x, (p.y - cyc), p.z)) - r);
+}
+
+fn item_4(p: vec3f, r1: f32, r2: f32, h: f32) -> f32 {
+  let qx = length(vec2f(p.x, p.z));
+  let qy = p.y;
+  let k2x = (r2 - r1);
+  let k2y = (h * 2f);
+  let cax = (qx - min(qx, select(r2, r1, (qy < 0f))));
+  let cay = (abs(qy) - h);
+  let dotNum = (((r2 - qx) * k2x) + ((h - qy) * k2y));
+  let dotDen = max(((k2x * k2x) + (k2y * k2y)), 1e-6f);
+  let t = clamp((dotNum / dotDen), 0f, 1f);
+  let cbx = ((qx - r2) + (k2x * t));
+  let cby = ((qy - h) + (k2y * t));
+  let sInner = select(1f, -1f, (cay < 0f));
+  let s = select(1f, sInner, (cbx < 0f));
+  let dca = ((cax * cax) + (cay * cay));
+  let dcb = ((cbx * cbx) + (cby * cby));
+  return (s * sqrt(min(dca, dcb)));
+}
+
+fn item_5(p: vec3f, b: f32, ht: f32) -> f32 {
+  let h2 = (ht * 0.5f);
+  let denom = sqrt(((ht * ht) + (b * b)));
+  let dx = (((ht * abs(p.x)) + (b * (p.y - h2))) / denom);
+  let dz = (((ht * abs(p.z)) + (b * (p.y - h2))) / denom);
+  let dBase = ((p.y * -1f) - h2);
+  return max(max(dx, dz), dBase);
+}
+
+fn item_6(p: vec3f, r: f32, he: f32) -> f32 {
+  const kx = -0.8660254;
+  const ky = 0.5;
+  const kz = 0.57735;
+  let ax = abs(p.x);
+  let ay = abs(p.y);
+  let az = abs(p.z);
+  let dk = (min(((kx * ax) + (ky * ay)), 0f) * 2f);
+  let px = (ax - (dk * kx));
+  let py = (ay - (dk * ky));
+  let cx = clamp(px, ((kz * r) * -1f), (kz * r));
+  let ex = (px - cx);
+  let ey = (py - r);
+  let dHex = (sqrt(((ex * ex) + (ey * ey))) * sign((py - r)));
+  let dZ = (az - he);
+  let inner = min(max(dHex, dZ), 0f);
+  let outer = length(vec2f(max(dHex, 0f), max(dZ, 0f)));
+  return (inner + outer);
+}
+
+fn item_7(p: vec3f, rx: f32, ry: f32, rz: f32) -> f32 {
+  let k0 = length(vec3f((p.x / rx), (p.y / ry), (p.z / rz)));
+  let k1 = length(vec3f((p.x / (rx * rx)), (p.y / (ry * ry)), (p.z / (rz * rz))));
+  return ((k0 * (k0 - 1f)) / max(k1, 1e-6f));
+}
+
+fn item_8(p: vec3f, r: f32, h: f32) -> f32 {
+  let qx = length(vec2f(p.x, p.z));
+  let qy = abs(p.y);
+  let abx = (r * -1f);
+  let aby = h;
+  let apx = (qx - r);
+  let apy = qy;
+  let den = max(((abx * abx) + (aby * aby)), 1e-6f);
+  let t = clamp((((apx * abx) + (apy * aby)) / den), 0f, 1f);
+  let dxx = (apx - (abx * t));
+  let dyy = (apy - (aby * t));
+  let dist = sqrt(((dxx * dxx) + (dyy * dyy)));
+  return (dist * sign((((h * qx) + (r * qy)) - (r * h))));
+}
+
+fn item_9(p: vec3f, le: f32, r1: f32, r2: f32) -> f32 {
+  let qy = max((abs(p.y) - le), 0f);
+  let ring = (length(vec2f(p.x, qy)) - r1);
+  return (length(vec2f(ring, p.z)) - r2);
+}
+
+fn item_10(a: f32, b: f32, k: f32) -> f32 {
+  let h = clamp(((((b - a) / k) * 0.5f) + 0.5f), 0f, 1f);
+  return (mix(b, a, h) - ((k * h) * (1f - h)));
+}
+
+fn item_11(p: vec3f, r: f32, h: f32, sides: f32) -> f32 {
+  let base = item_8(p, r, h);
+  let lenXZ = length(vec2f(p.x, p.z));
+  let ang = atan2(p.z, p.x);
+  let sector = (6.283185307179586f / sides);
+  let idx = floor(((ang / sector) + 0.5f));
+  let ca = (ang - (idx * sector));
+  let ri = (r * cos((3.141592653589793f / sides)));
+  let facet = ((lenXZ * cos(ca)) - ri);
+  let dd = max(base, facet);
+  let table = (p.y - (h * 0.45f));
+  return max(dd, table);
+}
+
+fn item_12(p: vec3f, R: f32, tube: f32, pitch: f32, turns: f32) -> f32 {
+  let psi = atan2(p.z, p.x);
+  let k = floor((((p.y / pitch) - (psi / 6.283185307179586f)) + 0.5f));
+  let theta = (psi + (6.283185307179586f * k));
+  let ccx = (R * cos(theta));
+  let ccy = ((pitch * theta) / 6.283185307179586f);
+  let ccz = (R * sin(theta));
+  let dStrand = (length(vec3f((p.x - ccx), (p.y - ccy), (p.z - ccz))) - tube);
+  let slab = (abs(p.y) - ((pitch * turns) * 0.5f));
+  return max(dStrand, slab);
+}
+
+fn item_13(p: vec3f, b0: vec3f, b1: vec3f, b2: vec3f, b3: vec3f, b4: vec3f, b5: vec3f, b6: vec3f, b7: vec3f, r: f32, k: f32) -> f32 {
+  var balls = array<vec3f, 8>();
+  balls[0i] = b0;
+  balls[1i] = b1;
+  balls[2i] = b2;
+  balls[3i] = b3;
+  balls[4i] = b4;
+  balls[5i] = b5;
+  balls[6i] = b6;
+  balls[7i] = b7;
+  var dd = (length((p - balls[0i])) - r);
+  for (var i = 1; (i < 8i); i++) {
+    dd = item_10(dd, (length((p - balls[i])) - r), k);
+  }
+  return dd;
+}
+
+fn item_14(p: vec3f, r: f32) -> f32 {
+  let q = vec3f(abs(p.x), abs(p.y), abs(p.z));
+  let a = dot(q, vec3f(0, 0.525731086730957, 0.8506507873535156));
+  let b = dot(q, vec3f(0.8506507873535156, 0, 0.525731086730957));
+  let c = dot(q, vec3f(0.525731086730957, 0.8506507873535156, 0));
+  return (max(max(a, b), c) - r);
+}
+
+fn item_15(p: vec3f, r: f32, h: f32) -> f32 {
+  let w = sqrt(max(((r * r) - (h * h)), 0f));
+  let qx = length(vec2f(p.x, p.z));
+  let qy = p.y;
+  let s = max(((((h - r) * qx) * qx) + ((w * w) * ((h + r) - (qy * 2f)))), ((h * qx) - (w * qy)));
+  let case0 = (length(vec2f(qx, qy)) - r);
+  let case1 = (h - qy);
+  let case2 = length(vec2f((qx - w), (qy - h)));
+  let inner = select(case2, case1, (qx < w));
+  return select(inner, case0, (s < 0f));
+}
+
+struct RotStruct {
+  cx: f32,
+  sx: f32,
+  cy: f32,
+  sy: f32,
+  cz: f32,
+  sz: f32,
+}
+
+fn rotateVec3(v: vec3f, rot: RotStruct) -> vec3f {
+  let x1 = ((v.x * rot.cy) + (v.z * rot.sy));
+  let z1 = ((v.z * rot.cy) - (v.x * rot.sy));
+  let y2 = ((v.y * rot.cx) - (z1 * rot.sx));
+  let z2 = ((v.y * rot.sx) + (z1 * rot.cx));
+  let x3 = ((x1 * rot.cz) - (y2 * rot.sz));
+  let y3 = ((x1 * rot.sz) + (y2 * rot.cz));
+  return vec3f(x3, y3, z2);
+}"
+`;
+
+exports[`kit/sdf3d (f) resolve gate > march + compute kernel + samplers resolve to WGSL (snapshot) 1`] = `
+"struct RotStruct {
+  cx: f32,
+  sx: f32,
+  cy: f32,
+  sy: f32,
+  cz: f32,
+  sz: f32,
+}
+
+fn rotateVec3(v: vec3f, rot: RotStruct) -> vec3f {
+  let x1 = ((v.x * rot.cy) + (v.z * rot.sy));
+  let z1 = ((v.z * rot.cy) - (v.x * rot.sy));
+  let y2 = ((v.y * rot.cx) - (z1 * rot.sx));
+  let z2 = ((v.y * rot.sx) + (z1 * rot.cx));
+  let x3 = ((x1 * rot.cz) - (y2 * rot.sz));
+  let y3 = ((x1 * rot.sz) + (y2 * rot.cz));
+  return vec3f(x3, y3, z2);
+}
+
+fn sdf3d_sdSphere(p: vec3f, r: f32) -> f32 {
+  return (length(p) - r);
+}
+
+fn sdfFn(p: vec3f) -> f32 {
+  return sdf3d_sdSphere(p, 0.35f);
+}
+
+fn raymarchedField(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let ro0 = vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f);
+  let rd0 = vec3f(0, 0, 1);
+  let ro = rotateVec3(ro0, rot);
+  let rd = rotateVec3(rd0, rot);
+  let steps = i32(clamp((rBound * 220f), 96f, 384f));
+  let b = dot(ro, rd);
+  let perp = sqrt(max((dot(ro, ro) - (b * b)), 0f));
+  let halfSpan = sqrt(max(((rBound * rBound) - (perp * perp)), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  var t = tStart;
+  var tPrev = tStart;
+  var minD = 10f;
+  var hit = 0f;
+  for (var i = 0; (i < steps); i++) {
+    let p = (ro + (rd * t));
+    let dd = sdfFn(p);
+    minD = min(minD, dd);
+    if ((dd < 0f)) {
+      hit = 1f;
+      break;
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+    tPrev = t;
+    t = (t + max(dd, 2e-3f));
+  }
+  var fieldVal = minD;
+  let patternU = 0f;
+  let patternV = 0f;
+  var viewDepth = (tEnd + 0.4f);
+  if ((hit > 0.5f)) {
+    var eLo = tPrev;
+    var eHi = t;
+    for (var i = 0; (i < 10i); i++) {
+      let mid = ((eLo + eHi) * 0.5f);
+      let dm = sdfFn((ro + (rd * mid)));
+      if ((dm > 0f)) {
+        eLo = mid;
+      }
+      else {
+        eHi = mid;
+      }
+    }
+    let tEnter = ((eLo + eHi) * 0.5f);
+    var tExit = tEnter;
+    {
+      let roB = (ro + (rd * tEnd));
+      let span = ((tEnd - tStart) + 0.01f);
+      var s = 0f;
+      var sPrev = 0f;
+      for (var i = 0; (i < steps); i++) {
+        let p = (roB - (rd * s));
+        let dd = sdfFn(p);
+        if ((dd < 0f)) {
+          break;
+        }
+        if ((s > span)) {
+          break;
+        }
+        sPrev = s;
+        s = (s + max(dd, 2e-3f));
+      }
+      var xLo = sPrev;
+      var xHi = s;
+      for (var i = 0; (i < 10i); i++) {
+        let mid = ((xLo + xHi) * 0.5f);
+        let dm = sdfFn((roB - (rd * mid)));
+        if ((dm > 0f)) {
+          xLo = mid;
+        }
+        else {
+          xHi = mid;
+        }
+      }
+      tExit = (tEnd - ((xLo + xHi) * 0.5f));
+    }
+    let halfChord = (max((tExit - tEnter), 0f) * 0.5f);
+    fieldVal = (halfChord * -1f);
+    viewDepth = tEnter;
+  }
+  return vec4f(fieldVal, patternU, patternV, viewDepth);
+}
+
+fn raymarchedField_1(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let ro0 = vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f);
+  let rd0 = vec3f(0, 0, 1);
+  let ro = rotateVec3(ro0, rot);
+  let rd = rotateVec3(rd0, rot);
+  let steps = i32(clamp((rBound * 220f), 96f, 384f));
+  let b = dot(ro, rd);
+  let perp = sqrt(max((dot(ro, ro) - (b * b)), 0f));
+  let halfSpan = sqrt(max(((rBound * rBound) - (perp * perp)), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  var t = tStart;
+  var tPrev = tStart;
+  var minD = 10f;
+  var hit = 0f;
+  for (var i = 0; (i < steps); i++) {
+    let p = (ro + (rd * t));
+    let dd = sdfFn(p);
+    minD = min(minD, dd);
+    if ((dd < 0f)) {
+      hit = 1f;
+      break;
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+    tPrev = t;
+    t = (t + max(dd, 2e-3f));
+  }
+  var fieldVal = minD;
+  var patternU = 0f;
+  var patternV = 0f;
+  var viewDepth = (tEnd + 0.4f);
+  if ((hit > 0.5f)) {
+    var eLo = tPrev;
+    var eHi = t;
+    for (var i = 0; (i < 10i); i++) {
+      let mid = ((eLo + eHi) * 0.5f);
+      let dm = sdfFn((ro + (rd * mid)));
+      if ((dm > 0f)) {
+        eLo = mid;
+      }
+      else {
+        eHi = mid;
+      }
+    }
+    let tEnter = ((eLo + eHi) * 0.5f);
+    var tExit = tEnter;
+    {
+      let roB = (ro + (rd * tEnd));
+      let span = ((tEnd - tStart) + 0.01f);
+      var s = 0f;
+      var sPrev = 0f;
+      for (var i = 0; (i < steps); i++) {
+        let p = (roB - (rd * s));
+        let dd = sdfFn(p);
+        if ((dd < 0f)) {
+          break;
+        }
+        if ((s > span)) {
+          break;
+        }
+        sPrev = s;
+        s = (s + max(dd, 2e-3f));
+      }
+      var xLo = sPrev;
+      var xHi = s;
+      for (var i = 0; (i < 10i); i++) {
+        let mid = ((xLo + xHi) * 0.5f);
+        let dm = sdfFn((roB - (rd * mid)));
+        if ((dm > 0f)) {
+          xLo = mid;
+        }
+        else {
+          xHi = mid;
+        }
+      }
+      tExit = (tEnd - ((xLo + xHi) * 0.5f));
+    }
+    let halfChord = (max((tExit - tEnter), 0f) * 0.5f);
+    fieldVal = (halfChord * -1f);
+    viewDepth = tEnter;
+    {
+      let hp = (ro + (rd * tEnter));
+      patternU = (hp.x + (hp.z * 0.7f));
+      patternV = (hp.y + (hp.z * 0.5f));
+    }
+  }
+  return vec4f(fieldVal, patternU, patternV, viewDepth);
+}
+
+struct MarchParams {
+  @align(16) @size(32) rot: RotStruct,
+  rBound: f32,
+  spanX: f32,
+  spanY: f32,
+  originX: f32,
+  originY: f32,
+  activeRes: u32,
+  pA: f32,
+  pB: f32,
+  pC: f32,
+  pD: f32,
+  mb0: vec3f,
+  mb1: vec3f,
+  mb2: vec3f,
+  mb3: vec3f,
+  mb4: vec3f,
+  mb5: vec3f,
+  mb6: vec3f,
+  mb7: vec3f,
+}
+
+@group(0) @binding(1) var<uniform> params: MarchParams;
+
+fn sdf3d_sdRoundBox(p: vec3f, hx: f32, hy: f32, hz: f32, rounding: f32) -> f32 {
+  let qx = ((abs(p.x) - hx) + rounding);
+  let qy = ((abs(p.y) - hy) + rounding);
+  let qz = ((abs(p.z) - hz) + rounding);
+  let outer = length(vec3f(max(qx, 0f), max(qy, 0f), max(qz, 0f)));
+  let inner = min(max(qx, max(qy, qz)), 0f);
+  return ((outer + inner) - rounding);
+}
+
+fn sdfFn_1(p: vec3f) -> f32 {
+  return sdf3d_sdRoundBox(p, params.pA, params.pB, params.pC, params.pD);
+}
+
+fn raymarchedField_2(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let ro0 = vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f);
+  let rd0 = vec3f(0, 0, 1);
+  let ro = rotateVec3(ro0, rot);
+  let rd = rotateVec3(rd0, rot);
+  let steps = i32(clamp((rBound * 220f), 96f, 384f));
+  let b = dot(ro, rd);
+  let perp = sqrt(max((dot(ro, ro) - (b * b)), 0f));
+  let halfSpan = sqrt(max(((rBound * rBound) - (perp * perp)), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  var t = tStart;
+  var tPrev = tStart;
+  var minD = 10f;
+  var hit = 0f;
+  for (var i = 0; (i < steps); i++) {
+    let p = (ro + (rd * t));
+    let dd = sdfFn_1(p);
+    minD = min(minD, dd);
+    if ((dd < 0f)) {
+      hit = 1f;
+      break;
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+    tPrev = t;
+    t = (t + max(dd, 2e-3f));
+  }
+  var fieldVal = minD;
+  var patternU = 0f;
+  var patternV = 0f;
+  var viewDepth = (tEnd + 0.4f);
+  if ((hit > 0.5f)) {
+    var eLo = tPrev;
+    var eHi = t;
+    for (var i = 0; (i < 10i); i++) {
+      let mid = ((eLo + eHi) * 0.5f);
+      let dm = sdfFn_1((ro + (rd * mid)));
+      if ((dm > 0f)) {
+        eLo = mid;
+      }
+      else {
+        eHi = mid;
+      }
+    }
+    let tEnter = ((eLo + eHi) * 0.5f);
+    var tExit = tEnter;
+    {
+      let roB = (ro + (rd * tEnd));
+      let span = ((tEnd - tStart) + 0.01f);
+      var s = 0f;
+      var sPrev = 0f;
+      for (var i = 0; (i < steps); i++) {
+        let p = (roB - (rd * s));
+        let dd = sdfFn_1(p);
+        if ((dd < 0f)) {
+          break;
+        }
+        if ((s > span)) {
+          break;
+        }
+        sPrev = s;
+        s = (s + max(dd, 2e-3f));
+      }
+      var xLo = sPrev;
+      var xHi = s;
+      for (var i = 0; (i < 10i); i++) {
+        let mid = ((xLo + xHi) * 0.5f);
+        let dm = sdfFn_1((roB - (rd * mid)));
+        if ((dm > 0f)) {
+          xLo = mid;
+        }
+        else {
+          xHi = mid;
+        }
+      }
+      tExit = (tEnd - ((xLo + xHi) * 0.5f));
+    }
+    let halfChord = (max((tExit - tEnter), 0f) * 0.5f);
+    fieldVal = (halfChord * -1f);
+    viewDepth = tEnter;
+    {
+      let hp = (ro + (rd * tEnter));
+      const e2 = 4e-3;
+      let nlx = (sdfFn_1(vec3f((hp.x + e2), hp.y, hp.z)) - sdfFn_1(vec3f((hp.x - e2), hp.y, hp.z)));
+      let nly = (sdfFn_1(vec3f(hp.x, (hp.y + e2), hp.z)) - sdfFn_1(vec3f(hp.x, (hp.y - e2), hp.z)));
+      let nlz = (sdfFn_1(vec3f(hp.x, hp.y, (hp.z + e2))) - sdfFn_1(vec3f(hp.x, hp.y, (hp.z - e2))));
+      let anx = abs(nlx);
+      let anyv = abs(nly);
+      let anz = abs(nlz);
+      let branch1 = vec2f((hp.y + 2.17f), (hp.z + 5.31f));
+      let branch2 = vec2f((hp.z + 7.73f), (hp.x + 1.13f));
+      let branch3 = vec2f(hp.x, hp.y);
+      let branch23 = select(branch3, branch2, (anyv >= anz));
+      let innerPick = select(branch23, branch1, (anx >= anz));
+      let pattern = select(branch23, innerPick, (anx >= anyv));
+      patternU = pattern.x;
+      patternV = pattern.y;
+    }
+  }
+  return vec4f(fieldVal, patternU, patternV, viewDepth);
+}
+
+fn raymarchedField_3(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let ro0 = vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f);
+  let rd0 = vec3f(0, 0, 1);
+  let ro = rotateVec3(ro0, rot);
+  let rd = rotateVec3(rd0, rot);
+  let steps = i32(clamp((rBound * 220f), 96f, 384f));
+  let b = dot(ro, rd);
+  let perp = sqrt(max((dot(ro, ro) - (b * b)), 0f));
+  let halfSpan = sqrt(max(((rBound * rBound) - (perp * perp)), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  var t = tStart;
+  var tPrev = tStart;
+  var minD = 10f;
+  var hit = 0f;
+  for (var i = 0; (i < steps); i++) {
+    let p = (ro + (rd * t));
+    let dd = sdfFn(p);
+    minD = min(minD, dd);
+    if ((dd < 0f)) {
+      hit = 1f;
+      break;
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+    tPrev = t;
+    t = (t + max(dd, 2e-3f));
+  }
+  var fieldVal = minD;
+  let patternU = 0f;
+  let patternV = 0f;
+  var viewDepth = (tEnd + 0.4f);
+  if ((hit > 0.5f)) {
+    var eLo = tPrev;
+    var eHi = t;
+    for (var i = 0; (i < 10i); i++) {
+      let mid = ((eLo + eHi) * 0.5f);
+      let dm = sdfFn((ro + (rd * mid)));
+      if ((dm > 0f)) {
+        eLo = mid;
+      }
+      else {
+        eHi = mid;
+      }
+    }
+    let tEnter = ((eLo + eHi) * 0.5f);
+    var tExit = tEnter;
+    {
+      var sInPrev = eHi;
+      var sIn = (eHi + 2e-3f);
+      for (var i = 0; (i < steps); i++) {
+        let dd = sdfFn((ro + (rd * sIn)));
+        if ((dd >= 0f)) {
+          break;
+        }
+        sInPrev = sIn;
+        sIn = (sIn + max((dd * -1f), 2e-3f));
+        if ((sIn > tEnd)) {
+          break;
+        }
+      }
+      var fLo = sInPrev;
+      var fHi = sIn;
+      for (var i = 0; (i < 10i); i++) {
+        let mid = ((fLo + fHi) * 0.5f);
+        let dm = sdfFn((ro + (rd * mid)));
+        if ((dm < 0f)) {
+          fLo = mid;
+        }
+        else {
+          fHi = mid;
+        }
+      }
+      tExit = ((fLo + fHi) * 0.5f);
+    }
+    let halfChord = (max((tExit - tEnter), 0f) * 0.5f);
+    fieldVal = (halfChord * -1f);
+    viewDepth = tEnter;
+  }
+  return vec4f(fieldVal, patternU, patternV, viewDepth);
+}
+
+fn sdfFn_2(p: vec3f) -> f32 {
+  return sdf3d_sdSphere(p, params.pA);
+}
+
+fn raymarchedField_4(fuv: vec2f, rot: RotStruct, rBound: f32) -> vec4f {
+  let ro0 = vec3f((fuv.x - 0.5f), (0.5f - fuv.y), -1.2f);
+  let rd0 = vec3f(0, 0, 1);
+  let ro = rotateVec3(ro0, rot);
+  let rd = rotateVec3(rd0, rot);
+  let steps = i32(clamp((rBound * 220f), 96f, 384f));
+  let b = dot(ro, rd);
+  let perp = sqrt(max((dot(ro, ro) - (b * b)), 0f));
+  let halfSpan = sqrt(max(((rBound * rBound) - (perp * perp)), 0f));
+  let tStart = max(((b * -1f) - halfSpan), 0f);
+  let tEnd = (((b * -1f) + halfSpan) + 0.01f);
+  var t = tStart;
+  var tPrev = tStart;
+  var minD = 10f;
+  var hit = 0f;
+  for (var i = 0; (i < steps); i++) {
+    let p = (ro + (rd * t));
+    let dd = sdfFn_2(p);
+    minD = min(minD, dd);
+    if ((dd < 0f)) {
+      hit = 1f;
+      break;
+    }
+    if ((t > tEnd)) {
+      break;
+    }
+    tPrev = t;
+    t = (t + max(dd, 2e-3f));
+  }
+  var fieldVal = minD;
+  var patternU = 0f;
+  var patternV = 0f;
+  var viewDepth = (tEnd + 0.4f);
+  if ((hit > 0.5f)) {
+    var eLo = tPrev;
+    var eHi = t;
+    for (var i = 0; (i < 10i); i++) {
+      let mid = ((eLo + eHi) * 0.5f);
+      let dm = sdfFn_2((ro + (rd * mid)));
+      if ((dm > 0f)) {
+        eLo = mid;
+      }
+      else {
+        eHi = mid;
+      }
+    }
+    let tEnter = ((eLo + eHi) * 0.5f);
+    var tExit = tEnter;
+    {
+      let roB = (ro + (rd * tEnd));
+      let span = ((tEnd - tStart) + 0.01f);
+      var s = 0f;
+      var sPrev = 0f;
+      for (var i = 0; (i < steps); i++) {
+        let p = (roB - (rd * s));
+        let dd = sdfFn_2(p);
+        if ((dd < 0f)) {
+          break;
+        }
+        if ((s > span)) {
+          break;
+        }
+        sPrev = s;
+        s = (s + max(dd, 2e-3f));
+      }
+      var xLo = sPrev;
+      var xHi = s;
+      for (var i = 0; (i < 10i); i++) {
+        let mid = ((xLo + xHi) * 0.5f);
+        let dm = sdfFn_2((roB - (rd * mid)));
+        if ((dm > 0f)) {
+          xLo = mid;
+        }
+        else {
+          xHi = mid;
+        }
+      }
+      tExit = (tEnd - ((xLo + xHi) * 0.5f));
+    }
+    let halfChord = (max((tExit - tEnter), 0f) * 0.5f);
+    fieldVal = (halfChord * -1f);
+    viewDepth = tEnter;
+    {
+      let hp = (ro + (rd * tEnter));
+      patternU = (hp.x + (hp.z * 0.7f));
+      patternV = (hp.y + (hp.z * 0.5f));
+    }
+  }
+  return vec4f(fieldVal, patternU, patternV, viewDepth);
+}
+
+@group(0) @binding(0) var field_1: texture_storage_2d<rgba32float, write>;
+
+fn volumetricFieldMarch(cx: u32, cy: u32) {
+  let p = (&params);
+  let activeResF = f32((*p).activeRes);
+  let uv = vec2f(((*p).originX + (((f32(cx) + 0.5f) / activeResF) * (*p).spanX)), ((*p).originY + (((f32(cy) + 0.5f) / activeResF) * (*p).spanY)));
+  let field = raymarchedField_4(uv, (*p).rot, (*p).rBound);
+  textureStore(field_1, vec2u(cx, cy), field);
+}
+
+struct SampleParams {
+  originX: f32,
+  originY: f32,
+  spanX: f32,
+  spanY: f32,
+  activeResF: f32,
+  rBound: f32,
+}
+
+@group(1) @binding(1) var<uniform> params_1: SampleParams;
+
+@group(1) @binding(0) var field: texture_2d<f32>;
+
+fn fieldFetchTexel(xi: f32, yi: f32) -> vec4f {
+  let maxT = (params_1.activeResF - 1f);
+  let tx = u32(clamp(xi, 0f, maxT));
+  let ty = u32(clamp(yi, 0f, maxT));
+  return textureLoad(field, vec2u(tx, ty), 0);
+}
+
+fn fieldSample(uv: vec2f) -> vec4f {
+  let p = (&params_1);
+  let uxc = clamp(uv.x, (*p).originX, ((*p).originX + (*p).spanX));
+  let uyc = clamp(uv.y, (*p).originY, ((*p).originY + (*p).spanY));
+  let outsideDist = length(vec2f((uv.x - uxc), (uv.y - uyc)));
+  let px = ((((uxc - (*p).originX) / (*p).spanX) * (*p).activeResF) - 0.5f);
+  let py = ((((uyc - (*p).originY) / (*p).spanY) * (*p).activeResF) - 0.5f);
+  let x0 = floor(px);
+  let y0 = floor(py);
+  let fx = (px - x0);
+  let fy = (py - y0);
+  let tx2 = (fx * fx);
+  let tx3 = (tx2 * fx);
+  let wx0 = (((tx3 * -0.5f) + tx2) - (fx * 0.5f));
+  let wx1 = (((tx3 * 1.5f) - (tx2 * 2.5f)) + 1f);
+  let wx2 = (((tx3 * -1.5f) + (tx2 * 2f)) + (fx * 0.5f));
+  let wx3 = ((tx3 * 0.5f) - (tx2 * 0.5f));
+  let ty2 = (fy * fy);
+  let ty3 = (ty2 * fy);
+  let wy0 = (((ty3 * -0.5f) + ty2) - (fy * 0.5f));
+  let wy1 = (((ty3 * 1.5f) - (ty2 * 2.5f)) + 1f);
+  let wy2 = (((ty3 * -1.5f) + (ty2 * 2f)) + (fy * 0.5f));
+  let wy3 = ((ty3 * 0.5f) - (ty2 * 0.5f));
+  let k00 = fieldFetchTexel((x0 - 1f), (y0 - 1f));
+  let k01 = fieldFetchTexel(x0, (y0 - 1f));
+  let k02 = fieldFetchTexel((x0 + 1f), (y0 - 1f));
+  let k03 = fieldFetchTexel((x0 + 2f), (y0 - 1f));
+  let k10 = fieldFetchTexel((x0 - 1f), y0);
+  let k11 = fieldFetchTexel(x0, y0);
+  let k12 = fieldFetchTexel((x0 + 1f), y0);
+  let k13 = fieldFetchTexel((x0 + 2f), y0);
+  let k20 = fieldFetchTexel((x0 - 1f), (y0 + 1f));
+  let k21 = fieldFetchTexel(x0, (y0 + 1f));
+  let k22 = fieldFetchTexel((x0 + 1f), (y0 + 1f));
+  let k23 = fieldFetchTexel((x0 + 2f), (y0 + 1f));
+  let k30 = fieldFetchTexel((x0 - 1f), (y0 + 2f));
+  let k31 = fieldFetchTexel(x0, (y0 + 2f));
+  let k32 = fieldFetchTexel((x0 + 1f), (y0 + 2f));
+  let k33 = fieldFetchTexel((x0 + 2f), (y0 + 2f));
+  let rAcc = (((((((((((((((((k00.r * wx0) * wy0) + ((k01.r * wx1) * wy0)) + ((k02.r * wx2) * wy0)) + ((k03.r * wx3) * wy0)) + ((k10.r * wx0) * wy1)) + ((k11.r * wx1) * wy1)) + ((k12.r * wx2) * wy1)) + ((k13.r * wx3) * wy1)) + ((k20.r * wx0) * wy2)) + ((k21.r * wx1) * wy2)) + ((k22.r * wx2) * wy2)) + ((k23.r * wx3) * wy2)) + ((k30.r * wx0) * wy3)) + ((k31.r * wx1) * wy3)) + ((k32.r * wx2) * wy3)) + ((k33.r * wx3) * wy3));
+  let aAcc = (((((((((((((((((k00.a * wx0) * wy0) + ((k01.a * wx1) * wy0)) + ((k02.a * wx2) * wy0)) + ((k03.a * wx3) * wy0)) + ((k10.a * wx0) * wy1)) + ((k11.a * wx1) * wy1)) + ((k12.a * wx2) * wy1)) + ((k13.a * wx3) * wy1)) + ((k20.a * wx0) * wy2)) + ((k21.a * wx1) * wy2)) + ((k22.a * wx2) * wy2)) + ((k23.a * wx3) * wy2)) + ((k30.a * wx0) * wy3)) + ((k31.a * wx1) * wy3)) + ((k32.a * wx2) * wy3)) + ((k33.a * wx3) * wy3));
+  let bl = mix(mix(k11, k12, fx), mix(k21, k22, fx), fy);
+  let rMin = min(min(k11.r, k12.r), min(k21.r, k22.r));
+  let rMax = max(max(k11.r, k12.r), max(k21.r, k22.r));
+  let aMin = min(min(k11.a, k12.a), min(k21.a, k22.a));
+  let aMax = max(max(k11.a, k12.a), max(k21.a, k22.a));
+  let aOut = clamp(aAcc, aMin, aMax);
+  let rNear = (clamp(rAcc, rMin, rMax) + outsideDist);
+  let rCircle = (length(vec2f((uv.x - 0.5f), (uv.y - 0.5f))) - (*p).rBound);
+  let rOut = mix(rNear, max(rCircle, rNear), smoothstep(0f, 0.25f, outsideDist));
+  return vec4f(rOut, bl.g, bl.b, aOut);
+}
+
+fn fieldSampleFast(uv: vec2f) -> vec4f {
+  let p = (&params_1);
+  let uxc = clamp(uv.x, (*p).originX, ((*p).originX + (*p).spanX));
+  let uyc = clamp(uv.y, (*p).originY, ((*p).originY + (*p).spanY));
+  let outsideDist = length(vec2f((uv.x - uxc), (uv.y - uyc)));
+  let px = ((((uxc - (*p).originX) / (*p).spanX) * (*p).activeResF) - 0.5f);
+  let py = ((((uyc - (*p).originY) / (*p).spanY) * (*p).activeResF) - 0.5f);
+  let x0 = floor(px);
+  let y0 = floor(py);
+  let fx = (px - x0);
+  let fy = (py - y0);
+  let t00 = fieldFetchTexel(x0, y0);
+  let t10 = fieldFetchTexel((x0 + 1f), y0);
+  let t01 = fieldFetchTexel(x0, (y0 + 1f));
+  let t11 = fieldFetchTexel((x0 + 1f), (y0 + 1f));
+  let bl = mix(mix(t00, t10, fx), mix(t01, t11, fx), fy);
+  let rNear = (bl.r + outsideDist);
+  let rCircle = (length(vec2f((uv.x - 0.5f), (uv.y - 0.5f))) - (*p).rBound);
+  let rOut = mix(rNear, max(rCircle, rNear), smoothstep(0f, 0.25f, outsideDist));
+  return vec4f(rOut, bl.g, bl.b, bl.a);
+}"
+`;

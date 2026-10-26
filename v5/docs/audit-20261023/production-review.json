@@ -1,0 +1,279 @@
+{
+    "dom": [
+        {
+            "route": "/",
+            "exact": true
+        },
+        {
+            "route": "/programs/",
+            "exact": true
+        },
+        {
+            "route": "/programs/carmen/",
+            "exact": true
+        },
+        {
+            "route": "/booking/carmen/",
+            "exact": true
+        },
+        {
+            "route": "/about/introduction/",
+            "exact": true
+        },
+        {
+            "route": "/visit/spaces/",
+            "exact": true
+        },
+        {
+            "route": "/account/login/",
+            "exact": true
+        },
+        {
+            "route": "/news/notices/",
+            "exact": true
+        },
+        {
+            "route": "/design-rules/",
+            "exact": true
+        },
+        {
+            "route": "/search/",
+            "exact": true
+        }
+    ],
+    "noJavascript": [
+        {
+            "width": 320,
+            "route": "/",
+            "exactGeometryAndText": true
+        },
+        {
+            "width": 320,
+            "route": "/about/introduction/",
+            "exactGeometryAndText": true
+        },
+        {
+            "width": 320,
+            "route": "/programs/",
+            "exactGeometryAndText": true
+        },
+        {
+            "width": 1440,
+            "route": "/",
+            "exactGeometryAndText": true
+        },
+        {
+            "width": 1440,
+            "route": "/about/introduction/",
+            "exactGeometryAndText": true
+        },
+        {
+            "width": 1440,
+            "route": "/programs/",
+            "exactGeometryAndText": true
+        }
+    ],
+    "interactions": [
+        {
+            "mode": "normal",
+            "directRoutes": 10,
+            "heroInteraction": true,
+            "clientNavigation": true,
+            "searchForm": true,
+            "lazyMenu": true,
+            "loadedJavascriptChunks": 28,
+            "errors": [],
+            "failed": []
+        },
+        {
+            "mode": "javascriptDelayed200ms",
+            "directRoutes": 10,
+            "heroInteraction": true,
+            "clientNavigation": true,
+            "searchForm": true,
+            "lazyMenu": true,
+            "loadedJavascriptChunks": 28,
+            "errors": [],
+            "failed": []
+        }
+    ],
+    "responsive": [
+        {
+            "width": 320,
+            "route": "/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 320,
+            "route": "/about/introduction/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 320,
+            "route": "/programs/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 320,
+            "route": "/visit/spaces/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 320,
+            "route": "/news/notices/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 390,
+            "route": "/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 390,
+            "route": "/about/introduction/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 390,
+            "route": "/programs/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 390,
+            "route": "/visit/spaces/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 390,
+            "route": "/news/notices/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 768,
+            "route": "/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 768,
+            "route": "/about/introduction/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 768,
+            "route": "/programs/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 768,
+            "route": "/visit/spaces/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 768,
+            "route": "/news/notices/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1024,
+            "route": "/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1024,
+            "route": "/about/introduction/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1024,
+            "route": "/programs/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1024,
+            "route": "/visit/spaces/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1024,
+            "route": "/news/notices/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1440,
+            "route": "/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1440,
+            "route": "/about/introduction/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1440,
+            "route": "/programs/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1440,
+            "route": "/visit/spaces/",
+            "overflow": 0,
+            "small": []
+        },
+        {
+            "width": 1440,
+            "route": "/news/notices/",
+            "overflow": 0,
+            "small": []
+        }
+    ],
+    "manifest": {
+        "schemaVersion": 1,
+        "releaseId": "r-2e2ede029b480b49",
+        "assets": 426,
+        "collisionFree": true,
+        "mirroredBytesIdentical": true,
+        "absoluteSourcePathLeaks": 0,
+        "totals": {
+            "js": {
+                "files": 42,
+                "rawBytes": 4489022,
+                "gzipBytes": 823697
+            },
+            "css": {
+                "files": 8,
+                "rawBytes": 499517,
+                "gzipBytes": 91013
+            },
+            "map": {
+                "files": 50,
+                "rawBytes": 4893561,
+                "gzipBytes": 1267487
+            }
+        },
+        "distinctSourceFiles": 386,
+        "allSourceFilesExist": true
+    }
+}

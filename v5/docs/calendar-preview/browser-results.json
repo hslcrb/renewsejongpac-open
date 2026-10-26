@@ -1,0 +1,58 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "results": [
+    {
+      "name": "hover shows date, count, posters and titles without committing the date",
+      "passed": true
+    },
+    {
+      "name": "preview follows the cursor and remains open when entered",
+      "passed": true
+    },
+    {
+      "name": "empty dates replace stale content; Escape dismisses without selecting",
+      "passed": true
+    },
+    {
+      "name": "keyboard focus previews, Enter commits, and Escape restores the unobstructed calendar",
+      "passed": true
+    },
+    {
+      "name": "month navigation and scrolling dismiss a transient preview",
+      "passed": true
+    },
+    {
+      "name": "768px: separated 48px dates, shared radii, readable text and bounded preview",
+      "passed": true
+    },
+    {
+      "name": "1024px: separated 48px dates, shared radii, readable text and bounded preview",
+      "passed": true
+    },
+    {
+      "name": "1440px: separated 48px dates, shared radii, readable text and bounded preview",
+      "passed": true
+    },
+    {
+      "name": "320px: touch-sized native date input changes and clears the selected date",
+      "passed": true
+    },
+    {
+      "name": "390px: touch-sized native date input changes and clears the selected date",
+      "passed": true
+    },
+    {
+      "name": "short viewports retain a scrollable preview and respect normal motion settings",
+      "passed": true
+    },
+    {
+      "name": "guide renders the same calendar and owned preview implementation",
+      "passed": true
+    },
+    {
+      "name": "tablet touch selects directly without relying on hover",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,87 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-23T04:55:45.096Z",
+  "measurements": [
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "counts": {
+        "total": 47,
+        "product": 47,
+        "guide-only": 0,
+        "unused": 0
+      },
+      "rows": 47,
+      "small": false,
+      "tools": [
+        "component-catalog",
+        "glass-demo"
+      ]
+    },
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "counts": {
+        "total": 47,
+        "product": 47,
+        "guide-only": 0,
+        "unused": 0
+      },
+      "rows": 47,
+      "small": false,
+      "tools": [
+        "component-catalog",
+        "glass-demo"
+      ]
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "counts": {
+        "total": 47,
+        "product": 47,
+        "guide-only": 0,
+        "unused": 0
+      },
+      "rows": 47,
+      "small": false,
+      "tools": [
+        "component-catalog",
+        "glass-demo"
+      ]
+    },
+    {
+      "width": 1024,
+      "scrollWidth": 1024,
+      "counts": {
+        "total": 47,
+        "product": 47,
+        "guide-only": 0,
+        "unused": 0
+      },
+      "rows": 47,
+      "small": false,
+      "tools": [
+        "component-catalog",
+        "glass-demo"
+      ]
+    },
+    {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "counts": {
+        "total": 47,
+        "product": 47,
+        "guide-only": 0,
+        "unused": 0
+      },
+      "rows": 47,
+      "small": false,
+      "tools": [
+        "component-catalog",
+        "glass-demo"
+      ]
+    }
+  ],
+  "errors": []
+}

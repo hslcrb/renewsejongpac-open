@@ -1,0 +1,95 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`GridDistortion (a) analytic uvRemap fold > default → folds; runs the compute, snaps to grid + offsets UV by the displacement > uvRemap-fold 1`] = `
+"fn edgeClampUV(uv: vec2f) -> vec2f {
+  return clamp(uv, vec2f(), vec2f(1));
+}
+
+fn gridDistortOffsetUV(uv: vec2f, disp: vec2f) -> vec2f {
+  const maxDisp = 0.1;
+  let clamped = clamp(disp, vec2f(-(maxDisp), -(maxDisp)), vec2f(maxDisp, maxDisp));
+  return (uv - clamped);
+}
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn gridCellSnap(uv: vec2f, gridSize: f32, aspect: f32) -> vec2f {
+  let isWide = (aspect > 1f);
+  let cellsX = max(select((gridSize * aspect), gridSize, isWide), 1f);
+  let cellsY = max(select(gridSize, (gridSize / aspect), isWide), 1f);
+  let cellIndexX = floor((uv.x * cellsX));
+  let cellIndexY = floor((uv.y * cellsY));
+  return vec2f(((cellIndexX + 0.5f) / cellsX), ((cellIndexY + 0.5f) / cellsY));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  intensity: f32,
+  decay: f32,
+  radius: f32,
+  gridSize: f32,
+  edges: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_gd: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn genBody(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let foldUV_0 = edgeClampUV(gridDistortOffsetUV(uv, (textureSample(compute_0, linearClamp, gridCellSnap(uv, uniforms.n_gd.gridSize, uniforms._sys.aspect))).xy));
+  var composed_1 = genBody(foldUV_0);
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;

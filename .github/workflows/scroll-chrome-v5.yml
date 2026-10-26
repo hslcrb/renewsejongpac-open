@@ -1,0 +1,82 @@
+name: Verify and export v5 scroll chrome
+
+on:
+  push:
+    branches:
+      - "chatgpt-extrahigh/20261026-navigation-scrollbar-global"
+    paths:
+      - "v5/**"
+      - ".github/workflows/scroll-chrome-v5.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scroll-chrome-v5-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  export-and-verify:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: v5/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: v5
+        run: npm ci --no-audit --no-fund
+
+      - name: Run header and scrollbar contract tests
+        working-directory: v5
+        run: npm run test:scroll
+
+      - name: Build complete Next.js static export and mirrored artifacts
+        working-directory: v5
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: npm run build
+
+      - name: Install Chromium for interactive regression
+        working-directory: v5
+        run: npx playwright install --with-deps chromium
+
+      - name: Serve the committed mirror for browser acceptance
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/sejong-scroll-http.log 2>&1 &
+          sleep 2
+
+      - name: Verify scrolling at mobile and desktop widths
+        working-directory: v5
+        run: npm run test:scroll:browser
+
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v5-scroll-chrome-${{ github.sha }}
+          path: v5/test-results/scroll-chrome
+          if-no-files-found: warn
+
+      - name: Commit and push complete generated export
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A v5/
+          if git diff --cached --quiet; then
+            echo "Generated artifacts already match source."
+          else
+            git commit -m "build: 헤더 및 스크롤바 변경 정적 산출물 재생성"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

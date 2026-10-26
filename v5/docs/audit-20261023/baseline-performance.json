@@ -1,0 +1,1429 @@
+{
+    "label": "baseline",
+    "browser": "151.0.7922.34",
+    "conditions": "Headless Chromium, Windows, localhost:4173, 1440x900 DPR1, reduced motion, CDP cache disabled, fresh context per run, no CPU/network throttle. Remote API timing uncontrolled; local-resource bytes reported separately. Gzip sizes are theoretical gzipSync output, not an assertion that server uses gzip. Source maps are not automatically fetched.",
+    "median": {
+        "domContentLoadedMs": 26.799999952316284,
+        "loadMs": 288.8000000715256,
+        "htmlTransferBytes": 88626,
+        "localResourceTransferBytes": 13804909,
+        "jsCssFiles": 26,
+        "jsCssRawBytes": 1204542,
+        "jsCssGzipBytes": 316790
+    },
+    "runs": [
+        {
+            "domContentLoadedMs": 39.10000002384186,
+            "loadMs": 338,
+            "htmlTransferBytes": 88626,
+            "htmlEncodedBytes": 88326,
+            "htmlDecodedBytes": 88326,
+            "resources": [
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-wordmark.png",
+                    "initiator": "link",
+                    "transferBytes": 2617,
+                    "encodedBytes": 2317,
+                    "decodedBytes": 2317,
+                    "durationMs": 10
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-gallery.png",
+                    "initiator": "link",
+                    "transferBytes": 889491,
+                    "encodedBytes": 889191,
+                    "decodedBytes": 889191,
+                    "durationMs": 21.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-28.png",
+                    "initiator": "link",
+                    "transferBytes": 137536,
+                    "encodedBytes": 137236,
+                    "decodedBytes": 137236,
+                    "durationMs": 26.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-stage.jpg",
+                    "initiator": "link",
+                    "transferBytes": 2066485,
+                    "encodedBytes": 2066185,
+                    "decodedBytes": 2066185,
+                    "durationMs": 37.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/20b972449227a159.css",
+                    "initiator": "link",
+                    "transferBytes": 51534,
+                    "encodedBytes": 51234,
+                    "decodedBytes": 51234,
+                    "durationMs": 9.400000095367432
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/051aab39704617b9.css",
+                    "initiator": "link",
+                    "transferBytes": 63437,
+                    "encodedBytes": 63137,
+                    "decodedBytes": 63137,
+                    "durationMs": 10.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/a02deb275b446f4b.css",
+                    "initiator": "link",
+                    "transferBytes": 66246,
+                    "encodedBytes": 65946,
+                    "decodedBytes": 65946,
+                    "durationMs": 10.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/948a01b94f186a9b.css",
+                    "initiator": "link",
+                    "transferBytes": 60070,
+                    "encodedBytes": 59770,
+                    "decodedBytes": 59770,
+                    "durationMs": 11.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/b203dc5a9b129445.css",
+                    "initiator": "link",
+                    "transferBytes": 73239,
+                    "encodedBytes": 72939,
+                    "decodedBytes": 72939,
+                    "durationMs": 11.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/05925562da348f11.css",
+                    "initiator": "link",
+                    "transferBytes": 34285,
+                    "encodedBytes": 33985,
+                    "decodedBytes": 33985,
+                    "durationMs": 13.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/a2007a8020b99601.css",
+                    "initiator": "link",
+                    "transferBytes": 19131,
+                    "encodedBytes": 18831,
+                    "decodedBytes": 18831,
+                    "durationMs": 14.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/webpack-10e9de2efd031507.js",
+                    "initiator": "link",
+                    "transferBytes": 4134,
+                    "encodedBytes": 3834,
+                    "decodedBytes": 3834,
+                    "durationMs": 24.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/fd9d1056-04ebb9b279e887b0.js",
+                    "initiator": "script",
+                    "transferBytes": 173134,
+                    "encodedBytes": 172834,
+                    "decodedBytes": 172834,
+                    "durationMs": 27.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/main-app-e4619666c10f5f9e.js",
+                    "initiator": "script",
+                    "transferBytes": 761,
+                    "encodedBytes": 461,
+                    "decodedBytes": 461,
+                    "durationMs": 31.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/117-823b2b568f32ace4.js",
+                    "initiator": "script",
+                    "transferBytes": 124980,
+                    "encodedBytes": 124680,
+                    "decodedBytes": 124680,
+                    "durationMs": 31.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/648-f0b40f7bf9018f30.js",
+                    "initiator": "script",
+                    "transferBytes": 26451,
+                    "encodedBytes": 26151,
+                    "decodedBytes": 26151,
+                    "durationMs": 35.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/44530001-3bf1abf623554b3e.js",
+                    "initiator": "script",
+                    "transferBytes": 68999,
+                    "encodedBytes": 68699,
+                    "decodedBytes": 68699,
+                    "durationMs": 34.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/369-eb1a5b590bf55a2f.js",
+                    "initiator": "script",
+                    "transferBytes": 184156,
+                    "encodedBytes": 183856,
+                    "decodedBytes": 183856,
+                    "durationMs": 40.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/230-9a6d546399ee2dc9.js",
+                    "initiator": "script",
+                    "transferBytes": 57416,
+                    "encodedBytes": 57116,
+                    "decodedBytes": 57116,
+                    "durationMs": 39.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/366-9472b0b8d1a55934.js",
+                    "initiator": "script",
+                    "transferBytes": 23027,
+                    "encodedBytes": 22727,
+                    "decodedBytes": 22727,
+                    "durationMs": 39.60000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/654-da486c6697973856.js",
+                    "initiator": "script",
+                    "transferBytes": 33251,
+                    "encodedBytes": 32951,
+                    "decodedBytes": 32951,
+                    "durationMs": 39.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/page-25d08dd53520040f.js",
+                    "initiator": "script",
+                    "transferBytes": 34532,
+                    "encodedBytes": 34232,
+                    "decodedBytes": 34232,
+                    "durationMs": 38.89999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/410-06b84f1427c80f43.js",
+                    "initiator": "script",
+                    "transferBytes": 25798,
+                    "encodedBytes": 25498,
+                    "decodedBytes": 25498,
+                    "durationMs": 42.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/layout-cc40dc93a7636910.js",
+                    "initiator": "script",
+                    "transferBytes": 25296,
+                    "encodedBytes": 24996,
+                    "decodedBytes": 24996,
+                    "durationMs": 42.89999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/%5B...slug%5D/page-6d56db4821681b82.js",
+                    "initiator": "script",
+                    "transferBytes": 5788,
+                    "encodedBytes": 5488,
+                    "decodedBytes": 5488,
+                    "durationMs": 43
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/fonts/woff2/WantedSansVariable.woff2",
+                    "initiator": "link",
+                    "transferBytes": 1289592,
+                    "encodedBytes": 1289292,
+                    "decodedBytes": 1289292,
+                    "durationMs": 33.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/icons/material-symbols-rounded.svg#arrow_forward",
+                    "initiator": "other",
+                    "transferBytes": 14433,
+                    "encodedBytes": 14133,
+                    "decodedBytes": 14133,
+                    "durationMs": 40.299999952316284
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-05.png",
+                    "initiator": "img",
+                    "transferBytes": 117919,
+                    "encodedBytes": 117619,
+                    "decodedBytes": 117619,
+                    "durationMs": 5.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-poster.jpg",
+                    "initiator": "img",
+                    "transferBytes": 371808,
+                    "encodedBytes": 371508,
+                    "decodedBytes": 371508,
+                    "durationMs": 7.400000095367432
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-29.png",
+                    "initiator": "img",
+                    "transferBytes": 479517,
+                    "encodedBytes": 479217,
+                    "decodedBytes": 479217,
+                    "durationMs": 31.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-14.jpg",
+                    "initiator": "img",
+                    "transferBytes": 13140,
+                    "encodedBytes": 12840,
+                    "decodedBytes": 12840,
+                    "durationMs": 5.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-04.png",
+                    "initiator": "img",
+                    "transferBytes": 59421,
+                    "encodedBytes": 59121,
+                    "decodedBytes": 59121,
+                    "durationMs": 9.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-11.jpg",
+                    "initiator": "img",
+                    "transferBytes": 7640,
+                    "encodedBytes": 7340,
+                    "decodedBytes": 7340,
+                    "durationMs": 7.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-m.png",
+                    "initiator": "img",
+                    "transferBytes": 1366862,
+                    "encodedBytes": 1366562,
+                    "decodedBytes": 1366562,
+                    "durationMs": 21.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-facade.png",
+                    "initiator": "img",
+                    "transferBytes": 1406861,
+                    "encodedBytes": 1406561,
+                    "decodedBytes": 1406561,
+                    "durationMs": 25.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-auditorium.png",
+                    "initiator": "img",
+                    "transferBytes": 1621800,
+                    "encodedBytes": 1621500,
+                    "decodedBytes": 1621500,
+                    "durationMs": 33.60000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-chamber.png",
+                    "initiator": "img",
+                    "transferBytes": 1268311,
+                    "encodedBytes": 1268011,
+                    "decodedBytes": 1268011,
+                    "durationMs": 35.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-s.png",
+                    "initiator": "img",
+                    "transferBytes": 1402544,
+                    "encodedBytes": 1402244,
+                    "decodedBytes": 1402244,
+                    "durationMs": 36.10000002384186
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 4826,
+                    "encodedBytes": 4526,
+                    "decodedBytes": 4526,
+                    "durationMs": 4.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/rental/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7779,
+                    "encodedBytes": 7479,
+                    "decodedBytes": 7479,
+                    "durationMs": 3.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7860,
+                    "encodedBytes": 7560,
+                    "decodedBytes": 7560,
+                    "durationMs": 4
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/news/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7573,
+                    "encodedBytes": 7273,
+                    "decodedBytes": 7273,
+                    "durationMs": 3.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/about/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7855,
+                    "encodedBytes": 7555,
+                    "decodedBytes": 7555,
+                    "durationMs": 3.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/login/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5133,
+                    "encodedBytes": 4833,
+                    "decodedBytes": 4833,
+                    "durationMs": 12.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/programs/page-b6f3b01439c7c69c.js",
+                    "initiator": "script",
+                    "transferBytes": 7004,
+                    "encodedBytes": 6704,
+                    "decodedBytes": 6704,
+                    "durationMs": 3.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/signup/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5138,
+                    "encodedBytes": 4838,
+                    "decodedBytes": 4838,
+                    "durationMs": 11.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/english/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5821,
+                    "encodedBytes": 5521,
+                    "decodedBytes": 5521,
+                    "durationMs": 11.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5508,
+                    "encodedBytes": 5208,
+                    "decodedBytes": 5208,
+                    "durationMs": 12.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/account/login/page-d4663a766dd77b7c.js",
+                    "initiator": "script",
+                    "transferBytes": 14796,
+                    "encodedBytes": 14496,
+                    "decodedBytes": 14496,
+                    "durationMs": 3.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/booking/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5638,
+                    "encodedBytes": 5338,
+                    "decodedBytes": 5338,
+                    "durationMs": 2.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/account/signup/page-eefb8f943a0330c5.js",
+                    "initiator": "script",
+                    "transferBytes": 14842,
+                    "encodedBytes": 14542,
+                    "decodedBytes": 14542,
+                    "durationMs": 3.4000000953674316
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/carmen/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5541,
+                    "encodedBytes": 5241,
+                    "decodedBytes": 5241,
+                    "durationMs": 4
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/programs/%5Bid%5D/page-b1ba9a72bb4126d2.js",
+                    "initiator": "script",
+                    "transferBytes": 8748,
+                    "encodedBytes": 8448,
+                    "decodedBytes": 8448,
+                    "durationMs": 3.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/group/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7918,
+                    "encodedBytes": 7618,
+                    "decodedBytes": 7618,
+                    "durationMs": 4
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/booking/%5Bid%5D/page-a48290d7de3bf491.js",
+                    "initiator": "script",
+                    "transferBytes": 11287,
+                    "encodedBytes": 10987,
+                    "decodedBytes": 10987,
+                    "durationMs": 4.100000023841858
+                }
+            ],
+            "status": 200,
+            "localResourceTransferBytes": 13804909,
+            "jsCssFiles": 26,
+            "jsCssRawBytes": 1204542,
+            "jsCssGzipBytes": 316790,
+            "errors": []
+        },
+        {
+            "domContentLoadedMs": 25.399999976158142,
+            "loadMs": 288.8000000715256,
+            "htmlTransferBytes": 88626,
+            "htmlEncodedBytes": 88326,
+            "htmlDecodedBytes": 88326,
+            "resources": [
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-wordmark.png",
+                    "initiator": "link",
+                    "transferBytes": 2617,
+                    "encodedBytes": 2317,
+                    "decodedBytes": 2317,
+                    "durationMs": 9.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-gallery.png",
+                    "initiator": "link",
+                    "transferBytes": 889491,
+                    "encodedBytes": 889191,
+                    "decodedBytes": 889191,
+                    "durationMs": 28
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-stage.jpg",
+                    "initiator": "link",
+                    "transferBytes": 2066485,
+                    "encodedBytes": 2066185,
+                    "decodedBytes": 2066185,
+                    "durationMs": 43.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/20b972449227a159.css",
+                    "initiator": "link",
+                    "transferBytes": 51534,
+                    "encodedBytes": 51234,
+                    "decodedBytes": 51234,
+                    "durationMs": 10.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-28.png",
+                    "initiator": "link",
+                    "transferBytes": 137536,
+                    "encodedBytes": 137236,
+                    "decodedBytes": 137236,
+                    "durationMs": 17.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/051aab39704617b9.css",
+                    "initiator": "link",
+                    "transferBytes": 63437,
+                    "encodedBytes": 63137,
+                    "decodedBytes": 63137,
+                    "durationMs": 10.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/a02deb275b446f4b.css",
+                    "initiator": "link",
+                    "transferBytes": 66246,
+                    "encodedBytes": 65946,
+                    "decodedBytes": 65946,
+                    "durationMs": 11.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/948a01b94f186a9b.css",
+                    "initiator": "link",
+                    "transferBytes": 60070,
+                    "encodedBytes": 59770,
+                    "decodedBytes": 59770,
+                    "durationMs": 11.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/b203dc5a9b129445.css",
+                    "initiator": "link",
+                    "transferBytes": 73239,
+                    "encodedBytes": 72939,
+                    "decodedBytes": 72939,
+                    "durationMs": 11.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/05925562da348f11.css",
+                    "initiator": "link",
+                    "transferBytes": 34285,
+                    "encodedBytes": 33985,
+                    "decodedBytes": 33985,
+                    "durationMs": 15
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/a2007a8020b99601.css",
+                    "initiator": "link",
+                    "transferBytes": 19131,
+                    "encodedBytes": 18831,
+                    "decodedBytes": 18831,
+                    "durationMs": 15.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/webpack-10e9de2efd031507.js",
+                    "initiator": "link",
+                    "transferBytes": 4134,
+                    "encodedBytes": 3834,
+                    "decodedBytes": 3834,
+                    "durationMs": 20.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/fd9d1056-04ebb9b279e887b0.js",
+                    "initiator": "script",
+                    "transferBytes": 173134,
+                    "encodedBytes": 172834,
+                    "decodedBytes": 172834,
+                    "durationMs": 22.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/117-823b2b568f32ace4.js",
+                    "initiator": "script",
+                    "transferBytes": 124980,
+                    "encodedBytes": 124680,
+                    "decodedBytes": 124680,
+                    "durationMs": 26.59999990463257
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/main-app-e4619666c10f5f9e.js",
+                    "initiator": "script",
+                    "transferBytes": 761,
+                    "encodedBytes": 461,
+                    "decodedBytes": 461,
+                    "durationMs": 28.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/44530001-3bf1abf623554b3e.js",
+                    "initiator": "script",
+                    "transferBytes": 68999,
+                    "encodedBytes": 68699,
+                    "decodedBytes": 68699,
+                    "durationMs": 35.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/648-f0b40f7bf9018f30.js",
+                    "initiator": "script",
+                    "transferBytes": 26451,
+                    "encodedBytes": 26151,
+                    "decodedBytes": 26151,
+                    "durationMs": 35.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/369-eb1a5b590bf55a2f.js",
+                    "initiator": "script",
+                    "transferBytes": 184156,
+                    "encodedBytes": 183856,
+                    "decodedBytes": 183856,
+                    "durationMs": 36.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/366-9472b0b8d1a55934.js",
+                    "initiator": "script",
+                    "transferBytes": 23027,
+                    "encodedBytes": 22727,
+                    "decodedBytes": 22727,
+                    "durationMs": 39.39999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/230-9a6d546399ee2dc9.js",
+                    "initiator": "script",
+                    "transferBytes": 57416,
+                    "encodedBytes": 57116,
+                    "decodedBytes": 57116,
+                    "durationMs": 37.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/410-06b84f1427c80f43.js",
+                    "initiator": "script",
+                    "transferBytes": 25798,
+                    "encodedBytes": 25498,
+                    "decodedBytes": 25498,
+                    "durationMs": 40.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/654-da486c6697973856.js",
+                    "initiator": "script",
+                    "transferBytes": 33251,
+                    "encodedBytes": 32951,
+                    "decodedBytes": 32951,
+                    "durationMs": 39.60000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/page-25d08dd53520040f.js",
+                    "initiator": "script",
+                    "transferBytes": 34532,
+                    "encodedBytes": 34232,
+                    "decodedBytes": 34232,
+                    "durationMs": 39.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/%5B...slug%5D/page-6d56db4821681b82.js",
+                    "initiator": "script",
+                    "transferBytes": 5788,
+                    "encodedBytes": 5488,
+                    "decodedBytes": 5488,
+                    "durationMs": 42
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/layout-cc40dc93a7636910.js",
+                    "initiator": "script",
+                    "transferBytes": 25296,
+                    "encodedBytes": 24996,
+                    "decodedBytes": 24996,
+                    "durationMs": 41.39999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/fonts/woff2/WantedSansVariable.woff2",
+                    "initiator": "link",
+                    "transferBytes": 1289592,
+                    "encodedBytes": 1289292,
+                    "decodedBytes": 1289292,
+                    "durationMs": 24.09999990463257
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/icons/material-symbols-rounded.svg#arrow_forward",
+                    "initiator": "other",
+                    "transferBytes": 14433,
+                    "encodedBytes": 14133,
+                    "decodedBytes": 14133,
+                    "durationMs": 39.199999928474426
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-05.png",
+                    "initiator": "img",
+                    "transferBytes": 117919,
+                    "encodedBytes": 117619,
+                    "decodedBytes": 117619,
+                    "durationMs": 4.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-poster.jpg",
+                    "initiator": "img",
+                    "transferBytes": 371808,
+                    "encodedBytes": 371508,
+                    "decodedBytes": 371508,
+                    "durationMs": 10.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-14.jpg",
+                    "initiator": "img",
+                    "transferBytes": 13140,
+                    "encodedBytes": 12840,
+                    "decodedBytes": 12840,
+                    "durationMs": 6.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-11.jpg",
+                    "initiator": "img",
+                    "transferBytes": 7640,
+                    "encodedBytes": 7340,
+                    "decodedBytes": 7340,
+                    "durationMs": 6.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-29.png",
+                    "initiator": "img",
+                    "transferBytes": 479517,
+                    "encodedBytes": 479217,
+                    "decodedBytes": 479217,
+                    "durationMs": 12.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-04.png",
+                    "initiator": "img",
+                    "transferBytes": 59421,
+                    "encodedBytes": 59121,
+                    "decodedBytes": 59121,
+                    "durationMs": 7.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-m.png",
+                    "initiator": "img",
+                    "transferBytes": 1366862,
+                    "encodedBytes": 1366562,
+                    "decodedBytes": 1366562,
+                    "durationMs": 32.09999990463257
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-facade.png",
+                    "initiator": "img",
+                    "transferBytes": 1406861,
+                    "encodedBytes": 1406561,
+                    "decodedBytes": 1406561,
+                    "durationMs": 40.60000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-auditorium.png",
+                    "initiator": "img",
+                    "transferBytes": 1621800,
+                    "encodedBytes": 1621500,
+                    "decodedBytes": 1621500,
+                    "durationMs": 42.60000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-s.png",
+                    "initiator": "img",
+                    "transferBytes": 1402544,
+                    "encodedBytes": 1402244,
+                    "decodedBytes": 1402244,
+                    "durationMs": 40.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-chamber.png",
+                    "initiator": "img",
+                    "transferBytes": 1268311,
+                    "encodedBytes": 1268011,
+                    "decodedBytes": 1268011,
+                    "durationMs": 40.60000002384186
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 4826,
+                    "encodedBytes": 4526,
+                    "decodedBytes": 4526,
+                    "durationMs": 2.9000000953674316
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/group/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7918,
+                    "encodedBytes": 7618,
+                    "decodedBytes": 7618,
+                    "durationMs": 2.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/rental/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7779,
+                    "encodedBytes": 7479,
+                    "decodedBytes": 7479,
+                    "durationMs": 2.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7860,
+                    "encodedBytes": 7560,
+                    "decodedBytes": 7560,
+                    "durationMs": 2.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/news/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7573,
+                    "encodedBytes": 7273,
+                    "decodedBytes": 7273,
+                    "durationMs": 2.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/about/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7855,
+                    "encodedBytes": 7555,
+                    "decodedBytes": 7555,
+                    "durationMs": 2.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/programs/page-b6f3b01439c7c69c.js",
+                    "initiator": "script",
+                    "transferBytes": 7004,
+                    "encodedBytes": 6704,
+                    "decodedBytes": 6704,
+                    "durationMs": 2.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/login/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5133,
+                    "encodedBytes": 4833,
+                    "decodedBytes": 4833,
+                    "durationMs": 20
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/signup/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5138,
+                    "encodedBytes": 4838,
+                    "decodedBytes": 4838,
+                    "durationMs": 18.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/english/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5821,
+                    "encodedBytes": 5521,
+                    "decodedBytes": 5521,
+                    "durationMs": 20
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5508,
+                    "encodedBytes": 5208,
+                    "decodedBytes": 5208,
+                    "durationMs": 19.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/booking/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5638,
+                    "encodedBytes": 5338,
+                    "decodedBytes": 5338,
+                    "durationMs": 18.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/account/login/page-d4663a766dd77b7c.js",
+                    "initiator": "script",
+                    "transferBytes": 14796,
+                    "encodedBytes": 14496,
+                    "decodedBytes": 14496,
+                    "durationMs": 3.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/account/signup/page-eefb8f943a0330c5.js",
+                    "initiator": "script",
+                    "transferBytes": 14842,
+                    "encodedBytes": 14542,
+                    "decodedBytes": 14542,
+                    "durationMs": 3.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/carmen/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5541,
+                    "encodedBytes": 5241,
+                    "decodedBytes": 5241,
+                    "durationMs": 2.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/programs/%5Bid%5D/page-b1ba9a72bb4126d2.js",
+                    "initiator": "script",
+                    "transferBytes": 8748,
+                    "encodedBytes": 8448,
+                    "decodedBytes": 8448,
+                    "durationMs": 2.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/booking/%5Bid%5D/page-a48290d7de3bf491.js",
+                    "initiator": "script",
+                    "transferBytes": 11287,
+                    "encodedBytes": 10987,
+                    "decodedBytes": 10987,
+                    "durationMs": 2.5
+                }
+            ],
+            "status": 200,
+            "localResourceTransferBytes": 13804909,
+            "jsCssFiles": 26,
+            "jsCssRawBytes": 1204542,
+            "jsCssGzipBytes": 316790,
+            "errors": []
+        },
+        {
+            "domContentLoadedMs": 26.799999952316284,
+            "loadMs": 285.2999999523163,
+            "htmlTransferBytes": 88626,
+            "htmlEncodedBytes": 88326,
+            "htmlDecodedBytes": 88326,
+            "resources": [
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-wordmark.png",
+                    "initiator": "link",
+                    "transferBytes": 2617,
+                    "encodedBytes": 2317,
+                    "decodedBytes": 2317,
+                    "durationMs": 10.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-gallery.png",
+                    "initiator": "link",
+                    "transferBytes": 889491,
+                    "encodedBytes": 889191,
+                    "decodedBytes": 889191,
+                    "durationMs": 35.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-stage.jpg",
+                    "initiator": "link",
+                    "transferBytes": 2066485,
+                    "encodedBytes": 2066185,
+                    "decodedBytes": 2066185,
+                    "durationMs": 45.09999990463257
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/20b972449227a159.css",
+                    "initiator": "link",
+                    "transferBytes": 51534,
+                    "encodedBytes": 51234,
+                    "decodedBytes": 51234,
+                    "durationMs": 11.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/051aab39704617b9.css",
+                    "initiator": "link",
+                    "transferBytes": 63437,
+                    "encodedBytes": 63137,
+                    "decodedBytes": 63137,
+                    "durationMs": 12
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-28.png",
+                    "initiator": "link",
+                    "transferBytes": 137536,
+                    "encodedBytes": 137236,
+                    "decodedBytes": 137236,
+                    "durationMs": 21.40000009536743
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/a02deb275b446f4b.css",
+                    "initiator": "link",
+                    "transferBytes": 66246,
+                    "encodedBytes": 65946,
+                    "decodedBytes": 65946,
+                    "durationMs": 12.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/948a01b94f186a9b.css",
+                    "initiator": "link",
+                    "transferBytes": 60070,
+                    "encodedBytes": 59770,
+                    "decodedBytes": 59770,
+                    "durationMs": 12.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/b203dc5a9b129445.css",
+                    "initiator": "link",
+                    "transferBytes": 73239,
+                    "encodedBytes": 72939,
+                    "decodedBytes": 72939,
+                    "durationMs": 13.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/05925562da348f11.css",
+                    "initiator": "link",
+                    "transferBytes": 34285,
+                    "encodedBytes": 33985,
+                    "decodedBytes": 33985,
+                    "durationMs": 15.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/css/a2007a8020b99601.css",
+                    "initiator": "link",
+                    "transferBytes": 19131,
+                    "encodedBytes": 18831,
+                    "decodedBytes": 18831,
+                    "durationMs": 17
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/webpack-10e9de2efd031507.js",
+                    "initiator": "link",
+                    "transferBytes": 4134,
+                    "encodedBytes": 3834,
+                    "decodedBytes": 3834,
+                    "durationMs": 22.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/fd9d1056-04ebb9b279e887b0.js",
+                    "initiator": "script",
+                    "transferBytes": 173134,
+                    "encodedBytes": 172834,
+                    "decodedBytes": 172834,
+                    "durationMs": 32
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/117-823b2b568f32ace4.js",
+                    "initiator": "script",
+                    "transferBytes": 124980,
+                    "encodedBytes": 124680,
+                    "decodedBytes": 124680,
+                    "durationMs": 34.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/main-app-e4619666c10f5f9e.js",
+                    "initiator": "script",
+                    "transferBytes": 761,
+                    "encodedBytes": 461,
+                    "decodedBytes": 461,
+                    "durationMs": 33.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/44530001-3bf1abf623554b3e.js",
+                    "initiator": "script",
+                    "transferBytes": 68999,
+                    "encodedBytes": 68699,
+                    "decodedBytes": 68699,
+                    "durationMs": 35.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/648-f0b40f7bf9018f30.js",
+                    "initiator": "script",
+                    "transferBytes": 26451,
+                    "encodedBytes": 26151,
+                    "decodedBytes": 26151,
+                    "durationMs": 37.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/230-9a6d546399ee2dc9.js",
+                    "initiator": "script",
+                    "transferBytes": 57416,
+                    "encodedBytes": 57116,
+                    "decodedBytes": 57116,
+                    "durationMs": 38.89999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/369-eb1a5b590bf55a2f.js",
+                    "initiator": "script",
+                    "transferBytes": 184156,
+                    "encodedBytes": 183856,
+                    "decodedBytes": 183856,
+                    "durationMs": 40
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/366-9472b0b8d1a55934.js",
+                    "initiator": "script",
+                    "transferBytes": 23027,
+                    "encodedBytes": 22727,
+                    "decodedBytes": 22727,
+                    "durationMs": 39.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/654-da486c6697973856.js",
+                    "initiator": "script",
+                    "transferBytes": 33251,
+                    "encodedBytes": 32951,
+                    "decodedBytes": 32951,
+                    "durationMs": 41.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/%5B...slug%5D/page-6d56db4821681b82.js",
+                    "initiator": "script",
+                    "transferBytes": 5788,
+                    "encodedBytes": 5488,
+                    "decodedBytes": 5488,
+                    "durationMs": 43.89999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/page-25d08dd53520040f.js",
+                    "initiator": "script",
+                    "transferBytes": 34532,
+                    "encodedBytes": 34232,
+                    "decodedBytes": 34232,
+                    "durationMs": 42.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/layout-cc40dc93a7636910.js",
+                    "initiator": "script",
+                    "transferBytes": 25296,
+                    "encodedBytes": 24996,
+                    "decodedBytes": 24996,
+                    "durationMs": 43.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/410-06b84f1427c80f43.js",
+                    "initiator": "script",
+                    "transferBytes": 25798,
+                    "encodedBytes": 25498,
+                    "decodedBytes": 25498,
+                    "durationMs": 42.89999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/fonts/woff2/WantedSansVariable.woff2",
+                    "initiator": "link",
+                    "transferBytes": 1289592,
+                    "encodedBytes": 1289292,
+                    "decodedBytes": 1289292,
+                    "durationMs": 29.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/icons/material-symbols-rounded.svg#arrow_forward",
+                    "initiator": "other",
+                    "transferBytes": 14433,
+                    "encodedBytes": 14133,
+                    "decodedBytes": 14133,
+                    "durationMs": 41.10000002384186
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-05.png",
+                    "initiator": "img",
+                    "transferBytes": 117919,
+                    "encodedBytes": 117619,
+                    "decodedBytes": 117619,
+                    "durationMs": 3.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-poster.jpg",
+                    "initiator": "img",
+                    "transferBytes": 371808,
+                    "encodedBytes": 371508,
+                    "decodedBytes": 371508,
+                    "durationMs": 11.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-14.jpg",
+                    "initiator": "img",
+                    "transferBytes": 13140,
+                    "encodedBytes": 12840,
+                    "decodedBytes": 12840,
+                    "durationMs": 6.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-11.jpg",
+                    "initiator": "img",
+                    "transferBytes": 7640,
+                    "encodedBytes": 7340,
+                    "decodedBytes": 7340,
+                    "durationMs": 5.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-29.png",
+                    "initiator": "img",
+                    "transferBytes": 479517,
+                    "encodedBytes": 479217,
+                    "decodedBytes": 479217,
+                    "durationMs": 13.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/season-04.png",
+                    "initiator": "img",
+                    "transferBytes": 59421,
+                    "encodedBytes": 59121,
+                    "decodedBytes": 59121,
+                    "durationMs": 8.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-m.png",
+                    "initiator": "img",
+                    "transferBytes": 1366862,
+                    "encodedBytes": 1366562,
+                    "decodedBytes": 1366562,
+                    "durationMs": 21.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-facade.png",
+                    "initiator": "img",
+                    "transferBytes": 1406861,
+                    "encodedBytes": 1406561,
+                    "decodedBytes": 1406561,
+                    "durationMs": 26.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-s.png",
+                    "initiator": "img",
+                    "transferBytes": 1402544,
+                    "encodedBytes": 1402244,
+                    "decodedBytes": 1402244,
+                    "durationMs": 26.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-auditorium.png",
+                    "initiator": "img",
+                    "transferBytes": 1621800,
+                    "encodedBytes": 1621500,
+                    "decodedBytes": 1621500,
+                    "durationMs": 29
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-chamber.png",
+                    "initiator": "img",
+                    "transferBytes": 1268311,
+                    "encodedBytes": 1268011,
+                    "decodedBytes": 1268011,
+                    "durationMs": 31
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 4826,
+                    "encodedBytes": 4526,
+                    "decodedBytes": 4526,
+                    "durationMs": 4.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/rental/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7779,
+                    "encodedBytes": 7479,
+                    "decodedBytes": 7479,
+                    "durationMs": 5.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7860,
+                    "encodedBytes": 7560,
+                    "decodedBytes": 7560,
+                    "durationMs": 5.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/news/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7573,
+                    "encodedBytes": 7273,
+                    "decodedBytes": 7273,
+                    "durationMs": 4.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/about/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7855,
+                    "encodedBytes": 7555,
+                    "decodedBytes": 7555,
+                    "durationMs": 4.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/programs/page-b6f3b01439c7c69c.js",
+                    "initiator": "script",
+                    "transferBytes": 7004,
+                    "encodedBytes": 6704,
+                    "decodedBytes": 6704,
+                    "durationMs": 3.0999999046325684
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/login/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5133,
+                    "encodedBytes": 4833,
+                    "decodedBytes": 4833,
+                    "durationMs": 3.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/signup/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5138,
+                    "encodedBytes": 4838,
+                    "decodedBytes": 4838,
+                    "durationMs": 3.0999999046325684
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/english/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5821,
+                    "encodedBytes": 5521,
+                    "decodedBytes": 5521,
+                    "durationMs": 4.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5508,
+                    "encodedBytes": 5208,
+                    "decodedBytes": 5208,
+                    "durationMs": 3.4000000953674316
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/booking/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5638,
+                    "encodedBytes": 5338,
+                    "decodedBytes": 5338,
+                    "durationMs": 4.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/account/login/page-d4663a766dd77b7c.js",
+                    "initiator": "script",
+                    "transferBytes": 14796,
+                    "encodedBytes": 14496,
+                    "decodedBytes": 14496,
+                    "durationMs": 3.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/account/signup/page-eefb8f943a0330c5.js",
+                    "initiator": "script",
+                    "transferBytes": 14842,
+                    "encodedBytes": 14542,
+                    "decodedBytes": 14542,
+                    "durationMs": 3.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/carmen/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5541,
+                    "encodedBytes": 5241,
+                    "decodedBytes": 5241,
+                    "durationMs": 6.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/programs/%5Bid%5D/page-b1ba9a72bb4126d2.js",
+                    "initiator": "script",
+                    "transferBytes": 8748,
+                    "encodedBytes": 8448,
+                    "decodedBytes": 8448,
+                    "durationMs": 5.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/group/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 7918,
+                    "encodedBytes": 7618,
+                    "decodedBytes": 7618,
+                    "durationMs": 7
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/chunks/app/booking/%5Bid%5D/page-a48290d7de3bf491.js",
+                    "initiator": "script",
+                    "transferBytes": 11287,
+                    "encodedBytes": 10987,
+                    "decodedBytes": 10987,
+                    "durationMs": 5.5
+                }
+            ],
+            "status": 200,
+            "localResourceTransferBytes": 13804909,
+            "jsCssFiles": 26,
+            "jsCssRawBytes": 1204542,
+            "jsCssGzipBytes": 316790,
+            "errors": []
+        }
+    ]
+}

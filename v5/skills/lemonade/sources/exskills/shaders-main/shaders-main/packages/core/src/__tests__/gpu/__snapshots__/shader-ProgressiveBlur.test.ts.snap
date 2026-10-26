@@ -1,0 +1,169 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ProgressiveBlur (a) compute → RTT input → variable-blur fragment composite > RTTs the child, registers a compute-output texture, composites blurred RGB + sharp alpha > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  intensity: f32,
+  angle: f32,
+  center: vec2f,
+  falloff: f32,
+  dispersion: f32,
+  jitter: f32,
+  _opacity: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_pb: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+@group(1) @binding(1) var rtt_0: texture_2d<f32>;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = in.uv;
+  var composed_0 = unpremultiplyAlpha(vec4f((textureSample(compute_0, linearClamp, uv)).rgb, (textureSample(rtt_0, linearClamp, uv)).a));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`ProgressiveBlur (c) fill kernel resolves (D3 rules) > the blur-map fill kernel resolves with a storage textureStore + the shared blur-amount body > fillBlurMap 1`] = `
+"@group(0) @binding(0) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct item {
+  angle: f32,
+  centerX: f32,
+  centerY: f32,
+  falloff: f32,
+  aspect: f32,
+  maxRadius: f32,
+}
+
+@group(0) @binding(1) var<uniform> params: item;
+
+fn progressiveBlurAmount(angleDeg: f32, centerX: f32, centerY: f32, falloff: f32, uv: vec2f, aspect: f32) -> f32 {
+  let angleRad = (angleDeg * 0.017453292519943295f);
+  let direction = vec2f((cos(angleRad) / aspect), sin(angleRad));
+  let centerPos = vec2f(centerX, (1f - centerY));
+  let centeredUV = (uv - centerPos);
+  let directionalDist = max(0f, dot(centeredUV, direction));
+  return smoothstep(0f, falloff, directionalDist);
+}
+
+fn progressiveBlurFillBlurMap(cx: u32, cy: u32) {
+  let p = (&params);
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 640f);
+  let blurAmount = progressiveBlurAmount((*p).angle, (*p).centerX, (*p).centerY, (*p).falloff, vec2f(u, v), (*p).aspect);
+  let radius = (blurAmount * (*p).maxRadius);
+  textureStore(blurMap, vec2u(cx, cy), vec4f(radius, 0f, 0f, 1f));
+}"
+`;
+
+exports[`ProgressiveBlur (c2) map-driven fill kernel resolves (e0 compute-map interplay) > the map-driven fill kernel samples the source texture, remaps, scales by the blur amount > fillBlurMapVariable 1`] = `
+"@group(0) @binding(0) var source: texture_2d<f32>;
+
+@group(0) @binding(1) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct item {
+  angle: f32,
+  centerX: f32,
+  centerY: f32,
+  falloff: f32,
+  aspect: f32,
+  inputWidth: f32,
+  inputHeight: f32,
+  inputMin: f32,
+  inputMax: f32,
+  outputMin: f32,
+  outputMax: f32,
+  curve: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: item;
+
+fn progressiveBlurAmount(angleDeg: f32, centerX: f32, centerY: f32, falloff: f32, uv: vec2f, aspect: f32) -> f32 {
+  let angleRad = (angleDeg * 0.017453292519943295f);
+  let direction = vec2f((cos(angleRad) / aspect), sin(angleRad));
+  let centerPos = vec2f(centerX, (1f - centerY));
+  let centeredUV = (uv - centerPos);
+  let directionalDist = max(0f, dot(centeredUV, direction));
+  return smoothstep(0f, falloff, directionalDist);
+}
+
+fn mapSourceScalar_luminance(sample: vec4f) -> f32 {
+  return dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+}
+
+fn applyRemapWindow(raw: f32, inputMin: f32, inputMax: f32, outputMin: f32, outputMax: f32, curve: f32) -> f32 {
+  let inputRange = max((inputMax - inputMin), 1e-4f);
+  let normalised = clamp(((raw - inputMin) / inputRange), 0f, 1f);
+  let exponent = pow(2f, (-(curve) * 2f));
+  let eased = pow(normalised, exponent);
+  return mix(outputMin, outputMax, eased);
+}
+
+fn progressiveBlurFillBlurMapVariable(cx: u32, cy: u32) {
+  let p = (&params);
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 640f);
+  let blurAmount = progressiveBlurAmount((*p).angle, (*p).centerX, (*p).centerY, (*p).falloff, vec2f(u, v), (*p).aspect);
+  let srcX = clamp(i32(round((u * (*p).inputWidth))), 0i, i32(((*p).inputWidth - 1f)));
+  let srcY = clamp(i32(round((v * (*p).inputHeight))), 0i, i32(((*p).inputHeight - 1f)));
+  let sample = textureLoad(source, vec2u(u32(srcX), u32(srcY)), 0);
+  let remapped = applyRemapWindow(mapSourceScalar_luminance(sample), (*p).inputMin, (*p).inputMax, (*p).outputMin, (*p).outputMax, (*p).curve);
+  let radius = (blurAmount * (remapped * 0.36f));
+  textureStore(blurMap, vec2u(cx, cy), vec4f(radius, 0f, 0f, 1f));
+}"
+`;

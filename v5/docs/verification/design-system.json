@@ -1,0 +1,94 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "results": [
+    {
+      "name": "desktop chapter: 디자인 시스템 소개",
+      "passed": true
+    },
+    {
+      "name": "desktop chapter: 브랜드와 로고",
+      "passed": true
+    },
+    {
+      "name": "desktop chapter: 컬러",
+      "passed": true
+    },
+    {
+      "name": "desktop chapter: 타이포그래피",
+      "passed": true
+    },
+    {
+      "name": "desktop chapter: 레이아웃과 간격",
+      "passed": true
+    },
+    {
+      "name": "desktop chapter: 컴포넌트",
+      "passed": true
+    },
+    {
+      "name": "desktop chapter: 모션",
+      "passed": true
+    },
+    {
+      "name": "desktop chapter: 접근성과 문장",
+      "passed": true
+    },
+    {
+      "name": "desktop chapter: 토큰과 자료",
+      "passed": true
+    },
+    {
+      "name": "actual palette and 16px foundation match the documented system",
+      "passed": true
+    },
+    {
+      "name": "search, keyboard shortcut, empty state and focus restoration",
+      "passed": true
+    },
+    {
+      "name": "shareable section URLs, chapter links and browser history",
+      "passed": true
+    },
+    {
+      "name": "color copy, type specimen and real computed font values",
+      "passed": true
+    },
+    {
+      "name": "component examples: field semantics, tabs, disclosure and modal lifecycle",
+      "passed": true
+    },
+    {
+      "name": "the real poster card separates navigation, favorite state and visible feedback",
+      "passed": true
+    },
+    {
+      "name": "token download contains the documented production foundations",
+      "passed": true
+    },
+    {
+      "name": "all chapters are readable and fit 320px",
+      "passed": true
+    },
+    {
+      "name": "all chapters are readable and fit 390px",
+      "passed": true
+    },
+    {
+      "name": "all chapters are readable and fit 768px",
+      "passed": true
+    },
+    {
+      "name": "nested scroll motion is gradual, paused with input, and masked without collisions",
+      "passed": true
+    },
+    {
+      "name": "home uses the shared scroll heading without changing its wording and preserves filled participation cards",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

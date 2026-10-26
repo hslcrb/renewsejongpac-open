@@ -1,0 +1,91 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve gate — the builders emit valid WGSL and call their field fn > matches WGSL snapshot 1`] = `
+"fn aspectOf(viewport: vec2f) -> f32 {
+  return (viewport.x / max(viewport.y, 1e-6f));
+}
+
+fn fields_aspectScaledDomain(uv: vec2f, viewport: vec2f, scale: f32, seed: f32) -> vec2f {
+  let aspect = aspectOf(viewport);
+  let aspectUV = vec2f((uv.x * aspect), uv.y);
+  return ((aspectUV * exp(scale)) + seed);
+}
+
+fn octaveField(p: vec2f) -> f32 {
+  return (sin(p.x) * cos(p.y));
+}
+
+fn fbmAGolden4(base: vec2f, baseFreq: f32, lacunarity: f32, persistence: f32, animTime: f32, seedOffset: vec2f, octaveCount: f32) -> vec2f {
+  let n = i32(octaveCount);
+  var freq = baseFreq;
+  var weight = 1f;
+  var accumulated = 0f;
+  var totalWeight = 0f;
+  for (var i = 0; (i < 4i); i++) {
+    let fi = f32(i);
+    let dirX = cos((fi * 2.3999632297286535f));
+    let dirY = sin((fi * 2.3999632297286535f));
+    let coord = vec2f((((base.x * freq) + (animTime * dirX)) + seedOffset.x), (((base.y * freq) + (animTime * dirY)) + seedOffset.y));
+    let active_1 = select(0f, 1f, (i < n));
+    accumulated = (accumulated + ((octaveField(coord) * weight) * active_1));
+    totalWeight = (totalWeight + (weight * active_1));
+    freq = (freq * lacunarity);
+    weight = (weight * persistence);
+  }
+  return vec2f(accumulated, totalWeight);
+}
+
+fn fbmBGolden8(base: vec2f, baseFreq: f32, lacunarity: f32, persistence: f32, animTime: f32, seedOffset: vec2f, octaveCount: f32) -> vec2f {
+  let n = i32(octaveCount);
+  var freq = baseFreq;
+  var weight = 1f;
+  var accumulated = 0f;
+  var totalWeight = 0f;
+  for (var i = 0; (i < 8i); i++) {
+    let fi = f32(i);
+    let dirX = cos((fi * 2.3999632297286535f));
+    let dirY = sin((fi * 2.3999632297286535f));
+    let coord = vec2f((((base.x * freq) + (animTime * dirX)) + seedOffset.x), (((base.y * freq) + (animTime * dirY)) + seedOffset.y));
+    let active_1 = select(0f, 1f, (i < n));
+    accumulated = (accumulated + ((octaveField(coord) * weight) * active_1));
+    totalWeight = (totalWeight + (weight * active_1));
+    freq = (freq * lacunarity);
+    weight = (weight * persistence);
+  }
+  return vec2f(accumulated, totalWeight);
+}
+
+fn fields_timeAxisDomain(pos: vec2f, t: f32, rate: f32) -> vec3f {
+  return vec3f(pos.x, pos.y, (t * rate));
+}
+
+fn warpField(p: vec3f) -> f32 {
+  return ((sin(p.x) * cos(p.y)) * p.z);
+}
+
+fn warpTwo(pos: vec3f, t: f32, warpAmount: f32) -> vec3f {
+  let qx = warpField((pos + vec3f((t * 0.3f), (t * -0.2f), 0f)));
+  let qy = warpField((pos + vec3f(5.2f, 1.3f, (t * 0.25f))));
+  let warped1 = (pos + (vec3f(qx, qy, 0f) * warpAmount));
+  let rx = warpField((warped1 + vec3f(1.7f, 9.2f, (t * 0.15f))));
+  let ry = warpField((warped1 + vec3f(8.3f, 2.8f, (t * 0.13f))));
+  return (pos + (vec3f(rx, ry, 0f) * warpAmount));
+}
+
+fn fields_pixelGridDomain(uv: vec2f, viewport: vec2f, grain: f32, seed: f32) -> vec2f {
+  return (floor(((uv * viewport) / grain)) + seed);
+}
+
+struct fieldsProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn fieldsProbe(_arg_0: fieldsProbe_Input) -> @location(0) vec4f {
+  let pos = fields_aspectScaledDomain(_arg_0.uv, vec2f(800, 600), 1f, 0f);
+  let a = fbmAGolden4(pos, 2f, 2f, 0.5f, 0f, vec2f(), 4f);
+  let b = fbmBGolden8(pos, 2f, 2f, 0.5f, 0f, vec2f(), 8f);
+  let w = warpTwo(fields_timeAxisDomain(pos, 1f, 0.3f), 1f, 0.4f);
+  let g = fields_pixelGridDomain(_arg_0.uv, vec2f(800, 600), 4f, 0f);
+  return vec4f((a.x / a.y), (b.x / b.y), w.x, g.x);
+}"
+`;

@@ -1,0 +1,51 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T07:09:09.698Z",
+  "results": [
+    {
+      "name": "the first view keeps one main work and exposes both neighbouring program names",
+      "passed": true
+    },
+    {
+      "name": "the clock uses Seoul time, ticks independently and links the actual next official release",
+      "passed": true
+    },
+    {
+      "name": "readable non-overlapping hero and information cards at 1440px",
+      "passed": true
+    },
+    {
+      "name": "readable non-overlapping hero and information cards at 1024px",
+      "passed": true
+    },
+    {
+      "name": "readable non-overlapping hero and information cards at 768px",
+      "passed": true
+    },
+    {
+      "name": "readable non-overlapping hero and information cards at 390px",
+      "passed": true
+    },
+    {
+      "name": "readable non-overlapping hero and information cards at 320px",
+      "passed": true
+    },
+    {
+      "name": "carousel controls retain the one-work layout and expose each slide's matching actions",
+      "passed": true
+    },
+    {
+      "name": "every featured work keeps both actions inside the image on a 320px phone",
+      "passed": true
+    },
+    {
+      "name": "at release time the next opening advances, then becomes an honest empty state",
+      "passed": true
+    },
+    {
+      "name": "there are no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,93 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve gate — geom fns emit valid WGSL > matches WGSL snapshot 1`] = `
+"fn aspectOf(viewport: vec2f) -> f32 {
+  return (viewport.x / max(viewport.y, 1e-6f));
+}
+
+fn flooredMod2(p: vec2f, m: vec2f) -> vec2f {
+  return vec2f((p.x - (m.x * floor((p.x / m.x)))), (p.y - (m.y * floor((p.y / m.y)))));
+}
+
+fn flooredMod1(x: f32, m: f32) -> f32 {
+  return (x - (m * floor((x / m))));
+}
+
+fn rotate2(p: vec2f, cosA: f32, sinA: f32) -> vec2f {
+  return vec2f(((p.x * cosA) - (p.y * sinA)), ((p.x * sinA) + (p.y * cosA)));
+}
+
+fn safeDiv(n: f32, den: f32) -> f32 {
+  let guarded = select(max(den, 1e-5f), min(den, -1e-5f), (den < 0f));
+  return (n / guarded);
+}
+
+fn aspectCorrectedUV(uv: vec2f, viewport: vec2f) -> vec2f {
+  let aspect = (viewport.x / max(viewport.y, 1e-6f));
+  return vec2f((uv.x * aspect), uv.y);
+}
+
+fn aspectCorrectedUVFlipY(uv: vec2f, viewport: vec2f) -> vec2f {
+  let aspect = (viewport.x / max(viewport.y, 1e-6f));
+  return vec2f((uv.x * aspect), (1f - uv.y));
+}
+
+fn unflipPosition(p: vec2f) -> vec2f {
+  return vec2f(p.x, (1f - p.y));
+}
+
+fn aspectCentrePosition(pos: vec2f, aspect: f32) -> vec2f {
+  return vec2f((pos.x * aspect), (1f - pos.y));
+}
+
+fn aspectCenteredDelta(uv: vec2f, center: vec2f, viewport: vec2f) -> vec2f {
+  let aspect = (viewport.x / max(viewport.y, 1e-6f));
+  return vec2f(((uv.x * aspect) - (center.x * aspect)), (uv.y - (1f - center.y)));
+}
+
+fn canvasCentredDelta(uv: vec2f, aspect: f32) -> vec2f {
+  return vec2f(((uv.x * aspect) - (aspect * 0.5f)), (uv.y - 0.5f));
+}
+
+fn rotateAboutCanvasCentre(p: vec2f, aspect: f32, cosA: f32, sinA: f32) -> vec2f {
+  let centerX = (aspect * 0.5f);
+  const centerY = 0.5;
+  let cx = (p.x - centerX);
+  let cy = (p.y - centerY);
+  return vec2f((((cx * cosA) - (cy * sinA)) + centerX), (((cx * sinA) + (cy * cosA)) + centerY));
+}
+
+fn directionalProjection(p: vec2f, cosA: f32, sinA: f32) -> f32 {
+  return ((p.x * cosA) + (p.y * sinA));
+}
+
+fn toPolar(p: vec2f) -> vec2f {
+  return vec2f(length(p), atan2(p.y, p.x));
+}
+
+fn fromPolar(r: f32, theta: f32) -> vec2f {
+  return vec2f((r * cos(theta)), (r * sin(theta)));
+}
+
+struct geomPrimitiveProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn geomPrimitiveProbe(_arg_0: geomPrimitiveProbe_Input) -> @location(0) vec4f {
+  let aspect = aspectOf(vec2f(1600, 900));
+  let tiled = flooredMod2((_arg_0.uv * 4f), vec2f(1));
+  let m1 = flooredMod1((_arg_0.uv.x * 6.283185307179586f), 3.141592653589793f);
+  let spun = rotate2(tiled, 0.5f, 0.8660254f);
+  let s = safeDiv(spun.x, spun.y);
+  let framed = aspectCorrectedUV(_arg_0.uv, vec2f(1600, 900));
+  let framedFlip = aspectCorrectedUVFlipY(_arg_0.uv, vec2f(1600, 900));
+  let centre = aspectCentrePosition(unflipPosition(vec2f(0.25, 0.75)), aspect);
+  let delta = aspectCenteredDelta(_arg_0.uv, vec2f(0.25, 0.75), vec2f(1600, 900));
+  let canvasDelta = canvasCentredDelta(_arg_0.uv, aspect);
+  let spunAboutCentre = rotateAboutCanvasCentre(framed, aspect, 0.5f, 0.8660254f);
+  let proj = directionalProjection(framedFlip, 0.5f, 0.8660254f);
+  let pol = toPolar(delta);
+  let cart = fromPolar(pol.x, pol.y);
+  return vec4f(((aspect + centre.x) + canvasDelta.y), (((m1 * 0.017453292519943295f) + spunAboutCentre.x) + proj), (s + cart.x), 4.156858250187125f);
+}"
+`;

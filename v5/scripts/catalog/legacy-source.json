@@ -1,0 +1,683 @@
+{
+  "programs": [
+    {
+      "id": "autumn",
+      "title": "가을의 리듬, 서울의 울림",
+      "category": "공연",
+      "genre": "클래식",
+      "start": "2026-10-01",
+      "end": "2026-10-31",
+      "venue": "세종대극장",
+      "price": 50000,
+      "image": "assets/images/official/season-05.png",
+      "imageAlt": "세종문화회관 창단 60주년 헤리티지 공연 이미지",
+      "description": "서울시국악관현악단 정기공연. 국악기와 관현악이 한 무대에서 울립니다.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "carmen",
+      "title": "카르멘",
+      "category": "공연",
+      "genre": "오페라",
+      "start": "2026-10-15",
+      "end": "2026-10-18",
+      "venue": "세종대극장",
+      "price": 80000,
+      "image": "assets/images/official/season-28.png",
+      "imageAlt": "세종문화회관 오페라 갈라 공연 이미지",
+      "description": "비제 오페라 〈카르멘〉. 서울시오페라단이 부르는 뜨겁고 자유로운 사랑의 노래.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "dance",
+      "title": "일무",
+      "category": "공연",
+      "genre": "무용",
+      "start": "2026-10-20",
+      "end": "2026-10-25",
+      "venue": "세종대극장",
+      "price": 60000,
+      "image": "assets/images/official/ilmu-poster.jpg",
+      "imageAlt": "서울시무용단 일무 공식 포스터",
+      "description": "제례의 춤 〈일무〉를 서울시무용단이 오늘의 형태로 무대에 올립니다.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "chamber-autumn",
+      "title": "가을, 현의 편지",
+      "category": "공연",
+      "genre": "클래식",
+      "start": "2026-10-13",
+      "end": "2026-10-30",
+      "venue": "세종체임버홀",
+      "price": 30000,
+      "image": "assets/images/official/season-14.jpg",
+      "imageAlt": "세종문화회관 실내악 시리즈 소리섬 공연 이미지",
+      "description": "첼로와 현악사중주 실내악 정기공연. 가까이 듣는 스트링 음색.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "sumire",
+      "title": "스미레 미용실",
+      "category": "공연",
+      "genre": "연극",
+      "start": "2026-10-01",
+      "end": "2026-10-25",
+      "venue": "세종M씨어터",
+      "price": 40000,
+      "image": "assets/images/official/season-11.jpg",
+      "imageAlt": "세종문화회관 유령 공연 이미지",
+      "description": "작은 미용실에 오가는 손님들의 이야기를 연극으로 옮겼습니다.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "hypnosis",
+      "title": "HYPNOSIS THERAPY",
+      "category": "공연",
+      "genre": "융복합",
+      "start": "2026-10-13",
+      "end": "2026-10-17",
+      "venue": "세종S씨어터",
+      "price": 35000,
+      "image": "assets/images/official/season-23.png",
+      "imageAlt": "세종문화회관 미메시스 공연 이미지",
+      "description": "음악과 영상, 무용이 섞이는 융복합 공연. Sync Next 기획작.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "light",
+      "title": "빛이 머무는 자리",
+      "category": "전시",
+      "genre": "현대미술",
+      "start": "2026-10-01",
+      "end": "2026-11-15",
+      "venue": "세종미술관",
+      "price": 15000,
+      "image": "assets/images/official/venue-gallery.png",
+      "imageAlt": "세종미술관 1관 내부 이미지",
+      "description": "빛을 다룬 설치 작업들이 공간의 밝기와 온도를 바꿉니다. 동시대 작가 기획전.",
+      "duration": "자유 관람",
+      "age": "전체 관람",
+      "times": [
+        "10:00",
+        "14:00"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "art-goods",
+      "title": "서울아트굿즈페스티벌",
+      "category": "전시",
+      "genre": "아트페어",
+      "start": "2026-10-10",
+      "end": "2026-10-31",
+      "venue": "세종미술관",
+      "price": 0,
+      "image": "assets/images/official/venue-gallery.png",
+      "imageAlt": "세종미술관 1관 내부 이미지",
+      "description": "아트굿즈 작가와 브랜드 부스가 세종미술관에 모입니다. 입장 무료.",
+      "duration": "자유 관람",
+      "age": "전체 관람",
+      "times": [
+        "10:00",
+        "14:00"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "academy",
+      "title": "퇴근길 클래식, 음악의 문을 열다",
+      "category": "교육",
+      "genre": "음악",
+      "start": "2026-10-13",
+      "end": "2026-11-24",
+      "venue": "세종예술아카데미",
+      "price": 120000,
+      "image": "assets/images/official/season-29.png",
+      "imageAlt": "세종문화회관 정명훈 x KBS교향악단 베토벤 9 공연 이미지",
+      "description": "여섯 차례의 화요일 저녁 강좌. 곡마다 배경과 감상 포인트를 안내합니다.",
+      "duration": "90분",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "art-class",
+      "title": "그림을 읽는 시간",
+      "category": "교육",
+      "genre": "미술",
+      "start": "2026-10-14",
+      "end": "2026-11-18",
+      "venue": "세종예술아카데미",
+      "price": 100000,
+      "image": "assets/images/official/venue-gallery.png",
+      "imageAlt": "세종미술관 1관 내부 이미지",
+      "description": "미술사의 대표 작품을 작가 이야기와 함께 해설하는 감상 강좌입니다.",
+      "duration": "90분",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "ballet",
+      "title": "한낮의 발레",
+      "category": "공연",
+      "genre": "발레",
+      "start": "2026-11-01",
+      "end": "2026-11-08",
+      "venue": "세종M씨어터",
+      "price": 40000,
+      "image": "assets/images/official/season-01.png",
+      "imageAlt": "세종문화회관 오하드 나하린 데카당스 공연 이미지",
+      "description": "해설이 붙은 서울시발레단 오후 공연. 무대 가까이에서 보는 발레.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "choral",
+      "title": "노래, 도시를 잇다",
+      "category": "공연",
+      "genre": "합창",
+      "start": "2026-10-23",
+      "end": "2026-10-24",
+      "venue": "세종체임버홀",
+      "price": 25000,
+      "image": "assets/images/official/season-04.png",
+      "imageAlt": "세종문화회관 합창, 피어나다 공연 이미지",
+      "description": "서울시합창단 정기공연. 체임버홀에서 열립니다.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "everyone-classic",
+      "title": "누구나 클래식",
+      "category": "공연",
+      "genre": "클래식",
+      "start": "2026-10-28",
+      "end": "2026-10-28",
+      "venue": "세종대극장",
+      "price": 1000,
+      "image": "assets/images/official/season-18.png",
+      "imageAlt": "세종문화회관 여름 가족 음악회 공연 이미지",
+      "description": "천 원 티켓으로 보는 클래식 공연. 누구나 들어갈 수 있습니다.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "winter",
+      "title": "겨울의 문턱에서",
+      "category": "공연",
+      "genre": "뮤지컬",
+      "start": "2026-11-20",
+      "end": "2026-12-06",
+      "venue": "세종M씨어터",
+      "price": 55000,
+      "image": "assets/images/official/season-10.jpg",
+      "imageAlt": "세종문화회관 더 퍼스트 그레잇 쇼 공연 이미지",
+      "description": "겨울철 상연하는 서울시뮤지컬단 창작 무대입니다.",
+      "duration": "100분 (인터미션 포함)",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    },
+    {
+      "id": "tour",
+      "title": "무대 뒤의 발견, 백스테이지 투어",
+      "category": "교육",
+      "genre": "투어",
+      "start": "2026-10-01",
+      "end": "2026-12-31",
+      "venue": "세종대극장",
+      "price": 15000,
+      "image": "assets/images/official/venue-m.png",
+      "imageAlt": "M씨어터 측면 이미지",
+      "description": "평소에는 접근할 수 없는 대극장 무대 뒷공간을 안내원과 함께 둘러봅니다.",
+      "duration": "90분",
+      "age": "7세 이상",
+      "times": [
+        "14:00",
+        "19:30"
+      ],
+      "status": "예매중"
+    }
+  ],
+  "venues": [
+    {
+      "id": "grand",
+      "name": "세종대극장",
+      "kind": "공연장",
+      "capacity": "3,022",
+      "description": "대형 규모의 대표 공연장. 오페라와 발레, 오케스트라 등 대규모 무대가 상연됩니다.",
+      "image": "assets/images/sejong-grand-interior.png"
+    },
+    {
+      "id": "m-theater",
+      "name": "세종M씨어터",
+      "kind": "공연장",
+      "capacity": "609",
+      "description": "무대와 객석의 거리가 가까우니 배우의 표정까지 보이는 중극장입니다.",
+      "image": "assets/images/official/venue-m.png"
+    },
+    {
+      "id": "s-theater",
+      "name": "세종S씨어터",
+      "kind": "공연장",
+      "capacity": "300",
+      "description": "무대와 객석 배치를 공연마다 다시 만드는 블랙박스형 공간입니다.",
+      "image": "assets/images/official/venue-s.png"
+    },
+    {
+      "id": "chamber",
+      "name": "세종체임버홀",
+      "kind": "공연장",
+      "capacity": "443",
+      "description": "실내악 특화의 어쿠스틱 홀. 연주 소리의 작은 결까지 전합니다.",
+      "image": "assets/images/official/venue-chamber.png"
+    },
+    {
+      "id": "gallery",
+      "name": "세종미술관",
+      "kind": "전시장",
+      "capacity": "전시 공간",
+      "description": "도심 한가운데 있는 미술관. 기획전과 아트페어가 열립니다.",
+      "image": "assets/images/official/venue-gallery.png"
+    }
+  ],
+  "companies": [
+    {
+      "id": "traditional",
+      "name": "서울시국악관현악단",
+      "description": "국악기와 관현악을 함께 쓰는 정기공연",
+      "genre": "국악"
+    },
+    {
+      "id": "dance",
+      "name": "서울시무용단",
+      "description": "전통춤과 창작 무용을 상연",
+      "genre": "무용"
+    },
+    {
+      "id": "musical",
+      "name": "서울시뮤지컬단",
+      "description": "창작 뮤지컬과 대표작을 상연",
+      "genre": "뮤지컬"
+    },
+    {
+      "id": "chorus",
+      "name": "서울시합창단",
+      "description": "합창 정기공연을 상연",
+      "genre": "합창"
+    },
+    {
+      "id": "opera",
+      "name": "서울시오페라단",
+      "description": "정기 오페라 시즌을 상연",
+      "genre": "오페라"
+    },
+    {
+      "id": "theater",
+      "name": "서울시극단",
+      "description": "한국 연극 작품을 상연",
+      "genre": "연극"
+    },
+    {
+      "id": "ballet",
+      "name": "서울시발레단",
+      "description": "고전 발레와 창작 발레를 상연",
+      "genre": "발레"
+    }
+  ],
+  "notices": [
+    {
+      "id": "season-open",
+      "category": "티켓오픈",
+      "title": "2026 세종시즌 11월 프로그램 티켓 오픈 안내",
+      "date": "2026-10-13",
+      "pinned": true,
+      "content": "11월 세종시즌 프로그램의 예매가 시작됩니다. 작품별 상세 페이지에서 일정과 관람 연령, 좌석 등급을 확인해 주세요.",
+      "body": "11월 세종시즌 프로그램의 예매가 시작됩니다. 작품별 상세 페이지에서 일정과 관람 연령, 좌석 등급을 확인해 주세요.",
+      "details": [
+        [
+          "티켓 오픈",
+          "2026.10.15 (목) 오후 2시"
+        ],
+        [
+          "예매 방법",
+          "프로그램 상세 → 예매하기"
+        ],
+        [
+          "대상 프로그램",
+          "11월 세종시즌 공연"
+        ]
+      ]
+    },
+    {
+      "id": "rental-2027",
+      "category": "대관공고",
+      "title": "2027년도 세종문화회관 공연장 정기대관 공고",
+      "date": "2026-10-12",
+      "pinned": true,
+      "content": "2027년 공연장 정기대관 일정을 공고합니다. 시설별 대관 기준과 신청서류를 확인한 후 대관 신청을 진행해 주세요.",
+      "body": "예술가와 관객이 만나는 새로운 무대를 기다립니다. 시설별 대관 기준과 신청서류를 확인한 후 대관 신청을 진행해 주세요.",
+      "details": [
+        [
+          "대상",
+          "세종대극장 · M씨어터 · 체임버홀"
+        ],
+        [
+          "접수",
+          "2026.10.12 ~ 10.30"
+        ],
+        [
+          "문의",
+          "대관 문의 페이지"
+        ]
+      ]
+    },
+    {
+      "id": "parking",
+      "category": "공지",
+      "title": "주말 광화문 일대 행사에 따른 교통·주차 안내",
+      "date": "2026-10-10",
+      "content": "광화문 일대의 행사로 주말 교통 혼잡이 예상됩니다. 원활한 관람을 위해 대중교통 이용을 권장하며 공연 시작 전 여유 있게 도착해 주세요.",
+      "body": "광화문 일대의 행사로 주말 교통 혼잡이 예상됩니다. 원활한 관람을 위해 대중교통 이용을 권장하며 공연 시작 전 여유 있게 도착해 주세요.",
+      "details": [
+        [
+          "지하철",
+          "5호선 광화문역 1·8번 출구"
+        ],
+        [
+          "주차",
+          "세종로 공영주차장 이용"
+        ]
+      ]
+    },
+    {
+      "id": "recruit",
+      "category": "채용",
+      "title": "세종문화회관 공연장 안내원 모집 안내",
+      "date": "2026-10-08",
+      "content": "관객의 특별한 하루를 함께 만들어갈 공연장 안내원 모집 안내입니다. 본 내용은 채용 상세 페이지 구현을 위한 예시이며 실제 채용 접수는 진행되지 않습니다.",
+      "body": "관객의 특별한 하루를 함께 만들어갈 공연장 안내원을 모집합니다. 본 내용은 채용 상세 페이지 구현을 위한 예시이며 실제 채용 접수는 진행되지 않습니다.",
+      "details": [
+        [
+          "모집분야",
+          "공연장 관객 안내 및 운영 지원"
+        ],
+        [
+          "근무형태",
+          "공연 일정에 따른 탄력 근무"
+        ],
+        [
+          "전형",
+          "서류 검토 → 면접 → 결과 안내"
+        ]
+      ]
+    },
+    {
+      "id": "academy-notice",
+      "category": "교육",
+      "title": "세종예술아카데미 가을학기 수강 안내",
+      "date": "2026-10-05",
+      "content": "음악과 미술, 예술을 알아가는 즐거움. 가을학기 강좌별 일정과 준비물을 교육 프로그램 상세에서 확인하실 수 있습니다.",
+      "body": "음악과 미술, 예술을 알아가는 즐거움. 가을학기 강좌별 일정과 준비물을 교육 프로그램 상세에서 확인하실 수 있습니다.",
+      "details": [
+        [
+          "분야",
+          "클래식 감상 · 미술사 · 예술 인문학"
+        ],
+        [
+          "신청",
+          "교육 프로그램에서 강좌 선택"
+        ]
+      ]
+    },
+    {
+      "id": "access",
+      "category": "공지",
+      "title": "모두에게 열린 공연장, 접근성 서비스 안내",
+      "date": "2026-10-02",
+      "content": "세종문화회관은 누구나 편안하게 문화예술을 경험할 수 있는 공간을 만들어갑니다. 휠체어석과 이동 동선, 보조기기 대여 정보를 확인해 주세요.",
+      "body": "세종문화회관은 누구나 편안하게 문화예술을 경험할 수 있는 공간을 만들어갑니다. 휠체어석과 이동 동선, 보조기기 대여 정보를 확인해 주세요.",
+      "details": [
+        [
+          "서비스",
+          "휠체어석 · 이동 지원 · 보조기기 안내"
+        ],
+        [
+          "안내",
+          "장애인 이용안내 페이지"
+        ]
+      ]
+    }
+  ],
+  "homeFeatures": [
+    {
+      "id": "dance",
+      "theme": "dance",
+      "label": "2026 세종시즌 서울시무용단",
+      "title": "같은 숨으로\n이어지는 춤",
+      "name": "서울시무용단 〈일무〉",
+      "programTitle": "일무",
+      "date": "2026.10.20 — 10.25",
+      "venue": "세종대극장",
+      "image": "official/ilmu-stage.jpg",
+      "alt": "서울시무용단 일무 공식 공연 사진",
+      "description": "나란히 선 몸짓이 하나의 커다란 춤이 되는 시간"
+    },
+    {
+      "id": "carmen",
+      "theme": "opera",
+      "label": "2026 세종시즌 서울시오페라단",
+      "title": "누구의 것도 아닌\n카르멘",
+      "name": "서울시오페라단 〈카르멘〉",
+      "programTitle": "카르멘",
+      "date": "2026.10.15 — 10.18",
+      "venue": "세종대극장",
+      "image": "official/season-28.png",
+      "alt": "세종문화회관 오페라 갈라 공연 이미지",
+      "description": "익숙한 선율 너머에서 만나는 카르멘의 선택"
+    },
+    {
+      "id": "light",
+      "theme": "light",
+      "label": "세종미술관 전시",
+      "title": "잠시 걸음을 멈추고\n빛을 바라보는 일",
+      "name": "빛이 머무는 자리",
+      "programTitle": "빛이 머무는 자리",
+      "date": "2026.10.01 — 11.15",
+      "venue": "세종미술관",
+      "image": "official/venue-gallery.png",
+      "alt": "세종미술관 1관 내부 이미지",
+      "description": "창을 지나 바닥에 닿은 빛을 따라 천천히 걷는 전시"
+    }
+  ],
+  "ticketOpenings": [
+    {
+      "id": "monster-farm",
+      "title": "불나방스타쏘세지클럽 〈모여봐요 괴물의 농장〉",
+      "opensAt": "2026-10-28T12:00:00+09:00",
+      "href": "https://www.sejongpac.or.kr/portal/bbs/B0000049/view.do?menuNo=200440&nttId=50214&pageIndex=1"
+    },
+    {
+      "id": "health",
+      "title": "백현진 연말 콘서트 〈건강!〉",
+      "opensAt": "2026-10-28T14:00:00+09:00",
+      "href": "https://www.sejongpac.or.kr/portal/bbs/B0000049/view.do?menuNo=200440&nttId=50215&pageIndex=1"
+    }
+  ],
+  "media": {
+    "season-04": {
+      "file": "season-04.png",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program04.png",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 합창, 피어나다 공연 이미지",
+      "sha256": "14e82b03c7dbc0fe639e1c32b44ac2817ae1a7dc9a31566878553f4612f187ac"
+    },
+    "season-10": {
+      "file": "season-10.jpg",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program10.jpg?ver=1.0",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 더 퍼스트 그레잇 쇼 공연 이미지",
+      "sha256": "1fadd80efdf555fd773e004fa04f2c6320ed33a21e76477f80d930bbe700ad95"
+    },
+    "season-01": {
+      "file": "season-01.png",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program01.png",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 오하드 나하린 데카당스 공연 이미지",
+      "sha256": "fe3681f75e14c819d7fccb95b555bbdd44f8acafa279e0671f094511e88d486d"
+    },
+    "season-05": {
+      "file": "season-05.png",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program05.png",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 창단 60주년 헤리티지 공연 이미지",
+      "sha256": "3072645cf23557306ddeafddf1b58356aa1e24d2794da57d21370d518b057375"
+    },
+    "season-11": {
+      "file": "season-11.jpg",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program11.jpg",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 유령 공연 이미지",
+      "sha256": "95d193424b321c7a73ec37d7d2fe21da919fc80aa980612a221c4fc852dc3aeb"
+    },
+    "season-14": {
+      "file": "season-14.jpg",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program14.jpg",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 실내악 시리즈 소리섬 공연 이미지",
+      "sha256": "1af4c9cf65b5758a1b3c43743fef18f6ae87aee5d6916b63b071ade5913aee46"
+    },
+    "season-23": {
+      "file": "season-23.png",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program23.png",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 미메시스 공연 이미지",
+      "sha256": "789940a6a1dbd1d4c8529641edff1a5adba8e5fd3146e8fff68bf3eecb89e86c"
+    },
+    "season-18": {
+      "file": "season-18.png",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program18.png",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 여름 가족 음악회 공연 이미지",
+      "sha256": "a413a92f7e570d52545921bd8478a004bc62baf1ac4ff39ff820daa196e82375"
+    },
+    "season-28": {
+      "file": "season-28.png",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program28.png",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 오페라 갈라 공연 이미지",
+      "sha256": "3bb348698243768d594388439ead1fc71cc5b7a0c117c02b09b04e03689a84d8"
+    },
+    "season-29": {
+      "file": "season-29.png",
+      "source": "https://www.sejongpac.or.kr/static/season/season2025/img/program/img_program29.png",
+      "sourcePage": "https://www.sejongpac.or.kr/season/season2025/seasonProgram.do",
+      "alt": "세종문화회관 정명훈 x KBS교향악단 베토벤 9 공연 이미지",
+      "sha256": "ce35ea2ab17d8cca7e0a41633b57012a5dcf47a5ea85101b54898af566cfdba1"
+    },
+    "ilmu-poster": {
+      "file": "ilmu-poster.jpg",
+      "source": "https://www.sejongpac.or.kr/cmmn/file/imageSrc.do?fileStreCours=faec0c25744c22e99776405c0fa72802487223fed24a83dd220c1fc1b9530e72&streFileNm=da32a635b7e69c64d590253fe51aa67124078277cccf491c8dad44ed96e373b4",
+      "sourcePage": "https://www.sejongpac.or.kr/portal/performance/performance/performTicket.do?menuNo=200320&performIdx=35922",
+      "alt": "서울시무용단 일무 공식 포스터",
+      "sha256": "79bd83a8bbfce1c32f6a9dfde79ce9475135cbbfe22e5564393f57603134e8bd"
+    },
+    "ilmu-stage": {
+      "file": "ilmu-stage.jpg",
+      "source": "https://www.sejongpac.or.kr/cmmn/file/imageSrc.do?fileStreCours=faec0c25744c22e99776405c0fa72802dc24953a4ca9af8ea1ff2f3115b13426&streFileNm=558a061149e9e633e0ccaa3ad2798c956db30ab9edb0bb8e4f449a9903cb06fb",
+      "sourcePage": "https://www.sejongpac.or.kr/portal/performance/performance/performTicket.do?menuNo=200320&performIdx=35922",
+      "alt": "서울시무용단 일무 공식 공연 사진",
+      "sha256": "e8c554cc0228154b6a7e74e02906d8915185df1da0ebd397c8f46a4b3c276863"
+    },
+    "venue-gallery": {
+      "file": "venue-gallery.png",
+      "source": "https://www.sejongpac.or.kr/static/portal/img/content/img_space_0501_01.png",
+      "sourcePage": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200362",
+      "alt": "세종미술관 1관 내부 이미지",
+      "sha256": "802a7294b9a6b7655e636dd023572a15b6bf756c9604c3ae8ac42791e9082cab"
+    },
+    "venue-m": {
+      "file": "venue-m.png",
+      "source": "https://www.sejongpac.or.kr/static/portal/img/content/img_space_0201_01.png",
+      "sourcePage": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200359",
+      "alt": "M씨어터 측면 이미지",
+      "sha256": "1776e3b1003851c8e4a5fa31884b1376b4df7fd69053eee369896a111793e4b9"
+    },
+    "venue-chamber": {
+      "file": "venue-chamber.png",
+      "source": "https://www.sejongpac.or.kr/static/portal/img/content/img_space_0301_01.png",
+      "sourcePage": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200360",
+      "alt": "체임버홀 이미지",
+      "sha256": "de042e48c94409993e7c89dd06226dd0222a5246360551caa5e506011e96e0e1"
+    },
+    "venue-s": {
+      "file": "venue-s.png",
+      "source": "https://www.sejongpac.or.kr/static/portal/img/content/img_space_0401_01.png",
+      "sourcePage": "https://www.sejongpac.or.kr/portal/main/contents.do?menuNo=200361",
+      "alt": "세종S씨어터 측면 이미지",
+      "sha256": "632447db1fe513d75da5f6026121df7e84b6e1637ab15875723d4369a281424c"
+    }
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "verified_at_utc": "2026-10-20T01:44:14.177251+00:00",
+  "repository": "/workspace/scratch/5fb8e33ceacf/renewsejongpac",
+  "result": "pass",
+  "git": {
+    "branch": "chatgpt/v5-violet-quick-menu",
+    "base_main": "0f41144a2fb5949ca696b00245d6f64770195dfd",
+    "head": "ab4abc5fc7281593f4c1a82c2c84cc3ceef093bf",
+    "pending_merge_parents": [
+      "ab4abc5fc7281593f4c1a82c2c84cc3ceef093bf",
+      "0e74d942895639e5ca3ec581076b2ed357919a27"
+    ],
+    "prebuild_index_tree": "2ef95145383b763f173891d26cfaf9716c8c89ae",
+    "index_entries_match_prebuild_tree": true,
+    "comparison_is_read_only": true,
+    "head_unchanged_during_verification": true
+  },
+  "static_export": {
+    "export_directory": "v5/out",
+    "deployment_directory": "v5",
+    "files_checked": 406,
+    "byte_identical_files": 406,
+    "total_export_bytes": 20356159,
+    "html_files": 155,
+    "javascript_files": 31,
+    "missing_deployment_files": [],
+    "mismatched_deployment_files": [],
+    "retained_deployment_files_outside_export": "not part of sync comparison",
+    "sorted_export_manifest_sha256": "24677eb3cf1c345ffc807feacfcec26948d1cedf53ccb04ac838c463a091aa0b",
+    "manifest_encoding": "Each sorted relative path, NUL, byte count, NUL, file SHA256, newline",
+    "build_id": "J7ynUNrGEJOSw_7lWEJNY"
+  },
+  "development_bundle_check": {
+    "scope": "newly exported files under v5/out only",
+    "path_markers": [
+      ".hot-update.",
+      "_next/static/development/",
+      "_next/static/webpack/",
+      "react-refresh filename"
+    ],
+    "content_markers_checked": [
+      "webpack_hot_update",
+      "hot_update_asset",
+      "next_dev_client",
+      "next_hmr_endpoint",
+      "react_refresh_runtime"
+    ],
+    "matching_paths": [],
+    "matching_javascript_markers": []
+  },
+  "logo": {
+    "all_four_copies_byte_identical": true,
+    "copies": {
+      "uploaded_source": {
+        "path": "assets/logos/seoulmysoul-citybrand.svg",
+        "exists": true,
+        "bytes": 3563,
+        "sha256": "b61dbe568378b352018e96c35c10e9011b2bac45954abfaca5b964768fe25216"
+      },
+      "public": {
+        "path": "v5/public/assets/logos/seoulmysoul-citybrand.svg",
+        "exists": true,
+        "bytes": 3563,
+        "sha256": "b61dbe568378b352018e96c35c10e9011b2bac45954abfaca5b964768fe25216"
+      },
+      "export": {
+        "path": "v5/out/assets/logos/seoulmysoul-citybrand.svg",
+        "exists": true,
+        "bytes": 3563,
+        "sha256": "b61dbe568378b352018e96c35c10e9011b2bac45954abfaca5b964768fe25216"
+      },
+      "deployment": {
+        "path": "v5/assets/logos/seoulmysoul-citybrand.svg",
+        "exists": true,
+        "bytes": 3563,
+        "sha256": "b61dbe568378b352018e96c35c10e9011b2bac45954abfaca5b964768fe25216"
+      }
+    }
+  },
+  "changed_source_comparison": "Working tree plus new files relative to base_main; source/config/scripts/tests/public assets only",
+  "changed_source_sha256": {
+    "v5/app/page.tsx": {
+      "sha256": "ae5e0db858637b7c579d89849521027f35cf9422db8c4c4f67094aea7a105738",
+      "bytes": 51525
+    },
+    "v5/components/Footer.tsx": {
+      "sha256": "9ae875ec9706dbda07077c56949a8dfca4602fa10062bf4e54c4925ebbfc7f2e",
+      "bytes": 5022
+    },
+    "v5/components/HomeAnchorNavigation.tsx": {
+      "sha256": "4d3ccef80b7a47648f361adf9b348d2552fd2e4d2fa8ec0483e6249d5440a1ef",
+      "bytes": 5519
+    },
+    "v5/components/README.md": {
+      "sha256": "aef33fb87d23d2ceb2c5fe8aede2312be0020cca3fcc8003adc4a1cb9e522d19",
+      "bytes": 9594
+    },
+    "v5/components/VioletFur.tsx": {
+      "sha256": "85a4b1d23e9044421940ecc3502e50c32aeed8ddddcae29592b5a78730760ca5",
+      "bytes": 7578
+    },
+    "v5/components/VioletQuickMenu.module.css": {
+      "sha256": "6312360cc3101dee0a6689c854dddf92164e48baa636ba3fdebe45de8a3d34c9",
+      "bytes": 15937
+    },
+    "v5/components/VioletQuickMenu.tsx": {
+      "sha256": "b9bafb5b549eb014ecbf5cdeb1767b7c4ebb9aca6d30998cd73c5bde0c6285f7",
+      "bytes": 23456
+    },
+    "v5/components/violetFurPhysics.ts": {
+      "sha256": "3ba6674e4f7afeaba0a4e88b852269ea0e6651a6face832eec5cbfeb34acf97c",
+      "bytes": 6761
+    },
+    "v5/package.json": {
+      "sha256": "a0bd6a12c5900b29bb947d0f7fb305f36b8013511c7c0b69e89fc966df0dab62",
+      "bytes": 924
+    },
+    "v5/public/assets/logos/seoulmysoul-citybrand.svg": {
+      "sha256": "b61dbe568378b352018e96c35c10e9011b2bac45954abfaca5b964768fe25216",
+      "bytes": 3563
+    },
+    "v5/styles/base.css": {
+      "sha256": "e601612cf9a15d9b748233236a41204818b7bbe9ad32e0593cdf6e3b8844adb6",
+      "bytes": 2392
+    },
+    "v5/styles/components.css": {
+      "sha256": "458bed9f81950bc09e3470d4ebc9e109c8b5877f9b3f2116655cceec1077ce41",
+      "bytes": 11775
+    },
+    "v5/styles/home.css": {
+      "sha256": "007df5036be300840f74eef96ce6732ddc61ba37231116ca9e69245e6f3d8bb0",
+      "bytes": 11715
+    },
+    "v5/tests/home-anchors.cjs": {
+      "sha256": "5b88015b81999c3736c794bd69025e953ef81d7b5b36f56af91cc2aade43a361",
+      "bytes": 15806
+    },
+    "v5/tests/violet-fur-motion.cjs": {
+      "sha256": "56ea9988ef652003ee103836bffdae821da3dc256f5294fa59c62f716411a7c3",
+      "bytes": 5459
+    },
+    "v5/tests/violet-quick-menu-smoke.cjs": {
+      "sha256": "e5f444802da5f0318fb54fa45bc02a7af649428d43abfbca4f1da5e032bd2f36",
+      "bytes": 18029
+    }
+  },
+  "changed_documentation_sha256": {
+    "v5/components/README.md": {
+      "sha256": "aef33fb87d23d2ceb2c5fe8aede2312be0020cca3fcc8003adc4a1cb9e522d19",
+      "bytes": 9594
+    },
+    "v5/docs/components/violet-quick-menu.md": {
+      "sha256": "35b2872bc8938363888431fd9cec1fac6b660800105bc1299e7e8440e621bfb3",
+      "bytes": 19943
+    },
+    "v5/docs/home-anchors.md": {
+      "sha256": "85a43933557c77c218d7d7e1bcbbf0a69ea51f534995693646822f64d8b75384",
+      "bytes": 8677
+    },
+    "v5/docs/violet-quick-menu-verification.md": {
+      "sha256": "deceae204b1142286cbd8b8b14849af2646254bfa17bb7aadc3b70d1e7ea7d52",
+      "bytes": 19675
+    }
+  },
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "node": "v24.19.0",
+    "npm": "11.9.0",
+    "git": "git version 2.51.1",
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "typescript": "5.9.3"
+  },
+  "build_reported_by_root": {
+    "completed": true,
+    "static_pages": 156,
+    "typescript_passed": true,
+    "home_first_load_js_kb": 121,
+    "independently_rerun": false
+  },
+  "evidence_updated_at_utc": "2026-10-20T01:49:49.984981+00:00",
+  "post_build_changes": "Test-only fade sampling stabilization and documentation/evidence; no product source or static output changed after the successful build.",
+  "completed_checks": {
+    "physics": 5,
+    "smoke": 5,
+    "home": 25,
+    "gallery": 11,
+    "anchors": 6,
+    "total": 52,
+    "failed": 0
+  }
+}

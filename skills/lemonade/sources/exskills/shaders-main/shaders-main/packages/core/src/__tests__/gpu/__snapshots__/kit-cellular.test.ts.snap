@@ -1,0 +1,93 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve gate — cellular emits valid WGSL > matches WGSL snapshot 1`] = `
+"fn cellHash2(p: vec2f) -> vec2f {
+  let h = vec2f(dot(p, vec2f(127.0999984741211, 311.70001220703125)), dot(p, vec2f(269.5, 183.3000030517578)));
+  return fract((sin(h) * 43758.5453f));
+}
+
+fn gateLenLen(scaledUV: vec2f, animT: f32, seed: f32) -> vec2f {
+  let cell = floor(scaledUV);
+  let localUV = fract(scaledUV);
+  var d1 = 10f;
+  var d2 = 10f;
+  for (var ny = -1; (ny <= 1i); ny++) {
+    for (var nx = -1; (nx <= 1i); nx++) {
+      let offset = vec2f(f32(nx), f32(ny));
+      let h = cellHash2(vec2f(((cell.x + offset.x) + seed), ((cell.y + offset.y) + seed)));
+      let pointX = clamp((h.x + (sin((animT + (h.x * 6.283185307179586f))) * 0.15f)), 0.05f, 0.95f);
+      let pointY = clamp((h.y + (cos(((animT * 0.7f) + (h.y * 6.283185307179586f))) * 0.15f)), 0.05f, 0.95f);
+      let dd = length(vec2f((localUV.x - (offset.x + pointX)), (localUV.y - (offset.y + pointY))));
+      d2 = min(d2, max(dd, d1));
+      d1 = min(d1, dd);
+    }
+  }
+  return vec2f(d1, d2);
+}
+
+fn gateSelSelJit(scaledUV: vec2f, animT: f32, seed: f32, jitterAmount: f32, metric: f32) -> vec2f {
+  let animTSlow = (animT * 0.7f);
+  let cell = floor(scaledUV);
+  let localUV = fract(scaledUV);
+  var d1 = 10f;
+  var d2 = 10f;
+  for (var ny = -1; (ny <= 1i); ny++) {
+    for (var nx = -1; (nx <= 1i); nx++) {
+      let offset = vec2f(f32(nx), f32(ny));
+      let h = cellHash2(vec2f(((cell.x + offset.x) + seed), ((cell.y + offset.y) + seed)));
+      let px = (h.x + (sin((animT + (h.x * 6.283185307179586f))) * 0.15f));
+      let py = (h.y + (cos((animTSlow + (h.y * 6.283185307179586f))) * 0.15f));
+      let jx = mix(0.5f, clamp(px, 0.05f, 0.95f), jitterAmount);
+      let jy = mix(0.5f, clamp(py, 0.05f, 0.95f), jitterAmount);
+      let deltaX = (localUV.x - (offset.x + jx));
+      let deltaY = (localUV.y - (offset.y + jy));
+      let dEuclid = ((deltaX * deltaX) + (deltaY * deltaY));
+      let dManhattan = (abs(deltaX) + abs(deltaY));
+      let dChebyshev = max(abs(deltaX), abs(deltaY));
+      var dd = dEuclid;
+      dd = select(dd, dManhattan, (metric == 1f));
+      dd = select(dd, dChebyshev, (metric == 2f));
+      d2 = min(d2, max(dd, d1));
+      d1 = min(d1, dd);
+    }
+  }
+  return vec2f(d1, d2);
+}
+
+fn cellular_cellRatio(d1: f32, d2: f32, power: f32) -> f32 {
+  let safeSum = max((d1 + d2), 1e-4f);
+  let normalizedDist = clamp(((d1 * 2f) / safeSum), 0f, 1f);
+  return clamp(pow(normalizedDist, power), 0f, 1f);
+}
+
+fn cellular_cellEdgeMask(d1: f32, d2: f32, softness: f32) -> f32 {
+  let safeSum = max((d1 + d2), 1e-4f);
+  let edgeMetric = ((d2 - d1) / safeSum);
+  return smoothstep(0f, (softness + 1e-3f), edgeMetric);
+}
+
+fn cellular_cellReduceSelectable(d1: f32, d2: f32, metric: f32, mode: f32) -> f32 {
+  let isEuclid = (metric == 0f);
+  let sd1 = select(d1, sqrt(d1), isEuclid);
+  let sd2 = select(d2, sqrt(d2), isEuclid);
+  var raw = sd1;
+  raw = select(raw, sd2, (mode == 1f));
+  raw = select(raw, (sd2 - sd1), (mode == 2f));
+  raw = select(raw, (sd1 + sd2), (mode == 3f));
+  raw = select(raw, (sd1 * sd2), (mode == 4f));
+  return raw;
+}
+
+struct cellularProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn cellularProbe(_arg_0: cellularProbe_Input) -> @location(0) vec4f {
+  let a = gateLenLen((_arg_0.uv * 6f), 0f, 0f);
+  let b = gateSelSelJit((_arg_0.uv * 6f), 0f, 0f, 1f, 0f);
+  let ratio = cellular_cellRatio(a.x, a.y, 2f);
+  let edge = cellular_cellEdgeMask(a.x, a.y, 0.05f);
+  let reduced = cellular_cellReduceSelectable(b.x, b.y, 0f, 2f);
+  return vec4f(ratio, edge, reduced, 1f);
+}"
+`;

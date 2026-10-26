@@ -1,0 +1,438 @@
+/* [가운데 작품과 양옆의 다음 장면 / A central work with its neighbouring scenes]
+   가운데 카드의 소개와 유리 정보 영역은 유지하고 양옆 작품의 이름을 드러냅니다.
+   Keep the central copy and glass information rail while revealing both neighbouring titles. */
+.home-v4-wrap .season-hero {
+    position: relative;
+    container-type: inline-size;
+    --slide-width: min(var(--hero-card-width), calc(100cqw - var(--hero-peek) * 2 - var(--hero-gap) * 2));
+    --slide-gap: var(--hero-gap);
+}
+
+.home-v4-wrap .season-stage {
+    width: 100%;
+    margin-inline: auto;
+    overflow: clip;
+}
+
+.home-v4-wrap .season-track {
+    width: max-content;
+    gap: var(--slide-gap);
+    margin-left: calc((100% - var(--slide-width)) / 2);
+    transform: translate3d(calc(-2 * (var(--slide-width) + var(--slide-gap)) + var(--drag-x, 0px)), 0, 0);
+}
+
+.home-v4-wrap .season-track.is-moving {
+    transition: transform var(--duration-carousel) var(--ease-carousel);
+}
+
+.home-v4-wrap .season-track.is-returning {
+    transition: transform var(--duration-hero-settle) var(--ease-out);
+}
+
+.home-v4-wrap .season-slide {
+    width: var(--slide-width);
+    flex: 0 0 var(--slide-width);
+    min-height: 42rem;
+    border-radius: var(--radius-dialog);
+}
+
+.home-v4-wrap .season-slide::before {
+    opacity: 48%;
+    transition: opacity var(--duration-hero-copy) ease;
+}
+
+.home-v4-wrap .season-slide:is(.is-active, .is-entering)::before {
+    opacity: 0%;
+}
+
+.home-v4-wrap .season-copy {
+    width: calc(100% - 24rem);
+    padding: clamp(2rem, 4vw, 3.5rem);
+    pointer-events: none;
+    transition: opacity var(--duration-hero-copy) ease;
+}
+
+.home-v4-wrap .season-slide.is-entering .season-copy {
+    opacity: 100%;
+}
+
+.home-v4-wrap .season-track.is-moving .season-slide.is-active .season-copy {
+    opacity: 0%;
+}
+
+.home-v4-wrap .season-copy h2 {
+    margin-bottom: var(--space-8);
+    font-size: max(var(--text-min), var(--text-hero-with-companion));
+}
+
+.home-v4-wrap .season-slide[data-layout="standalone"] .season-copy h2 {
+    font-size: max(var(--text-min), var(--text-hero-standalone));
+}
+
+.home-v4-wrap .season-meta {
+    margin-bottom: var(--space-4);
+}
+
+.season-description {
+    max-width: 32rem;
+    margin: 0 0 var(--space-8);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    text-wrap: pretty;
+}
+
+.season-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    pointer-events: auto;
+}
+
+.season-slide:not(.is-active) .season-actions {
+    pointer-events: none;
+}
+
+.season-slide[data-preview] .season-peer-title {
+    position: absolute;
+    z-index: 3;
+    bottom: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    width: max(3rem, min(12rem, calc((100vw - var(--slide-width)) / 2 - var(--slide-gap) - 2rem)));
+    min-width: 0;
+    padding: var(--space-3) 0;
+    color: var(--text-inverse);
+    background: var(--color-detail-j5afio);
+    white-space: normal;
+    text-align: left;
+    transition: opacity var(--duration-feedback) ease;
+}
+
+.season-slide[data-preview="previous"] .season-peer-title {
+    right: var(--space-4);
+}
+
+.season-slide[data-preview="next"] .season-peer-title {
+    left: var(--space-4);
+}
+
+.season-peer-title strong {
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-label);
+    overflow-wrap: anywhere;
+}
+
+.season-slide.is-entering .season-peer-title {
+    opacity: 0%;
+    pointer-events: none;
+}
+
+.hero-neighbor-navigation {
+    display: none;
+}
+
+.season-actions :is(.button, .ds-button) {
+    min-height: var(--control-size);
+    padding: var(--space-3) var(--space-6);
+}
+
+.season-slide[data-layout="standalone"] .season-copy {
+    width: 100%;
+}
+
+.season-actions .season-booking-button {
+    border: 1px solid var(--color-detail-xl0sze);
+    color: var(--text-inverse);
+    background: var(--color-detail-1j5u0jr);
+}
+
+/* [참고의 흰 목록과 유리 시계 / A white information list and a glass clock]
+   기존 흑백 팔레트와 공통 LiquidGlass 표면을 사용합니다.
+   Use the existing neutral palette and the shared LiquidGlass surface. */
+.hero-companion {
+    position: absolute;
+    z-index: 3;
+    top: 3rem;
+    right: calc((100% - var(--slide-width)) / 2 + var(--space-6));
+    display: grid;
+    gap: var(--space-4);
+    width: 21rem;
+    color: var(--text-primary);
+}
+
+/* [글자 확대에도 내용에 맞춰 재배치 / Reflow intrinsic content when text is enlarged] */
+.hero-companion > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.season-controls {
+    flex-wrap: wrap;
+}
+
+.season-progress {
+    min-width: 0;
+}
+
+.hero-release-list {
+    padding: var(--space-5) var(--space-6) var(--space-3);
+    border-radius: var(--radius-dialog);
+    background: var(--surface-default);
+}
+
+.hero-companion-heading,
+.hero-clock-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.hero-companion-heading h2 {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-heading);
+}
+
+.hero-companion-more {
+    display: grid;
+    flex: 0 0 var(--control-size);
+    width: var(--control-size);
+    height: var(--control-size);
+    margin-right: calc(-1 * var(--space-3));
+    place-items: center;
+    border-radius: var(--radius-pill);
+}
+
+.hero-release-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.hero-release-list li + li {
+    border-top: 1px solid var(--border-default);
+}
+
+.hero-release-list li > a {
+    display: block;
+    padding-block: var(--space-4);
+}
+
+.hero-release-list strong {
+    display: block;
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: var(--weight-action);
+    line-height: var(--leading-label);
+}
+
+.hero-release-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-2);
+    margin-top: var(--space-2);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+    font-variant-numeric: tabular-nums;
+}
+
+.hero-time-glass {
+    padding: var(--space-6);
+    --glass-shadow: 0 8px 32px var(--color-detail-xx4fx2);
+}
+
+.hero-clock-heading {
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-label);
+}
+
+.hero-clock {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: max(var(--text-min), 2.75rem);
+    font-weight: 550;
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+}
+
+.hero-clock-date {
+    margin: var(--space-1) 0 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.hero-next-release {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-detail-1ch9bqq);
+}
+
+.hero-next-release > p {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-2);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-action);
+}
+
+.hero-next-release > p > span {
+    font-weight: var(--weight-body);
+}
+
+.hero-next-release > a {
+    display: block;
+    min-height: var(--control-size);
+}
+
+.hero-next-release time {
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-heading);
+    font-variant-numeric: tabular-nums;
+}
+
+.hero-next-release a > span {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+
+.hero-next-release a > span svg {
+    flex: 0 0 1.25rem;
+    margin-top: 0.125rem;
+}
+
+@media (hover: hover) {
+    .season-peer-title:hover {
+        color: var(--text-inverse);
+        background: var(--color-detail-j5afio);
+    }
+
+    .season-peer-title:hover strong {
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+    }
+
+    .hero-companion-more:hover {
+        background: var(--state-hover);
+    }
+
+    .hero-release-list li > a:hover strong,
+    .hero-next-release a:hover > span {
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+    }
+
+    .season-booking-button:hover {
+        background: var(--color-detail-1iq0iqd);
+    }
+}
+
+/* [작은 화면에서는 문서 순서로 / In-flow information on smaller screens] */
+@media (max-width: 1100px) {
+    .home-v4-wrap .season-copy {
+        width: 100%;
+    }
+
+    .home-v4-wrap .season-slide {
+        min-height: 36rem;
+    }
+
+    .season-slide[data-preview] .season-peer-title {
+        display: none;
+    }
+
+    .hero-neighbor-navigation {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: var(--space-4);
+        padding-top: var(--space-3);
+    }
+
+    .hero-neighbor-navigation .ds-button {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--space-2);
+        min-width: 0;
+        padding: var(--space-2) 0;
+        white-space: normal;
+        text-align: left;
+    }
+
+    .hero-neighbor-navigation .ds-button:last-child {
+        justify-content: flex-end;
+        text-align: right;
+    }
+
+    .hero-companion {
+        position: relative;
+        inset: auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+        width: min(var(--container), calc(100% - var(--page-gutter) * 2));
+        margin: var(--space-4) auto 0;
+    }
+
+    .hero-release-list {
+        background: var(--surface-subtle);
+    }
+}
+
+@media (max-width: 600px) {
+    .home-v4-wrap .season-hero {
+        --hero-peek: 0.5rem;
+    }
+
+    .home-v4-wrap .season-slide {
+        min-height: 37rem;
+    }
+
+    .home-v4-wrap .season-copy {
+        justify-content: flex-end;
+        padding: var(--space-8) var(--space-6);
+    }
+
+    .home-v4-wrap .season-copy h2 {
+        margin-bottom: var(--space-6);
+        font-size: max(var(--text-min), var(--text-hero-with-companion));
+    }
+
+    .season-description {
+        margin-bottom: var(--space-6);
+    }
+
+    .season-actions {
+        width: 100%;
+        gap: var(--space-2);
+    }
+
+    .season-actions :is(.button, .ds-button) {
+        flex: 1;
+        padding-inline: var(--space-3);
+    }
+
+    .hero-companion {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-v4-wrap .season-track,
+    .home-v4-wrap .season-copy,
+    .home-v4-wrap .season-slide::before,
+    .season-peer-title {
+        transition: none;
+    }
+}

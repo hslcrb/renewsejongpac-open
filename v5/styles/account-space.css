@@ -1,0 +1,783 @@
+/* [개인 공간의 편집형 지면 / Editorial layout for a personal account] */
+.account-experience {
+    padding-bottom: var(--space-24);
+    background: var(--surface-default);
+    color: var(--text-primary);
+}
+
+.account-page-heading {
+    padding-block: var(--space-8) var(--space-12);
+}
+
+.account-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-8);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+
+.account-breadcrumbs a {
+    color: inherit;
+}
+
+.account-page-heading h1 {
+    margin: 0 0 var(--space-4);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-title));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+
+.account-page-heading > .container > p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-lead));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+
+.account-layout {
+    display: grid;
+    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-12);
+}
+
+.account-profile-aside {
+    min-width: 0;
+}
+
+.account-main {
+    min-width: 0;
+}
+
+.account-loading {
+    padding-block: var(--space-12);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+
+/* [프로필과 사실에 근거한 멤버십 / Profile and factual membership navigation] */
+.account-identity {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-5);
+}
+
+.account-identity-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.account-avatar {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    flex: 0 0 auto;
+    border-radius: var(--radius-pill);
+    background: var(--accent-highlight);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+}
+
+.account-identity h2 {
+    margin: var(--space-2) 0 0;
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    overflow-wrap: anywhere;
+}
+
+.account-identity h2 span {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-label);
+    letter-spacing: var(--tracking-body);
+}
+
+.account-status-message {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+}
+
+.account-profile-counts {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-3) 0 0;
+    padding-block: var(--space-6);
+    border-block: 1px solid var(--border-default);
+}
+
+.account-profile-counts > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.account-profile-counts dt {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+
+.account-profile-counts dd {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-label);
+    white-space: nowrap;
+}
+
+.account-profile-counts dd span {
+    margin-left: var(--space-1);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-body);
+}
+
+.account-membership-guide h3 {
+    margin: 0 0 var(--space-2);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+}
+
+.account-membership-guide p {
+    margin: 0 0 var(--space-3);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+
+.account-identity-session {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-default);
+}
+
+/* [공통 탭의 가로 탐색과 패널 간격 / Horizontal shared tabs and panel spacing] */
+.account-tab-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+    padding-inline: var(--space-1);
+    padding-bottom: var(--space-1);
+}
+
+.account-tab-list > [role="tab"] {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.account-tab-panel {
+    padding-block: var(--space-8) 0;
+}
+
+.account-space-panel {
+    display: grid;
+    gap: var(--space-12);
+}
+
+.account-section-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+}
+
+.account-section-heading h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    word-break: keep-all;
+}
+
+.account-section-heading p {
+    margin: var(--space-2) 0 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+
+.account-section-heading > a:not([data-component="link"]) {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: var(--space-2);
+    min-height: var(--control-size);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-action);
+    line-height: var(--leading-label);
+    text-underline-offset: 0.2em;
+}
+
+.account-section-heading > span {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+
+.account-section-heading .account-section-kicker {
+    margin: 0 0 var(--space-2);
+}
+
+/* [티켓의 종이 구조와 예매 상태 / Paper ticket structure and booking status] */
+.account-ticket {
+    display: grid;
+    grid-template-columns: 76px 84px minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-6);
+    padding-block: var(--space-6);
+    border-block: 1px solid var(--border-default);
+    color: var(--text-primary);
+}
+
+.account-ticket-list {
+    display: grid;
+    gap: var(--space-6);
+}
+
+.account-ticket-date {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    min-height: 108px;
+    padding-right: var(--space-4);
+    border-right: 1px dashed var(--border-default);
+}
+
+.account-ticket-date strong {
+    font-size: max(var(--text-min), var(--text-heading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+
+.account-ticket-date span {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+
+.account-ticket-poster {
+    display: block;
+    width: 84px;
+    height: 112px;
+    padding: 0;
+    border-radius: var(--radius-media);
+    object-fit: cover;
+}
+
+.account-ticket-body {
+    min-width: 0;
+}
+
+.account-ticket-body h3 {
+    margin: var(--space-3) 0 var(--space-2);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+}
+
+.account-ticket-body h3 a {
+    color: inherit;
+    text-decoration: none;
+    text-underline-offset: 0.2em;
+}
+
+.account-ticket-body h3 a:hover {
+    text-decoration: underline;
+}
+
+.account-ticket-body p {
+    margin: var(--space-1) 0 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+    overflow-wrap: anywhere;
+}
+
+.account-ticket-body .account-ticket-reference {
+    margin-top: var(--space-3);
+}
+
+.account-ticket-action {
+    grid-column: 3;
+    justify-self: start;
+}
+
+.account-ticket[data-cancelled="true"] .account-ticket-poster {
+    filter: grayscale(100%);
+}
+
+.account-booking-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+}
+
+.account-local-note {
+    margin: var(--space-4) 0 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+
+/* [실제 프로그램과 솔직한 빈 상태 / Real programmes and honest empty states] */
+.account-program-grid,
+.account-experience .account-list.account-program-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-8) var(--space-6);
+}
+
+.account-program-grid > article {
+    min-width: 0;
+}
+
+.account-empty-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+    border-block: 1px solid var(--border-default);
+}
+
+.account-empty-inline h3,
+.account-empty h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+    word-break: keep-all;
+}
+
+.account-empty-inline p,
+.account-empty p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+
+.account-empty-inline > a {
+    flex-shrink: 0;
+}
+
+.account-empty {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    padding: var(--space-12) 0;
+    border-top: 1px solid var(--border-default);
+}
+
+.account-empty-note {
+    margin: 0;
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+
+/* [관람노트와 프로필 양식 / Diary and profile forms] */
+.account-note-form,
+.account-profile-form,
+.account-space-form {
+    display: grid;
+    gap: var(--space-6);
+}
+
+.account-profile-form {
+    max-width: var(--content-form-width);
+}
+
+.account-form-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: var(--space-5);
+}
+
+.account-note-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+}
+
+.account-note-form-footer p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+    word-break: keep-all;
+}
+
+.account-note-form-footer > button {
+    flex-shrink: 0;
+}
+
+.account-note-list {
+    display: grid;
+    margin-top: var(--space-10);
+}
+
+.account-note {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--border-default);
+}
+
+.account-note > div {
+    min-width: 0;
+}
+
+.account-note-preview {
+    padding-left: var(--space-6);
+    border-left: 1px solid var(--border-default);
+}
+
+.account-note time,
+.account-note-preview time {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+
+.account-note h3,
+.account-note-preview h3 {
+    margin: var(--space-3) 0;
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+    word-break: keep-all;
+}
+
+.account-note p,
+.account-note-preview p {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.account-form-actions {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: var(--space-2);
+}
+
+/* [공식 서비스로 이어지는 평면 목록 / Flat navigation to official services] */
+.account-service-list {
+    display: grid;
+}
+
+.account-service-list > article {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--border-default);
+}
+
+.account-service-list h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+}
+
+.account-service-list p {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+
+.account-service-list > article > a {
+    flex-shrink: 0;
+}
+
+/* [공통 모달 안의 내용 배치 / Content layout inside shared dialogs] */
+.account-dialog-heading h2 {
+    margin: 0 0 var(--space-3);
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+}
+
+.account-dialog-heading p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    word-break: keep-all;
+}
+
+.account-theme-picker {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.account-theme-picker legend {
+    padding: 0;
+    margin-bottom: var(--space-3);
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: var(--weight-label);
+    line-height: var(--leading-label);
+}
+
+.account-theme-picker > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.account-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+
+.account-cancel-dialog .account-dialog-actions {
+    margin-top: var(--space-8);
+}
+
+/* [태블릿과 휴대전화의 자연스러운 재배치 / Natural reflow for tablets and phones] */
+@media (max-width: 1100px) {
+    .account-layout {
+        grid-template-columns: minmax(13rem, 15rem) minmax(0, 1fr);
+        gap: var(--space-8);
+    }
+
+    .account-profile-aside {
+        padding-right: var(--space-5);
+    }
+
+    .account-program-grid,
+    .account-experience .account-list.account-program-grid {
+        gap: var(--space-8) var(--space-4);
+    }
+
+    .account-empty-inline,
+    .account-service-list > article {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 900px) {
+    .account-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-8);
+    }
+
+    .account-profile-aside {
+        padding: 0 0 var(--space-8);
+        border-right: 0;
+        border-bottom: 1px solid var(--border-default);
+    }
+
+    .account-identity {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: var(--space-4) var(--space-6);
+    }
+
+    .account-identity-top {
+        justify-content: flex-start;
+    }
+
+    .account-identity h2 {
+        grid-column: 1;
+        margin: 0;
+    }
+
+    .account-identity > button {
+        grid-column: 2;
+        grid-row: 2;
+        align-self: start;
+    }
+
+    .account-status-message {
+        grid-column: 1 / -1;
+    }
+
+    .account-profile-counts {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding-block: var(--space-5);
+        margin: 0;
+    }
+
+    .account-profile-counts > div {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .account-membership-guide {
+        grid-column: 1 / -1;
+    }
+
+    .account-identity-session {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: center;
+        padding: 0;
+        border: 0;
+    }
+
+    .account-tab-panel {
+        padding-top: var(--space-6);
+    }
+}
+
+@media (max-width: 600px) {
+    .account-experience {
+        padding-bottom: var(--space-16);
+    }
+
+    .account-page-heading {
+        padding-block: var(--space-6) var(--space-8);
+    }
+
+    .account-breadcrumbs {
+        margin-bottom: var(--space-6);
+    }
+
+    .account-identity {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .account-identity > button,
+    .account-identity-session {
+        grid-column: 1;
+        grid-row: auto;
+        justify-self: start;
+    }
+
+    .account-identity-session {
+        border-top: 1px solid var(--border-default);
+        padding-top: var(--space-3);
+        justify-self: stretch;
+    }
+
+    .account-identity-top {
+        justify-content: space-between;
+    }
+
+    .account-space-panel {
+        gap: var(--space-10);
+    }
+
+    .account-section-heading {
+        flex-wrap: wrap;
+        gap: var(--space-3);
+    }
+
+    .account-ticket {
+        grid-template-columns: 64px minmax(0, 1fr);
+        gap: var(--space-4);
+    }
+
+    .account-ticket-date {
+        grid-column: 1;
+        min-height: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .account-ticket-poster {
+        grid-column: 1;
+        grid-row: 2;
+        width: 64px;
+        height: 88px;
+    }
+
+    .account-ticket-body {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+    }
+
+    .account-ticket-action {
+        grid-column: 1 / -1;
+    }
+
+    .account-program-grid,
+    .account-experience .account-list.account-program-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .account-form-pair {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .account-note-form-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .account-dialog-actions > button {
+        flex: 1 1 auto;
+    }
+}
+
+@media (max-width: 380px) {
+    .account-program-grid,
+    .account-experience .account-list.account-program-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .account-profile-counts {
+        gap: var(--space-3);
+    }
+}

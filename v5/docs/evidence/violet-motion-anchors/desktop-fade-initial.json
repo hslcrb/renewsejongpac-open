@@ -1,0 +1,345 @@
+{
+  "geometry": {
+    "top": 131.375,
+    "height": 681.59375,
+    "distance": 170.3984375,
+    "midpoint": 120.57421875,
+    "fullOut": 230.7734375
+  },
+  "toMidpoint": [
+    {
+      "elapsed": 49,
+      "opacity": 1,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 114,
+      "opacity": 1,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 177,
+      "opacity": 0.730989,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 244,
+      "opacity": 0.547632,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 307,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 435,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    }
+  ],
+  "out": [
+    {
+      "elapsed": 32,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 40,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "open"
+    },
+    {
+      "elapsed": 103,
+      "opacity": 0.231282,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "closed"
+    },
+    {
+      "elapsed": 173,
+      "opacity": 0.0496983,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "closed"
+    },
+    {
+      "elapsed": 238,
+      "opacity": 0,
+      "display": "block",
+      "visibility": "hidden",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "closed"
+    },
+    {
+      "elapsed": 310,
+      "opacity": 0,
+      "display": "block",
+      "visibility": "hidden",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "closed"
+    },
+    {
+      "elapsed": 319,
+      "opacity": 0,
+      "display": "block",
+      "visibility": "hidden",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "closed"
+    },
+    {
+      "elapsed": 336,
+      "opacity": 0,
+      "display": "block",
+      "visibility": "hidden",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "closed"
+    },
+    {
+      "elapsed": 356,
+      "opacity": 0,
+      "display": "block",
+      "visibility": "hidden",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "closed"
+    }
+  ],
+  "backToMidpoint": [
+    {
+      "elapsed": 3,
+      "opacity": 0,
+      "display": "block",
+      "visibility": "hidden",
+      "visible": "false",
+      "ariaHidden": "true",
+      "inert": true,
+      "state": "closed"
+    },
+    {
+      "elapsed": 20,
+      "opacity": 0,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "closed"
+    },
+    {
+      "elapsed": 37,
+      "opacity": 0.074443,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "closed"
+    },
+    {
+      "elapsed": 58,
+      "opacity": 0.142819,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "closed"
+    },
+    {
+      "elapsed": 107,
+      "opacity": 0.320338,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "closed"
+    },
+    {
+      "elapsed": 147,
+      "opacity": 0.411946,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "closed"
+    },
+    {
+      "elapsed": 185,
+      "opacity": 0.475391,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "closed"
+    },
+    {
+      "elapsed": 225,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 261,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 297,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 330,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 394,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    }
+  ],
+  "inward": [
+    {
+      "elapsed": 67,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 139,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 214,
+      "opacity": 0.4975,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 295,
+      "opacity": 0.821026,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    },
+    {
+      "elapsed": 379,
+      "opacity": 0.995215,
+      "display": "block",
+      "visibility": "visible",
+      "visible": "true",
+      "ariaHidden": "false",
+      "inert": false,
+      "state": "open"
+    }
+  ],
+  "input": {
+    "inert": true,
+    "ariaHidden": "true",
+    "visible": "false",
+    "interceptsPointer": false,
+    "ownsFocus": false,
+    "heroStillInView": true
+  }
+}

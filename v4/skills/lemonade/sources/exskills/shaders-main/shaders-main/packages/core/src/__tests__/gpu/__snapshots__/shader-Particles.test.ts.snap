@@ -1,0 +1,399 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Particles (a) compute simulation → resolved additive texture > registers the particle (compute) texture and samples it in the fragment (GENERATOR) > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  center: vec2f,
+  scale: f32,
+  rotation: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  count: f32,
+  size: f32,
+  spread: f32,
+  agitation: f32,
+  damping: f32,
+  gravity: f32,
+  mouseInfluence: f32,
+  mouseRadius: f32,
+  exposure: f32,
+  softness: f32,
+  depth: f32,
+  colorSpace: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_pt: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = in.uv;
+  var composed_0 = textureSample(compute_0, linearClamp, uv);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`Particles (c) kernels resolve (D3 rules) > every shape variant of the render splat resolves and accumulates atomically > splatKernel 1`] = `
+"struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  dt: f32,
+  time: f32,
+  spread: f32,
+  agitation: f32,
+  dragMul: f32,
+  gravX: f32,
+  gravY: f32,
+  halfDepth: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorForce: f32,
+  cursorRadSq: f32,
+  saRadius: f32,
+  saSides: f32,
+  saRounding: f32,
+  saInnerRatio: f32,
+  saRotation: f32,
+  saHeight: f32,
+  saOffset: f32,
+  saAperture: f32,
+  centerX: f32,
+  centerYv: f32,
+  scale: f32,
+  rotC: f32,
+  rotS: f32,
+  aspect: f32,
+  size: f32,
+  exposure: f32,
+  softness: f32,
+  speedColorK: f32,
+  omegaX: f32,
+  omegaY: f32,
+  omegaZ: f32,
+  entrain: f32,
+  gridOffX: f32,
+  gridOffY: f32,
+  gridOffZ: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> pos: array<vec4f, 16000>;
+
+@group(0) @binding(1) var<storage, read_write> vel: array<vec4f, 16000>;
+
+struct SplatWindow {
+  x0: i32,
+  x1: i32,
+  y0: i32,
+  y1: i32,
+}
+
+fn texelSplatWindow(center: vec2f, rad: i32, last: vec2i) -> SplatWindow {
+  let cxi = i32(floor(center.x));
+  let cyi = i32(floor(center.y));
+  return SplatWindow(max((cxi - rad), 0i), min((cxi + rad), last.x), max((cyi - rad), 0i), min((cyi + rad), last.y));
+}
+
+fn agentTexelWeight(q: f32, _t: f32, _n: f32, bodyR: f32, aaW: f32) -> f32 {
+  let sd = (bodyR * (sqrt(q) - 1f));
+  return (1f - smoothstep(-(aaW), aaW, sd));
+}
+
+fn particlesProfile(q: f32, ddx: f32, ddy: f32, size: f32, soft: f32) -> f32 {
+  let wHard = agentTexelWeight(q, ddx, ddy, size, 0.9f);
+  let wSoft = exp((q * -2.5f));
+  return mix(wHard, wSoft, soft);
+}
+
+@group(0) @binding(3) var<storage, read_write> accumE: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(4) var<storage, read_write> accumS: array<atomic<u32>, 1048576>;
+
+fn particlesSplat(i: u32) {
+  let prm = (&params);
+  let pos_1 = (&pos[i]);
+  let vel_1 = (&vel[i]);
+  let persp = (1f / clamp((1f - ((*pos_1).z * 0.35f)), 0.45f, 2f));
+  let xs = ((*pos_1).x * persp);
+  let ys = (((*pos_1).y * persp) * -1f);
+  let rx = ((xs * (*prm).rotC) - (ys * (*prm).rotS));
+  let ry = ((ys * (*prm).rotC) + (xs * (*prm).rotS));
+  let u = ((*prm).centerX + ((rx * (*prm).scale) / (*prm).aspect));
+  let v = ((*prm).centerYv + (ry * (*prm).scale));
+  const outF = 1024f;
+  let tx = (u * outF);
+  let ty = (v * outF);
+  let size = clamp(((((*prm).size * (0.65f + (0.7f * (*pos_1).w))) * persp) * (*prm).scale), 0.6f, 6f);
+  let bright = (((0.7f + (0.6f * (*pos_1).w)) * persp) * persp);
+  let speedNorm = clamp(((*vel_1).w * (*prm).speedColorK), 0f, 1f);
+  let doSpeed = (((bright * speedNorm) * 256f) >= 1f);
+  let rad = i32(ceil((size * 1.6124515533447266f)));
+  let radF = f32(rad);
+  let onTarget = ((((tx > (radF * -1f)) && (tx < (outF + radF))) && (ty > (radF * -1f))) && (ty < (outF + radF)));
+  if (onTarget) {
+    let win = texelSplatWindow(vec2f(tx, ty), rad, vec2i(1023));
+    let sizeSq = max((size * size), 0.01f);
+    for (var py = win.y0; (py <= win.y1); py++) {
+      let ddy = ((f32(py) + 0.5f) - ty);
+      let ddySq = (ddy * ddy);
+      for (var px = win.x0; (px <= win.x1); px++) {
+        let ddx = ((f32(px) + 0.5f) - tx);
+        let q = (((ddx * ddx) + ddySq) / sizeSq);
+        if ((q < 2.6f)) {
+          let w = particlesProfile(q, ddx, ddy, size, (*prm).softness);
+          let e = u32(((w * bright) * 256f));
+          if ((e > 0u)) {
+            let idx = u32(((py * 1024i) + px));
+            atomicAdd(&accumE[idx], e);
+            if (doSpeed) {
+              atomicAdd(&accumS[idx], u32((((w * bright) * speedNorm) * 256f)));
+            }
+          }
+        }
+      }
+    }
+  }
+}"
+`;
+
+exports[`Particles (c) kernels resolve (D3 rules) > the update integrator resolves against a baked evalSdf (pressure + containment + cursor) > updateKernel 1`] = `
+"struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  dt: f32,
+  time: f32,
+  spread: f32,
+  agitation: f32,
+  dragMul: f32,
+  gravX: f32,
+  gravY: f32,
+  halfDepth: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorForce: f32,
+  cursorRadSq: f32,
+  saRadius: f32,
+  saSides: f32,
+  saRounding: f32,
+  saInnerRatio: f32,
+  saRotation: f32,
+  saHeight: f32,
+  saOffset: f32,
+  saAperture: f32,
+  centerX: f32,
+  centerYv: f32,
+  scale: f32,
+  rotC: f32,
+  rotS: f32,
+  aspect: f32,
+  size: f32,
+  exposure: f32,
+  softness: f32,
+  speedColorK: f32,
+  omegaX: f32,
+  omegaY: f32,
+  omegaZ: f32,
+  entrain: f32,
+  gridOffX: f32,
+  gridOffY: f32,
+  gridOffZ: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> pos: array<vec4f, 16000>;
+
+@group(0) @binding(1) var<storage, read_write> vel: array<vec4f, 16000>;
+
+@group(0) @binding(2) var<storage, read_write> dens: array<atomic<u32>, 32768>;
+
+fn densAt(cx: i32, cy: i32, cz: i32) -> f32 {
+  const g = 32i;
+  let x = clamp(cx, 0i, (g - 1i));
+  let y = clamp(cy, 0i, (g - 1i));
+  let z = clamp(cz, 0i, (g - 1i));
+  let idx = u32(((((z * g) + y) * g) + x));
+  return (f32(atomicLoad(&dens[idx])) * 0.015625f);
+}
+
+fn densTrilinearGrad(pos_1: vec3f) -> vec4f {
+  let prm = (&params);
+  const g = 32f;
+  let c = vec3f((((((pos_1.x + (*prm).gridOffX) + 1f) / 2f) * g) - 0.5f), (((((pos_1.y + (*prm).gridOffY) + 1f) / 2f) * g) - 0.5f), (((((pos_1.z + (*prm).gridOffZ) + 1f) / 2f) * g) - 0.5f));
+  let base = clamp(floor(c), vec3f(), vec3f((g - 2f), (g - 2f), (g - 2f)));
+  let f = clamp((c - base), vec3f(), vec3f(1));
+  let bi = i32(base.x);
+  let bj = i32(base.y);
+  let bk = i32(base.z);
+  var acc = 0f;
+  var gx = 0f;
+  var gy = 0f;
+  var gz = 0f;
+  for (var dz = 0; (dz < 2i); dz++) {
+    for (var dy = 0; (dy < 2i); dy++) {
+      for (var dx = 0; (dx < 2i); dx++) {
+        let wx = mix((1f - f.x), f.x, f32(dx));
+        let wy = mix((1f - f.y), f.y, f32(dy));
+        let wz = mix((1f - f.z), f.z, f32(dz));
+        let sx = ((f32(dx) * 2f) - 1f);
+        let sy = ((f32(dy) * 2f) - 1f);
+        let sz = ((f32(dz) * 2f) - 1f);
+        let cv = densAt((bi + dx), (bj + dy), (bk + dz));
+        acc = (acc + (cv * ((wx * wy) * wz)));
+        gx = (gx + (cv * ((sx * wy) * wz)));
+        gy = (gy + (cv * ((wx * sy) * wz)));
+        gz = (gz + (cv * ((wx * wy) * sz)));
+      }
+    }
+  }
+  return vec4f(gx, gy, gz, acc);
+}
+
+fn forcePressure(pos_1: vec3f, _vel: vec3f, _seed: f32) -> vec3f {
+  let prm = (&params);
+  let gv = densTrilinearGrad(pos_1);
+  let pressNorm = (((*prm).spread * 4.4f) / max(((gv.w * 2f) + 6f), 6f));
+  return vec3f(((gv.x * -1f) * pressNorm), ((gv.y * -1f) * pressNorm), ((gv.z * -1f) * pressNorm));
+}
+
+fn field2(p: vec3f) -> f32 {
+  return (length(p) - 0.35f);
+}
+
+fn forceContainment(pos_1: vec3f, vel_1: vec3f, _seed: f32) -> vec3f {
+  let prm = (&params);
+  let sd = field2(pos_1);
+  const e = 0.019999999552965164f;
+  let gx = (field2(vec3f((pos_1.x + e), pos_1.y, pos_1.z)) - field2(vec3f((pos_1.x - e), pos_1.y, pos_1.z)));
+  let gy = (field2(vec3f(pos_1.x, (pos_1.y + e), pos_1.z)) - field2(vec3f(pos_1.x, (pos_1.y - e), pos_1.z)));
+  let gz = (field2(vec3f(pos_1.x, pos_1.y, (pos_1.z + e))) - field2(vec3f(pos_1.x, pos_1.y, (pos_1.z - e))));
+  let gv = vec3f(gx, gy, gz);
+  let gn = (gv / max(length(gv), 1e-4f));
+  var F = vec3f();
+  let out = max(sd, 0f);
+  let wallF = ((smoothstep(-0.1f, 0.01f, sd) * 1.1f) + (out * 22f));
+  F = (F - (gn * wallF));
+  let rl = length(pos_1);
+  let recallF = (smoothstep(0.85f, 1.1f, rl) * 9f);
+  F = (F - (pos_1 * (recallF / max(rl, 1e-4f))));
+  let homingF = (smoothstep(0.12f, 0.45f, sd) * 5f);
+  F = (F - (pos_1 * (homingF / max(rl, 1e-4f))));
+  let featureVel = cross(vec3f((*prm).omegaX, (*prm).omegaY, (*prm).omegaZ), pos_1);
+  let insideM = (1f - smoothstep(-0.05f, 0.05f, sd));
+  F = (F + ((featureVel - vel_1) * ((*prm).entrain * insideM)));
+  return F;
+}
+
+fn forceSum1(pos_1: vec3f, vel_1: vec3f, seed: f32) -> vec3f {
+  return (forcePressure(pos_1, vel_1, seed) + forceContainment(pos_1, vel_1, seed));
+}
+
+fn agentCursorFalloff(delta: vec2f, radSq: f32) -> f32 {
+  let dl = dot(delta, delta);
+  return exp(((dl / max(radSq, 1e-5f)) * -1f));
+}
+
+fn agentCursorMagnet(delta: vec2f, radSq: f32, force: f32) -> vec2f {
+  let dl = max(length(delta), 1e-4f);
+  return ((delta / dl) * (agentCursorFalloff(delta, radSq) * force));
+}
+
+fn forceCursorXY(pos_1: vec3f, _vel: vec3f, _seed: f32) -> vec3f {
+  let prm = (&params);
+  let mxy = agentCursorMagnet(vec2f((pos_1.x - (*prm).cursorX), (pos_1.y - (*prm).cursorY)), (*prm).cursorRadSq, (*prm).cursorForce);
+  return vec3f(mxy.x, mxy.y, 0f);
+}
+
+fn forceSum2(pos_1: vec3f, vel_1: vec3f, seed: f32) -> vec3f {
+  return (forceSum1(pos_1, vel_1, seed) + forceCursorXY(pos_1, vel_1, seed));
+}
+
+fn forceGravity(_pos: vec3f, _vel: vec3f, _seed: f32) -> vec3f {
+  let prm = (&params);
+  return vec3f((*prm).gravX, (*prm).gravY, 0f);
+}
+
+fn forceSum3(pos_1: vec3f, vel_1: vec3f, seed: f32) -> vec3f {
+  return (forceSum2(pos_1, vel_1, seed) + forceGravity(pos_1, vel_1, seed));
+}
+
+fn floatBitsToUint3(v: vec3f) -> vec3u { return bitcast<vec3u>(v); }
+
+fn noise_hash33(p: vec3f) -> vec3f {
+  let u = floatBitsToUint3((p * vec3f(141421360, 2718281728, 1618034048)));
+  let h = ((u.x ^ u.y) ^ u.z);
+  let prod = (vec3u(h, h, h) * vec3u(1732050807, 2645751311, 3316624790));
+  return (vec3f(f32(prod.x), f32(prod.y), f32(prod.z)) / 4294967296f);
+}
+
+fn forceTurbulence(pos_1: vec3f, _vel: vec3f, seed: f32) -> vec3f {
+  let prm = (&params);
+  let rnd = (noise_hash33(((pos_1 * 193f) + vec3f(((*prm).time * 31.7f), ((*prm).time * 27.3f), (seed * 997f)))) - vec3f(0.5));
+  return (rnd * ((*prm).agitation * 5f));
+}
+
+fn forceSum4(pos_1: vec3f, vel_1: vec3f, seed: f32) -> vec3f {
+  return (forceSum3(pos_1, vel_1, seed) + forceTurbulence(pos_1, vel_1, seed));
+}
+
+fn integrateSemiImplicitEuler(vel_1: vec3f, force: vec3f, dt: f32, dragMul: f32, maxSpeed: f32) -> vec3f {
+  let v = ((vel_1 + (force * dt)) * dragMul);
+  let spd = length(v);
+  return (v * (min(spd, maxSpeed) / max(spd, 1e-5f)));
+}
+
+fn particlesUpdate(i: u32) {
+  let prm = (&params);
+  let p4 = (&pos[i]);
+  let v4 = (&vel[i]);
+  var pos_1 = vec3f((*p4).x, (*p4).y, (*p4).z);
+  let vPrev = vec3f((*v4).x, (*v4).y, (*v4).z);
+  let dt = (*prm).dt;
+  let F = forceSum4(pos_1, vPrev, (*p4).w);
+  let v3 = integrateSemiImplicitEuler(vPrev, F, dt, (*prm).dragMul, 3f);
+  pos_1 = clamp((pos_1 + (v3 * dt)), vec3f(-1.899999976158142), vec3f(1.899999976158142));
+  pos[i] = vec4f(pos_1.x, pos_1.y, pos_1.z, (*p4).w);
+  vel[i] = vec4f(v3.x, v3.y, v3.z, length(v3));
+}"
+`;

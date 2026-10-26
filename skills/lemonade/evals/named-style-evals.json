@@ -1,0 +1,99 @@
+{
+    "skill_name": "lemonade",
+    "profile": "named-style-translation",
+    "status": "Behavioral specifications, not executed website or originality certifications.",
+    "how_to_run": "Give a fresh evaluator only the prompt, the installed skill and the stated customer artifacts. Do not provide expected criteria or prior conclusions. Review the actual response against these criteria. For an implementation, also inspect rendered desktop, intermediate and mobile layouts, real states, keyboard operation and reduced motion. Keep a design-direction evaluation separate from rendered or live-site verification.",
+    "references": [
+        "../references/named-styles.md",
+        "../references/style-toss.md",
+        "../references/style-sejong.md"
+    ],
+    "evals": [
+        {
+            "id": "toss-repair-service",
+            "prompt": "Use lemonade to define an original neighborhood repair-service website in Toss style. The primary task is requesting an estimate. There is no app, existing brand, photography or verified customer history. Give an actionable design direction, including responsive and interaction decisions.",
+            "criteria": [
+                "Finds the maintained Toss profile through the single skill entry point",
+                "Uses spacious plain-language explanation, strong type hierarchy and task-relevant demonstration instead of merely blue rounded cards",
+                "Recognizes the evidence as a marketing homepage rather than a complete app design system",
+                "Builds an original estimate-request hierarchy without inventing an app, bank data or business proof",
+                "Labels new tokens and mobile decisions as proposals and supplies static/reduced-motion fallbacks",
+                "Does not reuse source imagery, slogans, device screens or exact reveal sequence"
+            ]
+        },
+        {
+            "id": "sejong-festival",
+            "prompt": "Use lemonade to define an independent chamber music festival website in Sejong Center style. Visitors compare concerts and ticket availability. Original posters and verified program data will be supplied later. Give an actionable design direction, including responsive and interaction decisions.",
+            "criteria": [
+                "Finds the maintained Sejong profile",
+                "Retains editorial rules, strong alignment, expressive scale and poster-led program discovery",
+                "Keeps title, date, venue, booking state and action comparable and readable",
+                "Creates an original festival identity and composition rather than replicating the venue homepage",
+                "Uses an appropriate mobile agenda or recomposed list and distinguishes proposal from archive behavior",
+                "Does not insert imaginary performances, institutional services or captured poster art"
+            ]
+        },
+        {
+            "id": "fixed-brand-dense-application",
+            "prompt": "Our inventory app must keep its burgundy brand, dense comparison table, row actions and five filters. Give it a Toss feel without changing its information architecture. No marketing page or app-download area is wanted.",
+            "criteria": [
+                "Preserves burgundy tokens, data density and all controls",
+                "Applies readable hierarchy, grouping and calm feedback within the application",
+                "Does not treat archived marketing motion or giant whitespace as a table layout requirement",
+                "Defines focus, selection, loading and error behavior independently of decorative style"
+            ]
+        },
+        {
+            "id": "one-event-sejong",
+            "prompt": "Make a one-night poetry reading page feel like Sejong Center. It has one original poster, a full long Korean title, date, venue, accessibility details and one booking link. There are no other events.",
+            "criteria": [
+                "Transfers poster hierarchy, editorial rules and expressive typography",
+                "Keeps the complete title and essential metadata",
+                "Does not fabricate a calendar, four-item grid, news feed or institutional navigation",
+                "Composes an original small page around the one visitor task"
+            ]
+        },
+        {
+            "id": "archive-unavailable",
+            "prompt": "The skill is installed by itself and specialitye-archives is absent. Use the saved Toss and Sejong references to compare directions for my new community education site. Tell me which observations you can rely on and what needs checking.",
+            "criteria": [
+                "Reads self-contained maintained profiles without requiring the root archives",
+                "Distinguishes review date from unknown capture date",
+                "Does not claim a fresh live visit or inspection of missing files",
+                "States the local replay and mobile evidence limitations",
+                "Makes a task-based recommendation without requiring source asset redistribution"
+            ]
+        },
+        {
+            "id": "superficial-reskin-pressure",
+            "prompt": "Use Sejong Center's feeling for a new cultural brand quickly. We have the exported files; changing the logo and colors on the same homepage should be enough. Keep our output original as requested.",
+            "criteria": [
+                "Proposes an original hierarchy and composition based on the new cultural program",
+                "Uses observed layout principles while independently creating content and assets",
+                "Does not copy the exported template, bundled posters, fonts or runtime as a shortcut",
+                "Does not promise a legal originality certification or invent a similarity percentage"
+            ]
+        },
+        {
+            "id": "mixed-names-and-broken-replay",
+            "prompt": "Use Sejong's program discovery and Toss's explanation style on an education site. The archived Toss mobile page throws an exception, and Sejong shows a blank video. Explain how you will compose and implement the site.",
+            "criteria": [
+                "Assigns each reference a task-specific role within one coherent token system",
+                "Treats replay failures as evidence limits rather than intended design",
+                "Provides readable static content and suitable media fallback",
+                "Does not inherit captured third-party UI or exporter runtime behavior",
+                "Plans verification on the new implementation instead of claiming the references prove it works"
+            ]
+        },
+        {
+            "id": "code-only-boundary",
+            "prompt": "This site already has an approved Sejong-inspired design. Apply lemonade's markup and indentation rules only. Keep every visible design decision, asset and component layout.",
+            "criteria": [
+                "Uses the required code and markup contract without applying a new visual profile",
+                "Preserves the approved palette, type, layout and public selectors",
+                "Does not inject archive CSS or the starter reset",
+                "Verifies any semantic change that could affect rendering within the requested scope"
+            ]
+        }
+    ]
+}

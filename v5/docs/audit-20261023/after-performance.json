@@ -1,0 +1,1357 @@
+{
+    "label": "after",
+    "browser": "151.0.7922.34",
+    "conditions": "Headless Chromium, Windows, localhost:4173, 1440x900 DPR1, reduced motion, CDP cache disabled, fresh context per run, no CPU/network throttle. Remote API timing uncontrolled; local-resource bytes reported separately. Gzip sizes are theoretical gzipSync output, not an assertion that server uses gzip. Source maps are not automatically fetched.",
+    "median": {
+        "domContentLoadedMs": 24.100000023841858,
+        "loadMs": 285.7999999523163,
+        "htmlTransferBytes": 206610,
+        "localResourceTransferBytes": 15560309,
+        "jsCssFiles": 28,
+        "jsCssRawBytes": 3471692,
+        "jsCssGzipBytes": 631214
+    },
+    "runs": [
+        {
+            "domContentLoadedMs": 28.5,
+            "loadMs": 285.7999999523163,
+            "htmlTransferBytes": 206610,
+            "htmlEncodedBytes": 206310,
+            "htmlDecodedBytes": 206310,
+            "resources": [
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-wordmark.png",
+                    "initiator": "link",
+                    "transferBytes": 2617,
+                    "encodedBytes": 2317,
+                    "decodedBytes": 2317,
+                    "durationMs": 7.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-gallery.png",
+                    "initiator": "link",
+                    "transferBytes": 889491,
+                    "encodedBytes": 889191,
+                    "decodedBytes": 889191,
+                    "durationMs": 24.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/ContextMenu.module_1.css",
+                    "initiator": "link",
+                    "transferBytes": 69191,
+                    "encodedBytes": 68891,
+                    "decodedBytes": 68891,
+                    "durationMs": 6.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-stage.jpg",
+                    "initiator": "link",
+                    "transferBytes": 2066485,
+                    "encodedBytes": 2066185,
+                    "decodedBytes": 2066185,
+                    "durationMs": 36
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-interior.png",
+                    "initiator": "link",
+                    "transferBytes": 1673417,
+                    "encodedBytes": 1673117,
+                    "decodedBytes": 1673117,
+                    "durationMs": 32.40000009536743
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/compat/flows_1.css",
+                    "initiator": "link",
+                    "transferBytes": 85152,
+                    "encodedBytes": 84852,
+                    "decodedBytes": 84852,
+                    "durationMs": 7.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/base_1.css",
+                    "initiator": "link",
+                    "transferBytes": 87478,
+                    "encodedBytes": 87178,
+                    "decodedBytes": 87178,
+                    "durationMs": 8.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/public/assets/icons/material-symbols_1.css",
+                    "initiator": "link",
+                    "transferBytes": 87188,
+                    "encodedBytes": 86888,
+                    "decodedBytes": 86888,
+                    "durationMs": 8.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/design-system_1.css",
+                    "initiator": "link",
+                    "transferBytes": 99165,
+                    "encodedBytes": 98865,
+                    "decodedBytes": 98865,
+                    "durationMs": 8.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/account-mini-room_1.css",
+                    "initiator": "link",
+                    "transferBytes": 47893,
+                    "encodedBytes": 47593,
+                    "decodedBytes": 47593,
+                    "durationMs": 11.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/VioletQuickMenu.module_1.css",
+                    "initiator": "link",
+                    "transferBytes": 23397,
+                    "encodedBytes": 23097,
+                    "decodedBytes": 23097,
+                    "durationMs": 12
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/runtime/webpack_1.js",
+                    "initiator": "link",
+                    "transferBytes": 22312,
+                    "encodedBytes": 22012,
+                    "decodedBytes": 22012,
+                    "durationMs": 18.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/next/dist/compiled/react-dom/cjs/react-dom.production.min_1.js",
+                    "initiator": "script",
+                    "transferBytes": 362717,
+                    "encodedBytes": 362417,
+                    "decodedBytes": 362417,
+                    "durationMs": 23.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/src/runtime/readable-app_1.js",
+                    "initiator": "script",
+                    "transferBytes": 4238,
+                    "encodedBytes": 3938,
+                    "decodedBytes": 3938,
+                    "durationMs": 27.40000009536743
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_supabase/auth-js/dist/module/GoTrueClient_1.js",
+                    "initiator": "script",
+                    "transferBytes": 339253,
+                    "encodedBytes": 338953,
+                    "decodedBytes": 338953,
+                    "durationMs": 30.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_swc/helpers/esm/_class_private_field_loose_base_1.js",
+                    "initiator": "script",
+                    "transferBytes": 447244,
+                    "encodedBytes": 446944,
+                    "decodedBytes": 446944,
+                    "durationMs": 28.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/next/dist/api/link_1.js",
+                    "initiator": "script",
+                    "transferBytes": 83368,
+                    "encodedBytes": 83068,
+                    "decodedBytes": 83068,
+                    "durationMs": 29.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/Icon_1.js",
+                    "initiator": "script",
+                    "transferBytes": 159305,
+                    "encodedBytes": 159005,
+                    "decodedBytes": 159005,
+                    "durationMs": 33.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_supabase/auth-js/dist/module/AuthAdminApi_1.js",
+                    "initiator": "script",
+                    "transferBytes": 842857,
+                    "encodedBytes": 842557,
+                    "decodedBytes": 842557,
+                    "durationMs": 46.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/GlassRefraction_1.js",
+                    "initiator": "script",
+                    "transferBytes": 82308,
+                    "encodedBytes": 82008,
+                    "decodedBytes": 82008,
+                    "durationMs": 34.60000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/HeroCompanion_1.js",
+                    "initiator": "script",
+                    "transferBytes": 102362,
+                    "encodedBytes": 102062,
+                    "decodedBytes": 102062,
+                    "durationMs": 35.60000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/FloatingMenu_1.js",
+                    "initiator": "script",
+                    "transferBytes": 80987,
+                    "encodedBytes": 80687,
+                    "decodedBytes": 80687,
+                    "durationMs": 46.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 113628,
+                    "encodedBytes": 113328,
+                    "decodedBytes": 113328,
+                    "durationMs": 45.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/layout_1.js",
+                    "initiator": "script",
+                    "transferBytes": 79703,
+                    "encodedBytes": 79403,
+                    "decodedBytes": 79403,
+                    "durationMs": 47.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/not-found_1.js",
+                    "initiator": "script",
+                    "transferBytes": 17148,
+                    "encodedBytes": 16848,
+                    "decodedBytes": 16848,
+                    "durationMs": 47.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/fonts/woff2/WantedSansVariable.woff2",
+                    "initiator": "link",
+                    "transferBytes": 1289592,
+                    "encodedBytes": 1289292,
+                    "decodedBytes": 1289292,
+                    "durationMs": 21.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/icons/material-symbols-rounded.svg#arrow_forward",
+                    "initiator": "other",
+                    "transferBytes": 14433,
+                    "encodedBytes": 14133,
+                    "decodedBytes": 14133,
+                    "durationMs": 44.5
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-poster.jpg",
+                    "initiator": "img",
+                    "transferBytes": 371808,
+                    "encodedBytes": 371508,
+                    "decodedBytes": 371508,
+                    "durationMs": 11.599999904632568
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-s.png",
+                    "initiator": "img",
+                    "transferBytes": 1402544,
+                    "encodedBytes": 1402244,
+                    "decodedBytes": 1402244,
+                    "durationMs": 37.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-facade.png",
+                    "initiator": "img",
+                    "transferBytes": 1406861,
+                    "encodedBytes": 1406561,
+                    "decodedBytes": 1406561,
+                    "durationMs": 37.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-chamber.png",
+                    "initiator": "img",
+                    "transferBytes": 1268311,
+                    "encodedBytes": 1268011,
+                    "decodedBytes": 1268011,
+                    "durationMs": 35.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-auditorium.png",
+                    "initiator": "img",
+                    "transferBytes": 1621800,
+                    "encodedBytes": 1621500,
+                    "decodedBytes": 1621500,
+                    "durationMs": 38.60000002384186
+                },
+                {
+                    "url": "https://cowalyqaoqoclrfmxszp.supabase.co/rest/v1/rpc/sejong_catalog_snapshot",
+                    "initiator": "fetch",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 105.5
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5774,
+                    "encodedBytes": 5474,
+                    "decodedBytes": 5474,
+                    "durationMs": 2.9000000953674316
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/rental/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5828,
+                    "encodedBytes": 5528,
+                    "decodedBytes": 5528,
+                    "durationMs": 3.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5823,
+                    "encodedBytes": 5523,
+                    "decodedBytes": 5523,
+                    "durationMs": 3.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/news/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5818,
+                    "encodedBytes": 5518,
+                    "decodedBytes": 5518,
+                    "durationMs": 2.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/about/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5823,
+                    "encodedBytes": 5523,
+                    "decodedBytes": 5523,
+                    "durationMs": 3.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/programs/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 25267,
+                    "encodedBytes": 24967,
+                    "decodedBytes": 24967,
+                    "durationMs": 3.3000000715255737
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/CatalogPage_1.js",
+                    "initiator": "script",
+                    "transferBytes": 66962,
+                    "encodedBytes": 66662,
+                    "decodedBytes": 66662,
+                    "durationMs": 6.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/__slug_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 1116,
+                    "encodedBytes": 816,
+                    "decodedBytes": 816,
+                    "durationMs": 4.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/login/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6052,
+                    "encodedBytes": 5752,
+                    "decodedBytes": 5752,
+                    "durationMs": 3.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/signup/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6057,
+                    "encodedBytes": 5757,
+                    "decodedBytes": 5757,
+                    "durationMs": 3.8000000715255737
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/english/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5833,
+                    "encodedBytes": 5533,
+                    "decodedBytes": 5533,
+                    "durationMs": 6.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6727,
+                    "encodedBytes": 6427,
+                    "decodedBytes": 6427,
+                    "durationMs": 5.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/booking/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6594,
+                    "encodedBytes": 6294,
+                    "decodedBytes": 6294,
+                    "durationMs": 5.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/account/login/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 48792,
+                    "encodedBytes": 48492,
+                    "decodedBytes": 48492,
+                    "durationMs": 4.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/account/signup/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 50216,
+                    "encodedBytes": 49916,
+                    "decodedBytes": 49916,
+                    "durationMs": 2.5999999046325684
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/carmen/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6672,
+                    "encodedBytes": 6372,
+                    "decodedBytes": 6372,
+                    "durationMs": 3.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/programs/_id_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 13230,
+                    "encodedBytes": 12930,
+                    "decodedBytes": 12930,
+                    "durationMs": 2.8000000715255737
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/group/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5857,
+                    "encodedBytes": 5557,
+                    "decodedBytes": 5557,
+                    "durationMs": 2.5999999046325684
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/booking/_id_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 37615,
+                    "encodedBytes": 37315,
+                    "decodedBytes": 37315,
+                    "durationMs": 2.799999952316284
+                }
+            ],
+            "status": 200,
+            "localResourceTransferBytes": 15560309,
+            "jsCssFiles": 28,
+            "jsCssRawBytes": 3471692,
+            "jsCssGzipBytes": 631214,
+            "errors": []
+        },
+        {
+            "domContentLoadedMs": 24.100000023841858,
+            "loadMs": 293.2999999523163,
+            "htmlTransferBytes": 206610,
+            "htmlEncodedBytes": 206310,
+            "htmlDecodedBytes": 206310,
+            "resources": [
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-wordmark.png",
+                    "initiator": "link",
+                    "transferBytes": 2617,
+                    "encodedBytes": 2317,
+                    "decodedBytes": 2317,
+                    "durationMs": 8.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-gallery.png",
+                    "initiator": "link",
+                    "transferBytes": 889491,
+                    "encodedBytes": 889191,
+                    "decodedBytes": 889191,
+                    "durationMs": 25.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/ContextMenu.module_1.css",
+                    "initiator": "link",
+                    "transferBytes": 69191,
+                    "encodedBytes": 68891,
+                    "decodedBytes": 68891,
+                    "durationMs": 8.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/compat/flows_1.css",
+                    "initiator": "link",
+                    "transferBytes": 85152,
+                    "encodedBytes": 84852,
+                    "decodedBytes": 84852,
+                    "durationMs": 9.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-interior.png",
+                    "initiator": "link",
+                    "transferBytes": 1673417,
+                    "encodedBytes": 1673117,
+                    "decodedBytes": 1673117,
+                    "durationMs": 36.39999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-stage.jpg",
+                    "initiator": "link",
+                    "transferBytes": 2066485,
+                    "encodedBytes": 2066185,
+                    "decodedBytes": 2066185,
+                    "durationMs": 40.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/base_1.css",
+                    "initiator": "link",
+                    "transferBytes": 87478,
+                    "encodedBytes": 87178,
+                    "decodedBytes": 87178,
+                    "durationMs": 9.599999904632568
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/public/assets/icons/material-symbols_1.css",
+                    "initiator": "link",
+                    "transferBytes": 87188,
+                    "encodedBytes": 86888,
+                    "decodedBytes": 86888,
+                    "durationMs": 9.900000095367432
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/design-system_1.css",
+                    "initiator": "link",
+                    "transferBytes": 99165,
+                    "encodedBytes": 98865,
+                    "decodedBytes": 98865,
+                    "durationMs": 10.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/account-mini-room_1.css",
+                    "initiator": "link",
+                    "transferBytes": 47893,
+                    "encodedBytes": 47593,
+                    "decodedBytes": 47593,
+                    "durationMs": 11.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/VioletQuickMenu.module_1.css",
+                    "initiator": "link",
+                    "transferBytes": 23397,
+                    "encodedBytes": 23097,
+                    "decodedBytes": 23097,
+                    "durationMs": 13.400000095367432
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/runtime/webpack_1.js",
+                    "initiator": "link",
+                    "transferBytes": 22312,
+                    "encodedBytes": 22012,
+                    "decodedBytes": 22012,
+                    "durationMs": 14.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/next/dist/compiled/react-dom/cjs/react-dom.production.min_1.js",
+                    "initiator": "script",
+                    "transferBytes": 362717,
+                    "encodedBytes": 362417,
+                    "decodedBytes": 362417,
+                    "durationMs": 22.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/src/runtime/readable-app_1.js",
+                    "initiator": "script",
+                    "transferBytes": 4238,
+                    "encodedBytes": 3938,
+                    "decodedBytes": 3938,
+                    "durationMs": 31.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_swc/helpers/esm/_class_private_field_loose_base_1.js",
+                    "initiator": "script",
+                    "transferBytes": 447244,
+                    "encodedBytes": 446944,
+                    "decodedBytes": 446944,
+                    "durationMs": 25.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_supabase/auth-js/dist/module/GoTrueClient_1.js",
+                    "initiator": "script",
+                    "transferBytes": 339253,
+                    "encodedBytes": 338953,
+                    "decodedBytes": 338953,
+                    "durationMs": 36.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/next/dist/api/link_1.js",
+                    "initiator": "script",
+                    "transferBytes": 83368,
+                    "encodedBytes": 83068,
+                    "decodedBytes": 83068,
+                    "durationMs": 33.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_supabase/auth-js/dist/module/AuthAdminApi_1.js",
+                    "initiator": "script",
+                    "transferBytes": 842857,
+                    "encodedBytes": 842557,
+                    "decodedBytes": 842557,
+                    "durationMs": 41.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/Icon_1.js",
+                    "initiator": "script",
+                    "transferBytes": 159305,
+                    "encodedBytes": 159005,
+                    "decodedBytes": 159005,
+                    "durationMs": 37.09999990463257
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/GlassRefraction_1.js",
+                    "initiator": "script",
+                    "transferBytes": 82308,
+                    "encodedBytes": 82008,
+                    "decodedBytes": 82008,
+                    "durationMs": 38.90000009536743
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 113628,
+                    "encodedBytes": 113328,
+                    "decodedBytes": 113328,
+                    "durationMs": 42.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/HeroCompanion_1.js",
+                    "initiator": "script",
+                    "transferBytes": 102362,
+                    "encodedBytes": 102062,
+                    "decodedBytes": 102062,
+                    "durationMs": 41.90000009536743
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/layout_1.js",
+                    "initiator": "script",
+                    "transferBytes": 79703,
+                    "encodedBytes": 79403,
+                    "decodedBytes": 79403,
+                    "durationMs": 43
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/FloatingMenu_1.js",
+                    "initiator": "script",
+                    "transferBytes": 80987,
+                    "encodedBytes": 80687,
+                    "decodedBytes": 80687,
+                    "durationMs": 42.40000009536743
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/not-found_1.js",
+                    "initiator": "script",
+                    "transferBytes": 17148,
+                    "encodedBytes": 16848,
+                    "decodedBytes": 16848,
+                    "durationMs": 43
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/fonts/woff2/WantedSansVariable.woff2",
+                    "initiator": "link",
+                    "transferBytes": 1289592,
+                    "encodedBytes": 1289292,
+                    "decodedBytes": 1289292,
+                    "durationMs": 24.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/icons/material-symbols-rounded.svg#arrow_forward",
+                    "initiator": "other",
+                    "transferBytes": 14433,
+                    "encodedBytes": 14133,
+                    "decodedBytes": 14133,
+                    "durationMs": 40.5
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-poster.jpg",
+                    "initiator": "img",
+                    "transferBytes": 371808,
+                    "encodedBytes": 371508,
+                    "decodedBytes": 371508,
+                    "durationMs": 7.900000095367432
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-facade.png",
+                    "initiator": "img",
+                    "transferBytes": 1406861,
+                    "encodedBytes": 1406561,
+                    "decodedBytes": 1406561,
+                    "durationMs": 22.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-auditorium.png",
+                    "initiator": "img",
+                    "transferBytes": 1621800,
+                    "encodedBytes": 1621500,
+                    "decodedBytes": 1621500,
+                    "durationMs": 24.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-s.png",
+                    "initiator": "img",
+                    "transferBytes": 1402544,
+                    "encodedBytes": 1402244,
+                    "decodedBytes": 1402244,
+                    "durationMs": 22.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-chamber.png",
+                    "initiator": "img",
+                    "transferBytes": 1268311,
+                    "encodedBytes": 1268011,
+                    "decodedBytes": 1268011,
+                    "durationMs": 21.299999952316284
+                },
+                {
+                    "url": "https://cowalyqaoqoclrfmxszp.supabase.co/rest/v1/rpc/sejong_catalog_snapshot",
+                    "initiator": "fetch",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 92.40000009536743
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5774,
+                    "encodedBytes": 5474,
+                    "decodedBytes": 5474,
+                    "durationMs": 2.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/rental/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5828,
+                    "encodedBytes": 5528,
+                    "decodedBytes": 5528,
+                    "durationMs": 4.900000095367432
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5823,
+                    "encodedBytes": 5523,
+                    "decodedBytes": 5523,
+                    "durationMs": 4.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/news/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5818,
+                    "encodedBytes": 5518,
+                    "decodedBytes": 5518,
+                    "durationMs": 4.099999904632568
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/about/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5823,
+                    "encodedBytes": 5523,
+                    "decodedBytes": 5523,
+                    "durationMs": 4.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/programs/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 25267,
+                    "encodedBytes": 24967,
+                    "decodedBytes": 24967,
+                    "durationMs": 2.5999999046325684
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/CatalogPage_1.js",
+                    "initiator": "script",
+                    "transferBytes": 66962,
+                    "encodedBytes": 66662,
+                    "decodedBytes": 66662,
+                    "durationMs": 4.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/__slug_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 1116,
+                    "encodedBytes": 816,
+                    "decodedBytes": 816,
+                    "durationMs": 4.400000095367432
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/login/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6052,
+                    "encodedBytes": 5752,
+                    "decodedBytes": 5752,
+                    "durationMs": 5.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/signup/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6057,
+                    "encodedBytes": 5757,
+                    "decodedBytes": 5757,
+                    "durationMs": 4.400000095367432
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/english/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5833,
+                    "encodedBytes": 5533,
+                    "decodedBytes": 5533,
+                    "durationMs": 5.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6727,
+                    "encodedBytes": 6427,
+                    "decodedBytes": 6427,
+                    "durationMs": 5.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/booking/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6594,
+                    "encodedBytes": 6294,
+                    "decodedBytes": 6294,
+                    "durationMs": 4.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/account/login/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 48792,
+                    "encodedBytes": 48492,
+                    "decodedBytes": 48492,
+                    "durationMs": 2.8000000715255737
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/account/signup/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 50216,
+                    "encodedBytes": 49916,
+                    "decodedBytes": 49916,
+                    "durationMs": 2
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/carmen/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6672,
+                    "encodedBytes": 6372,
+                    "decodedBytes": 6372,
+                    "durationMs": 2.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/programs/_id_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 13230,
+                    "encodedBytes": 12930,
+                    "decodedBytes": 12930,
+                    "durationMs": 2.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/group/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5857,
+                    "encodedBytes": 5557,
+                    "decodedBytes": 5557,
+                    "durationMs": 2.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/booking/_id_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 37615,
+                    "encodedBytes": 37315,
+                    "decodedBytes": 37315,
+                    "durationMs": 1.8000000715255737
+                }
+            ],
+            "status": 200,
+            "localResourceTransferBytes": 15560309,
+            "jsCssFiles": 28,
+            "jsCssRawBytes": 3471692,
+            "jsCssGzipBytes": 631214,
+            "errors": []
+        },
+        {
+            "domContentLoadedMs": 23.800000071525574,
+            "loadMs": 275.10000002384186,
+            "htmlTransferBytes": 206610,
+            "htmlEncodedBytes": 206310,
+            "htmlDecodedBytes": 206310,
+            "resources": [
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-wordmark.png",
+                    "initiator": "link",
+                    "transferBytes": 2617,
+                    "encodedBytes": 2317,
+                    "decodedBytes": 2317,
+                    "durationMs": 8.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-gallery.png",
+                    "initiator": "link",
+                    "transferBytes": 889491,
+                    "encodedBytes": 889191,
+                    "decodedBytes": 889191,
+                    "durationMs": 31.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-stage.jpg",
+                    "initiator": "link",
+                    "transferBytes": 2066485,
+                    "encodedBytes": 2066185,
+                    "decodedBytes": 2066185,
+                    "durationMs": 41.89999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-interior.png",
+                    "initiator": "link",
+                    "transferBytes": 1673417,
+                    "encodedBytes": 1673117,
+                    "decodedBytes": 1673117,
+                    "durationMs": 39
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/ContextMenu.module_1.css",
+                    "initiator": "link",
+                    "transferBytes": 69191,
+                    "encodedBytes": 68891,
+                    "decodedBytes": 68891,
+                    "durationMs": 8.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/base_1.css",
+                    "initiator": "link",
+                    "transferBytes": 87478,
+                    "encodedBytes": 87178,
+                    "decodedBytes": 87178,
+                    "durationMs": 9.399999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/compat/flows_1.css",
+                    "initiator": "link",
+                    "transferBytes": 85152,
+                    "encodedBytes": 84852,
+                    "decodedBytes": 84852,
+                    "durationMs": 10.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/public/assets/icons/material-symbols_1.css",
+                    "initiator": "link",
+                    "transferBytes": 87188,
+                    "encodedBytes": 86888,
+                    "decodedBytes": 86888,
+                    "durationMs": 10.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/design-system_1.css",
+                    "initiator": "link",
+                    "transferBytes": 99165,
+                    "encodedBytes": 98865,
+                    "decodedBytes": 98865,
+                    "durationMs": 10.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/styles/account-mini-room_1.css",
+                    "initiator": "link",
+                    "transferBytes": 47893,
+                    "encodedBytes": 47593,
+                    "decodedBytes": 47593,
+                    "durationMs": 12.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/VioletQuickMenu.module_1.css",
+                    "initiator": "link",
+                    "transferBytes": 23397,
+                    "encodedBytes": 23097,
+                    "decodedBytes": 23097,
+                    "durationMs": 13.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/runtime/webpack_1.js",
+                    "initiator": "link",
+                    "transferBytes": 22312,
+                    "encodedBytes": 22012,
+                    "decodedBytes": 22012,
+                    "durationMs": 17.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/next/dist/compiled/react-dom/cjs/react-dom.production.min_1.js",
+                    "initiator": "script",
+                    "transferBytes": 362717,
+                    "encodedBytes": 362417,
+                    "decodedBytes": 362417,
+                    "durationMs": 21.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_swc/helpers/esm/_class_private_field_loose_base_1.js",
+                    "initiator": "script",
+                    "transferBytes": 447244,
+                    "encodedBytes": 446944,
+                    "decodedBytes": 446944,
+                    "durationMs": 32.90000009536743
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/src/runtime/readable-app_1.js",
+                    "initiator": "script",
+                    "transferBytes": 4238,
+                    "encodedBytes": 3938,
+                    "decodedBytes": 3938,
+                    "durationMs": 33.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/next/dist/api/link_1.js",
+                    "initiator": "script",
+                    "transferBytes": 83368,
+                    "encodedBytes": 83068,
+                    "decodedBytes": 83068,
+                    "durationMs": 37.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_supabase/auth-js/dist/module/GoTrueClient_1.js",
+                    "initiator": "script",
+                    "transferBytes": 339253,
+                    "encodedBytes": 338953,
+                    "decodedBytes": 338953,
+                    "durationMs": 36.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/GlassRefraction_1.js",
+                    "initiator": "script",
+                    "transferBytes": 82308,
+                    "encodedBytes": 82008,
+                    "decodedBytes": 82008,
+                    "durationMs": 41.60000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/Icon_1.js",
+                    "initiator": "script",
+                    "transferBytes": 159305,
+                    "encodedBytes": 159005,
+                    "decodedBytes": 159005,
+                    "durationMs": 39.700000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/vendor/_supabase/auth-js/dist/module/AuthAdminApi_1.js",
+                    "initiator": "script",
+                    "transferBytes": 842857,
+                    "encodedBytes": 842557,
+                    "decodedBytes": 842557,
+                    "durationMs": 44.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/HeroCompanion_1.js",
+                    "initiator": "script",
+                    "transferBytes": 102362,
+                    "encodedBytes": 102062,
+                    "decodedBytes": 102062,
+                    "durationMs": 42.89999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 113628,
+                    "encodedBytes": 113328,
+                    "decodedBytes": 113328,
+                    "durationMs": 43.89999997615814
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/FloatingMenu_1.js",
+                    "initiator": "script",
+                    "transferBytes": 80987,
+                    "encodedBytes": 80687,
+                    "decodedBytes": 80687,
+                    "durationMs": 44.199999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/layout_1.js",
+                    "initiator": "script",
+                    "transferBytes": 79703,
+                    "encodedBytes": 79403,
+                    "decodedBytes": 79403,
+                    "durationMs": 45.299999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/not-found_1.js",
+                    "initiator": "script",
+                    "transferBytes": 17148,
+                    "encodedBytes": 16848,
+                    "decodedBytes": 16848,
+                    "durationMs": 45.10000002384186
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/fonts/woff2/WantedSansVariable.woff2",
+                    "initiator": "link",
+                    "transferBytes": 1289592,
+                    "encodedBytes": 1289292,
+                    "decodedBytes": 1289292,
+                    "durationMs": 28.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/icons/material-symbols-rounded.svg#arrow_forward",
+                    "initiator": "other",
+                    "transferBytes": 14433,
+                    "encodedBytes": 14133,
+                    "decodedBytes": 14133,
+                    "durationMs": 42.699999928474426
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/ilmu-poster.jpg",
+                    "initiator": "img",
+                    "transferBytes": 371808,
+                    "encodedBytes": 371508,
+                    "decodedBytes": 371508,
+                    "durationMs": 8.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-facade.png",
+                    "initiator": "img",
+                    "transferBytes": 1406861,
+                    "encodedBytes": 1406561,
+                    "decodedBytes": 1406561,
+                    "durationMs": 17.300000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/sejong-grand-auditorium.png",
+                    "initiator": "img",
+                    "transferBytes": 1621800,
+                    "encodedBytes": 1621500,
+                    "decodedBytes": 1621500,
+                    "durationMs": 19.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-s.png",
+                    "initiator": "img",
+                    "transferBytes": 1402544,
+                    "encodedBytes": 1402244,
+                    "decodedBytes": 1402244,
+                    "durationMs": 18
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/assets/images/official/venue-chamber.png",
+                    "initiator": "img",
+                    "transferBytes": 1268311,
+                    "encodedBytes": 1268011,
+                    "decodedBytes": 1268011,
+                    "durationMs": 16.799999952316284
+                },
+                {
+                    "url": "https://cowalyqaoqoclrfmxszp.supabase.co/rest/v1/rpc/sejong_catalog_snapshot",
+                    "initiator": "fetch",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 155.10000002384186
+                },
+                {
+                    "url": "",
+                    "initiator": "other",
+                    "transferBytes": 0,
+                    "encodedBytes": 0,
+                    "decodedBytes": 0,
+                    "durationMs": 0
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5774,
+                    "encodedBytes": 5474,
+                    "decodedBytes": 5474,
+                    "durationMs": 4
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/rental/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5828,
+                    "encodedBytes": 5528,
+                    "decodedBytes": 5528,
+                    "durationMs": 4
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5823,
+                    "encodedBytes": 5523,
+                    "decodedBytes": 5523,
+                    "durationMs": 4.099999904632568
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/news/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5818,
+                    "encodedBytes": 5518,
+                    "decodedBytes": 5518,
+                    "durationMs": 4.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/about/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5823,
+                    "encodedBytes": 5523,
+                    "decodedBytes": 5523,
+                    "durationMs": 3.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/programs/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 25267,
+                    "encodedBytes": 24967,
+                    "decodedBytes": 24967,
+                    "durationMs": 4.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/components/CatalogPage_1.js",
+                    "initiator": "script",
+                    "transferBytes": 66962,
+                    "encodedBytes": 66662,
+                    "decodedBytes": 66662,
+                    "durationMs": 9.5
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/__slug_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 1116,
+                    "encodedBytes": 816,
+                    "decodedBytes": 816,
+                    "durationMs": 11.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/login/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6052,
+                    "encodedBytes": 5752,
+                    "decodedBytes": 5752,
+                    "durationMs": 9.200000047683716
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/account/signup/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6057,
+                    "encodedBytes": 5757,
+                    "decodedBytes": 5757,
+                    "durationMs": 7.699999928474426
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/english/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5833,
+                    "encodedBytes": 5533,
+                    "decodedBytes": 5533,
+                    "durationMs": 8.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6727,
+                    "encodedBytes": 6427,
+                    "decodedBytes": 6427,
+                    "durationMs": 7.800000071525574
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/booking/dance/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6594,
+                    "encodedBytes": 6294,
+                    "decodedBytes": 6294,
+                    "durationMs": 6.799999952316284
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/account/login/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 48792,
+                    "encodedBytes": 48492,
+                    "decodedBytes": 48492,
+                    "durationMs": 2.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/account/signup/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 50216,
+                    "encodedBytes": 49916,
+                    "decodedBytes": 49916,
+                    "durationMs": 3.600000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/programs/carmen/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 6672,
+                    "encodedBytes": 6372,
+                    "decodedBytes": 6372,
+                    "durationMs": 3.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/programs/_id_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 13230,
+                    "encodedBytes": 12930,
+                    "decodedBytes": 12930,
+                    "durationMs": 2.899999976158142
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/visit/group/index.txt?_rsc=19zvn",
+                    "initiator": "fetch",
+                    "transferBytes": 5857,
+                    "encodedBytes": 5557,
+                    "decodedBytes": 5557,
+                    "durationMs": 4.100000023841858
+                },
+                {
+                    "url": "http://127.0.0.1:4173/v5/_next/static/r-2e2ede029b480b49/app/booking/_id_/page_1.js",
+                    "initiator": "script",
+                    "transferBytes": 37615,
+                    "encodedBytes": 37315,
+                    "decodedBytes": 37315,
+                    "durationMs": 3.799999952316284
+                }
+            ],
+            "status": 200,
+            "localResourceTransferBytes": 15560309,
+            "jsCssFiles": 28,
+            "jsCssRawBytes": 3471692,
+            "jsCssGzipBytes": 631214,
+            "errors": []
+        }
+    ]
+}

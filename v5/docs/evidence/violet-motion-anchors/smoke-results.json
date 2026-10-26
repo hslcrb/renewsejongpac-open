@@ -1,0 +1,149 @@
+{
+  "baseURL": "http://127.0.0.1:8765/v5/",
+  "checks": [
+    {
+      "name": "desktop fixed fur roots and bounded live tuft painting",
+      "status": "PASS",
+      "detail": {
+        "sampledMilliseconds": 650,
+        "drawnFrames": 9,
+        "maxDrawsPerFrame": 2,
+        "maxCurvesPerFrame": 1008,
+        "maxFillsPerFrame": 10,
+        "fixedRoots": 504,
+        "strokes": 0,
+        "gradients": 0
+      }
+    },
+    {
+      "name": "desktop quick scroll fades out and back in",
+      "status": "PASS",
+      "detail": {
+        "opacityTransition": "0.18s",
+        "geometry": {
+          "top": 131.375,
+          "height": 681.59375,
+          "distance": 170.3984375,
+          "midpoint": 120.57421875,
+          "fullOut": 230.7734375
+        },
+        "midpointOpacity": 0.4975,
+        "midOut": {
+          "elapsed": 27,
+          "opacity": 0.4975,
+          "appliedOpacity": 0.4975,
+          "transitioning": false,
+          "display": "block",
+          "visibility": "visible",
+          "visible": "true",
+          "ariaHidden": "false",
+          "inert": false,
+          "state": "open"
+        },
+        "finalOut": {
+          "elapsed": 374,
+          "opacity": 0,
+          "appliedOpacity": 0,
+          "transitioning": false,
+          "display": "block",
+          "visibility": "hidden",
+          "visible": "false",
+          "ariaHidden": "true",
+          "inert": true,
+          "state": "closed"
+        },
+        "input": {
+          "inert": true,
+          "ariaHidden": "true",
+          "visible": "false",
+          "interceptsPointer": false,
+          "ownsFocus": false,
+          "heroStillInView": true
+        },
+        "inwardMidpointOpacity": 0.4975,
+        "midIn": {
+          "elapsed": 31,
+          "opacity": 0.4975,
+          "appliedOpacity": 0.4975,
+          "transitioning": false,
+          "display": "block",
+          "visibility": "visible",
+          "visible": "true",
+          "ariaHidden": "false",
+          "inert": false,
+          "state": "closed"
+        },
+        "finalIn": {
+          "elapsed": 395,
+          "opacity": 1,
+          "appliedOpacity": 1,
+          "transitioning": false,
+          "display": "block",
+          "visibility": "visible",
+          "visible": "true",
+          "ariaHidden": "false",
+          "inert": false,
+          "state": "closed"
+        }
+      }
+    },
+    {
+      "name": "reduced motion stops fur and menu animations",
+      "status": "PASS",
+      "detail": {
+        "furDraws": 0,
+        "rootTransition": "0s",
+        "runningAnimations": []
+      }
+    },
+    {
+      "name": "390 mobile touch open, spin and native booking",
+      "status": "PASS",
+      "detail": {
+        "initial": 0,
+        "snappedRotation": 120,
+        "opacity": 0,
+        "visibility": "hidden",
+        "display": "block",
+        "state": "closed",
+        "hidden": false,
+        "focus": "quick-booking-heading",
+        "scrollY": 1024
+      }
+    },
+    {
+      "name": "390 mobile scroll return fades in without overflow",
+      "status": "PASS",
+      "detail": {
+        "middle": {
+          "elapsed": 36,
+          "opacity": 0.147738,
+          "appliedOpacity": 1,
+          "transitioning": true,
+          "display": "block",
+          "visibility": "visible",
+          "visible": "true",
+          "ariaHidden": "false",
+          "inert": false,
+          "state": "closed"
+        },
+        "end": {
+          "elapsed": 383,
+          "opacity": 1,
+          "appliedOpacity": 1,
+          "transitioning": false,
+          "display": "block",
+          "visibility": "visible",
+          "visible": "true",
+          "ariaHidden": "false",
+          "inert": false,
+          "state": "closed"
+        },
+        "overflow": 0
+      }
+    }
+  ],
+  "browserErrors": [],
+  "requests": [],
+  "browser": "151.0.7922.34"
+}

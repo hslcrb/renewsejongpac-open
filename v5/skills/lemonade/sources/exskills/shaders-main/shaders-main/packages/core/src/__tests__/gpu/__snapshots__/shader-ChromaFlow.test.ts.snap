@@ -1,0 +1,86 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ChromaFlow (a) generator samples an rgba16float flow field + composes directional color > registers the data texture (media) + 5-tap cross + color body > final-pass 1`] = `
+"fn flowDirectionColor(s0: vec4f, s1: vec4f, s2: vec4f, s3: vec4f, s4: vec4f, base: vec4f, up: vec4f, down: vec4f, left: vec4f, right: vec4f) -> vec4f {
+  let smoothedLiquid = (((((s0.z + s1.z) + s2.z) + s3.z) + s4.z) * 0.2f);
+  let liquidIntensity = smoothstep(0f, 0.1f, smoothedLiquid);
+  let flow = (((((s0.xy + s1.xy) + s2.xy) + s3.xy) + s4.xy) * 0.2f);
+  let flowMagnitude = length(flow);
+  let hasFlow = smoothstep(0.01f, 0.1f, flowMagnitude);
+  let normalizedX = (flow.x / (flowMagnitude + 1e-3f));
+  let normalizedY = (flow.y / (flowMagnitude + 1e-3f));
+  let rightAmount = smoothstep(0f, 0.7f, max(normalizedX, 0f));
+  let leftAmount = smoothstep(0f, 0.7f, max((normalizedX * -1f), 0f));
+  let upAmount = smoothstep(0f, 0.7f, max(normalizedY, 0f));
+  let downAmount = smoothstep(0f, 0.7f, max((normalizedY * -1f), 0f));
+  let horizontalColor = ((left * leftAmount) + (right * rightAmount));
+  let verticalColor = ((down * downAmount) + (up * upAmount));
+  let horizontalWeight = (leftAmount + rightAmount);
+  let verticalWeight = (upAmount + downAmount);
+  let totalWeight = ((horizontalWeight + verticalWeight) + 1e-3f);
+  let directionalColor = ((horizontalColor * (horizontalWeight / totalWeight)) + (verticalColor * (verticalWeight / totalWeight)));
+  let finalColor = mix(base, directionalColor, vec4f(hasFlow));
+  return (finalColor * liquidIntensity);
+}
+
+@group(1) @binding(0) var media_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  baseColor: vec4f,
+  upColor: vec4f,
+  downColor: vec4f,
+  leftColor: vec4f,
+  rightColor: vec4f,
+  intensity: f32,
+  radius: f32,
+  momentum: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_cf: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = flowDirectionColor(textureSample(media_0, linearClamp, (uv + vec2f(0.0, 0.0))), textureSample(media_0, linearClamp, (uv + vec2f(0.0078125, 0.0))), textureSample(media_0, linearClamp, (uv + vec2f(0.0, 0.0078125))), textureSample(media_0, linearClamp, (uv + vec2f(-0.0078125, 0.0))), textureSample(media_0, linearClamp, (uv + vec2f(0.0, -0.0078125))), uniforms.n_cf.baseColor, uniforms.n_cf.upColor, uniforms.n_cf.downColor, uniforms.n_cf.leftColor, uniforms.n_cf.rightColor);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

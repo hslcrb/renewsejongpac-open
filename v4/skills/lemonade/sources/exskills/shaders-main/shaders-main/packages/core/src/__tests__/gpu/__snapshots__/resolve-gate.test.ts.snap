@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve-gate (A4) > matches the WGSL snapshot 1`] = `
+"@fragment fn redFragment() -> @location(0) vec4f {
+  return vec4f(1, 0, 0, 1);
+}"
+`;

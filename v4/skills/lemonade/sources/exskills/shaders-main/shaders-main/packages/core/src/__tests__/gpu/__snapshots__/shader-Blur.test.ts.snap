@@ -1,0 +1,310 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Blur (a) compute → RTT input → fragment composite > RTTs the child, registers a compute-output texture, and composites blurred RGB + sharp alpha > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  intensity: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_blur: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+@group(1) @binding(1) var rtt_0: texture_2d<f32>;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = in.uv;
+  var composed_0 = unpremultiplyAlpha(vec4f((textureSample(compute_0, linearClamp, uv)).rgb, (textureSample(rtt_0, linearClamp, uv)).a));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`Blur (a) compute → RTT input → fragment composite > RTTs the child, registers a compute-output texture, and composites blurred RGB + sharp alpha > rtt-pass 1`] = `
+"fn overComposite(base: vec4f, blended: vec3f, overlayAlpha: f32) -> vec4f {
+  let baseWeight = (base.w * (1f - overlayAlpha));
+  let finalAlpha = (overlayAlpha + baseWeight);
+  let rgb = ((blended * overlayAlpha) + (base.xyz * baseWeight));
+  return vec4f(rgb, finalAlpha);
+}
+
+fn blend_normal(base: vec4f, overlay2: vec4f, opacity: f32) -> vec4f {
+  let overlayAlpha = (overlay2.w * opacity);
+  return overComposite(base, overlay2.xyz, overlayAlpha);
+}
+
+fn genBody(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  intensity: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_blur: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+struct rtt_rtt_0_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn rtt_rtt_0(in: rtt_rtt_0_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  return blend_normal(vec4f(1.0, 1.0, 1.0, 0.0), genBody(uv), uniforms.n_gen._opacity);
+}"
+`;
+
+exports[`Blur (c) fillBlurMap kernel resolves (D3 rules) > each channel resolves to WGSL with a storage textureStore + sampled textureLoad > fillBlurMap-alpha 1`] = `
+"@group(0) @binding(0) var source: texture_2d<f32>;
+
+@group(0) @binding(1) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct item {
+  inputWidth: f32,
+  inputHeight: f32,
+  inputMin: f32,
+  inputMax: f32,
+  outputMin: f32,
+  outputMax: f32,
+  curve: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: item;
+
+fn mapSourceScalar_alpha(sample: vec4f) -> f32 {
+  return sample.w;
+}
+
+fn applyRemapWindow(raw: f32, inputMin: f32, inputMax: f32, outputMin: f32, outputMax: f32, curve: f32) -> f32 {
+  let inputRange = max((inputMax - inputMin), 1e-4f);
+  let normalised = clamp(((raw - inputMin) / inputRange), 0f, 1f);
+  let exponent = pow(2f, (-(curve) * 2f));
+  let eased = pow(normalised, exponent);
+  return mix(outputMin, outputMax, eased);
+}
+
+fn fillBlurMap(cx: u32, cy: u32) {
+  let p = (&params);
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 640f);
+  let srcX = clamp(i32(round((u * (*p).inputWidth))), 0i, i32(((*p).inputWidth - 1f)));
+  let srcY = clamp(i32(round((v * (*p).inputHeight))), 0i, i32(((*p).inputHeight - 1f)));
+  let sample = textureLoad(source, vec2u(u32(srcX), u32(srcY)), 0);
+  let remapped = applyRemapWindow(mapSourceScalar_alpha(sample), (*p).inputMin, (*p).inputMax, (*p).outputMin, (*p).outputMax, (*p).curve);
+  let radius = (remapped * 0.36f);
+  textureStore(blurMap, vec2u(cx, cy), vec4f(radius, 0f, 0f, 1f));
+}"
+`;
+
+exports[`Blur (c) fillBlurMap kernel resolves (D3 rules) > each channel resolves to WGSL with a storage textureStore + sampled textureLoad > fillBlurMap-alphaInverted 1`] = `
+"@group(0) @binding(0) var source: texture_2d<f32>;
+
+@group(0) @binding(1) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct item {
+  inputWidth: f32,
+  inputHeight: f32,
+  inputMin: f32,
+  inputMax: f32,
+  outputMin: f32,
+  outputMax: f32,
+  curve: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: item;
+
+fn mapSourceScalar_alphaInverted(sample: vec4f) -> f32 {
+  return (1f - sample.w);
+}
+
+fn applyRemapWindow(raw: f32, inputMin: f32, inputMax: f32, outputMin: f32, outputMax: f32, curve: f32) -> f32 {
+  let inputRange = max((inputMax - inputMin), 1e-4f);
+  let normalised = clamp(((raw - inputMin) / inputRange), 0f, 1f);
+  let exponent = pow(2f, (-(curve) * 2f));
+  let eased = pow(normalised, exponent);
+  return mix(outputMin, outputMax, eased);
+}
+
+fn fillBlurMap(cx: u32, cy: u32) {
+  let p = (&params);
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 640f);
+  let srcX = clamp(i32(round((u * (*p).inputWidth))), 0i, i32(((*p).inputWidth - 1f)));
+  let srcY = clamp(i32(round((v * (*p).inputHeight))), 0i, i32(((*p).inputHeight - 1f)));
+  let sample = textureLoad(source, vec2u(u32(srcX), u32(srcY)), 0);
+  let remapped = applyRemapWindow(mapSourceScalar_alphaInverted(sample), (*p).inputMin, (*p).inputMax, (*p).outputMin, (*p).outputMax, (*p).curve);
+  let radius = (remapped * 0.36f);
+  textureStore(blurMap, vec2u(cx, cy), vec4f(radius, 0f, 0f, 1f));
+}"
+`;
+
+exports[`Blur (c) fillBlurMap kernel resolves (D3 rules) > each channel resolves to WGSL with a storage textureStore + sampled textureLoad > fillBlurMap-luminance 1`] = `
+"@group(0) @binding(0) var source: texture_2d<f32>;
+
+@group(0) @binding(1) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct item {
+  inputWidth: f32,
+  inputHeight: f32,
+  inputMin: f32,
+  inputMax: f32,
+  outputMin: f32,
+  outputMax: f32,
+  curve: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: item;
+
+fn mapSourceScalar_luminance(sample: vec4f) -> f32 {
+  return dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+}
+
+fn applyRemapWindow(raw: f32, inputMin: f32, inputMax: f32, outputMin: f32, outputMax: f32, curve: f32) -> f32 {
+  let inputRange = max((inputMax - inputMin), 1e-4f);
+  let normalised = clamp(((raw - inputMin) / inputRange), 0f, 1f);
+  let exponent = pow(2f, (-(curve) * 2f));
+  let eased = pow(normalised, exponent);
+  return mix(outputMin, outputMax, eased);
+}
+
+fn fillBlurMap(cx: u32, cy: u32) {
+  let p = (&params);
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 640f);
+  let srcX = clamp(i32(round((u * (*p).inputWidth))), 0i, i32(((*p).inputWidth - 1f)));
+  let srcY = clamp(i32(round((v * (*p).inputHeight))), 0i, i32(((*p).inputHeight - 1f)));
+  let sample = textureLoad(source, vec2u(u32(srcX), u32(srcY)), 0);
+  let remapped = applyRemapWindow(mapSourceScalar_luminance(sample), (*p).inputMin, (*p).inputMax, (*p).outputMin, (*p).outputMax, (*p).curve);
+  let radius = (remapped * 0.36f);
+  textureStore(blurMap, vec2u(cx, cy), vec4f(radius, 0f, 0f, 1f));
+}"
+`;
+
+exports[`Blur (c) fillBlurMap kernel resolves (D3 rules) > each channel resolves to WGSL with a storage textureStore + sampled textureLoad > fillBlurMap-luminanceInverted 1`] = `
+"@group(0) @binding(0) var source: texture_2d<f32>;
+
+@group(0) @binding(1) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct item {
+  inputWidth: f32,
+  inputHeight: f32,
+  inputMin: f32,
+  inputMax: f32,
+  outputMin: f32,
+  outputMax: f32,
+  curve: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: item;
+
+fn mapSourceScalar_luminanceInverted(sample: vec4f) -> f32 {
+  return (1f - dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023)));
+}
+
+fn applyRemapWindow(raw: f32, inputMin: f32, inputMax: f32, outputMin: f32, outputMax: f32, curve: f32) -> f32 {
+  let inputRange = max((inputMax - inputMin), 1e-4f);
+  let normalised = clamp(((raw - inputMin) / inputRange), 0f, 1f);
+  let exponent = pow(2f, (-(curve) * 2f));
+  let eased = pow(normalised, exponent);
+  return mix(outputMin, outputMax, eased);
+}
+
+fn fillBlurMap(cx: u32, cy: u32) {
+  let p = (&params);
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 640f);
+  let srcX = clamp(i32(round((u * (*p).inputWidth))), 0i, i32(((*p).inputWidth - 1f)));
+  let srcY = clamp(i32(round((v * (*p).inputHeight))), 0i, i32(((*p).inputHeight - 1f)));
+  let sample = textureLoad(source, vec2u(u32(srcX), u32(srcY)), 0);
+  let remapped = applyRemapWindow(mapSourceScalar_luminanceInverted(sample), (*p).inputMin, (*p).inputMax, (*p).outputMin, (*p).outputMax, (*p).curve);
+  let radius = (remapped * 0.36f);
+  textureStore(blurMap, vec2u(cx, cy), vec4f(radius, 0f, 0f, 1f));
+}"
+`;

@@ -1,0 +1,758 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Waveform generator > bars: rounded-rect columns over the animated signal > bars-center 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  style: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  colorsArray: array<vec4f, 8>,
+  positionsArray: array<vec4f, 2>,
+  convertedColorsArray: array<vec3f, 8>,
+  stopCount: f32,
+  colorSpace: f32,
+  from_: vec2f,
+  to: vec2f,
+  amplitude: f32,
+  frequency: f32,
+  height: f32,
+  align: f32,
+  count: f32,
+  barWidth: f32,
+  rounding: f32,
+  dotSize: f32,
+  lineWidth: f32,
+  softness: f32,
+  speed: f32,
+  seed: f32,
+  _opacity: f32,
+  _animTime: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_wf: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn p3ToSRGB(p3: vec3f) -> vec3f {
+  let r = (((p3.x * 1.2249401f) - (p3.y * 0.2249404f)) - (p3.z * 0f));
+  let g = (((p3.x * -0.0420569f) + (p3.y * 1.0420571f)) + (p3.z * 0f));
+  let b = (((p3.x * -0.0196376f) - (p3.y * 0.0786361f)) + (p3.z * 1.0982735f));
+  return vec3f(r, g, b);
+}
+
+fn rgbToOklab(rgb: vec3f) -> vec3f {
+  let r = rgb.x;
+  let g = rgb.y;
+  let b = rgb.z;
+  let l = (((r * 0.4122214708f) + (g * 0.5363325363f)) + (b * 0.0514459929f));
+  let m = ((r * 0.2119034982f) + ((g * 0.6806995451f) + (b * 0.1073969566f)));
+  let s = (((r * 0.0883024619f) + (g * 0.2817188376f)) + (b * 0.6299787005f));
+  let l_ = (sign(l) * pow(abs(l), 0.3333333333333333f));
+  let m_ = (sign(m) * pow(abs(m), 0.3333333333333333f));
+  let s_ = (sign(s) * pow(abs(s), 0.3333333333333333f));
+  return vec3f((((l_ * 0.2104542553f) + (m_ * 0.793617785f)) - (s_ * 0.0040720468f)), (((l_ * 1.9779984951f) - (m_ * 2.428592205f)) + (s_ * 0.4505937099f)), (((l_ * 0.0259040371f) + (m_ * 0.7827717662f)) - (s_ * 0.808675766f)));
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixColors(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let oklabA = rgbToOklab(p3ToSRGB(colorA.xyz));
+  let oklabB = rgbToOklab(p3ToSRGB(colorB.xyz));
+  let mixed = awMix(oklabA, oklabB, weightA, weightB, safeWeight);
+  let rgb = sRGBToP3(oklabToRgb(mixed));
+  return vec4f(rgb, totalWeight);
+}
+
+fn roundedRectSdf(dx: f32, dy: f32, width: f32, height: f32, rounding: f32) -> f32 {
+  let qx = ((abs(dx) - width) + rounding);
+  let qy = ((abs(dy) - height) + rounding);
+  let mqx = max(qx, 0f);
+  let mqy = max(qy, 0f);
+  let outerDist = sqrt(((mqx * mqx) + (mqy * mqy)));
+  let innerDist = min(max(qx, qy), 0f);
+  return ((outerDist + innerDist) - rounding);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let aspect_4 = (uniforms._sys.viewportSize.x / uniforms._sys.viewportSize.y);
+  let rel_3 = vec2f(((uv.x * aspect_4) - (uniforms.n_wf.from_.x * aspect_4)), (uv.y - (1.0 - uniforms.n_wf.from_.y)));
+  let toRel_6 = vec2f(((uniforms.n_wf.to.x * aspect_4) - (uniforms.n_wf.from_.x * aspect_4)), ((1.0 - uniforms.n_wf.to.y) - (1.0 - uniforms.n_wf.from_.y)));
+  let segLen_7 = max(length(toRel_6), 0.0001);
+  let segDir_5 = (toRel_6 / segLen_7);
+  let along_2 = dot(rel_3, segDir_5);
+  let wfX_1 = (along_2 / segLen_7);
+  let wfColor_0 = mixColors(uniforms.n_wf.colorA, uniforms.n_wf.colorB, wfX_1);
+  let wfPx_8 = (1.0 / uniforms._sys.viewportSize.y);
+  let wfXCells_10 = (wfX_1 * uniforms.n_wf.count);
+  let wfCell_11 = (segLen_7 / uniforms.n_wf.count);
+  let wfColDx_9 = ((fract(wfXCells_10) - 0.5) * wfCell_11);
+  let across_13 = ((rel_3.x * (-(segDir_5.y))) + (rel_3.y * segDir_5.x));
+  let wfDy_12 = across_13;
+  let wfHalfW_14 = ((uniforms.n_wf.barWidth * wfCell_11) * 0.5);
+  let wfColX_16 = ((floor(wfXCells_10) + 0.5) / uniforms.n_wf.count);
+  let wfTime_17 = (uniforms.n_wf._animTime + uniforms.n_wf.seed);
+  let wfExtent_15 = max(((clamp((((0.45 + (((((((sin((((wfColX_16 * uniforms.n_wf.frequency) * 5.1) + (wfTime_17 * 1.3))) * 0.28) + ((sin((((wfColX_16 * uniforms.n_wf.frequency) * 9.7) + (wfTime_17 * -1.9))) * sin((((wfColX_16 * uniforms.n_wf.frequency) * 1.7) + (wfTime_17 * 0.6)))) * 0.24)) + (sin((((wfColX_16 * uniforms.n_wf.frequency) * 17.3) + (wfTime_17 * 2.7))) * 0.18)) + ((sin((((wfColX_16 * uniforms.n_wf.frequency) * 31.9) + (wfTime_17 * -3.4))) * sin((((wfColX_16 * uniforms.n_wf.frequency) * 3.3) + (wfTime_17 * -0.9)))) * 0.14)) + (sin((((wfColX_16 * uniforms.n_wf.frequency) * 67.7) + (wfTime_17 * 4.1))) * 0.09)) + ((sin((((wfColX_16 * uniforms.n_wf.frequency) * 131.3) + (wfTime_17 * -5.3))) * sin((((wfColX_16 * uniforms.n_wf.frequency) * 7.9) + (wfTime_17 * 1.1)))) * 0.07)) * 0.6)) * mix(0.4, 1.0, exp((-((((wfColX_16 - 0.5) * (wfColX_16 - 0.5)) * 4.0)))))) * uniforms.n_wf.amplitude), 0.0, 1.0) * uniforms.n_wf.height) * 0.5), wfHalfW_14);
+  var composed_18 = vec4f(wfColor_0.rgb, ((wfColor_0.a * (1.0 - smoothstep((-((wfPx_8 * 0.5))), (wfPx_8 * 0.5), roundedRectSdf(wfColDx_9, wfDy_12, wfHalfW_14, wfExtent_15, (uniforms.n_wf.rounding * wfHalfW_14))))) * (1.0 - smoothstep((-((wfPx_8 * 0.5))), (wfPx_8 * 0.5), max((-(along_2)), (along_2 - segLen_7))))));
+  return vec4f(linearToSrgb(tone_linear(composed_18.rgb)), composed_18.a);
+}"
+`;
+
+exports[`Waveform generator > dots: disc cells, bottom-anchored > dots-bottom 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  style: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  colorsArray: array<vec4f, 8>,
+  positionsArray: array<vec4f, 2>,
+  convertedColorsArray: array<vec3f, 8>,
+  stopCount: f32,
+  colorSpace: f32,
+  from_: vec2f,
+  to: vec2f,
+  amplitude: f32,
+  frequency: f32,
+  height: f32,
+  align: f32,
+  count: f32,
+  barWidth: f32,
+  rounding: f32,
+  dotSize: f32,
+  lineWidth: f32,
+  softness: f32,
+  speed: f32,
+  seed: f32,
+  _opacity: f32,
+  _animTime: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_wf: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn p3ToSRGB(p3: vec3f) -> vec3f {
+  let r = (((p3.x * 1.2249401f) - (p3.y * 0.2249404f)) - (p3.z * 0f));
+  let g = (((p3.x * -0.0420569f) + (p3.y * 1.0420571f)) + (p3.z * 0f));
+  let b = (((p3.x * -0.0196376f) - (p3.y * 0.0786361f)) + (p3.z * 1.0982735f));
+  return vec3f(r, g, b);
+}
+
+fn rgbToOklab(rgb: vec3f) -> vec3f {
+  let r = rgb.x;
+  let g = rgb.y;
+  let b = rgb.z;
+  let l = (((r * 0.4122214708f) + (g * 0.5363325363f)) + (b * 0.0514459929f));
+  let m = ((r * 0.2119034982f) + ((g * 0.6806995451f) + (b * 0.1073969566f)));
+  let s = (((r * 0.0883024619f) + (g * 0.2817188376f)) + (b * 0.6299787005f));
+  let l_ = (sign(l) * pow(abs(l), 0.3333333333333333f));
+  let m_ = (sign(m) * pow(abs(m), 0.3333333333333333f));
+  let s_ = (sign(s) * pow(abs(s), 0.3333333333333333f));
+  return vec3f((((l_ * 0.2104542553f) + (m_ * 0.793617785f)) - (s_ * 0.0040720468f)), (((l_ * 1.9779984951f) - (m_ * 2.428592205f)) + (s_ * 0.4505937099f)), (((l_ * 0.0259040371f) + (m_ * 0.7827717662f)) - (s_ * 0.808675766f)));
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixColors(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let oklabA = rgbToOklab(p3ToSRGB(colorA.xyz));
+  let oklabB = rgbToOklab(p3ToSRGB(colorB.xyz));
+  let mixed = awMix(oklabA, oklabB, weightA, weightB, safeWeight);
+  let rgb = sRGBToP3(oklabToRgb(mixed));
+  return vec4f(rgb, totalWeight);
+}
+
+fn circleSdf(dx: f32, dy: f32, radius: f32) -> f32 {
+  return (sqrt(((dx * dx) + (dy * dy))) - radius);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let aspect_4 = (uniforms._sys.viewportSize.x / uniforms._sys.viewportSize.y);
+  let rel_3 = vec2f(((uv.x * aspect_4) - (uniforms.n_wf.from_.x * aspect_4)), (uv.y - (1.0 - uniforms.n_wf.from_.y)));
+  let toRel_6 = vec2f(((uniforms.n_wf.to.x * aspect_4) - (uniforms.n_wf.from_.x * aspect_4)), ((1.0 - uniforms.n_wf.to.y) - (1.0 - uniforms.n_wf.from_.y)));
+  let segLen_7 = max(length(toRel_6), 0.0001);
+  let segDir_5 = (toRel_6 / segLen_7);
+  let along_2 = dot(rel_3, segDir_5);
+  let wfX_1 = (along_2 / segLen_7);
+  let wfColor_0 = mixColors(uniforms.n_wf.colorA, uniforms.n_wf.colorB, wfX_1);
+  let wfPx_8 = (1.0 / uniforms._sys.viewportSize.y);
+  let wfXCells_10 = (wfX_1 * uniforms.n_wf.count);
+  let wfCell_11 = (segLen_7 / uniforms.n_wf.count);
+  let wfColDx_9 = ((fract(wfXCells_10) - 0.5) * wfCell_11);
+  let across_14 = ((rel_3.x * (-(segDir_5.y))) + (rel_3.y * segDir_5.x));
+  let wfDy_13 = across_14;
+  let wfRows_12 = (wfDy_13 / wfCell_11);
+  let wfColX_16 = ((floor(wfXCells_10) + 0.5) / uniforms.n_wf.count);
+  let wfTime_17 = (uniforms.n_wf._animTime + uniforms.n_wf.seed);
+  let wfExtent_15 = ((clamp((((0.45 + (((((((sin((((wfColX_16 * uniforms.n_wf.frequency) * 5.1) + (wfTime_17 * 1.3))) * 0.28) + ((sin((((wfColX_16 * uniforms.n_wf.frequency) * 9.7) + (wfTime_17 * -1.9))) * sin((((wfColX_16 * uniforms.n_wf.frequency) * 1.7) + (wfTime_17 * 0.6)))) * 0.24)) + (sin((((wfColX_16 * uniforms.n_wf.frequency) * 17.3) + (wfTime_17 * 2.7))) * 0.18)) + ((sin((((wfColX_16 * uniforms.n_wf.frequency) * 31.9) + (wfTime_17 * -3.4))) * sin((((wfColX_16 * uniforms.n_wf.frequency) * 3.3) + (wfTime_17 * -0.9)))) * 0.14)) + (sin((((wfColX_16 * uniforms.n_wf.frequency) * 67.7) + (wfTime_17 * 4.1))) * 0.09)) + ((sin((((wfColX_16 * uniforms.n_wf.frequency) * 131.3) + (wfTime_17 * -5.3))) * sin((((wfColX_16 * uniforms.n_wf.frequency) * 7.9) + (wfTime_17 * 1.1)))) * 0.07)) * 0.6)) * mix(0.4, 1.0, exp((-((((wfColX_16 - 0.5) * (wfColX_16 - 0.5)) * 4.0)))))) * uniforms.n_wf.amplitude), 0.0, 1.0) * uniforms.n_wf.height) * 1.0);
+  let wfRowY_18 = ((floor(wfRows_12) + 0.5) * wfCell_11);
+  var composed_19 = vec4f(wfColor_0.rgb, ((wfColor_0.a * ((1.0 - smoothstep((-((wfPx_8 * 0.5))), (wfPx_8 * 0.5), circleSdf(wfColDx_9, ((fract(wfRows_12) - 0.5) * wfCell_11), ((uniforms.n_wf.dotSize * wfCell_11) * 0.5)))) * ((1.0 - smoothstep((wfExtent_15 - (wfCell_11 * 0.5)), (wfExtent_15 + (wfCell_11 * 0.5)), wfRowY_18)) * step(0.0, wfDy_13)))) * (1.0 - smoothstep((-((wfPx_8 * 0.5))), (wfPx_8 * 0.5), max((-(along_2)), (along_2 - segLen_7))))));
+  return vec4f(linearToSrgb(tone_linear(composed_19.rgb)), composed_19.a);
+}"
+`;
+
+exports[`Waveform generator > line and wave: pure algebra over the signal, no shape SDFs > line 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  style: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  colorsArray: array<vec4f, 8>,
+  positionsArray: array<vec4f, 2>,
+  convertedColorsArray: array<vec3f, 8>,
+  stopCount: f32,
+  colorSpace: f32,
+  from_: vec2f,
+  to: vec2f,
+  amplitude: f32,
+  frequency: f32,
+  height: f32,
+  align: f32,
+  count: f32,
+  barWidth: f32,
+  rounding: f32,
+  dotSize: f32,
+  lineWidth: f32,
+  softness: f32,
+  speed: f32,
+  seed: f32,
+  _opacity: f32,
+  _animTime: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_wf: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn p3ToSRGB(p3: vec3f) -> vec3f {
+  let r = (((p3.x * 1.2249401f) - (p3.y * 0.2249404f)) - (p3.z * 0f));
+  let g = (((p3.x * -0.0420569f) + (p3.y * 1.0420571f)) + (p3.z * 0f));
+  let b = (((p3.x * -0.0196376f) - (p3.y * 0.0786361f)) + (p3.z * 1.0982735f));
+  return vec3f(r, g, b);
+}
+
+fn rgbToOklab(rgb: vec3f) -> vec3f {
+  let r = rgb.x;
+  let g = rgb.y;
+  let b = rgb.z;
+  let l = (((r * 0.4122214708f) + (g * 0.5363325363f)) + (b * 0.0514459929f));
+  let m = ((r * 0.2119034982f) + ((g * 0.6806995451f) + (b * 0.1073969566f)));
+  let s = (((r * 0.0883024619f) + (g * 0.2817188376f)) + (b * 0.6299787005f));
+  let l_ = (sign(l) * pow(abs(l), 0.3333333333333333f));
+  let m_ = (sign(m) * pow(abs(m), 0.3333333333333333f));
+  let s_ = (sign(s) * pow(abs(s), 0.3333333333333333f));
+  return vec3f((((l_ * 0.2104542553f) + (m_ * 0.793617785f)) - (s_ * 0.0040720468f)), (((l_ * 1.9779984951f) - (m_ * 2.428592205f)) + (s_ * 0.4505937099f)), (((l_ * 0.0259040371f) + (m_ * 0.7827717662f)) - (s_ * 0.808675766f)));
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixColors(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let oklabA = rgbToOklab(p3ToSRGB(colorA.xyz));
+  let oklabB = rgbToOklab(p3ToSRGB(colorB.xyz));
+  let mixed = awMix(oklabA, oklabB, weightA, weightB, safeWeight);
+  let rgb = sRGBToP3(oklabToRgb(mixed));
+  return vec4f(rgb, totalWeight);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let aspect_4 = (uniforms._sys.viewportSize.x / uniforms._sys.viewportSize.y);
+  let rel_3 = vec2f(((uv.x * aspect_4) - (uniforms.n_wf.from_.x * aspect_4)), (uv.y - (1.0 - uniforms.n_wf.from_.y)));
+  let toRel_6 = vec2f(((uniforms.n_wf.to.x * aspect_4) - (uniforms.n_wf.from_.x * aspect_4)), ((1.0 - uniforms.n_wf.to.y) - (1.0 - uniforms.n_wf.from_.y)));
+  let segLen_7 = max(length(toRel_6), 0.0001);
+  let segDir_5 = (toRel_6 / segLen_7);
+  let along_2 = dot(rel_3, segDir_5);
+  let wfX_1 = (along_2 / segLen_7);
+  let wfColor_0 = mixColors(uniforms.n_wf.colorA, uniforms.n_wf.colorB, wfX_1);
+  let wfPx_8 = (1.0 / uniforms._sys.viewportSize.y);
+  let across_10 = ((rel_3.x * (-(segDir_5.y))) + (rel_3.y * segDir_5.x));
+  let wfDy_9 = across_10;
+  let wfTime_12 = (uniforms.n_wf._animTime + uniforms.n_wf.seed);
+  let wfCurve_11 = ((clamp(((((((((sin((((wfX_1 * uniforms.n_wf.frequency) * 5.1) + (wfTime_12 * 1.3))) * 0.28) + ((sin((((wfX_1 * uniforms.n_wf.frequency) * 9.7) + (wfTime_12 * -1.9))) * sin((((wfX_1 * uniforms.n_wf.frequency) * 1.7) + (wfTime_12 * 0.6)))) * 0.24)) + (sin((((wfX_1 * uniforms.n_wf.frequency) * 17.3) + (wfTime_12 * 2.7))) * 0.18)) + ((sin((((wfX_1 * uniforms.n_wf.frequency) * 31.9) + (wfTime_12 * -3.4))) * sin((((wfX_1 * uniforms.n_wf.frequency) * 3.3) + (wfTime_12 * -0.9)))) * 0.14)) + (sin((((wfX_1 * uniforms.n_wf.frequency) * 67.7) + (wfTime_12 * 4.1))) * 0.09)) + ((sin((((wfX_1 * uniforms.n_wf.frequency) * 131.3) + (wfTime_12 * -5.3))) * sin((((wfX_1 * uniforms.n_wf.frequency) * 7.9) + (wfTime_12 * 1.1)))) * 0.07)) * mix(0.4, 1.0, exp((-((((wfX_1 - 0.5) * (wfX_1 - 0.5)) * 4.0)))))) * uniforms.n_wf.amplitude), -1.0, 1.0) * uniforms.n_wf.height) * 0.5);
+  let wfSlope_13 = ((((clamp(((((((((sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 5.1) + (wfTime_12 * 1.3))) * 0.28) + ((sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 9.7) + (wfTime_12 * -1.9))) * sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 1.7) + (wfTime_12 * 0.6)))) * 0.24)) + (sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 17.3) + (wfTime_12 * 2.7))) * 0.18)) + ((sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 31.9) + (wfTime_12 * -3.4))) * sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 3.3) + (wfTime_12 * -0.9)))) * 0.14)) + (sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 67.7) + (wfTime_12 * 4.1))) * 0.09)) + ((sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 131.3) + (wfTime_12 * -5.3))) * sin(((((wfX_1 + 0.002) * uniforms.n_wf.frequency) * 7.9) + (wfTime_12 * 1.1)))) * 0.07)) * mix(0.4, 1.0, exp((-(((((wfX_1 + 0.002) - 0.5) * ((wfX_1 + 0.002) - 0.5)) * 4.0)))))) * uniforms.n_wf.amplitude), -1.0, 1.0) * uniforms.n_wf.height) * 0.5) - ((clamp(((((((((sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 5.1) + (wfTime_12 * 1.3))) * 0.28) + ((sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 9.7) + (wfTime_12 * -1.9))) * sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 1.7) + (wfTime_12 * 0.6)))) * 0.24)) + (sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 17.3) + (wfTime_12 * 2.7))) * 0.18)) + ((sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 31.9) + (wfTime_12 * -3.4))) * sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 3.3) + (wfTime_12 * -0.9)))) * 0.14)) + (sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 67.7) + (wfTime_12 * 4.1))) * 0.09)) + ((sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 131.3) + (wfTime_12 * -5.3))) * sin(((((wfX_1 - 0.002) * uniforms.n_wf.frequency) * 7.9) + (wfTime_12 * 1.1)))) * 0.07)) * mix(0.4, 1.0, exp((-(((((wfX_1 - 0.002) - 0.5) * ((wfX_1 - 0.002) - 0.5)) * 4.0)))))) * uniforms.n_wf.amplitude), -1.0, 1.0) * uniforms.n_wf.height) * 0.5)) / (0.004 * segLen_7));
+  var composed_14 = vec4f(wfColor_0.rgb, ((wfColor_0.a * (1.0 - smoothstep((-((wfPx_8 * 0.5))), (wfPx_8 * 0.5), (abs(((wfDy_9 - wfCurve_11) / sqrt((1.0 + (wfSlope_13 * wfSlope_13))))) - (uniforms.n_wf.lineWidth * 0.5))))) * (1.0 - smoothstep((-((wfPx_8 * 0.5))), (wfPx_8 * 0.5), max((-(along_2)), (along_2 - segLen_7))))));
+  return vec4f(linearToSrgb(tone_linear(composed_14.rgb)), composed_14.a);
+}"
+`;
+
+exports[`Waveform generator > line and wave: pure algebra over the signal, no shape SDFs > wave 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  style: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  colorsArray: array<vec4f, 8>,
+  positionsArray: array<vec4f, 2>,
+  convertedColorsArray: array<vec3f, 8>,
+  stopCount: f32,
+  colorSpace: f32,
+  from_: vec2f,
+  to: vec2f,
+  amplitude: f32,
+  frequency: f32,
+  height: f32,
+  align: f32,
+  count: f32,
+  barWidth: f32,
+  rounding: f32,
+  dotSize: f32,
+  lineWidth: f32,
+  softness: f32,
+  speed: f32,
+  seed: f32,
+  _opacity: f32,
+  _animTime: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_wf: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn p3ToSRGB(p3: vec3f) -> vec3f {
+  let r = (((p3.x * 1.2249401f) - (p3.y * 0.2249404f)) - (p3.z * 0f));
+  let g = (((p3.x * -0.0420569f) + (p3.y * 1.0420571f)) + (p3.z * 0f));
+  let b = (((p3.x * -0.0196376f) - (p3.y * 0.0786361f)) + (p3.z * 1.0982735f));
+  return vec3f(r, g, b);
+}
+
+fn rgbToOklab(rgb: vec3f) -> vec3f {
+  let r = rgb.x;
+  let g = rgb.y;
+  let b = rgb.z;
+  let l = (((r * 0.4122214708f) + (g * 0.5363325363f)) + (b * 0.0514459929f));
+  let m = ((r * 0.2119034982f) + ((g * 0.6806995451f) + (b * 0.1073969566f)));
+  let s = (((r * 0.0883024619f) + (g * 0.2817188376f)) + (b * 0.6299787005f));
+  let l_ = (sign(l) * pow(abs(l), 0.3333333333333333f));
+  let m_ = (sign(m) * pow(abs(m), 0.3333333333333333f));
+  let s_ = (sign(s) * pow(abs(s), 0.3333333333333333f));
+  return vec3f((((l_ * 0.2104542553f) + (m_ * 0.793617785f)) - (s_ * 0.0040720468f)), (((l_ * 1.9779984951f) - (m_ * 2.428592205f)) + (s_ * 0.4505937099f)), (((l_ * 0.0259040371f) + (m_ * 0.7827717662f)) - (s_ * 0.808675766f)));
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixColors(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let oklabA = rgbToOklab(p3ToSRGB(colorA.xyz));
+  let oklabB = rgbToOklab(p3ToSRGB(colorB.xyz));
+  let mixed = awMix(oklabA, oklabB, weightA, weightB, safeWeight);
+  let rgb = sRGBToP3(oklabToRgb(mixed));
+  return vec4f(rgb, totalWeight);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let aspect_4 = (uniforms._sys.viewportSize.x / uniforms._sys.viewportSize.y);
+  let rel_3 = vec2f(((uv.x * aspect_4) - (uniforms.n_wf.from_.x * aspect_4)), (uv.y - (1.0 - uniforms.n_wf.from_.y)));
+  let toRel_6 = vec2f(((uniforms.n_wf.to.x * aspect_4) - (uniforms.n_wf.from_.x * aspect_4)), ((1.0 - uniforms.n_wf.to.y) - (1.0 - uniforms.n_wf.from_.y)));
+  let segLen_7 = max(length(toRel_6), 0.0001);
+  let segDir_5 = (toRel_6 / segLen_7);
+  let along_2 = dot(rel_3, segDir_5);
+  let wfX_1 = (along_2 / segLen_7);
+  let wfColor_0 = mixColors(uniforms.n_wf.colorA, uniforms.n_wf.colorB, wfX_1);
+  let wfPx_8 = (1.0 / uniforms._sys.viewportSize.y);
+  let across_10 = ((rel_3.x * (-(segDir_5.y))) + (rel_3.y * segDir_5.x));
+  let wfDy_9 = across_10;
+  let wfTime_12 = (uniforms.n_wf._animTime + uniforms.n_wf.seed);
+  let wfExtent_11 = ((clamp((((0.45 + (((((((sin((((wfX_1 * uniforms.n_wf.frequency) * 5.1) + (wfTime_12 * 1.3))) * 0.28) + ((sin((((wfX_1 * uniforms.n_wf.frequency) * 9.7) + (wfTime_12 * -1.9))) * sin((((wfX_1 * uniforms.n_wf.frequency) * 1.7) + (wfTime_12 * 0.6)))) * 0.24)) + (sin((((wfX_1 * uniforms.n_wf.frequency) * 17.3) + (wfTime_12 * 2.7))) * 0.18)) + ((sin((((wfX_1 * uniforms.n_wf.frequency) * 31.9) + (wfTime_12 * -3.4))) * sin((((wfX_1 * uniforms.n_wf.frequency) * 3.3) + (wfTime_12 * -0.9)))) * 0.14)) + (sin((((wfX_1 * uniforms.n_wf.frequency) * 67.7) + (wfTime_12 * 4.1))) * 0.09)) + ((sin((((wfX_1 * uniforms.n_wf.frequency) * 131.3) + (wfTime_12 * -5.3))) * sin((((wfX_1 * uniforms.n_wf.frequency) * 7.9) + (wfTime_12 * 1.1)))) * 0.07)) * 0.6)) * mix(0.4, 1.0, exp((-((((wfX_1 - 0.5) * (wfX_1 - 0.5)) * 4.0)))))) * uniforms.n_wf.amplitude), 0.0, 1.0) * uniforms.n_wf.height) * 0.5);
+  var composed_13 = vec4f(wfColor_0.rgb, ((wfColor_0.a * (1.0 - smoothstep((-(((wfPx_8 + (uniforms.n_wf.softness * 0.2)) * 0.5))), ((wfPx_8 + (uniforms.n_wf.softness * 0.2)) * 0.5), (abs(wfDy_9) - wfExtent_11)))) * (1.0 - smoothstep((-((wfPx_8 * 0.5))), (wfPx_8 * 0.5), max((-(along_2)), (along_2 - segLen_7))))));
+  return vec4f(linearToSrgb(tone_linear(composed_13.rgb)), composed_13.a);
+}"
+`;
+
+exports[`Waveform generator > multi-stop colors switch the palette to the stop-accumulation loop > bars-3-stops 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  style: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  colorsArray: array<vec4f, 8>,
+  positionsArray: array<vec4f, 2>,
+  convertedColorsArray: array<vec3f, 8>,
+  stopCount: f32,
+  colorSpace: f32,
+  from_: vec2f,
+  to: vec2f,
+  amplitude: f32,
+  frequency: f32,
+  height: f32,
+  align: f32,
+  count: f32,
+  barWidth: f32,
+  rounding: f32,
+  dotSize: f32,
+  lineWidth: f32,
+  softness: f32,
+  speed: f32,
+  seed: f32,
+  _opacity: f32,
+  _animTime: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_wf: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+struct MixStep {
+  conv: vec3f,
+  alpha: f32,
+}
+
+fn mixPreconvertedInSpace(convA: vec3f, alphaA: f32, convB: vec3f, alphaB: f32, t: f32) -> MixStep {
+  let weightA = (alphaA * (1f - t));
+  let weightB = (alphaB * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  return MixStep(awMix(convA, convB, weightA, weightB, safeWeight), totalWeight);
+}
+
+fn gradientStopsInSpace(t: f32, colors: array<vec4f, 8>, positions: array<vec4f, 2>, converted: array<vec3f, 8>, stopCount: f32) -> MixStep {
+  let clampedT = clamp(t, 0f, 1f);
+  let n = i32(stopCount);
+  let c0 = converted[0i];
+  var conv = vec3f(c0.x, c0.y, c0.z);
+  var alpha = colors[0i].w;
+  for (var i = 1; (i < n); i++) {
+    let va = positions[((i - 1i) >> 2u)];
+    let vb = positions[(i >> 2u)];
+    let posA = va[((i - 1i) & 3i)];
+    let posB = vb[(i & 3i)];
+    let seg = clamp(((clampedT - posA) / max((posB - posA), 1e-6f)), 0f, 1f);
+    let step_1 = mixPreconvertedInSpace(conv, alpha, converted[i], colors[i].w, seg);
+    conv = vec3f(step_1.conv.x, step_1.conv.y, step_1.conv.z);
+    alpha = step_1.alpha;
+  }
+  return MixStep(conv, alpha);
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn roundedRectSdf(dx: f32, dy: f32, width: f32, height: f32, rounding: f32) -> f32 {
+  let qx = ((abs(dx) - width) + rounding);
+  let qy = ((abs(dy) - height) + rounding);
+  let mqx = max(qx, 0f);
+  let mqy = max(qy, 0f);
+  let outerDist = sqrt(((mqx * mqx) + (mqy * mqy)));
+  let innerDist = min(max(qx, qy), 0f);
+  return ((outerDist + innerDist) - rounding);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let aspect_5 = (uniforms._sys.viewportSize.x / uniforms._sys.viewportSize.y);
+  let rel_4 = vec2f(((uv.x * aspect_5) - (uniforms.n_wf.from_.x * aspect_5)), (uv.y - (1.0 - uniforms.n_wf.from_.y)));
+  let toRel_7 = vec2f(((uniforms.n_wf.to.x * aspect_5) - (uniforms.n_wf.from_.x * aspect_5)), ((1.0 - uniforms.n_wf.to.y) - (1.0 - uniforms.n_wf.from_.y)));
+  let segLen_8 = max(length(toRel_7), 0.0001);
+  let segDir_6 = (toRel_7 / segLen_8);
+  let along_3 = dot(rel_4, segDir_6);
+  let wfX_2 = (along_3 / segLen_8);
+  let stopMix_1 = gradientStopsInSpace(wfX_2, uniforms.n_wf.colorsArray, uniforms.n_wf.positionsArray, uniforms.n_wf.convertedColorsArray, uniforms.n_wf.stopCount);
+  let wfColor_0 = vec4f(sRGBToP3(oklabToRgb(stopMix_1.conv)), stopMix_1.alpha);
+  let wfPx_9 = (1.0 / uniforms._sys.viewportSize.y);
+  let wfXCells_11 = (wfX_2 * uniforms.n_wf.count);
+  let wfCell_12 = (segLen_8 / uniforms.n_wf.count);
+  let wfColDx_10 = ((fract(wfXCells_11) - 0.5) * wfCell_12);
+  let across_14 = ((rel_4.x * (-(segDir_6.y))) + (rel_4.y * segDir_6.x));
+  let wfDy_13 = across_14;
+  let wfHalfW_15 = ((uniforms.n_wf.barWidth * wfCell_12) * 0.5);
+  let wfColX_17 = ((floor(wfXCells_11) + 0.5) / uniforms.n_wf.count);
+  let wfTime_18 = (uniforms.n_wf._animTime + uniforms.n_wf.seed);
+  let wfExtent_16 = max(((clamp((((0.45 + (((((((sin((((wfColX_17 * uniforms.n_wf.frequency) * 5.1) + (wfTime_18 * 1.3))) * 0.28) + ((sin((((wfColX_17 * uniforms.n_wf.frequency) * 9.7) + (wfTime_18 * -1.9))) * sin((((wfColX_17 * uniforms.n_wf.frequency) * 1.7) + (wfTime_18 * 0.6)))) * 0.24)) + (sin((((wfColX_17 * uniforms.n_wf.frequency) * 17.3) + (wfTime_18 * 2.7))) * 0.18)) + ((sin((((wfColX_17 * uniforms.n_wf.frequency) * 31.9) + (wfTime_18 * -3.4))) * sin((((wfColX_17 * uniforms.n_wf.frequency) * 3.3) + (wfTime_18 * -0.9)))) * 0.14)) + (sin((((wfColX_17 * uniforms.n_wf.frequency) * 67.7) + (wfTime_18 * 4.1))) * 0.09)) + ((sin((((wfColX_17 * uniforms.n_wf.frequency) * 131.3) + (wfTime_18 * -5.3))) * sin((((wfColX_17 * uniforms.n_wf.frequency) * 7.9) + (wfTime_18 * 1.1)))) * 0.07)) * 0.6)) * mix(0.4, 1.0, exp((-((((wfColX_17 - 0.5) * (wfColX_17 - 0.5)) * 4.0)))))) * uniforms.n_wf.amplitude), 0.0, 1.0) * uniforms.n_wf.height) * 0.5), wfHalfW_15);
+  var composed_19 = vec4f(wfColor_0.rgb, ((wfColor_0.a * (1.0 - smoothstep((-((wfPx_9 * 0.5))), (wfPx_9 * 0.5), roundedRectSdf(wfColDx_10, wfDy_13, wfHalfW_15, wfExtent_16, (uniforms.n_wf.rounding * wfHalfW_15))))) * (1.0 - smoothstep((-((wfPx_9 * 0.5))), (wfPx_9 * 0.5), max((-(along_3)), (along_3 - segLen_8))))));
+  return vec4f(linearToSrgb(tone_linear(composed_19.rgb)), composed_19.a);
+}"
+`;

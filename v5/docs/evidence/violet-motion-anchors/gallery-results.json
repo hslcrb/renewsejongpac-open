@@ -1,0 +1,535 @@
+{
+  "target": "http://127.0.0.1:8765/v5/",
+  "gallery": "http://127.0.0.1:8765/v5/design-rules/#violet-quick-menu",
+  "startedAt": "2026-10-20T01:42:05.369Z",
+  "checks": [
+    {
+      "name": "the design guide exposes one inline menu with six native destinations",
+      "status": "passed",
+      "details": {
+        "links": [
+          {
+            "tag": "A",
+            "href": "/v5/#quick-booking",
+            "label": "빠른 예매"
+          },
+          {
+            "tag": "A",
+            "href": "/v5/programs/",
+            "label": "공연·전시"
+          },
+          {
+            "tag": "A",
+            "href": "/v5/visit/directions/",
+            "label": "오시는 길"
+          },
+          {
+            "tag": "A",
+            "href": "/v5/visit/group/",
+            "label": "단체 관람"
+          },
+          {
+            "tag": "A",
+            "href": "/v5/rental/",
+            "label": "대관 안내"
+          },
+          {
+            "tag": "A",
+            "href": "/v5/account/",
+            "label": "나의 예매"
+          }
+        ]
+      }
+    },
+    {
+      "name": "the inline wheel and all six targets fit their container at 320px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 320,
+          "height": 1000,
+          "scrollWidth": 320
+        },
+        "preview": {
+          "x": 0,
+          "y": 276.671875,
+          "width": 320,
+          "height": 546,
+          "right": 320,
+          "bottom": 822.671875
+        },
+        "root": {
+          "x": 1,
+          "y": 293.671875,
+          "width": 318,
+          "height": 512,
+          "right": 319,
+          "bottom": 805.671875
+        },
+        "wheel": {
+          "x": 20,
+          "y": 425.671875,
+          "width": 280,
+          "height": 280,
+          "right": 300,
+          "bottom": 705.671875
+        },
+        "center": {
+          "x": 113,
+          "y": 518.671875,
+          "width": 94,
+          "height": 94,
+          "right": 207,
+          "bottom": 612.671875
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "/v5/#quick-booking",
+            "x": 122,
+            "y": 438.265625,
+            "width": 76,
+            "height": 56,
+            "right": 198,
+            "bottom": 494.265625
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 208.078125,
+            "y": 487.96875,
+            "width": 76,
+            "height": 56,
+            "right": 284.078125,
+            "bottom": 543.96875
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 208.078125,
+            "y": 587.359375,
+            "width": 76,
+            "height": 56,
+            "right": 284.078125,
+            "bottom": 643.359375
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 122,
+            "y": 637.0625,
+            "width": 76,
+            "height": 56,
+            "right": 198,
+            "bottom": 693.0625
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 35.90625,
+            "y": 587.359375,
+            "width": 76,
+            "height": 56,
+            "right": 111.90625,
+            "bottom": 643.359375
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 35.90625,
+            "y": 487.96875,
+            "width": 76,
+            "height": 56,
+            "right": 111.90625,
+            "bottom": 543.96875
+          }
+        ]
+      }
+    },
+    {
+      "name": "the inline wheel and all six targets fit their container at 390px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 390,
+          "height": 1000,
+          "scrollWidth": 390
+        },
+        "preview": {
+          "x": 0,
+          "y": 276.6875,
+          "width": 390,
+          "height": 546,
+          "right": 390,
+          "bottom": 822.6875
+        },
+        "root": {
+          "x": 1,
+          "y": 293.6875,
+          "width": 388,
+          "height": 512,
+          "right": 389,
+          "bottom": 805.6875
+        },
+        "wheel": {
+          "x": 29,
+          "y": 373.6875,
+          "width": 332,
+          "height": 332,
+          "right": 361,
+          "bottom": 705.6875
+        },
+        "center": {
+          "x": 148,
+          "y": 492.6875,
+          "width": 94,
+          "height": 94,
+          "right": 242,
+          "bottom": 586.6875
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "/v5/#quick-booking",
+            "x": 157,
+            "y": 393.8125,
+            "width": 76,
+            "height": 56,
+            "right": 233,
+            "bottom": 449.8125
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 259.0625,
+            "y": 452.75,
+            "width": 76,
+            "height": 56,
+            "right": 335.0625,
+            "bottom": 508.75
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 259.0625,
+            "y": 570.609375,
+            "width": 76,
+            "height": 56,
+            "right": 335.0625,
+            "bottom": 626.609375
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 157,
+            "y": 629.546875,
+            "width": 76,
+            "height": 56,
+            "right": 233,
+            "bottom": 685.546875
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 54.921875,
+            "y": 570.609375,
+            "width": 76,
+            "height": 56,
+            "right": 130.921875,
+            "bottom": 626.609375
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 54.921875,
+            "y": 452.75,
+            "width": 76,
+            "height": 56,
+            "right": 130.921875,
+            "bottom": 508.75
+          }
+        ]
+      }
+    },
+    {
+      "name": "the inline wheel and all six targets fit their container at 768px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 768,
+          "height": 1000,
+          "scrollWidth": 768
+        },
+        "preview": {
+          "x": 24,
+          "y": 253.265625,
+          "width": 720,
+          "height": 607.4375,
+          "right": 744,
+          "bottom": 860.703125
+        },
+        "root": {
+          "x": 55.71875,
+          "y": 284.984375,
+          "width": 656.5625,
+          "height": 544,
+          "right": 712.28125,
+          "bottom": 828.984375
+        },
+        "wheel": {
+          "x": 199,
+          "y": 354.984375,
+          "width": 370,
+          "height": 370,
+          "right": 569,
+          "bottom": 724.984375
+        },
+        "center": {
+          "x": 328,
+          "y": 483.984375,
+          "width": 112,
+          "height": 112,
+          "right": 440,
+          "bottom": 595.984375
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "/v5/#quick-booking",
+            "x": 340,
+            "y": 376.625,
+            "width": 88,
+            "height": 64,
+            "right": 428,
+            "bottom": 440.625
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 453.75,
+            "y": 442.296875,
+            "width": 88,
+            "height": 64,
+            "right": 541.75,
+            "bottom": 506.296875
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 453.75,
+            "y": 573.65625,
+            "width": 88,
+            "height": 64,
+            "right": 541.75,
+            "bottom": 637.65625
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 340,
+            "y": 639.328125,
+            "width": 88,
+            "height": 64,
+            "right": 428,
+            "bottom": 703.328125
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 226.234375,
+            "y": 573.65625,
+            "width": 88,
+            "height": 64,
+            "right": 314.234375,
+            "bottom": 637.65625
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 226.234375,
+            "y": 442.296875,
+            "width": 88,
+            "height": 64,
+            "right": 314.234375,
+            "bottom": 506.296875
+          }
+        ]
+      }
+    },
+    {
+      "name": "the inline wheel and all six targets fit their container at 1024px",
+      "status": "passed",
+      "details": {
+        "viewport": {
+          "width": 1024,
+          "height": 1000,
+          "scrollWidth": 1024
+        },
+        "preview": {
+          "x": 24,
+          "y": 193.3125,
+          "width": 976,
+          "height": 626,
+          "right": 1000,
+          "bottom": 819.3125
+        },
+        "root": {
+          "x": 65,
+          "y": 234.3125,
+          "width": 894,
+          "height": 544,
+          "right": 959,
+          "bottom": 778.3125
+        },
+        "wheel": {
+          "x": 327,
+          "y": 304.3125,
+          "width": 370,
+          "height": 370,
+          "right": 697,
+          "bottom": 674.3125
+        },
+        "center": {
+          "x": 456,
+          "y": 433.3125,
+          "width": 112,
+          "height": 112,
+          "right": 568,
+          "bottom": 545.3125
+        },
+        "links": [
+          {
+            "label": "빠른 예매",
+            "href": "/v5/#quick-booking",
+            "x": 468,
+            "y": 325.953125,
+            "width": 88,
+            "height": 64,
+            "right": 556,
+            "bottom": 389.953125
+          },
+          {
+            "label": "공연·전시",
+            "href": "/v5/programs/",
+            "x": 581.75,
+            "y": 391.625,
+            "width": 88,
+            "height": 64,
+            "right": 669.75,
+            "bottom": 455.625
+          },
+          {
+            "label": "오시는 길",
+            "href": "/v5/visit/directions/",
+            "x": 581.75,
+            "y": 522.984375,
+            "width": 88,
+            "height": 64,
+            "right": 669.75,
+            "bottom": 586.984375
+          },
+          {
+            "label": "단체 관람",
+            "href": "/v5/visit/group/",
+            "x": 468,
+            "y": 588.65625,
+            "width": 88,
+            "height": 64,
+            "right": 556,
+            "bottom": 652.65625
+          },
+          {
+            "label": "대관 안내",
+            "href": "/v5/rental/",
+            "x": 354.234375,
+            "y": 522.984375,
+            "width": 88,
+            "height": 64,
+            "right": 442.234375,
+            "bottom": 586.984375
+          },
+          {
+            "label": "나의 예매",
+            "href": "/v5/account/",
+            "x": 354.234375,
+            "y": 391.625,
+            "width": 88,
+            "height": 64,
+            "right": 442.234375,
+            "bottom": 455.625
+          }
+        ]
+      }
+    },
+    {
+      "name": "keyboard selection, Tab and Escape work inside the inline menu",
+      "status": "passed",
+      "details": {
+        "retainedDestination": "/v5/programs/"
+      }
+    },
+    {
+      "name": "the gallery booking link navigates to the real homepage booking section",
+      "status": "passed",
+      "details": {
+        "arrived": "http://127.0.0.1:8765/v5/#quick-booking",
+        "heading": "언제 만나볼까요?"
+      }
+    },
+    {
+      "name": "scrolling away closes and pauses the inline menu without collapsing its layout",
+      "status": "passed",
+      "details": {
+        "retainedHeight": 512,
+        "offscreen": {
+          "hidden": false,
+          "height": 512,
+          "top": 10899.6875,
+          "viewport": 1000
+        },
+        "reopened": true
+      }
+    },
+    {
+      "name": "a window blur during a real pointer drag releases the hero wheel",
+      "status": "passed",
+      "details": {
+        "interruption": "dispatched window blur event",
+        "before": 47.999992143466784,
+        "stopped": 60,
+        "afterFreshDrag": 120
+      }
+    },
+    {
+      "name": "a viewport resize during a real pointer drag releases the hero wheel",
+      "status": "passed",
+      "details": {
+        "interruption": "actual viewport resize",
+        "before": 47.999992143466784,
+        "stopped": 60,
+        "afterFreshDrag": 120
+      }
+    },
+    {
+      "name": "the gallery and interrupted gestures complete without any browser errors",
+      "status": "passed",
+      "details": {
+        "menuErrors": 0,
+        "otherErrors": 0
+      }
+    }
+  ],
+  "menuErrors": [],
+  "unrelatedErrors": [],
+  "screenshots": [
+    "gallery-closed-1024.png",
+    "gallery-open-320.png",
+    "gallery-open-390.png",
+    "gallery-open-768.png",
+    "gallery-open-1024.png",
+    "gallery-booking-destination.png",
+    "gallery-returned-390.png"
+  ],
+  "finishedAt": "2026-10-20T01:42:31.738Z",
+  "status": "passed"
+}

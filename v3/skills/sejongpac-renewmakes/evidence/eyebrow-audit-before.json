@@ -1,0 +1,1069 @@
+[
+  {
+    "path": "/programs",
+    "labels": [
+      "PROGRAMS / 모든 프로그램",
+      "PLAN YOUR VISIT"
+    ]
+  },
+  {
+    "path": "/programs/performance",
+    "labels": [
+      "PROGRAMS / 공연",
+      "PLAN YOUR VISIT"
+    ]
+  },
+  {
+    "path": "/programs/exhibition",
+    "labels": [
+      "PROGRAMS / 전시",
+      "PLAN YOUR VISIT"
+    ]
+  },
+  {
+    "path": "/programs/education",
+    "labels": [
+      "PROGRAMS / 교육",
+      "PLAN YOUR VISIT"
+    ]
+  },
+  {
+    "path": "/programs/season",
+    "labels": [
+      "PROGRAMS",
+      "SEJONG SEASON",
+      "SYNC NEXT",
+      "ART FOR EVERYONE",
+      "MAKE YOUR SEASON",
+      "ART FOR EVERYONE",
+      "CLASSIC FOR EVERYONE",
+      "GROW WITH MUSIC",
+      "SUMMER IN THE CITY"
+    ]
+  },
+  {
+    "path": "/programs/tour",
+    "labels": [
+      "PROGRAMS",
+      "BEHIND THE CURTAIN",
+      "TOUR COURSE"
+    ]
+  },
+  {
+    "path": "/programs/history",
+    "labels": [
+      "PROGRAMS",
+      "STORIES BENEATH GWANGHWAMUN"
+    ]
+  },
+  {
+    "path": "/rental",
+    "labels": [
+      "VENUE RENTAL",
+      "YOUR NEXT STAGE",
+      "FROM IDEA TO STAGE",
+      "RENTAL RESOURCES"
+    ]
+  },
+  {
+    "path": "/rental/guide",
+    "labels": [
+      "VENUE RENTAL",
+      "A STAGE FOR YOUR VISION",
+      "START HERE",
+      "01 / SPACE",
+      "02 / SCHEDULE",
+      "03 / APPLY",
+      "RENTAL OVERVIEW",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/rental/venues",
+    "labels": [
+      "VENUE RENTAL",
+      "01 / 공연장",
+      "02 / 공연장",
+      "03 / 공연장",
+      "04 / 공연장",
+      "05 / 전시장",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/rental/schedule",
+    "labels": [
+      "VENUE RENTAL",
+      "RENTAL NEWS",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/rental/process",
+    "labels": [
+      "VENUE RENTAL",
+      "FROM IDEA TO STAGE",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/rental/apply",
+    "labels": [
+      "A STAGE FOR YOUR STORY"
+    ]
+  },
+  {
+    "path": "/rental/contact",
+    "labels": [
+      "LET’S MAKE IT HAPPEN"
+    ]
+  },
+  {
+    "path": "/visit",
+    "labels": [
+      "VISIT SEJONG",
+      "PLAN YOUR VISIT",
+      "BEFORE YOU ARRIVE",
+      "HERE TO HELP"
+    ]
+  },
+  {
+    "path": "/visit/spaces",
+    "labels": [
+      "VISIT SEJONG",
+      "01 / 공연장",
+      "02 / 공연장",
+      "03 / 공연장",
+      "04 / 공연장",
+      "05 / 전시장",
+      "FIND YOUR WAY"
+    ]
+  },
+  {
+    "path": "/visit/directions",
+    "labels": [
+      "VISIT SEJONG",
+      "PUBLIC TRANSPORT"
+    ]
+  },
+  {
+    "path": "/visit/amenities",
+    "labels": [
+      "VISIT SEJONG",
+      "STAY A LITTLE LONGER",
+      "FOOD & DRINK",
+      "FACILITIES",
+      "ACCESSIBLE VISIT",
+      "AT A GLANCE"
+    ]
+  },
+  {
+    "path": "/visit/accessibility",
+    "labels": [
+      "VISIT SEJONG",
+      "BEFORE YOUR VISIT"
+    ]
+  },
+  {
+    "path": "/visit/etiquette",
+    "labels": [
+      "VISIT SEJONG",
+      "GOOD AUDIENCE, GREAT EXPERIENCE",
+      "BOOKING",
+      "GROUP VISIT"
+    ]
+  },
+  {
+    "path": "/visit/support",
+    "labels": [
+      "VISIT SEJONG",
+      "FAQ",
+      "CONTACT",
+      "LOST & FOUND",
+      "HOW CAN WE HELP?"
+    ]
+  },
+  {
+    "path": "/news",
+    "labels": [
+      "NEWS & BENEFITS",
+      "SEJONG JOURNAL",
+      "티켓오픈 · 2026-10-13",
+      "NOTICE"
+    ]
+  },
+  {
+    "path": "/news/notices",
+    "labels": [
+      "NEWS & BENEFITS"
+    ]
+  },
+  {
+    "path": "/news/events",
+    "labels": [
+      "NEWS & BENEFITS"
+    ]
+  },
+  {
+    "path": "/news/newsletter",
+    "labels": [
+      "NEWS & BENEFITS",
+      "A LETTER FROM SEJONG",
+      "READ THE STORIES",
+      "ARCHIVE",
+      "MAGAZINE"
+    ]
+  },
+  {
+    "path": "/news/membership",
+    "labels": [
+      "NEWS & BENEFITS",
+      "YOUR SEJONG, MORE OFTEN",
+      "MEMBER BENEFITS"
+    ]
+  },
+  {
+    "path": "/news/goods",
+    "labels": [
+      "NEWS & BENEFITS",
+      "ART TO TAKE HOME",
+      "POSTCARD",
+      "TOTE BAG",
+      "NOTEBOOK"
+    ]
+  },
+  {
+    "path": "/about/companies",
+    "labels": [
+      "ABOUT SEJONG",
+      "국악",
+      "무용",
+      "뮤지컬",
+      "합창",
+      "오페라",
+      "연극",
+      "발레"
+    ]
+  },
+  {
+    "path": "/about/esg",
+    "labels": [
+      "ABOUT SEJONG",
+      "SUSTAINABLE ART, SHARED FUTURE",
+      "ENVIRONMENT",
+      "SOCIAL",
+      "GOVERNANCE"
+    ]
+  },
+  {
+    "path": "/about/disclosure",
+    "labels": [
+      "ABOUT SEJONG",
+      "OPEN & ACCOUNTABLE"
+    ]
+  },
+  {
+    "path": "/about/partners",
+    "labels": [
+      "ABOUT SEJONG",
+      "CREATE SOMETHING TOGETHER",
+      "WAYS TO PARTNER",
+      "PROGRAM",
+      "BRAND",
+      "COMMUNITY",
+      "LET’S BEGIN"
+    ]
+  },
+  {
+    "path": "/about/donation",
+    "labels": [
+      "ABOUT SEJONG",
+      "GIVE ART A FUTURE",
+      "THE IMPACT OF GIVING",
+      "CREATION",
+      "ACCESS",
+      "EDUCATION",
+      "HOW TO GIVE"
+    ]
+  },
+  {
+    "path": "/programs/booking-guide",
+    "labels": [
+      "PROGRAMS",
+      "HOW TO BOOK"
+    ]
+  },
+  {
+    "path": "/programs/education/apply-guide",
+    "labels": [
+      "PROGRAMS",
+      "HOW TO APPLY"
+    ]
+  },
+  {
+    "path": "/programs/season/sejong",
+    "labels": [
+      "PROGRAMS",
+      "SEJONG SEASON",
+      "CURATED PROGRAMS"
+    ]
+  },
+  {
+    "path": "/programs/season/sync-next",
+    "labels": [
+      "PROGRAMS",
+      "SYNC NEXT",
+      "CURATED PROGRAMS"
+    ]
+  },
+  {
+    "path": "/programs/season/everyone",
+    "labels": [
+      "PROGRAMS",
+      "ART FOR EVERYONE",
+      "CLASSIC FOR EVERYONE",
+      "GROW WITH MUSIC",
+      "SUMMER IN THE CITY",
+      "CURATED PROGRAMS"
+    ]
+  },
+  {
+    "path": "/programs/season/package",
+    "labels": [
+      "PROGRAMS",
+      "MAKE YOUR SEASON",
+      "CHOOSE YOUR PROGRAM"
+    ]
+  },
+  {
+    "path": "/programs/season/classic",
+    "labels": [
+      "PROGRAMS",
+      "CLASSIC FOR EVERYONE",
+      "CURATED PROGRAMS"
+    ]
+  },
+  {
+    "path": "/programs/season/orchestra",
+    "labels": [
+      "PROGRAMS",
+      "GROW WITH MUSIC",
+      "CURATED PROGRAMS"
+    ]
+  },
+  {
+    "path": "/programs/season/summer",
+    "labels": [
+      "PROGRAMS",
+      "SUMMER IN THE CITY",
+      "CURATED PROGRAMS"
+    ]
+  },
+  {
+    "path": "/rental/guide/fees",
+    "labels": [
+      "VENUE RENTAL",
+      "RENTAL FEE",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/rental/guide/eligibility",
+    "labels": [
+      "VENUE RENTAL",
+      "WHO CAN APPLY",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/rental/process/documents",
+    "labels": [
+      "VENUE RENTAL",
+      "APPLICATION KIT",
+      "REVIEW",
+      "ARTISTIC VALUE",
+      "FEASIBILITY",
+      "PUBLIC VALUE",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/rental/equipment",
+    "labels": [
+      "VENUE RENTAL",
+      "BACKSTAGE",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/visit/directions/parking",
+    "labels": [
+      "VISIT SEJONG",
+      "PARKING",
+      "BEFORE YOU LEAVE"
+    ]
+  },
+  {
+    "path": "/visit/amenities/dining",
+    "labels": [
+      "VISIT SEJONG",
+      "A PAUSE BETWEEN ART",
+      "F&B GUIDE"
+    ]
+  },
+  {
+    "path": "/visit/amenities/facilities",
+    "labels": [
+      "VISIT SEJONG",
+      "FACILITY DIRECTORY"
+    ]
+  },
+  {
+    "path": "/visit/support/faq",
+    "labels": [
+      "VISIT SEJONG"
+    ]
+  },
+  {
+    "path": "/visit/support/inquiry",
+    "labels": [
+      "WE ARE HERE FOR YOU"
+    ]
+  },
+  {
+    "path": "/visit/support/lost",
+    "labels": [
+      "VISIT SEJONG",
+      "FOUND ITEMS",
+      "LOST & FOUND"
+    ]
+  },
+  {
+    "path": "/visit/group",
+    "labels": [
+      "ART IS BETTER TOGETHER"
+    ]
+  },
+  {
+    "path": "/news/events/winners",
+    "labels": [
+      "NEWS & BENEFITS",
+      "EVENT RESULTS",
+      "2026.09.07 / 예시 발표"
+    ]
+  },
+  {
+    "path": "/news/newsletter/archive",
+    "labels": [
+      "NEWS & BENEFITS",
+      "2026.10",
+      "2026.09",
+      "2026.08"
+    ]
+  },
+  {
+    "path": "/news/magazine",
+    "labels": [
+      "NEWS & BENEFITS",
+      "2026.10",
+      "2026.09",
+      "2026.08"
+    ]
+  },
+  {
+    "path": "/news/membership/benefits",
+    "labels": [
+      "NEWS & BENEFITS",
+      "MORE THAN A TICKET",
+      "HOW TO USE"
+    ]
+  },
+  {
+    "path": "/news/membership/join",
+    "labels": [
+      "CLOSER TO THE ARTS"
+    ]
+  },
+  {
+    "path": "/about/introduction/greeting",
+    "labels": [
+      "ABOUT SEJONG",
+      "WELCOME TO SEJONG"
+    ]
+  },
+  {
+    "path": "/about/introduction/history",
+    "labels": [
+      "ABOUT SEJONG",
+      "SINCE 1978"
+    ]
+  },
+  {
+    "path": "/about/introduction/organization",
+    "labels": [
+      "ABOUT SEJONG",
+      "PEOPLE BEHIND THE STAGE"
+    ]
+  },
+  {
+    "path": "/about/introduction/ci",
+    "labels": [
+      "ABOUT SEJONG",
+      "IDENTITY"
+    ]
+  },
+  {
+    "path": "/about/esg/environment",
+    "labels": [
+      "ABOUT SEJONG",
+      "E / ENVIRONMENT",
+      "VISIT GREEN",
+      "RENTAL GUIDE"
+    ]
+  },
+  {
+    "path": "/about/esg/social",
+    "labels": [
+      "ABOUT SEJONG",
+      "S / SOCIAL",
+      "ART FOR EVERYONE",
+      "ACCESSIBILITY",
+      "ARTS EDUCATION"
+    ]
+  },
+  {
+    "path": "/about/esg/governance",
+    "labels": [
+      "ABOUT SEJONG",
+      "G / GOVERNANCE",
+      "DISCLOSURE",
+      "ETHICS"
+    ]
+  },
+  {
+    "path": "/about/disclosure/management",
+    "labels": [
+      "ABOUT SEJONG",
+      "OPEN & ACCOUNTABLE"
+    ]
+  },
+  {
+    "path": "/about/disclosure/request",
+    "labels": [
+      "OPEN AND TRANSPARENT"
+    ]
+  },
+  {
+    "path": "/about/disclosure/ethics",
+    "labels": [
+      "A BETTER SEJONG"
+    ]
+  },
+  {
+    "path": "/about/donation/apply",
+    "labels": [
+      "GIVE ART A TOMORROW"
+    ]
+  },
+  {
+    "path": "/about/partners/apply",
+    "labels": [
+      "CREATE MORE, TOGETHER"
+    ]
+  },
+  {
+    "path": "/about/arts-center",
+    "labels": [
+      "ABOUT SEJONG",
+      "ART GROWS WITH US",
+      "ORCHESTRA",
+      "EDUCATION",
+      "SUPPORT"
+    ]
+  },
+  {
+    "path": "/account/login",
+    "labels": [
+      "MY SEJONG"
+    ]
+  },
+  {
+    "path": "/account/signup",
+    "labels": [
+      "MY SEJONG"
+    ]
+  },
+  {
+    "path": "/account/recovery",
+    "labels": [
+      "MY SEJONG"
+    ]
+  },
+  {
+    "path": "/account",
+    "labels": [
+      "MY SEJONG"
+    ]
+  },
+  {
+    "path": "/account/bookings",
+    "labels": [
+      "MY SEJONG"
+    ]
+  },
+  {
+    "path": "/account/favorites",
+    "labels": [
+      "MY SEJONG"
+    ]
+  },
+  {
+    "path": "/account/applications",
+    "labels": [
+      "MY SEJONG"
+    ]
+  },
+  {
+    "path": "/account/profile",
+    "labels": [
+      "MY SEJONG"
+    ]
+  },
+  {
+    "path": "/search",
+    "labels": [
+      "SEJONG CENTER"
+    ]
+  },
+  {
+    "path": "/sitemap",
+    "labels": [
+      "SEJONG CENTER"
+    ]
+  },
+  {
+    "path": "/policy/privacy",
+    "labels": [
+      "SEJONG CENTER"
+    ]
+  },
+  {
+    "path": "/policy/terms",
+    "labels": [
+      "SEJONG CENTER"
+    ]
+  },
+  {
+    "path": "/policy/email",
+    "labels": [
+      "SEJONG CENTER"
+    ]
+  },
+  {
+    "path": "/english",
+    "labels": [
+      "SEJONG CENTER",
+      "WELCOME TO SEJONG",
+      "GETTING HERE"
+    ]
+  },
+  {
+    "path": "/programs/autumn",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/carmen",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/dance",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/chamber-autumn",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/sumire",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/hypnosis",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/light",
+    "labels": [
+      "A NEW PERSPECTIVE",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/art-goods",
+    "labels": [
+      "A NEW PERSPECTIVE",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/academy",
+    "labels": [
+      "LEARN & DISCOVER",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/art-class",
+    "labels": [
+      "LEARN & DISCOVER",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/ballet",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/choral",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/everyone-classic",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/programs/winter",
+    "labels": [
+      "MEET THE ART",
+      "SEJONG CENTER",
+      "MORE TO DISCOVER"
+    ]
+  },
+  {
+    "path": "/rental/venues/grand",
+    "labels": [
+      "VENUE RENTAL",
+      "THE SPACE",
+      "TECHNICAL INFORMATION",
+      "FLOOR PLAN",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/visit/spaces/grand",
+    "labels": [
+      "VISIT SEJONG",
+      "THE SPACE",
+      "SEATING & FLOW",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "03"
+    ]
+  },
+  {
+    "path": "/rental/venues/m-theater",
+    "labels": [
+      "VENUE RENTAL",
+      "THE SPACE",
+      "TECHNICAL INFORMATION",
+      "FLOOR PLAN",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/visit/spaces/m-theater",
+    "labels": [
+      "VISIT SEJONG",
+      "THE SPACE",
+      "SEATING & FLOW",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "03"
+    ]
+  },
+  {
+    "path": "/rental/venues/s-theater",
+    "labels": [
+      "VENUE RENTAL",
+      "THE SPACE",
+      "TECHNICAL INFORMATION",
+      "FLOOR PLAN",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/visit/spaces/s-theater",
+    "labels": [
+      "VISIT SEJONG",
+      "THE SPACE",
+      "SEATING & FLOW",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "03"
+    ]
+  },
+  {
+    "path": "/rental/venues/chamber",
+    "labels": [
+      "VENUE RENTAL",
+      "THE SPACE",
+      "TECHNICAL INFORMATION",
+      "FLOOR PLAN",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/visit/spaces/chamber",
+    "labels": [
+      "VISIT SEJONG",
+      "THE SPACE",
+      "SEATING & FLOW",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "03"
+    ]
+  },
+  {
+    "path": "/rental/venues/gallery",
+    "labels": [
+      "VENUE RENTAL",
+      "THE SPACE",
+      "TECHNICAL INFORMATION",
+      "FLOOR PLAN",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "YOUR NEXT STAGE"
+    ]
+  },
+  {
+    "path": "/visit/spaces/gallery",
+    "labels": [
+      "VISIT SEJONG",
+      "THE SPACE",
+      "SEATING & FLOW",
+      "PLAN YOUR VISIT",
+      "01",
+      "02",
+      "03"
+    ]
+  },
+  {
+    "path": "/about/companies/traditional",
+    "labels": [
+      "ABOUT SEJONG",
+      "SEOUL METROPOLITAN ARTS COMPANY",
+      "OUR ART",
+      "ON STAGE",
+      "PROGRAMS"
+    ]
+  },
+  {
+    "path": "/about/companies/dance",
+    "labels": [
+      "ABOUT SEJONG",
+      "SEOUL METROPOLITAN ARTS COMPANY",
+      "OUR ART",
+      "ON STAGE"
+    ]
+  },
+  {
+    "path": "/about/companies/musical",
+    "labels": [
+      "ABOUT SEJONG",
+      "SEOUL METROPOLITAN ARTS COMPANY",
+      "OUR ART",
+      "ON STAGE"
+    ]
+  },
+  {
+    "path": "/about/companies/chorus",
+    "labels": [
+      "ABOUT SEJONG",
+      "SEOUL METROPOLITAN ARTS COMPANY",
+      "OUR ART",
+      "ON STAGE"
+    ]
+  },
+  {
+    "path": "/about/companies/opera",
+    "labels": [
+      "ABOUT SEJONG",
+      "SEOUL METROPOLITAN ARTS COMPANY",
+      "OUR ART",
+      "ON STAGE"
+    ]
+  },
+  {
+    "path": "/about/companies/theater",
+    "labels": [
+      "ABOUT SEJONG",
+      "SEOUL METROPOLITAN ARTS COMPANY",
+      "OUR ART",
+      "ON STAGE"
+    ]
+  },
+  {
+    "path": "/about/companies/ballet",
+    "labels": [
+      "ABOUT SEJONG",
+      "SEOUL METROPOLITAN ARTS COMPANY",
+      "OUR ART",
+      "ON STAGE"
+    ]
+  },
+  {
+    "path": "/news/notices/season-open",
+    "labels": [
+      "NEWS & BENEFITS"
+    ]
+  },
+  {
+    "path": "/news/notices/rental-2027",
+    "labels": [
+      "NEWS & BENEFITS",
+      "APPLICATION"
+    ]
+  },
+  {
+    "path": "/news/notices/parking",
+    "labels": [
+      "NEWS & BENEFITS"
+    ]
+  },
+  {
+    "path": "/news/notices/recruit",
+    "labels": [
+      "NEWS & BENEFITS",
+      "RECRUITMENT"
+    ]
+  },
+  {
+    "path": "/news/notices/academy-notice",
+    "labels": [
+      "NEWS & BENEFITS"
+    ]
+  },
+  {
+    "path": "/news/notices/access",
+    "labels": [
+      "NEWS & BENEFITS"
+    ]
+  },
+  {
+    "path": "/news/events/autumn-walk",
+    "labels": [
+      "NEWS & BENEFITS",
+      "SEJONG WITH YOU / 진행중",
+      "ABOUT THIS EVENT"
+    ]
+  },
+  {
+    "path": "/news/events/review",
+    "labels": [
+      "NEWS & BENEFITS",
+      "SEJONG WITH YOU / 진행중",
+      "ABOUT THIS EVENT"
+    ]
+  },
+  {
+    "path": "/news/events/summer-end",
+    "labels": [
+      "NEWS & BENEFITS",
+      "SEJONG WITH YOU / 종료",
+      "ABOUT THIS EVENT"
+    ]
+  },
+  {
+    "path": "/news/events/autumn-walk/apply",
+    "labels": [
+      "SHARE YOUR AUTUMN"
+    ]
+  },
+  {
+    "path": "/news/events/review/apply",
+    "labels": [
+      "YOUR MOMENT, YOUR STORY"
+    ]
+  },
+  {
+    "path": "/visit/support/lost/umbrella",
+    "labels": [
+      "VISIT SEJONG",
+      "LOST & FOUND / SAMPLE",
+      "CLAIM YOUR ITEM"
+    ]
+  },
+  {
+    "path": "/visit/support/lost/scarf",
+    "labels": [
+      "VISIT SEJONG",
+      "LOST & FOUND / SAMPLE",
+      "CLAIM YOUR ITEM"
+    ]
+  },
+  {
+    "path": "/visit/support/lost/glasses",
+    "labels": [
+      "VISIT SEJONG",
+      "LOST & FOUND / SAMPLE",
+      "CLAIM YOUR ITEM"
+    ]
+  }
+]

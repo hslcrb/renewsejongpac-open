@@ -1,0 +1,203 @@
+{
+  "date": "2026-10-23",
+  "material": "QUICK_MENU_MATERIAL",
+  "registered": 50,
+  "productConnected": 50,
+  "guideOnly": 0,
+  "unused": 0,
+  "unitTests": {
+    "pass": 149,
+    "skip": 1,
+    "fail": 0
+  },
+  "staticExport": {
+    "htmlFiles": 160,
+    "references": 9678,
+    "failures": 0
+  },
+  "browser": {
+    "interactions": {
+      "checks": [
+        {
+          "name": "a working v5 home page exposes the violet quick-menu component",
+          "status": "passed"
+        },
+        {
+          "name": "the resting control has a closed state and an accessible open action",
+          "status": "passed"
+        },
+        {
+          "name": "fine-pointer hover exposes six real navigation destinations",
+          "status": "passed"
+        },
+        {
+          "name": "hover can reopen after automatic pointer exit",
+          "status": "passed"
+        },
+        {
+          "name": "hover can reopen after leaving the closed control before its delay",
+          "status": "passed"
+        },
+        {
+          "name": "Escape closes the wheel and restores the toggle focus",
+          "status": "passed"
+        },
+        {
+          "name": "arrow keys wrap the selection and Home/End reach the boundary items",
+          "status": "passed"
+        },
+        {
+          "name": "mouse dragging crosses the angle boundary and snaps without navigation",
+          "status": "passed"
+        },
+        {
+          "name": "all six targets and the center remain separate and onscreen at 320x1000px",
+          "status": "passed"
+        },
+        {
+          "name": "all six targets and the center remain separate and onscreen at 390x1000px",
+          "status": "passed"
+        },
+        {
+          "name": "all six targets and the center remain separate and onscreen at 768x1000px",
+          "status": "passed"
+        },
+        {
+          "name": "all six targets and the center remain separate and onscreen at 1024x1000px",
+          "status": "passed"
+        },
+        {
+          "name": "all six targets and the center remain separate and onscreen at 1440x1000px",
+          "status": "passed"
+        },
+        {
+          "name": "all six targets and the center remain separate and onscreen at 844x390px",
+          "status": "passed"
+        },
+        {
+          "name": "the center booking action scrolls and focuses the booking heading",
+          "status": "passed"
+        },
+        {
+          "name": "a coarse-pointer tap opens and closes the menu",
+          "status": "passed"
+        },
+        {
+          "name": "actual touch dragging rotates and snaps without activating the touched link",
+          "status": "passed"
+        },
+        {
+          "name": "a native outer-link tap reaches #quick-booking",
+          "status": "passed"
+        },
+        {
+          "name": "a native outer-link tap reaches /v5/programs/",
+          "status": "passed"
+        },
+        {
+          "name": "a native outer-link tap reaches /v5/visit/directions/",
+          "status": "passed"
+        },
+        {
+          "name": "a native outer-link tap reaches /v5/visit/group/",
+          "status": "passed"
+        },
+        {
+          "name": "a native outer-link tap reaches /v5/rental/",
+          "status": "passed"
+        },
+        {
+          "name": "a native outer-link tap reaches /v5/account/",
+          "status": "passed"
+        },
+        {
+          "name": "reduced motion leaves no active animated menu layer",
+          "status": "passed"
+        },
+        {
+          "name": "the home and menu produce no browser errors",
+          "status": "passed"
+        }
+      ],
+      "errors": [],
+      "unrelatedErrors": []
+    },
+    "gallery": {
+      "checks": [
+        {
+          "name": "the design guide exposes one inline menu with six native destinations",
+          "status": "passed"
+        },
+        {
+          "name": "the inline wheel and all six targets fit their container at 320px",
+          "status": "passed"
+        },
+        {
+          "name": "the inline wheel and all six targets fit their container at 390px",
+          "status": "passed"
+        },
+        {
+          "name": "the inline wheel and all six targets fit their container at 768px",
+          "status": "passed"
+        },
+        {
+          "name": "the inline wheel and all six targets fit their container at 1024px",
+          "status": "passed"
+        },
+        {
+          "name": "keyboard selection, Tab and Escape work inside the inline menu",
+          "status": "passed"
+        },
+        {
+          "name": "the gallery booking link navigates to the real homepage booking section",
+          "status": "passed"
+        },
+        {
+          "name": "scrolling away closes and pauses the inline menu without collapsing its layout",
+          "status": "passed"
+        },
+        {
+          "name": "a window blur during a real pointer drag releases the hero wheel",
+          "status": "passed"
+        },
+        {
+          "name": "a viewport resize during a real pointer drag releases the hero wheel",
+          "status": "passed"
+        },
+        {
+          "name": "the gallery and interrupted gestures complete without any browser errors",
+          "status": "passed"
+        }
+      ],
+      "errors": [],
+      "unrelatedErrors": []
+    },
+    "smoke": {
+      "checks": [
+        {
+          "name": "desktop fluid changes contours within a small painting budget",
+          "status": "PASS"
+        },
+        {
+          "name": "desktop quick scroll fades out and back in",
+          "status": "PASS"
+        },
+        {
+          "name": "reduced motion stops fluid and menu animations",
+          "status": "PASS"
+        },
+        {
+          "name": "390 mobile touch open, spin and native booking",
+          "status": "PASS"
+        },
+        {
+          "name": "390 mobile scroll return fades in without overflow",
+          "status": "PASS"
+        }
+      ],
+      "errors": [],
+      "unrelatedErrors": []
+    }
+  },
+  "developmentNote": "개발 서버의 CDP 회전 후 첫 탭은 반복 실패해 추가 변경을 중단했다. 원래 포커스 동작을 유지했으며, 변경 전 정적 빌드와 새 정적 빌드에서 같은 시나리오는 통과했다."
+}

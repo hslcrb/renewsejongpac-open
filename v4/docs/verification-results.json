@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-16",
+  "sourceCommit": "b6b6d35fdcafecba34a7240fc89c6d7febdd06bf",
+  "nodeSuite": {
+    "command": "node --test tests/*.test.mjs v2/tests/*.test.mjs v3/tests/*.test.mjs v4/tests/*.test.mjs",
+    "journeysBrowserEnabled": true,
+    "passed": 66,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browserLatestResults": {
+    "method": "Latest result per named check and route/viewport, preserving the initial failed report and the limited corrective rerun.",
+    "reports": [
+      ".lemonade/site-interactions/browser-results.json",
+      ".lemonade/site-interactions/browser-recheck-results.json"
+    ],
+    "routes": 420,
+    "passedRoutes": 420,
+    "groups": 16,
+    "passedGroups": 16,
+    "viewports": [
+      1440,
+      390,
+      320
+    ],
+    "errors": []
+  },
+  "focusedBrowser": {
+    "home": 14,
+    "story": 7,
+    "journeys": "included in Node suite; 1440/390/320",
+    "applications": "13 forms passed",
+    "goods": "all tested order, storage, two-tab, responsive cases passed",
+    "transactionMotion": "passed"
+  },
+  "static": {
+    "liveJavaScriptFiles": 20,
+    "cssFiles": 4,
+    "cssIssues": 0
+  },
+  "independentReview": "Approved after parking alias, exhibition capacity and transport fallback corrections.",
+  "v3ProductChanged": false,
+  "sitewideMotion": {
+    "status": "passed",
+    "routes": 140,
+    "checks": 14,
+    "browserErrors": 0
+  }
+}

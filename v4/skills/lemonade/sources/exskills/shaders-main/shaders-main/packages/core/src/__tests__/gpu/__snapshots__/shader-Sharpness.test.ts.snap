@@ -1,0 +1,85 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Sharpness (a) RTT filter path + identity bypass > sharpness≠0: RTTs the child, runs the 5-tap kernel, unpremultiplies > final-pass-sharp1 1`] = `
+"fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn sharpnessCompose(center: vec4f, top: vec4f, bottom: vec4f, left: vec4f, right: vec4f, amount: f32) -> vec4f {
+  let centerWeight = (1f + (amount * 4f));
+  let neighborWeight = (amount * -1f);
+  let rgb = (((((center.xyz * centerWeight) + (top.xyz * neighborWeight)) + (bottom.xyz * neighborWeight)) + (left.xyz * neighborWeight)) + (right.xyz * neighborWeight));
+  let clamped = clamp(rgb, vec3f(), vec3f(1));
+  return vec4f(clamped.x, clamped.y, clamped.z, center.w);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn sharpnessTapUV(uv: vec2f, viewport: vec2f, dirX: f32, dirY: f32) -> vec2f {
+  return vec2f((uv.x + (dirX / viewport.x)), (uv.y + (dirY / viewport.y)));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  sharpness: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_s: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  var composed_0 = unpremultiplyAlpha(sharpnessCompose(textureSample(rtt_0, linearClamp, uv), textureSample(rtt_0, linearClamp, sharpnessTapUV(uv, uniforms._sys.viewportSize, 0.0, 1.0)), textureSample(rtt_0, linearClamp, sharpnessTapUV(uv, uniforms._sys.viewportSize, 0.0, -1.0)), textureSample(rtt_0, linearClamp, sharpnessTapUV(uv, uniforms._sys.viewportSize, -1.0, 0.0)), textureSample(rtt_0, linearClamp, sharpnessTapUV(uv, uniforms._sys.viewportSize, 1.0, 0.0)), uniforms.n_s.sharpness));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

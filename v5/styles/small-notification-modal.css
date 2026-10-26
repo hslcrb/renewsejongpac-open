@@ -1,0 +1,38 @@
+/* [v4의 둥근 하단 알림 / The rounded bottom notification from v4] */
+.small-notification-modal {
+    position: fixed;
+    z-index: 500;
+    left: 50%;
+    bottom: max(2rem, env(safe-area-inset-bottom));
+    width: max-content;
+    max-width: calc(100vw - 2rem);
+    min-height: var(--control-size);
+    padding: 0.875rem 1.75rem;
+    border: 1px solid var(--color-glass-edge);
+    border-radius: var(--radius-pill);
+    background: var(--color-transparent);
+    color: var(--text-inverse);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+    text-align: center;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(-50%, 1rem, 0);
+    transition: opacity 180ms ease, transform 240ms var(--ease-out), visibility 0s linear 240ms;
+}
+.small-notification-modal.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translate3d(-50%, 0, 0);
+    transition-delay: 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+    .small-notification-modal, .small-notification-modal.visible {
+        transform: translate3d(-50%, 0, 0);
+        transition: opacity 180ms ease, visibility 0s linear 180ms;
+    }
+    .small-notification-modal.visible { transition-delay: 0s; }
+}

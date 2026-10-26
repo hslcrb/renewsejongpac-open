@@ -1,0 +1,31 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "results": [
+    {
+      "name": "all four notice examples compose the registered white lens and forward their real root refs",
+      "passed": true
+    },
+    {
+      "name": "all five widths preserve readable text, inset edges and responsive notice dimensions",
+      "passed": true
+    },
+    {
+      "name": "increased contrast replaces optical transparency with the solid white fallback",
+      "passed": true
+    },
+    {
+      "name": "white is available in the material demo and still generates a real displacement map",
+      "passed": true
+    },
+    {
+      "name": "real recovery error and status notices keep their roles, focusability and form handling",
+      "passed": true
+    },
+    {
+      "name": "the small notification capsule retains its black material and inverse text",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "otpRequests": 1
+}

@@ -1,0 +1,449 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`kit/effects-3d (1) resolve gate > all thinFilm/raymarch3d body fns resolve to WGSL (snapshot) 1`] = `
+"fn item(sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, edgeSoftness: f32, rimWidthUniform: f32, thickness: f32, dispersion: f32, hueShift: f32, lightAngle: f32, animTime: f32, volumetric: f32) -> vec2f {
+  let sdf = (sdfRaw / scale);
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let gLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let nx = (gradX / gLen);
+  let ny = (gradY / gLen);
+  let rb1 = clamp((((sdf * -1f) / sharp) * 32f), 0f, 1f);
+  let rimWidth = max((rimWidthUniform * 0.1f), 1e-3f);
+  let depth = clamp(((sdf * -1f) / rimWidth), 0f, 1f);
+  let cosView = (1f / sqrt(((gLen * gLen) + 1f)));
+  let exponent = mix(7f, 1.5f, clamp(rimWidthUniform, 0f, 1f));
+  let volRim = (pow((1f - cosView), exponent) * rb1);
+  let flatRim = (((1f - depth) * (1f - depth)) * rb1);
+  let rim = select(flatRim, volRim, (volumetric > 0.5f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let baseCos = ((nx * lx) + (ny * ly));
+  let baseSin = ((ny * lx) - (nx * ly));
+  let theta = (animTime * 6.283185307179586f);
+  let rotatedDot = ((baseCos * cos(theta)) + (baseSin * sin(theta)));
+  let thickVol = ((thickness * max((sdf * -1f), 0f)) * 10f);
+  let thickFlat = ((thickness * depth) * 2f);
+  let thicknessTerm = select(thickFlat, thickVol, (volumetric > 0.5f));
+  let phase = ((hueShift + (dispersion * rotatedDot)) + thicknessTerm);
+  return vec2f(phase, rim);
+}
+
+fn cosinePalette(t: f32, phaseR: f32, phaseG: f32, phaseB: f32) -> vec3f {
+  return vec3f(((cos(((t + phaseR) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseG) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseB) * 6.283185307179586f)) * 0.5f) + 0.5f));
+}
+
+fn item_1(phase: f32) -> vec3f {
+  return cosinePalette(phase, 0f, 0.3333f, 0.6667f);
+}
+
+fn item_2(phase: f32) -> vec3f {
+  let t = fract(phase);
+  let t3 = (t * 3f);
+  let si = fract(t3);
+  let floorT3 = floor(t3);
+  let gate12 = select(0f, 1f, (floorT3 <= 1.5f));
+  let gate01 = select(0f, 1f, (floorT3 <= 0.5f));
+  return vec3f(si, gate12, gate01);
+}
+
+fn item_3(baseColor: vec3f, rim: f32, intensity: f32, saturation: f32) -> vec4f {
+  let white = vec3f(1);
+  let col = mix(white, baseColor, saturation);
+  let rgb = ((col * rim) * intensity);
+  let alpha = clamp(rim, 0f, 1f);
+  return vec4f(rgb.x, rgb.y, rgb.z, alpha);
+}
+
+fn item_4(uv: vec2f, uvMode: f32) -> vec3f {
+  let stretched = clamp(uv, vec2f(), vec2f(1));
+  let mirrored = abs(((fract((uv * 0.5f)) * 2f) - 1f));
+  let wrapped = fract(uv);
+  let tv1 = select(0f, 1f, (uv.y <= 1f));
+  let tv2 = select(0f, tv1, (uv.y >= 0f));
+  let tv3 = select(0f, tv2, (uv.x <= 1f));
+  let transparentVisible = select(0f, tv3, (uv.x >= 0f));
+  let fuv2 = select(wrapped, mirrored, (uvMode < 2.5f));
+  let fuv1 = select(fuv2, uv, (uvMode < 1.5f));
+  let finalUV = select(fuv1, stretched, (uvMode < 0.5f));
+  let vis1 = select(1f, transparentVisible, (uvMode < 1.5f));
+  let visible = select(vis1, 1f, (uvMode < 0.5f));
+  return vec3f(finalUV.x, finalUV.y, visible);
+}
+
+fn item_5(surfaceColor: vec4f, normal: vec3f, rd: vec3f, hit: f32, uvVisible: f32, glossAmt: f32, lightAmt: f32) -> vec4f {
+  let lightDir = vec3f(0.3980148732662201, 0.6965259909629822, -0.5970223546028137);
+  let viewDir = (rd * -1f);
+  let diffuse = clamp(dot(normal, lightDir), 0f, 1f);
+  let halfVec = normalize((lightDir + viewDir));
+  let specPow = ((glossAmt * 256f) + 4f);
+  let specular = ((pow(clamp(dot(normal, halfVec), 0f, 1f), specPow) * glossAmt) * 1.5f);
+  let nDotV = clamp(dot(normal, viewDir), 0f, 1f);
+  let fresnel = ((pow((1f - nDotV), 3f) * 0.5f) * glossAmt);
+  const ambient = 0.35;
+  let lit = mix(1f, (((ambient + (diffuse * 0.65f)) + specular) + fresnel), lightAmt);
+  let litClamped = clamp(lit, 0f, 3f);
+  let col = (surfaceColor.xyz * litClamped);
+  let colClamped = clamp(col, vec3f(), vec3f(1));
+  let alpha = ((hit * surfaceColor.w) * uvVisible);
+  return vec4f(colClamped.x, colClamped.y, colClamped.z, alpha);
+}
+
+fn stubSphereSdf(p: vec3f, _rp0: vec4f, _rp1: vec4f, _rp2: vec4f, _t: f32) -> f32 {
+  return (length(p) - 0.35f);
+}
+
+struct Distortion3DTrace {
+  hitPos: vec3f,
+  normal: vec3f,
+  rd: vec3f,
+  hit: f32,
+}
+
+fn item_6(uv: vec2f, aspect: f32, center: vec2f, zoom: f32, rp0: vec4f, rp1: vec4f, rp2: vec4f, t: f32) -> Distortion3DTrace {
+  let cx = center.x;
+  let cy = (1f - center.y);
+  let camDist = (8f - (zoom * 0.06f));
+  let ro = vec3f(0f, 0f, (camDist * -1f));
+  let rd = normalize(vec3f(((uv.x - cx) * aspect), (uv.y - cy), 1.5f));
+  var rayT = 0f;
+  var hit = 0f;
+  const maxDistF = 20f;
+  for (var i = 0; (i < 32i); i++) {
+    let p = (ro + (rd * rayT));
+    let dd = stubSphereSdf(p, rp0, rp1, rp2, t);
+    if ((dd < 1e-3f)) {
+      hit = 1f;
+      break;
+    }
+    if ((rayT > maxDistF)) {
+      break;
+    }
+    rayT = (rayT + min(dd, 0.15f));
+  }
+  let hitPos = (ro + (rd * rayT));
+  const hh = 1e-3;
+  let hn = (hh * -1f);
+  let k0 = stubSphereSdf((hitPos + vec3f(hh, hn, hn)), rp0, rp1, rp2, t);
+  let k1 = stubSphereSdf((hitPos + vec3f(hn, hn, hh)), rp0, rp1, rp2, t);
+  let k2 = stubSphereSdf((hitPos + vec3f(hn, hh, hn)), rp0, rp1, rp2, t);
+  let k3 = stubSphereSdf((hitPos + vec3f(hh, hh, hh)), rp0, rp1, rp2, t);
+  let normal = normalize(((((vec3f(1, -1, -1) * k0) + (vec3f(-1, -1, 1) * k1)) + (vec3f(-1, 1, -1) * k2)) + (vec3f(1) * k3)));
+  return Distortion3DTrace(hitPos, normal, rd, hit);
+}
+
+fn stubBoxSdf(p: vec3f, _rp0: vec4f, _rp1: vec4f, _rp2: vec4f, _t: f32) -> f32 {
+  let q = (abs(p) - vec3f(0.30000001192092896));
+  return length(max(q, vec3f()));
+}
+
+fn item_7(uv: vec2f, aspect: f32, center: vec2f, zoom: f32, rp0: vec4f, rp1: vec4f, rp2: vec4f, t: f32) -> Distortion3DTrace {
+  let cx = center.x;
+  let cy = (1f - center.y);
+  let camDist = (8f - (zoom * 0.06f));
+  let ro = vec3f(0f, 0f, (camDist * -1f));
+  let rd = normalize(vec3f(((uv.x - cx) * aspect), (uv.y - cy), 1.5f));
+  var rayT = 0f;
+  var hit = 0f;
+  const maxDistF = 20f;
+  for (var i = 0; (i < 48i); i++) {
+    let p = (ro + (rd * rayT));
+    let dd = stubBoxSdf(p, rp0, rp1, rp2, t);
+    if ((dd < 1e-3f)) {
+      hit = 1f;
+      break;
+    }
+    if ((rayT > maxDistF)) {
+      break;
+    }
+    rayT = (rayT + min(dd, 0.5f));
+  }
+  let hitPos = (ro + (rd * rayT));
+  const hh = 1e-3;
+  let hn = (hh * -1f);
+  let k0 = stubBoxSdf((hitPos + vec3f(hh, hn, hn)), rp0, rp1, rp2, t);
+  let k1 = stubBoxSdf((hitPos + vec3f(hn, hn, hh)), rp0, rp1, rp2, t);
+  let k2 = stubBoxSdf((hitPos + vec3f(hn, hh, hn)), rp0, rp1, rp2, t);
+  let k3 = stubBoxSdf((hitPos + vec3f(hh, hh, hh)), rp0, rp1, rp2, t);
+  let normal = normalize(((((vec3f(1, -1, -1) * k0) + (vec3f(-1, -1, 1) * k1)) + (vec3f(-1, 1, -1) * k2)) + (vec3f(1) * k3)));
+  return Distortion3DTrace(hitPos, normal, rd, hit);
+}"
+`;
+
+exports[`kit/effects-3d (3a) thinFilm builder resolve-snapshot > custom mode (linear color space, 3-color cycle) 1`] = `
+"fn thinFilmCompose(baseColor: vec3f, rim: f32, intensity: f32, saturation: f32) -> vec4f {
+  let white = vec3f(1);
+  let col = mix(white, baseColor, saturation);
+  let rgb = ((col * rim) * intensity);
+  let alpha = clamp(rim, 0f, 1f);
+  return vec4f(rgb.x, rgb.y, rgb.z, alpha);
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn mixColors(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let rgb = awMix(colorA.xyz, colorB.xyz, weightA, weightB, safeWeight);
+  return vec4f(rgb, totalWeight);
+}
+
+fn thinFilmCustomParams(phase: f32) -> vec3f {
+  let t = fract(phase);
+  let t3 = (t * 3f);
+  let si = fract(t3);
+  let floorT3 = floor(t3);
+  let gate12 = select(0f, 1f, (floorT3 <= 1.5f));
+  let gate01 = select(0f, 1f, (floorT3 <= 0.5f));
+  return vec3f(si, gate12, gate01);
+}
+
+fn thinFilmShade(sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, edgeSoftness: f32, rimWidthUniform: f32, thickness: f32, dispersion: f32, hueShift: f32, lightAngle: f32, animTime: f32, volumetric: f32) -> vec2f {
+  let sdf = (sdfRaw / scale);
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let gLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let nx = (gradX / gLen);
+  let ny = (gradY / gLen);
+  let rb1 = clamp((((sdf * -1f) / sharp) * 32f), 0f, 1f);
+  let rimWidth = max((rimWidthUniform * 0.1f), 1e-3f);
+  let depth = clamp(((sdf * -1f) / rimWidth), 0f, 1f);
+  let cosView = (1f / sqrt(((gLen * gLen) + 1f)));
+  let exponent = mix(7f, 1.5f, clamp(rimWidthUniform, 0f, 1f));
+  let volRim = (pow((1f - cosView), exponent) * rb1);
+  let flatRim = (((1f - depth) * (1f - depth)) * rb1);
+  let rim = select(flatRim, volRim, (volumetric > 0.5f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let baseCos = ((nx * lx) + (ny * ly));
+  let baseSin = ((ny * lx) - (nx * ly));
+  let theta = (animTime * 6.283185307179586f);
+  let rotatedDot = ((baseCos * cos(theta)) + (baseSin * sin(theta)));
+  let thickVol = ((thickness * max((sdf * -1f), 0f)) * 10f);
+  let thickFlat = ((thickness * depth) * 2f);
+  let thicknessTerm = select(thickFlat, thickVol, (volumetric > 0.5f));
+  let phase = ((hueShift + (dispersion * rotatedDot)) + thicknessTerm);
+  return vec2f(phase, rim);
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn glassGradient(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+struct TFProps {
+  _animTime: f32,
+}
+
+fn tfProps() -> TFProps {
+  return TFProps(0.25f);
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  return thinFilmCompose((mix(mix(mixColors(vec4f(0.000, 0.000, 1.000, 1.000), vec4f(1.000, 0.000, 0.000, 1.000), (thinFilmCustomParams((thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 0.0)).x)).x), mixColors(vec4f(0.000, 1.000, 0.000, 1.000), vec4f(0.000, 0.000, 1.000, 1.000), (thinFilmCustomParams((thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 0.0)).x)).x), (thinFilmCustomParams((thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 0.0)).x)).y), mixColors(vec4f(1.000, 0.000, 0.000, 1.000), vec4f(0.000, 1.000, 0.000, 1.000), (thinFilmCustomParams((thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 0.0)).x)).x), (thinFilmCustomParams((thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 0.0)).x)).z)).rgb, (thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 0.0)).y, 1.0, 0.8);
+}"
+`;
+
+exports[`kit/effects-3d (3a) thinFilm builder resolve-snapshot > rainbow mode, 2D rim 1`] = `
+"fn thinFilmCompose(baseColor: vec3f, rim: f32, intensity: f32, saturation: f32) -> vec4f {
+  let white = vec3f(1);
+  let col = mix(white, baseColor, saturation);
+  let rgb = ((col * rim) * intensity);
+  let alpha = clamp(rim, 0f, 1f);
+  return vec4f(rgb.x, rgb.y, rgb.z, alpha);
+}
+
+fn cosinePalette(t: f32, phaseR: f32, phaseG: f32, phaseB: f32) -> vec3f {
+  return vec3f(((cos(((t + phaseR) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseG) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseB) * 6.283185307179586f)) * 0.5f) + 0.5f));
+}
+
+fn thinFilmRainbow(phase: f32) -> vec3f {
+  return cosinePalette(phase, 0f, 0.3333f, 0.6667f);
+}
+
+fn thinFilmShade(sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, edgeSoftness: f32, rimWidthUniform: f32, thickness: f32, dispersion: f32, hueShift: f32, lightAngle: f32, animTime: f32, volumetric: f32) -> vec2f {
+  let sdf = (sdfRaw / scale);
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let gLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let nx = (gradX / gLen);
+  let ny = (gradY / gLen);
+  let rb1 = clamp((((sdf * -1f) / sharp) * 32f), 0f, 1f);
+  let rimWidth = max((rimWidthUniform * 0.1f), 1e-3f);
+  let depth = clamp(((sdf * -1f) / rimWidth), 0f, 1f);
+  let cosView = (1f / sqrt(((gLen * gLen) + 1f)));
+  let exponent = mix(7f, 1.5f, clamp(rimWidthUniform, 0f, 1f));
+  let volRim = (pow((1f - cosView), exponent) * rb1);
+  let flatRim = (((1f - depth) * (1f - depth)) * rb1);
+  let rim = select(flatRim, volRim, (volumetric > 0.5f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let baseCos = ((nx * lx) + (ny * ly));
+  let baseSin = ((ny * lx) - (nx * ly));
+  let theta = (animTime * 6.283185307179586f);
+  let rotatedDot = ((baseCos * cos(theta)) + (baseSin * sin(theta)));
+  let thickVol = ((thickness * max((sdf * -1f), 0f)) * 10f);
+  let thickFlat = ((thickness * depth) * 2f);
+  let thicknessTerm = select(thickFlat, thickVol, (volumetric > 0.5f));
+  let phase = ((hueShift + (dispersion * rotatedDot)) + thicknessTerm);
+  return vec2f(phase, rim);
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn glassGradient(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+struct TFProps {
+  _animTime: f32,
+}
+
+fn tfProps() -> TFProps {
+  return TFProps(0.25f);
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  return thinFilmCompose(thinFilmRainbow((thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 0.0)).x), (thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 0.0)).y, 1.0, 0.8);
+}"
+`;
+
+exports[`kit/effects-3d (3a) thinFilm builder resolve-snapshot > rainbow mode, volumetric 1`] = `
+"fn thinFilmCompose(baseColor: vec3f, rim: f32, intensity: f32, saturation: f32) -> vec4f {
+  let white = vec3f(1);
+  let col = mix(white, baseColor, saturation);
+  let rgb = ((col * rim) * intensity);
+  let alpha = clamp(rim, 0f, 1f);
+  return vec4f(rgb.x, rgb.y, rgb.z, alpha);
+}
+
+fn cosinePalette(t: f32, phaseR: f32, phaseG: f32, phaseB: f32) -> vec3f {
+  return vec3f(((cos(((t + phaseR) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseG) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseB) * 6.283185307179586f)) * 0.5f) + 0.5f));
+}
+
+fn thinFilmRainbow(phase: f32) -> vec3f {
+  return cosinePalette(phase, 0f, 0.3333f, 0.6667f);
+}
+
+fn thinFilmShade(sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, edgeSoftness: f32, rimWidthUniform: f32, thickness: f32, dispersion: f32, hueShift: f32, lightAngle: f32, animTime: f32, volumetric: f32) -> vec2f {
+  let sdf = (sdfRaw / scale);
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let gLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let nx = (gradX / gLen);
+  let ny = (gradY / gLen);
+  let rb1 = clamp((((sdf * -1f) / sharp) * 32f), 0f, 1f);
+  let rimWidth = max((rimWidthUniform * 0.1f), 1e-3f);
+  let depth = clamp(((sdf * -1f) / rimWidth), 0f, 1f);
+  let cosView = (1f / sqrt(((gLen * gLen) + 1f)));
+  let exponent = mix(7f, 1.5f, clamp(rimWidthUniform, 0f, 1f));
+  let volRim = (pow((1f - cosView), exponent) * rb1);
+  let flatRim = (((1f - depth) * (1f - depth)) * rb1);
+  let rim = select(flatRim, volRim, (volumetric > 0.5f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let baseCos = ((nx * lx) + (ny * ly));
+  let baseSin = ((ny * lx) - (nx * ly));
+  let theta = (animTime * 6.283185307179586f);
+  let rotatedDot = ((baseCos * cos(theta)) + (baseSin * sin(theta)));
+  let thickVol = ((thickness * max((sdf * -1f), 0f)) * 10f);
+  let thickFlat = ((thickness * depth) * 2f);
+  let thicknessTerm = select(thickFlat, thickVol, (volumetric > 0.5f));
+  let phase = ((hueShift + (dispersion * rotatedDot)) + thicknessTerm);
+  return vec2f(phase, rim);
+}
+
+fn stubSdf(uv: vec2f) -> vec4f {
+  return vec4f((uv.x - 0.5f), 0.1f, 0.2f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+fn glassGradient(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+struct TFProps {
+  _animTime: f32,
+}
+
+fn tfProps() -> TFProps {
+  return TFProps(0.25f);
+}
+
+struct _Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn item(in: _Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  return thinFilmCompose(thinFilmRainbow((thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 1.0)).x), (thinFilmShade((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, 0.5, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).x, (glassGradient((stubSdf(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.01, 0.0))).r, (stubSdf(offsetUV(sdfSpaceUV(vec2f(0.500, 0.500), 0.5, 30.0, uv, 1.3333333), 0.0, 0.01))).r)).y, 0.2, 0.4, 0.5, 1.0, 0.1, 45.0, (tfProps())._animTime, 1.0)).y, 1.0, 0.8);
+}"
+`;

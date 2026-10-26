@@ -1,0 +1,70 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve gate — aa fns emit valid WGSL (incl. the derivative-taking footprints) > matches WGSL snapshot 1`] = `
+"fn footprint1(x: f32, softness: f32) -> f32 {
+  let baseW = max(abs(dpdx(x)), abs(dpdy(x)));
+  return max((baseW + softness), 1e-5f);
+}
+
+fn footprint2(p: vec2f, softness: f32) -> vec2f {
+  let dpx = dpdx(p);
+  let dpy = dpdy(p);
+  let baseW = vec2f(max(abs(dpx.x), abs(dpy.x)), max(abs(dpx.y), abs(dpy.y)));
+  return vec2f(max((baseW.x + softness), 1e-5f), max((baseW.y + softness), 1e-5f));
+}
+
+fn quilezStepFilter(p: f32, w: f32, threshold: f32) -> f32 {
+  let a = (p + (w * 0.5f));
+  let b = (p - (w * 0.5f));
+  let oneMinusThreshold = (1f - threshold);
+  let Fa = ((floor(a) * oneMinusThreshold) + max((fract(a) - threshold), 0f));
+  let Fb = ((floor(b) * oneMinusThreshold) + max((fract(b) - threshold), 0f));
+  return clamp(((Fa - Fb) / w), 0f, 1f);
+}
+
+fn quilezLineFilterAxis(p: f32, w: f32, N: f32) -> f32 {
+  let a = (p + (w * 0.5f));
+  let b = (p - (w * 0.5f));
+  return ((((floor(a) + min((fract(a) * N), 1f)) - floor(b)) - min((fract(b) * N), 1f)) / (N * w));
+}
+
+fn quilezCheckerFilter(p: vec2f, w: vec2f) -> f32 {
+  let aHalf = vec2f((w.x * 0.5f), (w.y * 0.5f));
+  let minusSideX = abs((fract(((p.x - aHalf.x) * 0.5f)) - 0.5f));
+  let minusSideY = abs((fract(((p.y - aHalf.y) * 0.5f)) - 0.5f));
+  let plusSideX = abs((fract(((p.x + aHalf.x) * 0.5f)) - 0.5f));
+  let plusSideY = abs((fract(((p.y + aHalf.y) * 0.5f)) - 0.5f));
+  let iX = (((minusSideX - plusSideX) * 2f) / w.x);
+  let iY = (((minusSideY - plusSideY) * 2f) / w.y);
+  return clamp((0.5f - ((iX * iY) * 0.5f)), 0f, 1f);
+}
+
+fn lineMaskFromField(field: f32, lineWidth: f32, lo: f32, hi: f32) -> f32 {
+  return ((1f - smoothstep(lo, hi, field)) * step(1e-4f, lineWidth));
+}
+
+fn bandMask(x: f32, lo: f32, hi: f32) -> f32 {
+  return (smoothstep(lo, hi, x) * smoothstep(lo, hi, (1f - x)));
+}
+
+fn discCoverage(dist: f32, radius: f32, footprint: f32) -> f32 {
+  return (1f - smoothstep((radius - (footprint * 0.5f)), radius, dist));
+}
+
+struct aaProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn aaProbe(_arg_0: aaProbe_Input) -> @location(0) vec4f {
+  let p = (_arg_0.uv * 10f);
+  let w1 = footprint1(p.x, 0.1f);
+  let w2 = footprint2(p, 0.1f);
+  let stripe = quilezStepFilter(p.x, w1, 0.5f);
+  let line = quilezLineFilterAxis(p.x, w1, 20f);
+  let checker = quilezCheckerFilter(p, w2);
+  let lineMask = lineMaskFromField(p.y, 0.05f, 0.04f, 0.06f);
+  let band = bandMask(p.x, 0.1f, 0.2f);
+  let disc = discCoverage(p.y, 0.3f, w1);
+  return vec4f((stripe + line), (checker + lineMask), (band + disc), w2.x);
+}"
+`;

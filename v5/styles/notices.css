@@ -1,0 +1,77 @@
+/* [공통 정보 위계 / Shared information hierarchy]
+   작은 제목은 20px/650, 실제 설명은 18px로 역할에 따라 조정합니다.
+   Use 20px/650 for item titles and 18px for explanatory copy. */
+.news-editorial-list h3,
+.booking-summary__program h3,
+.program-filter-intro h2,
+.flow-form-section-title,
+.notice-row h3,
+.org-branches h3,
+.identity-swatch h3,
+.info-link-card h3,
+.overview-service h3,
+.program-season-shortcut strong {
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+}
+
+.faq-answer p,
+.english-grid p,
+.news-editorial-copy > p,
+.info-link-card p,
+.info-section-heading p,
+.overview-service p {
+    font-size: max(var(--text-min), var(--text-body));
+}
+
+/* [띠 박스 없는 안내 / Notices without stripe boxes]
+   체험·접수·이용 조건은 보존하고 색 띠·회색 박스만 없앱니다.
+   Preserve demo and service conditions while removing colored bars and tinted boxes. */
+.info-note, .demo-note, .flow-demo {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: var(--color-detail-j5afio);
+    box-shadow: none;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-body));
+}
+
+.info-note strong, .flow-demo strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--ink);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+}
+
+.info-note p, .flow-demo p, .flow-demo span {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+
+.program-season-shortcut {
+    padding: 8px 0;
+    border: 0;
+    background: var(--color-detail-j5afio);
+}
+
+#search-dialog .dialog-top { justify-content: flex-end; }
+
+.info-page .info-lead { font-size: max(var(--text-min), var(--text-lead)); }
+
+/* [모바일 항목 제목도 같은 위계 / Keep item hierarchy on mobile]
+   큰 데스크톱 제목은 유지하고 작은 화면의 단계·목록 제목만 20px로 맞춥니다.
+   Preserve larger desktop headings and use the shared item scale on compact screens. */
+@media (max-width: 600px) {
+    .program-guide-steps h3,
+    .info-steps h3,
+    .info-selected h3,
+    .goods-grid h2,
+    .magazine-grid h2,
+    .history-timeline h3 {
+        font-size: max(var(--text-min), var(--text-item-title));
+        font-weight: var(--weight-title);
+    }
+}

@@ -1,0 +1,259 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Perspective (a) analytic UV fold over a generator > folds perspectiveUV into the generator sample coordinate (inline, no RTT) > perspective-uvremap 1`] = `
+"fn edgeClampUV(uv: vec2f) -> vec2f {
+  return clamp(uv, vec2f(), vec2f(1));
+}
+
+fn perspectiveUV(center: vec2f, pan: f32, tilt: f32, fov: f32, zoom: f32, offset: vec2f, uv: vec2f) -> vec2f {
+  let centerPos = vec2f(center.x, (1f - center.y));
+  let x = ((uv.x - centerPos.x) / zoom);
+  let y = ((uv.y - centerPos.y) / zoom);
+  let panRad = (pan * 0.017453292519943295f);
+  let tiltRad = (tilt * 0.017453292519943295f);
+  let fovRad = (fov * 0.017453292519943295f);
+  let cosPan = cos(panRad);
+  let sinPan = sin(panRad);
+  let cosTilt = cos(tiltRad);
+  let sinTilt = sin(tiltRad);
+  let perspectiveFactor = (tan((fovRad * 0.5f)) * 2f);
+  let panDivisor = (cosPan + ((sinPan * x) * perspectiveFactor));
+  let safePanDivisor = max(panDivisor, 1e-3f);
+  let afterPanX = (x / safePanDivisor);
+  let afterPanY = ((y * cosPan) / safePanDivisor);
+  let tiltDivisor = (cosTilt + ((sinTilt * afterPanY) * perspectiveFactor));
+  let safeTiltDivisor = max(tiltDivisor, 1e-3f);
+  let finalX = ((afterPanX * cosTilt) / safeTiltDivisor);
+  let finalY = (afterPanY / safeTiltDivisor);
+  let offsetPos = vec2f(offset.x, (1f - offset.y));
+  return (((vec2f(finalX, finalY) + centerPos) - offsetPos) + vec2f(0.5));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  center: vec2f,
+  pan: f32,
+  tilt: f32,
+  fov: f32,
+  zoom: f32,
+  offset: vec2f,
+  edges: f32,
+  _opacity: f32,
+  _pad0: f32,
+}
+
+struct padded_2 {
+  seed: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_p: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn genBody(seed: f32, uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, seed, 1f);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let foldUV_0 = edgeClampUV(perspectiveUV(uniforms.n_p.center, uniforms.n_p.pan, uniforms.n_p.tilt, uniforms.n_p.fov, uniforms.n_p.zoom, uniforms.n_p.offset, uv));
+  var composed_1 = genBody(uniforms.n_gen.seed, foldUV_0);
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;
+
+exports[`Perspective (b) RTT filter path (fragment) > converts the child to a texture, samples the projected coord, unpremultiplies > perspective-fragment 1`] = `
+"fn perspectiveUV(center: vec2f, pan: f32, tilt: f32, fov: f32, zoom: f32, offset: vec2f, uv: vec2f) -> vec2f {
+  let centerPos = vec2f(center.x, (1f - center.y));
+  let x = ((uv.x - centerPos.x) / zoom);
+  let y = ((uv.y - centerPos.y) / zoom);
+  let panRad = (pan * 0.017453292519943295f);
+  let tiltRad = (tilt * 0.017453292519943295f);
+  let fovRad = (fov * 0.017453292519943295f);
+  let cosPan = cos(panRad);
+  let sinPan = sin(panRad);
+  let cosTilt = cos(tiltRad);
+  let sinTilt = sin(tiltRad);
+  let perspectiveFactor = (tan((fovRad * 0.5f)) * 2f);
+  let panDivisor = (cosPan + ((sinPan * x) * perspectiveFactor));
+  let safePanDivisor = max(panDivisor, 1e-3f);
+  let afterPanX = (x / safePanDivisor);
+  let afterPanY = ((y * cosPan) / safePanDivisor);
+  let tiltDivisor = (cosTilt + ((sinTilt * afterPanY) * perspectiveFactor));
+  let safeTiltDivisor = max(tiltDivisor, 1e-3f);
+  let finalX = ((afterPanX * cosTilt) / safeTiltDivisor);
+  let finalY = (afterPanY / safeTiltDivisor);
+  let offsetPos = vec2f(offset.x, (1f - offset.y));
+  return (((vec2f(finalX, finalY) + centerPos) - offsetPos) + vec2f(0.5));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  center: vec2f,
+  pan: f32,
+  tilt: f32,
+  fov: f32,
+  zoom: f32,
+  offset: vec2f,
+  edges: f32,
+  _opacity: f32,
+  _pad0: f32,
+}
+
+struct padded_2 {
+  seed: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_p: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+fn catmullRomAxisPositions(uv: f32, texSize: f32) -> vec3f {
+  let samplePos = (uv * texSize);
+  let texPos1 = (floor((samplePos - 0.5f)) + 0.5f);
+  let f = (samplePos - texPos1);
+  let w1 = (1f + ((f * f) * (-2.5f + (1.5f * f))));
+  let w2 = (f * (0.5f + (f * (2f - (1.5f * f)))));
+  let w12 = max((w1 + w2), 1e-6f);
+  let offset12 = (w2 / w12);
+  return vec3f(((texPos1 - 1f) / texSize), ((texPos1 + offset12) / texSize), ((texPos1 + 2f) / texSize));
+}
+
+fn catmullRomAxisWeights(uv: f32, texSize: f32) -> vec3f {
+  let samplePos = (uv * texSize);
+  let texPos1 = (floor((samplePos - 0.5f)) + 0.5f);
+  let f = (samplePos - texPos1);
+  let w0 = (f * (-0.5f + (f * (1f - (0.5f * f)))));
+  let w1 = (1f + ((f * f) * (-2.5f + (1.5f * f))));
+  let w2 = (f * (0.5f + (f * (2f - (1.5f * f)))));
+  let w3 = ((f * f) * (-0.5f + (0.5f * f)));
+  return vec3f(w0, (w1 + w2), w3);
+}
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn overComposite(base: vec4f, blended: vec3f, overlayAlpha: f32) -> vec4f {
+  let baseWeight = (base.w * (1f - overlayAlpha));
+  let finalAlpha = (overlayAlpha + baseWeight);
+  let rgb = ((blended * overlayAlpha) + (base.xyz * baseWeight));
+  return vec4f(rgb, finalAlpha);
+}
+
+fn blend_normal(base: vec4f, overlay2: vec4f, opacity: f32) -> vec4f {
+  let overlayAlpha = (overlay2.w * opacity);
+  return overComposite(base, overlay2.xyz, overlayAlpha);
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn edgeTransparentMask(uv: vec2f) -> f32 {
+  let inX = (step(0f, uv.x) * step(uv.x, 1f));
+  let inY = (step(0f, uv.y) * step(uv.y, 1f));
+  return (inX * inY);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let crUV_0 = perspectiveUV(uniforms.n_p.center, uniforms.n_p.pan, uniforms.n_p.tilt, uniforms.n_p.fov, uniforms.n_p.zoom, uniforms.n_p.offset, uv);
+  let crSize_1 = vec2f(textureDimensions(rtt_0));
+  let crPosX_2 = catmullRomAxisPositions(crUV_0.x, crSize_1.x);
+  let crPosY_3 = catmullRomAxisPositions(crUV_0.y, crSize_1.y);
+  let crWx_4 = catmullRomAxisWeights(crUV_0.x, crSize_1.x);
+  let crWy_5 = catmullRomAxisWeights(crUV_0.y, crSize_1.y);
+  var crOut_6 = vec4f(0.0, 0.0, 0.0, 0.0);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.x)) * (crWx_4.x * crWy_5.x);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.x)) * (crWx_4.y * crWy_5.x);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.x)) * (crWx_4.z * crWy_5.x);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.y)) * (crWx_4.x * crWy_5.y);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.y)) * (crWx_4.y * crWy_5.y);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.y)) * (crWx_4.z * crWy_5.y);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.x, crPosY_3.z)) * (crWx_4.x * crWy_5.z);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.y, crPosY_3.z)) * (crWx_4.y * crWy_5.z);
+  crOut_6 += textureSample(rtt_0, linearClamp, vec2f(crPosX_2.z, crPosY_3.z)) * (crWx_4.z * crWy_5.z);
+  crOut_6 = max(crOut_6, vec4f(0.0, 0.0, 0.0, 0.0));
+  var composed_7 = blend_normal(vec4f(1.0, 1.0, 1.0, 0.0), unpremultiplyAlpha(vec4f(crOut_6.rgb, (crOut_6.a * edgeTransparentMask(perspectiveUV(uniforms.n_p.center, uniforms.n_p.pan, uniforms.n_p.tilt, uniforms.n_p.fov, uniforms.n_p.zoom, uniforms.n_p.offset, uv))))), uniforms.n_p._opacity);
+  return vec4f(linearToSrgb(tone_linear(composed_7.rgb)), composed_7.a);
+}"
+`;

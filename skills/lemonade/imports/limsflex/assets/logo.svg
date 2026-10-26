@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 128 128" role="img" aria-labelledby="title description">
+    <title id="title">limsflex · 림스플렉스 로고</title>
+    <desc id="description">부드러운 L과 자유롭게 휘는 곡선으로 표현한 엄격한 코드와 유연한 디자인.</desc>
+    <rect width="128" height="128" rx="24" fill="#443175" />
+    <path d="M36 30V68Q36 94 62 94H96" fill="none" stroke="#F5F6F8" stroke-width="16" stroke-linecap="round" />
+    <path d="M64 34C90 34 98 48 90 62C86 69 78 71 70 71" fill="none" stroke="#D9B5F2" stroke-width="8" stroke-linecap="round" />
+</svg>

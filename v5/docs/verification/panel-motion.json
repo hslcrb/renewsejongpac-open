@@ -1,0 +1,43 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T05:38:23.493Z",
+  "results": [
+    {
+      "name": "real WebGL deforms the menu texture and settles with a gentle overshoot",
+      "passed": true
+    },
+    {
+      "name": "exit keeps the panel mounted, folds into the trigger and restores focus",
+      "passed": true
+    },
+    {
+      "name": "a dragged panel returns from its actual position",
+      "passed": true
+    },
+    {
+      "name": "rapid reversals retain the same panel and continue the current spring",
+      "passed": true
+    },
+    {
+      "name": "reduced motion uses a short fade with the same close lifecycle",
+      "passed": true
+    },
+    {
+      "name": "WebGL-unavailable browsers retain an animated usable panel",
+      "passed": true
+    },
+    {
+      "name": "mobile drawers enter from the left wall and remain attached at rest",
+      "passed": true
+    },
+    {
+      "name": "the registered component documents LiquidGlass composition and replays the same motion",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

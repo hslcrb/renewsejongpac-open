@@ -1,0 +1,68 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-23T04:56:36.972Z",
+  "components": {
+    "total": 47,
+    "product": 47,
+    "documentationOnly": 0,
+    "unused": 0
+  },
+  "widths": [
+    320,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "results": [
+    {
+      "name": "the real registry lists every implementation, computed usage and the missing production patterns",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 320px",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 390px",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 768px",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 1024px",
+      "passed": true
+    },
+    {
+      "name": "guide and product share default/flow dimensions and field states at 1440px",
+      "passed": true
+    },
+    {
+      "name": "home patterns retain their anchors and the booking heading is static shared text",
+      "passed": true
+    },
+    {
+      "name": "search uses the shared modal with input focus, Escape return and keyboard containment",
+      "passed": true
+    },
+    {
+      "name": "signup validates shared fields and awaits an OTP request that allows account creation",
+      "passed": true
+    },
+    {
+      "name": "recovery retains its accessible result and flow field",
+      "passed": true
+    },
+    {
+      "name": "booking does not invent sessions or seats before verified inventory is published",
+      "passed": true
+    },
+    {
+      "name": "no hydration or runtime errors occurred",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

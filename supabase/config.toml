@@ -1,0 +1,4 @@
+# [세종 AI 상담 / Public guest chat with explicit in-function auth & quotas]
+# Next.js v5 is a static export; this Edge Function hosts chat requests.
+[functions.sejong-ai-chat]
+verify_jwt = false

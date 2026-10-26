@@ -1,0 +1,39 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T05:38:40.193Z",
+  "results": [
+    {
+      "name": "the menu uses the registered surface with denser glass and stronger refraction",
+      "passed": true
+    },
+    {
+      "name": "the component is registered with a live example, public props and importable code",
+      "passed": true
+    },
+    {
+      "name": "opacity updates the actual glass tint, its value and the generated example",
+      "passed": true
+    },
+    {
+      "name": "refraction changes the rendered pixels while foreground text stays unchanged",
+      "passed": true
+    },
+    {
+      "name": "separate surfaces keep unique filters and independent material settings",
+      "passed": true
+    },
+    {
+      "name": "resizing regenerates the lens and the component fits mobile widths",
+      "passed": true
+    },
+    {
+      "name": "high contrast replaces the optical effect with an opaque surface",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

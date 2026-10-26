@@ -1,0 +1,30 @@
+{
+  "verifiedAt": "2026-10-21T05:40:23.046Z",
+  "baseCommit": "40b1ac95c2aeabbbb1cbb5c6256b0b3bc813bf87",
+  "components": {
+    "total": 38,
+    "product": 35,
+    "documentationOnly": 3,
+    "unused": 0
+  },
+  "widths": [
+    320,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "unit": {
+    "total": 84,
+    "passed": 83,
+    "failed": 0,
+    "skipped": 1,
+    "skipReason": "The preserved v4 journey browser test is opt-in; v5 flows were verified by the component browser suite."
+  },
+  "browserChecks": 97,
+  "browserFailed": 0,
+  "productionBuild": true,
+  "exportFiles": 8288,
+  "htmlPages": 155,
+  "mirrorExact": true
+}

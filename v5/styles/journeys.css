@@ -1,0 +1,634 @@
+/* [여정을 준비하는 화면 / Screens for planning a visit and choosing a venue]
+   입력의 위치를 유지하고 결과·안내·다음 행동을 읽는 순서대로 배치합니다.
+   Keep controls stable and order results, guidance and next actions for reading. */
+.journey-page {
+    --journey-line: var(--color-detail-dce3e6);
+    --journey-soft: var(--color-detail-f3f7f8);
+    --journey-accent: var(--color-detail-075f7b);
+    padding-bottom: 6rem;
+}
+
+.journey-intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin: 0 0 3rem;
+}
+
+.journey-intro > p {
+    margin: 0;
+    color: var(--color-detail-69767e);
+    font-size: max(var(--text-min), clamp(1.75rem, 3vw, 2.75rem));
+    line-height: 1.45;
+    letter-spacing: -0.035em;
+}
+
+.journey-intro strong {
+    color: var(--ink, var(--color-detail-172329));
+    font-weight: 700;
+}
+
+.journey-intro > span {
+    max-width: 24rem;
+    color: var(--color-detail-4d5c65);
+    font-size: max(var(--text-min), var(--text-body));
+}
+
+.journey-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: flex-start;
+    gap: clamp(2rem, 5vw, 5rem);
+}
+
+.journey-editor,
+.journey-result,
+.comparison-card {
+    min-width: 0;
+}
+
+.journey-editor > h2 {
+    margin: 0 0 2rem;
+    font-size: max(var(--text-min), 1.5rem);
+    letter-spacing: -0.025em;
+}
+
+.journey-field {
+    display: grid;
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+    min-width: 0;
+}
+
+.journey-field label {
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: 600;
+}
+
+.journey-field input,
+.journey-field select,
+.journey-share-address input {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 3.25rem;
+    box-sizing: border-box;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    padding: 0.8rem 0.85rem;
+    background: var(--color-white);
+    color: var(--color-detail-172329);
+    font: inherit;
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: 1.5;
+}
+
+.journey-field select {
+    padding-right: 2rem;
+    text-overflow: ellipsis;
+}
+
+.journey-field select:disabled {
+    opacity: 100%;
+    color: var(--color-detail-53626d);
+    background: var(--color-detail-f1f4f5);
+    cursor: default;
+}
+
+.journey-field-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 1rem;
+}
+
+.journey-field-pair .journey-field {
+    margin-bottom: 0.5rem;
+}
+
+.journey-meta,
+.journey-field p,
+.journey-status {
+    font-size: max(var(--text-min), var(--text-sm));
+    color: var(--color-detail-53616b);
+    line-height: 1.65;
+}
+
+.journey-field-help {
+    margin: 0 0 1.5rem;
+}
+
+.journey-field p {
+    margin: 0;
+}
+
+.journey-submit {
+    width: 100%;
+    justify-content: center;
+}
+
+.journey-help {
+    margin-top: 1.25rem;
+}
+
+.journey-notice {
+    margin-bottom: 1.5rem;
+    border-left: 1px solid var(--border-default);
+    padding: 0.7rem 1rem;
+    background: var(--color-detail-fff9ec);
+    color: var(--color-detail-5c4723);
+}
+
+.journey-notice p {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+/* [선택한 일정의 결과 / Results for the chosen itinerary]
+   시간 수치를 임의로 만들지 않고 준비 순서와 등록 회차를 표시합니다.
+   Use preparation stages and real catalog sessions without inventing timings. */
+.journey-result {
+    border-radius: var(--radius-dialog);
+    padding: clamp(1.5rem, 3vw, 2.75rem);
+    background: var(--journey-soft);
+}
+
+.journey-empty {
+    display: flex;
+    min-height: 26rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.journey-empty-icon {
+    display: inline-flex;
+    margin-bottom: 1.5rem;
+    color: var(--journey-accent);
+}
+
+.journey-empty h2,
+.journey-itinerary > h2 {
+    margin: 0 0 1rem;
+    font-size: max(var(--text-min), clamp(1.6rem, 2.3vw, 2.2rem));
+    line-height: 1.4;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+}
+
+.journey-empty > p {
+    margin: 0 0 1.5rem;
+}
+
+.journey-date {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0 0 1rem;
+    color: var(--journey-accent);
+    font-weight: 650;
+}
+
+.journey-destination {
+    margin: 0 0 2rem;
+    color: var(--color-detail-53616b);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.journey-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.journey-timeline > li {
+    display: grid;
+    grid-template-columns: 5.25rem minmax(0, 1fr);
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--border-default);
+}
+
+.journey-step-label {
+    padding-top: 0.1rem;
+    color: var(--journey-accent);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 650;
+}
+
+.journey-timeline h3 {
+    margin: 0 0 0.6rem;
+    font-size: max(var(--text-min), 1.25rem);
+    line-height: 1.5;
+}
+
+.journey-timeline p {
+    margin: 0 0 0.6rem;
+    color: var(--color-detail-4a5963);
+    font-size: max(var(--text-min), var(--text-body));
+}
+
+.journey-timeline .text-link,
+.comparison-facts .text-link {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.journey-timeline .text-link svg,
+.comparison-facts .text-link svg {
+    flex: 0 0 auto;
+}
+
+.journey-parking {
+    margin: 0.5rem 0 1.5rem;
+}
+
+/* [저장과 공유 / Saving and sharing]
+   읽기 전용 주소와 네이티브 버튼을 사용해 복사 실패에도 계획을 남길 수 있습니다.
+   A visible read-only address keeps sharing available when clipboard access fails. */
+.journey-share {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: flex-start;
+    gap: 1.5rem 2rem;
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--journey-line);
+}
+
+.journey-share h2,
+.journey-consultation h2 {
+    margin: 0 0 0.6rem;
+    font-size: max(var(--text-min), clamp(1.4rem, 2.2vw, 1.75rem));
+    letter-spacing: -0.025em;
+}
+
+.journey-share p,
+.journey-consultation p {
+    margin: 0;
+    color: var(--color-detail-53616b);
+}
+
+.journey-share-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.journey-share-actions .button:disabled {
+    background: var(--color-detail-e1e7e9);
+    color: var(--color-detail-66727a);
+    border-color: var(--border-default);
+    cursor: not-allowed;
+}
+
+.journey-share-address {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.journey-share-address label {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.journey-share-address input {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.journey-status {
+    min-height: 1.65em;
+    margin: 1.5rem 0 0;
+}
+
+.journey-saved {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid var(--journey-line);
+    padding: 0 0 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.journey-saved > div {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.journey-saved strong {
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 500;
+    color: var(--color-detail-53616b);
+}
+
+.journey-text-button {
+    min-height: 3rem;
+    flex-shrink: 0;
+    padding: 0.5rem 0.75rem;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-detail-j5afio);
+    color: var(--color-detail-334b5a);
+    font: inherit;
+    font-size: max(var(--text-min), var(--text-sm));
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    cursor: pointer;
+}
+
+.journey-text-button:hover {
+    background: var(--color-detail-eef3f5);
+}
+
+/* [가로 비교와 좁은 화면의 읽기 순서 / Comparison columns and narrow-screen reading order]
+   공간별 정보는 같은 순서로 정렬하고 모바일에서는 한 공간씩 이어집니다.
+   Align comparable facts on desktop and stack complete venue records on mobile. */
+.comparison-picker {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    border-radius: var(--surface-radius-panel);
+    background: var(--journey-soft);
+}
+
+.comparison-picker fieldset {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    margin: 0;
+}
+
+.comparison-picker legend {
+    margin-bottom: 1rem;
+    padding: 0;
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: 650;
+}
+
+.comparison-picker legend span {
+    margin-left: 0.6rem;
+    color: var(--color-detail-53616b);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 400;
+}
+
+.comparison-choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.comparison-choice {
+    display: inline-flex;
+    min-height: 3.25rem;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    padding: 0.6rem 0.85rem;
+    background: var(--color-white);
+    cursor: pointer;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.comparison-choice:has(input:checked) {
+    border-color: var(--stroke-selected);
+    background: var(--color-detail-e6f3f8);
+    color: var(--color-detail-054e66);
+}
+
+.comparison-choice input {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 0;
+    accent-color: var(--journey-accent);
+}
+
+.comparison-status-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 2rem 0 1.5rem;
+}
+
+.comparison-status-row p {
+    margin: 0;
+    font-weight: 600;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.comparison-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--journey-line);
+    border-radius: var(--surface-radius-panel);
+    overflow: hidden;
+    background: var(--color-white);
+}
+
+.comparison-card > img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 7 / 4.8;
+    object-fit: cover;
+}
+
+.comparison-heading {
+    padding: 1.5rem 1.5rem 0;
+}
+
+.comparison-heading p {
+    margin: 0 0 0.35rem;
+    font-size: max(var(--text-min), var(--text-sm));
+    color: var(--color-detail-53616b);
+}
+
+.comparison-heading h2 {
+    margin: 0 0 1rem;
+    font-size: max(var(--text-min), 1.5rem);
+}
+
+.comparison-facts {
+    margin: 0;
+    padding: 0 1.5rem;
+}
+
+.comparison-facts > div {
+    min-height: 7.25rem;
+    border-top: 1px solid var(--border-default);
+    padding: 1rem 0;
+}
+
+.comparison-facts dt {
+    color: var(--color-detail-53616b);
+    font-size: max(var(--text-min), var(--text-sm));
+    margin-bottom: 0.4rem;
+}
+
+.comparison-facts dd {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    word-break: keep-all;
+}
+
+.comparison-facts strong {
+    display: block;
+    font-size: max(var(--text-min), 1.5rem);
+    font-weight: 650;
+}
+
+.comparison-facts dd > span {
+    display: block;
+    color: var(--color-detail-53616b);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.comparison-actions {
+    display: grid;
+    gap: 0.6rem;
+    padding: 0.5rem 1.5rem 1.5rem;
+    margin-top: auto;
+}
+
+.comparison-actions .button {
+    display: flex;
+    justify-content: space-between;
+    min-width: 0;
+    white-space: normal;
+}
+
+.comparison-actions .text-link {
+    min-height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comparison-empty {
+    min-height: 20rem;
+    border-top: 1px solid var(--journey-line);
+    border-bottom: 1px solid var(--journey-line);
+}
+
+.journey-consultation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+    padding: 2rem;
+    margin: 3rem 0 1.5rem;
+    border-radius: var(--surface-radius-panel);
+    background: var(--journey-soft);
+}
+
+.journey-consultation > div:last-child {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+}
+
+/* [모바일과 확대 글자 / Mobile layouts and enlarged text]
+   작은 글자로 줄이지 않고 입력과 비교 정보를 세로로 재배치합니다.
+   Reflow controls and comparisons vertically instead of shrinking type. */
+@media (max-width: 1050px) {
+    .journey-layout {
+        gap: 2rem;
+    }
+
+    .journey-field-pair {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .journey-timeline > li {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.65rem;
+    }
+
+    .journey-share {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .comparison-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 760px) {
+    .journey-intro {
+        display: block;
+        margin-bottom: 2rem;
+    }
+
+    .journey-intro > span {
+        display: block;
+        margin-top: 1rem;
+    }
+
+    .journey-layout,
+    .comparison-grid,
+    .journey-consultation {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .journey-result {
+        padding: 1.5rem;
+    }
+
+    .journey-empty {
+        min-height: 18rem;
+    }
+
+    .journey-share-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .journey-share-actions .button {
+        justify-content: center;
+    }
+
+    .journey-saved {
+        align-items: flex-start;
+    }
+
+    .comparison-picker {
+        display: block;
+        padding: 1.25rem;
+    }
+
+    .comparison-picker > button {
+        margin-top: 1rem;
+    }
+
+    .comparison-choices {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .comparison-facts > div {
+        min-height: 0;
+    }
+
+    .journey-consultation {
+        padding: 1.5rem;
+    }
+}

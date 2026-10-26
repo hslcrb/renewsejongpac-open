@@ -1,0 +1,137 @@
+/* [상태 변화의 속도와 입력 피드백 / State timing and input feedback]
+   자주 쓰는 조작은 위치를 고정한 채 색과 명도로 응답합니다.
+   Frequent controls respond with color and tone while keeping their position stable. */
+:root {
+    --motion-feedback: 160ms;
+    --motion-panel: 180ms;
+}
+
+.button,
+.round-button,
+.program-icon-button,
+.program-choice button,
+.info-chips a,
+.program-detail-tabs [role="tab"],
+.seat,
+.flow-text-button,
+.program-category-tabs a,
+.program-view-switch a,
+.program-filter__reset,
+.program-calendar button,
+.info-month button,
+.subnav a,
+.account-nav a,
+.goods-navigation a,
+.goods-quantity select,
+.experience-filters :is(input, select),
+.form-field :is(input, select, textarea),
+.flow-field :is(input, select, textarea) {
+    transition:
+        background-color var(--motion-feedback) ease,
+        border-color var(--motion-feedback) ease,
+        color var(--motion-feedback) ease;
+}
+
+/* [탐색·선택·입력의 상태 전환 / Navigation, selection and input states]
+   경계선 두께나 위치를 바꾸지 않고 실제 조작 가능한 항목에만 피드백을 더합니다.
+   Add feedback to real controls without changing border widths or their positions. */
+.desktop-nav a,
+.footer-policy a,
+.menu-columns a,
+.overview-service,
+.info-link-card,
+.visit-link-list a,
+.program-season-shortcut,
+.goods-product-link {
+    transition: color var(--motion-feedback) ease, background-color var(--motion-feedback) ease;
+}
+
+.program-category-tabs a:active,
+.program-view-switch a:active,
+.subnav a:active,
+.account-nav a:active,
+.goods-navigation a:active,
+.overview-service:active,
+.info-link-card:active {
+    background-color: var(--soft);
+}
+
+.program-share {
+    transform-origin: top right;
+}
+
+/* [확인된 원래 상태로 즉시 복귀 / Resolve to the correct resting state]
+   타이핑·텍스트 선택·포커스 테두리는 움직임과 무관하게 즉시 응답합니다.
+   Typing, selection and focus outlines remain immediate and independent of motion. */
+@media (prefers-reduced-motion: reduce) {
+    .program-share {
+        transform: none;
+    }
+}
+
+.button:active,
+.round-button:active,
+.program-icon-button:active,
+.flow-text-button:active {
+    filter: brightness(0.88);
+}
+
+.button--dark:active {
+    background-color: var(--color-detail-30343a);
+    filter: none;
+}
+
+/* [대화상자의 배경과 펼침 상태 / Modal backdrop and disclosure state]
+   실제 닫힘까지 네이티브 모달 영역을 유지하고 펼침 내용의 높이는 JavaScript가 측정합니다.
+   Keep the native modal active until exit finishes; JavaScript measures disclosure content. */
+.navigation-dialog::backdrop {
+    transition: background-color var(--motion-panel) ease;
+}
+
+.navigation-dialog[data-dialog-closing]::backdrop {
+    background-color: var(--color-transparent);
+}
+
+@starting-style {
+    .navigation-dialog[open]::backdrop {
+        background-color: var(--color-transparent);
+    }
+}
+
+.faq-list summary svg,
+.program-guide-faq summary svg,
+.application-record summary > svg {
+    transition: transform var(--motion-panel) var(--ease-out);
+}
+
+details[data-disclosure-closing] summary svg {
+    transform: rotate(0deg);
+}
+
+/* [짧은 알림의 진입과 퇴장 / Short notification entrance and exit]
+   연속 알림은 같은 캡슐 안에서 갱신하며 불필요한 레이아웃 속성을 전환하지 않습니다.
+   Consecutive notices update one capsule without transitioning unrelated layout properties. */
+.toast {
+    transition:
+        opacity var(--motion-panel) ease,
+        transform var(--motion-panel) var(--ease-out),
+        visibility 0s linear var(--motion-panel);
+}
+
+.toast.visible {
+    transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .toast,
+    .toast.visible {
+        transform: translate(-50%, 0);
+    }
+
+    .navigation-dialog::backdrop,
+    .faq-list summary svg,
+    .program-guide-faq summary svg,
+    .application-record summary > svg {
+        transition: none;
+    }
+}

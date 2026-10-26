@@ -1,0 +1,405 @@
+/* [굿즈 탐색과 상세 / Goods discovery and details]
+   기존 상품 일러스트와 글자 체계를 상세·주문 화면으로 연결합니다.
+   Extend the existing goods artwork and typography into details and checkout. */
+.goods-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.goods-navigation a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: var(--control-size);
+    padding-block: 0.75rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.goods-navigation a[aria-current="page"] {
+    font-weight: 750;
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+}
+
+.goods-demo-note,
+.goods-detail-art > p {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.75;
+}
+
+.goods-page > .goods-demo-note {
+    margin-bottom: 2.5rem;
+}
+
+.goods-product-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+}
+
+.goods-product h3 {
+    margin-block: 0.75rem;
+    font-size: max(var(--text-min), var(--text-card-title));
+    font-weight: var(--weight-title);
+}
+
+.goods-product-link:focus-visible h3 {
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+}
+
+.goods-price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block: 1rem;
+}
+
+.goods-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: flex-start;
+}
+
+.goods-detail-information h2 {
+    margin-block: 0.75rem 1.5rem;
+    font-size: max(var(--text-min), clamp(1.75rem, 3vw, 2.75rem));
+}
+
+.goods-description {
+    line-height: 1.8;
+}
+
+.goods-specs {
+    margin-block: 2rem;
+    border-top: 1px solid var(--line);
+}
+
+.goods-specs > div {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.goods-specs dt {
+    color: var(--muted);
+}
+
+.goods-specs dd {
+    margin: 0;
+}
+
+.goods-quantity {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.goods-quantity select {
+    min-height: var(--control-size);
+    min-width: 6rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    color: var(--ink);
+    background: var(--paper);
+    font: inherit;
+}
+
+.goods-selection-total {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-block: 1.5rem;
+}
+
+.goods-selection-total strong,
+.goods-summary-total {
+    font-size: max(var(--text-min), var(--text-item-title));
+}
+
+.goods-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.goods-actions .text-link,
+.goods-cart-amount .text-link {
+    min-height: var(--control-size);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.goods-feedback {
+    margin-top: 1.5rem;
+    min-height: 1.75rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+/* [장바구니와 검토 단계 / Cart and review steps]
+   수량 입력과 금액은 안정된 위치를 유지합니다.
+   Quantity inputs and amounts retain stable positions during changes. */
+.goods-order-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 0;
+    margin: 0 0 2rem;
+    list-style: none;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.goods-order-steps [aria-current="step"] {
+    color: var(--ink);
+    font-weight: 750;
+}
+
+.goods-cart-list {
+    padding: 0;
+    margin: 1.5rem 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+}
+
+.goods-cart-row {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.5rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.goods-cart-art .goods-art {
+    margin: 0;
+}
+
+.goods-cart-art .goods-art > span {
+    font-size: max(var(--text-min), 3rem);
+}
+
+.goods-cart-art .goods-art > small {
+    display: none;
+}
+
+.goods-cart-information h2,
+.goods-order h2 {
+    margin: 0 0 0.5rem;
+    font-size: max(var(--text-min), var(--text-item-title));
+}
+
+.goods-cart-information p {
+    margin-bottom: 0.75rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.goods-cart-amount {
+    display: grid;
+    justify-items: end;
+    gap: 0.5rem;
+}
+
+.goods-summary {
+    max-width: 32rem;
+    margin: 2rem 0 2rem auto;
+}
+
+.goods-summary > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-block: 0.75rem;
+}
+
+.goods-summary dd {
+    margin: 0;
+}
+
+.goods-summary-total {
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--border-default);
+    font-weight: 750;
+}
+
+.goods-confirmation {
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+}
+
+.goods-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.75;
+}
+
+.goods-consent input {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.25rem;
+    accent-color: var(--ink);
+}
+
+/* [완료와 취소 피드백 / Completion and cancellation feedback]
+   확인 후 나타나는 내용만 짧게 연결하고 모션 감소 설정을 존중합니다.
+   Briefly connect revealed confirmation content and respect reduced motion. */
+.goods-receipt {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    margin-bottom: 2rem;
+    background: var(--soft);
+    border-radius: var(--radius);
+}
+
+.goods-receipt h2 {
+    margin-bottom: 0.75rem;
+}
+
+.goods-order {
+    padding-block: 2rem;
+    border-top: 1px solid var(--line);
+}
+
+.goods-order-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.goods-order-heading > div {
+    min-width: 0;
+}
+
+.goods-order-heading p {
+    overflow-wrap: anywhere;
+    font-size: max(var(--text-min), var(--text-sm));
+    color: var(--muted);
+}
+
+.goods-order-status {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.goods-order-items {
+    list-style: none;
+    padding: 0;
+    margin-block: 1.5rem;
+}
+
+.goods-order-items li,
+.goods-order-total {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-block: 0.5rem;
+}
+
+.goods-order-total {
+    border-top: 1px solid var(--line);
+}
+
+.goods-cancel-confirm {
+    margin-top: 1rem;
+}
+
+.goods-cancel-confirm summary {
+    min-height: var(--control-size);
+    padding-block: 0.75rem;
+    cursor: pointer;
+    font-size: max(var(--text-min), var(--text-sm));
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+}
+
+.goods-cancel-confirm > div {
+    padding-block: 0.75rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .goods-product-link:hover h3 {
+        text-decoration: underline;
+        text-underline-offset: 0.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .goods-receipt {
+        animation: goods-confirmation-entry 200ms var(--ease-out) both;
+    }
+
+    @keyframes goods-confirmation-entry {
+        from {
+            opacity: 0%;
+            transform: translateY(0.375rem);
+        }
+
+        to {
+            opacity: 100%;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* [작은 화면에서의 읽기 순서 / Reading order on compact screens] */
+@media (max-width: 800px) {
+    .goods-detail {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .goods-detail-art {
+        max-width: 34rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .goods-page .goods-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2.5rem;
+    }
+
+    .goods-cart-row {
+        grid-template-columns: 5rem minmax(0, 1fr);
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .goods-cart-amount {
+        grid-column: 2;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        justify-items: start;
+        width: 100%;
+    }
+
+    .goods-cart-art .goods-art > span {
+        font-size: max(var(--text-min), 2rem);
+    }
+
+    .goods-actions .button {
+        max-width: 100%;
+        white-space: normal;
+    }
+
+    .goods-specs > div {
+        grid-template-columns: 5rem minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+}

@@ -1,0 +1,188 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DataMosh (a) feedback compute → display copy → live/moshed mix > RTTs the child, registers a display (compute) texture, and samples both > final-pass 1`] = `
+"fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+@group(1) @binding(1) var compute_0: texture_2d<f32>;
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  intensity: f32,
+  blockSize: f32,
+  drift: f32,
+  churn: f32,
+  blend: f32,
+  speed: f32,
+  seed: f32,
+  _opacity: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_dm: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = unpremultiplyAlpha(mix(textureSample(rtt_0, linearClamp, uv), textureSample(compute_0, linearClamp, uv), uniforms.n_dm.blend));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`DataMosh (c) kernel resolves (compute-simulation rules) > the decoder step resolves, writing both the next state and the display copy > moshKernel 1`] = `
+"struct MacroblockAdvectParams {
+  time: f32,
+  dt: f32,
+  seed: f32,
+  intensity: f32,
+  blockSize: f32,
+  drift: f32,
+  churn: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: MacroblockAdvectParams;
+
+fn floatBitsToUint1(x: f32) -> u32 { return bitcast<u32>(x); }
+
+fn noise_hash11(p: f32) -> f32 {
+  let u = floatBitsToUint1((p * 3141592653f));
+  return (f32(((u * u) * 3141592653u)) / 4294967296f);
+}
+
+@group(0) @binding(1) var prev: texture_2d<f32>;
+
+@group(0) @binding(0) var src: texture_2d<f32>;
+
+@group(0) @binding(2) var next: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(3) var display: texture_storage_2d<rgba16float, write>;
+
+fn dataMoshStep(cx: u32, cy: u32) {
+  let P = (&params);
+  const resF = 768f;
+  let px = f32(cx);
+  let py = f32(cy);
+  let fx = ((px + 0.5f) / resF);
+  let fy = ((py + 0.5f) / resF);
+  let churnRate = (0.15f + ((*P).churn * 0.8f));
+  let bsF = max((*P).blockSize, 8f);
+  let coarse = (bsF * 2.6f);
+  let cbx = floor((px / coarse));
+  let cby = floor((py / coarse));
+  let cPhase = noise_hash11((((cbx * 91.17f) + (cby * 41.23f)) + ((*P).seed * 3.7f)));
+  let cEpoch = floor(((((*P).time * churnRate) * 0.25f) + cPhase));
+  let scalePick = noise_hash11(((((cbx * 12.9898f) + (cby * 78.233f)) + (cEpoch * 37.71f)) + ((*P).seed * 3.7f)));
+  let bs = select(bsF, coarse, (scalePick < 0.35f));
+  let bx = floor((px / bs));
+  let by = floor((py / bs));
+  let bPhase = noise_hash11((((bx * 127.1f) + (by * 311.7f)) + ((*P).seed * 17.9f)));
+  let bRate = (churnRate * (0.7f + (0.6f * noise_hash11((((bx * 53.7f) + (by * 97.3f)) + ((*P).seed * 5.3f))))));
+  let bEpoch = floor((((*P).time * bRate) + bPhase));
+  let bh = ((((bx * 127.1f) + (by * 311.7f)) + (bEpoch * 74.7f)) + ((*P).seed * 17.9f));
+  let h1 = noise_hash11((bh + 0.13f));
+  let h2 = noise_hash11((bh + 7.77f));
+  let h3 = noise_hash11((bh + 23.19f));
+  let bcx = (((bx + 0.5f) * bs) / resF);
+  let bcy = (((by + 0.5f) * bs) / resF);
+  let field = ((0.5f + ((0.25f * sin((((bcx * 2.7f) + ((*P).time * 0.31f)) + (*P).seed))) * sin((((bcy * 2.1f) - ((*P).time * 0.23f)) + ((*P).seed * 0.4f))))) + (0.25f * sin(((((bcx + bcy) * 1.6f) + ((*P).time * 0.17f)) + ((*P).seed * 0.7f)))));
+  let thresh = (1f - ((*P).intensity * 0.55f));
+  let hold = smoothstep((thresh - 0.09f), (thresh + 0.09f), (field + ((h1 - 0.5f) * 0.3f)));
+  let flowAng = (((sin(((bcx * 1.9f) + ((*P).seed * 3.1f))) * 1.7f) + (cos(((bcy * 2.3f) - ((*P).seed * 2.7f))) * 1.3f)) + ((*P).time * 0.15f));
+  let ang = (flowAng + ((h2 - 0.5f) * 1.1f));
+  let mag = (((((0.5f + (0.5f * h3)) * (*P).drift) * (*P).dt) * 10f) * (bs / resF));
+  let suRaw = (fx - (cos(ang) * mag));
+  let svRaw = (fy - (sin(ang) * mag));
+  let inBounds = (((select(0f, 1f, (suRaw >= 0f)) * select(0f, 1f, (suRaw <= 1f))) * select(0f, 1f, (svRaw >= 0f))) * select(0f, 1f, (svRaw <= 1f)));
+  let su = ((clamp(suRaw, 0f, 1f) * resF) - 0.5f);
+  let sv = ((clamp(svRaw, 0f, 1f) * resF) - 0.5f);
+  let sx0 = floor(su);
+  let sy0 = floor(sv);
+  let sfx = (su - sx0);
+  let sfy = (sv - sy0);
+  let maxT = (resF - 1f);
+  let ix0 = u32(clamp(sx0, 0f, maxT));
+  let ix1 = u32(clamp((sx0 + 1f), 0f, maxT));
+  let iy0 = u32(clamp(sy0, 0f, maxT));
+  let iy1 = u32(clamp((sy0 + 1f), 0f, maxT));
+  let p00 = textureLoad(prev, vec2u(ix0, iy0), 0);
+  let p10 = textureLoad(prev, vec2u(ix1, iy0), 0);
+  let p01 = textureLoad(prev, vec2u(ix0, iy1), 0);
+  let p11 = textureLoad(prev, vec2u(ix1, iy1), 0);
+  let prevC = mix(mix(p00, p10, sfx), mix(p01, p11, sfx), sfy);
+  let quant = ((floor((prevC.xyz * 18f)) + vec3f(0.5)) / 18f);
+  let heldRgb = (mix(prevC.xyz, quant, 0.12f) * 0.9985f);
+  let held = vec4f(heldRgb, prevC.w);
+  let rekey = clamp(((*P).dt * (1.2f + ((1f - (*P).intensity) * 2f))), 0f, 0.2f);
+  let srcDims = textureDimensions(src);
+  let srcW = f32(srcDims.x);
+  let srcH = f32(srcDims.y);
+  let cu = ((fx * srcW) - 0.5f);
+  let cv = ((fy * srcH) - 0.5f);
+  let cx0 = floor(cu);
+  let cy0 = floor(cv);
+  let cfx = (cu - cx0);
+  let cfy = (cv - cy0);
+  let jx0 = u32(clamp(cx0, 0f, (srcW - 1f)));
+  let jx1 = u32(clamp((cx0 + 1f), 0f, (srcW - 1f)));
+  let jy0 = u32(clamp(cy0, 0f, (srcH - 1f)));
+  let jy1 = u32(clamp((cy0 + 1f), 0f, (srcH - 1f)));
+  let c00 = textureLoad(src, vec2u(jx0, jy0), 0);
+  let c10 = textureLoad(src, vec2u(jx1, jy0), 0);
+  let c01 = textureLoad(src, vec2u(jx0, jy1), 0);
+  let c11 = textureLoad(src, vec2u(jx1, jy1), 0);
+  let fresh = mix(mix(c00, c10, cfx), mix(c01, c11, cfx), cfy);
+  let heldAnchored = mix(held, fresh, rekey);
+  let outC = mix(fresh, heldAnchored, (hold * inBounds));
+  textureStore(next, vec2u(cx, cy), outC);
+  textureStore(display, vec2u(cx, cy), outC);
+}"
+`;

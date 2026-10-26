@@ -1,0 +1,27 @@
+# 기존 프로젝트의 비표준 커밋 이력을 유지하기 위해 첫 도입은 경고 모드
+name: Coding Constitution (advisory)
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  commit-convention:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Audit new PR commits (advisory)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags origin "$BASE_SHA" "$HEAD_SHA"
+          node scripts/check-coding-constitution.mjs --range "$BASE_SHA..$HEAD_SHA" --advisory
+      - name: Manual verification instructions
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "Run node scripts/check-coding-constitution.mjs --range origin/main..HEAD locally."

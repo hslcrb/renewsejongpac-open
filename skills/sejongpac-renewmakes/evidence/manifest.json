@@ -1,0 +1,72 @@
+[
+  {
+    "file": "readable-desktop.png",
+    "context": "Earlier typography-system validation retained in /tmp",
+    "sha256": "f445de700cb8ec4c89daf88676899fb6f3150c95da326cef006e2c86559447e9"
+  },
+  {
+    "file": "readable-mobile.png",
+    "context": "Earlier typography-system validation retained in /tmp",
+    "sha256": "070ddfc5744ea6c91c81c64bbb618456224c34bf66db050ae557bf499698c6c9"
+  },
+  {
+    "file": "about-before.png",
+    "context": "Captured before this task changed the about page",
+    "sha256": "7474fdad50f8fdb69158adf4a24516af6fa2709ab706f3f12dac444941dd95b1"
+  },
+  {
+    "file": "about-after.png",
+    "context": "Final about cleanup: removes small dots, header marks, large mint circle/shape panel, redundant tags and captions; preserves copy and identity link",
+    "sha256": "10c06b94a67d190503cf61223e4b36b03758ed2fcc32d02bdc5e8d03eabd0cf9"
+  },
+  {
+    "file": "toast-before.png",
+    "context": "Actual favorite deletion before capsule correction",
+    "sha256": "47b88fb55d46af09d6ba3d66ddb46ea5b6165ed5a9ebd340a633fc5dc1fbbdf9"
+  },
+  {
+    "file": "toast-after.png",
+    "context": "Actual favorite deletion after capsule correction",
+    "sha256": "8301403663ae48026d18ae4ac5e7955df170edca19c6280039aa2d5e388fe6cc"
+  },
+  {
+    "file": "about-intermediate.png",
+    "context": "Superseded intermediate cleanup: small decorative labels removed but the large mint circle remained; preserved as a documented mistake",
+    "sha256": "4656eece5872d64d74abdcd3e73872fe7128ebe74e497eefe8213915c96a1da0"
+  },
+  {
+    "file": "cards-hero-desktop.png",
+    "context": "Latest iteration: shared hero card, 1440px, reduced motion paused",
+    "sha256": "d1202d8ea872327786dc259f980602ea5d2877d3db442f9d3e845f8487b94b3f"
+  },
+  {
+    "file": "cards-posters-desktop.png",
+    "context": "Latest iteration: poster media fills without padding; title/meta hierarchy",
+    "sha256": "94decc933f5e744d4a65348cd5b8178903045c466baf4c20bba4ff12fdd2a52b"
+  },
+  {
+    "file": "cards-visit-desktop.png",
+    "context": "Latest iteration: 20px/650 visit items and 18px descriptions",
+    "sha256": "9a3ff4a0de31d163bac5bc5df43b4036c71fcddc42ea7ec7b19a23affc3e4ded"
+  },
+  {
+    "file": "cards-identity-restored.png",
+    "context": "Latest user reversal: only the lower mint/earth/human diagram restored",
+    "sha256": "73b2fe4bf17dfb3ff49875181acdbf69d886af984a97eed8c38ef8e1b41320c8"
+  },
+  {
+    "file": "cards-visit-page.png",
+    "context": "Latest iteration: visit heading without decorative English kicker",
+    "sha256": "a288a775e3f3132c6841403474a7ce5e49ed58be9d180c2058144bab35fdf8ab"
+  },
+  {
+    "file": "cards-hero-mobile.png",
+    "context": "Latest iteration: mobile hero readable hierarchy and control layout",
+    "sha256": "7485203c59fade852b3e2cf1f5d655f95c66828220fb8143bda73847a2a41e9c"
+  },
+  {
+    "file": "cards-posters-mobile.png",
+    "context": "Latest iteration: 390px poster cards cover media without padding",
+    "sha256": "d28e8793087dfff9646d08c82bb8e5abe13daef5f410f7007abf93a8c9e1f5bf"
+  }
+]

@@ -1,0 +1,48 @@
+{
+  "base": "http://127.0.0.1:4173/v5/",
+  "verifiedAt": "2026-10-21T07:08:10.714Z",
+  "mode": "real SDK with mocked provider; not Google consent verification",
+  "results": [
+    {
+      "name": "provider availability controls the real Google button",
+      "passed": true
+    },
+    {
+      "name": "PKCE exchanges once and restores the real identity in page and header",
+      "passed": true
+    },
+    {
+      "name": "authenticated profile updates use the SDK and keep the provider email read-only",
+      "passed": true
+    },
+    {
+      "name": "a failed new code cannot succeed through an older stored real session",
+      "passed": true
+    },
+    {
+      "name": "a missing or corrupt PKCE verifier cannot reuse an older session",
+      "passed": true
+    },
+    {
+      "name": "sign-out ends the SDK session and returns page and header to the guest state",
+      "passed": true
+    },
+    {
+      "name": "denied or empty callbacks have a usable recovery path and never trust a next URL",
+      "passed": true
+    },
+    {
+      "name": "blocked storage still logs out the demo across remounts and explicit sign-in restores it",
+      "passed": true
+    },
+    {
+      "name": "malformed stored login fields recover without a runtime error",
+      "passed": true
+    },
+    {
+      "name": "no browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

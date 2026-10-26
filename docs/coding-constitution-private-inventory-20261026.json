@@ -1,0 +1,3214 @@
+{
+  "schema": "coding-constitution-private-rollout-v1",
+  "as_of": "2026-10-26",
+  "source": "GitHub linked account owner affiliation",
+  "visibility": "private",
+  "canonical_repository": "hslcrb/renewsejongpac",
+  "constitution_version": "1.0.0",
+  "scope": "owned-private-only",
+  "total_owned": 672,
+  "total_private": 399,
+  "notes": [
+    "This is metadata-only inventory; a repo being listed does not mean its code/rules were fully audited.",
+    "Only verified merged repositories are marked merged.",
+    "Archived or read-only repositories require a separate safe decision.",
+    "Existing branches and per-repo policies must be checked before any future write.",
+    "Inventory update: new merged PRs verified via GitHub; other repositories remain explicitly pending."
+  ],
+  "repositories": [
+    {
+      "full_name": "hslcrb/1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/1/pull/2"
+    },
+    {
+      "full_name": "hslcrb/2020wix_everstory_sitecode_reversed",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Adobe-Illustrator-2026_Cool-Extras",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Adobe-Illustrator-2026_Plug-ins",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Adobe-Ilustrators-infonfiles",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/AgentMerry",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/AgentMerry/pull/1"
+    },
+    {
+      "full_name": "hslcrb/agenty_afreedesign",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ai-account-services-uses-info",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ai-sdk-python-streaming",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/aileague2026",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/AILeague2026app",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/AILeague2026app/pull/18"
+    },
+    {
+      "full_name": "hslcrb/airplaneshoot",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/airplaneshoot/pull/1"
+    },
+    {
+      "full_name": "hslcrb/aitop100_2026competition",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/aitop100_ai_top_100_AIimmigrationofficer",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/aitop100_ai_top_100_final_news.txt",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/aitop100_ai_top_100_Preparationofhandoverdocuments",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ai_conversations",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ai_generated-medias",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ai_instuctions",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ALL-API-KEYS",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/ALL-API-KEYS/pull/1"
+    },
+    {
+      "full_name": "hslcrb/All-hanbomTest",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/All-see-eye_AbrowserAIOS",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ALLCLAUCODES---claude-code_backendsource___claw-code___giteeclaudecode",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/allgenai_companians-s_chatsandprompts",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/allmyfonts",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/allnote",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Anipixel",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/Anipixel/pull/1"
+    },
+    {
+      "full_name": "hslcrb/Antigravity-auto-click",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Antigravity-coding-works-prompts-and-responses",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/antigravity-session_20260208",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/AntigravityIDE",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/antigravity_.myprompts-chats",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/antigravity_antigravity.",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/antigravity_gemini.",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/anyfi-e",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/anymd",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/anymd1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/apache-tomcat-10.0.27",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/apachetomcat_guitool",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/apache_py_portfowardandservermanage",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/apache_test_first_project",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/apple-pie",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Ap_B-anm",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Archiv_hanbom_h.goesw.kr",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/arggame",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/artemis-templatesite",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/asem_basicgui",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/asm_proj2_drawpad",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/aus-alert",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ausday-celebration-since26",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ausgoal-prt",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ausgoal-simple-spaapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ausgoalsnew",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ausgoal_spaapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/aus_plan_2026",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/autoagent",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Autoinserter",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/autorequester",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/bd_a-jb",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/bd_b_jupyter-nbclass__securityclass",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/beeyo_a-videoandaudiosw",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Bershy_aOpenDesignCoder",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/best-web-to-pdf-extension",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/bible7days",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Blueclient_a_python_pcmanagementnmirriingapp",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/bluejeans",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Bluestone",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/bluewinds",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/board_traffictransfer",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/breezes",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/breezes/pull/1"
+    },
+    {
+      "full_name": "hslcrb/breezes---legacy-v1.0-",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Breezes_aOpenclawAgentJarvis_forOnlyHslcrb",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Breezes_aOpenclawAgentJarvis_forOnlyHslcrb_integrated",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/BreezOs",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/builml",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/busangame",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/candy-programming-lang-project",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/candy_-_-_-_-",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Carrerdreams-geminichats_dlghtp2026",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/challenger",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/chatwithclaude",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/chickensand1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ClassControl",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/claude-airplane-game",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Cocoamus_Note",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/CODE-SESSION-BACKUPS",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/cookie",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Cpp_bluerang_theaeromediaplayer",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/creative-studio",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/CrystalWaters",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/csv_webviewer",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ctgpt_dlghtp581_naver_acct",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/cursedcheonrian",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/cursorcat",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Cursorforges-webutils",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/CursorMaker-makeyourcursorfromyourimages",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/c_drawpad",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/C_STRUC",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/c_studytool_CMans",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/c_study_gui_program",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/dailylettertome",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/dart_onlinedartgame",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/dashboard1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/DATAandArchiving",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/DATALAB-hallofbigdata",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Department-course-materials_CODEPROJECTS---hrd_shop_base20260304",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/djangocrm",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Djashop_firstdjango_project",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Do-k_krdocsapp-private",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/dozzoncooapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/dprkofficial-parody",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Dvora",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/edithtmlkr",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/edupublicdata-Competition-MainDir",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ELDORADO",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/endlesscrystal",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/endlessmap_js",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Englishcat",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/EoPS",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Everstory-Backup-Project",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/exnetinfo",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/fastqr",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/file-typing-assistant",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/filedtripapp-andSuperApp_HB",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/filghtsimulbyClaude_private",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/firstaws_redirectrheemain",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/flash_html5_maker",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/flowcronos",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Font-Search-N-Installer",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/fontings",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/fontmaster",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/fontproject",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/FontReaper-ULTIMATE---All-in-One-Package",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/forestime1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/forestpomodorotimer",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/freebirdsite_moonlight_nextjs_mediaart",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/FreeQrs_android",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/FreeQrs_android_vfree1.2",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/FreeQrs_android_vfree1.3",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/fs-packager",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/gamist-a-three.js-game-low-code-maker",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/gcus",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/genist-k",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/genistf-20251222t121526z-1-001",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/GitHub-to-MD_simple",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Gitv-gitForMobileenv",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/goodbye-script",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/GoogleAIGemini_Claude_ChatGPT___Allchats",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/gpt6-astra-goudok",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/gptaichat",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hadira",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Haeoreum",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hanbom-next",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hanbommainsite_2025",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hbsc_503-1pc_pdrive",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hbtrip.info.count",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/herpes-agent",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/himedia-73days-academy-web_rheehose-allclassfile",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/himedia-academy-markup_projects",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/himedia_hifive_writes_museum_archives",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/holosnap",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/holy_renaissance",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Hosejump2_downloads",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/HowtomakeLiquidGlassStyle-private",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hrd20117_apacheweb_shopmanagesystem",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hrdKorea_eclipseproject_RELEASE",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hrdkorea_temp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/hslcrb_filetransfer",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ICQA_emulators-router",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/IDEA_BANK",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Ilumis_androidver",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Ilumity",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/image-gallery-starter",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Incretheble_asmhero",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Integrated-Workflows",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/IRaE-1",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/J-Calc",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/jany-where",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/jar-game",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/JarvisAssistant_cli_gemma2",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/JavaFT",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/jayu26",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/jeilsa",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/joyschool_repo",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/jscencproject",
+      "default_branch": "main",
+      "archived": true,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/jsonote-noterepo",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Kairos-Myportalpage",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/kairos-openproxy",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Kakaotalkthemefactory-20260201",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/kakaotalk_theme_template",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/kanana_rising1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/katy_alocalai",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/kivy_official_first__galleryapp",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ktlin-Nosoundcam",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/launchpadide",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/leftorright_face_testwebapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/lemonade-skill",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/LEMONY---a-new-design-app",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/lena-fast",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/lena-webbuilder",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/limsflex",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/limsflex-exs",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/limstandards",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/links",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Local-Disk-P-data-on-PC-No.-1-in-Room-503---20260316",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/localtube",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/lockandfile",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/logofont",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/logoswitcher",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/lovechaennie",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/manycipher",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/markviwer",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/martixcom",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/matrixcom2",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/matrixjp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/matrix_fake_hacking",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/maxclawed",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/md2pdf-master",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/mdtopdf",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Metty",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/military_secure_playground",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/modelato",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/MP3LOVE",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/muri_amusicianapp_audioedits",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/music_player_aero",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/my-first-fulldev-portpolio",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/mygitdrive",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/myos---project-bluemine",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/my_FormsandResumes",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/namu-wiki_docsinfos-and-etcs",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nanoblueberry",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/naver_myhouse_extsion",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nestjs_foreduproject_alpha1.1",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/networkacademy5th_202302",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/newbambomtalk",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/newcheon2churchwebapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/newmodeler",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Newsongs-private",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/newyearscount_begin2025",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nextjs-ai-chatbot",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nextjs-ai-chatbot-test",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nextjs_adue2025serviceapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nextjs_rhee_aichat",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nextjs_rhee_detailpage_webmakeagency",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nextjs_thegreenfiled_game",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/nsm-solution",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/NsmClass_20260306_152648",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/officeromance1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ohmy_apple-pie",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ollama_model_agents_qwen",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/omchs",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Onement-animater",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/Onement-animater/pull/4"
+    },
+    {
+      "full_name": "hslcrb/OneulHanbom-anHBPlatform",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/OneulHanbom-hanbomtoday",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/OneulHanbom-OHB-IntegratedPlatform",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/OneulHanbom-Prototype",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/oneulhanbom_hbplatform_supabase",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/oneulhb",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/online_storyland",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/openclaw_codebase",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/OzOrder-light",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/paticlesite_eyecursortrack",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Payich_gemma3_1b_firstmakedapp_pygame",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Payich_python_ellegancetetrisapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pdfng1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pdftools",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/peach_anotentodonextjsapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/persia",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pixeladventure",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pixeladventure-simple",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pixelrunnerkr1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/PKMap-pka2xml",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pmd-product-mgmt-templates",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pris",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/project-CRYSTAL",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/project-for-univ2027",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/projectglassweb",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/promptbank",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/property",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/propsword_amdwordprosseror",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pt-web",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pyapp_100recipes",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pypandoc-hwpx-main",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pyskywifi_hslcrb-advanced",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/pywebide1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/py_audio_composer",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/py_autoclicker",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/py_Ilumis",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/py_Ilumis_shellcode",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/py_pdfeditor_pineas",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/py_webautumation_wevers",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/py_ytdwnder_Mytube_nextjsapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Ramerf_templates",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rannum",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/react",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/recopad",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Remake-Buddy-private",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ReNewEdits",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/renewsejongpac",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/renewsejongpac/pull/19"
+    },
+    {
+      "full_name": "hslcrb/renewsejongpac-archivemirrorserver",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/renewsejongpac-philosophized",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/ReverseWebDesign",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Rhee-LLMWIKI",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheecrtv",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheecrtv-ports",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehose-2025-christmas-celebration-page-nextjs",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehose.com",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehoselenovo2_antigravityAutoAccept-dirINDocuments",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehoselenovo2_AWS_KEY_PARE_PEM-dirINDocuments",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehoselenovo2_downloads-dir",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehoselenovo2_pictures-dir",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehoselenovo2_sleekespolitics-dirINDocuments",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehosetech",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehosetechportpolio-nextjs",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehoseTechportpolio_nextjs",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "merged",
+      "pr": "https://github.com/hslcrb/rheehoseTechportpolio_nextjs/pull/126"
+    },
+    {
+      "full_name": "hslcrb/rheehoseTechportpolio_nextjs_blog",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehoseTechportpolio_nextjs_services",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehosewinservercomputers_Google-Chrome-Extensions",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehose_emblems2",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehose_games",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheehose_webgames",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheelife",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rheelonovo2_downloads-dir",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rhwp-Rheehose-app",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rin",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/RoyalrepoForAustrlia-Immigration_Plans",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/RSKC_System-Kernel-Controller",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rust3dhorrorgame",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/rustrator",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/RVML-format",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/saewhooclicks",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Saezip_a_java_filezipper_app",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/school-meal-android-app",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/school-meal-python-app",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/sea35652.wixsite.com-archiv_bySaveAllResoures",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/secinfo",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Secureprogram_I3GSvcManager",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/semgle-newwebapp",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/semgle_site_v2-20260226made",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/serverlight_a-portfowardingsystem",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/serverpc_2026",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Sfei-secure",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/shootingstars",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/simftp_advanced",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/simftp_archived",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/simple-ftp-server-sfs-gui-pros",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Skills",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/sntpratice",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/socketer",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/sony_16gb_white_usb",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/specialitye-projectsext",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/staegano",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Staegano-Compiler--SC",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/staegano2",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/staegano3",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/static.dynamic.storage",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/stock-investment-secrets",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/stock-investment-secrets-pdf",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/storemaketingwebapp-example0",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/supercode",
+      "default_branch": "dev",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/talkingchoco",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/tanghuru_nextjs_particleart",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/the-yunseul-project",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/theminjoo_archive",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/timeif",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/todayhanbom",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/todayhb",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/total-detector-system",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/tourist-2026",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Uniconvert-3.1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/uniconvert-result",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/uniconvert-result--1-",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Uniconvert1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Uniconvert2",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Uniconvert3",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Uniconvert3.2",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/unvisible_averycryptodoc",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Variable_Temp_Repo___V.T.R.",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/vidislice",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/vidislice-cpp",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/vscode-pris0303",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/vscodeforked-magician-code",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/vscode_online",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Weapon_gatchaflash",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/WEBARCHIVER",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/webrouter",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/wedit",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/weenote-reversed1",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/Wheelcheck",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/whitehack",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/whitehack-lmaker",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/wifi-ca-manager",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/wonderfulcosmic",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/wonderfulcosmic2",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/wonjeonsimul",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/wordclouderkr",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/worldprocessor",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/world_hostory_writes_archivingmuseum_realearthworld",
+      "default_branch": "main",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    },
+    {
+      "full_name": "hslcrb/youtube-parallel-downloader",
+      "default_branch": "master",
+      "archived": false,
+      "visibility": "private",
+      "status": "pending",
+      "pr": null
+    }
+  ],
+  "verified_merged": 10,
+  "remaining_pending": 389
+}

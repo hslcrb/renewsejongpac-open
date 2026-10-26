@@ -1,0 +1,97 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`resolve gate — cells fns emit valid WGSL > matches WGSL snapshot 1`] = `
+"struct CellTile {
+  cell: vec2f,
+  local: vec2f,
+}
+
+fn squareTiling(p: vec2f) -> CellTile {
+  return CellTile(floor(p), fract(p));
+}
+
+fn flooredMod2(p: vec2f, m: vec2f) -> vec2f {
+  return vec2f((p.x - (m.x * floor((p.x / m.x)))), (p.y - (m.y * floor((p.y / m.y)))));
+}
+
+struct HexCell {
+  gv: vec2f,
+  id: vec2f,
+}
+
+fn hexTiling(p: vec2f, s: vec2f) -> HexCell {
+  let sh = (s * 0.5f);
+  let a = (flooredMod2(p, s) - sh);
+  let b = (flooredMod2((p - sh), s) - sh);
+  let gv = select(b, a, (dot(a, a) < dot(b, b)));
+  return HexCell(gv, (p - gv));
+}
+
+fn triLattice(p: vec2f) -> vec2f {
+  return vec2f((p.x - (p.y / 1.7320508075688772f)), (p.y * 1.1547005383792517f));
+}
+
+fn cellCentreUV(uv: vec2f, viewport: vec2f, cells: f32) -> vec2f {
+  let aspect = (viewport.x / max(viewport.y, 1e-6f));
+  let correctedX = (uv.x * aspect);
+  let correctedY = (1f - uv.y);
+  let cellCenterCorrectedX = ((floor((correctedX * cells)) + 0.5f) / cells);
+  let cellCenterCorrectedY = ((floor((correctedY * cells)) + 0.5f) / cells);
+  return vec2f((cellCenterCorrectedX / aspect), (1f - cellCenterCorrectedY));
+}
+
+fn cellCentreUVRotated(uv: vec2f, viewport: vec2f, cells: f32, rotationRad: f32) -> vec2f {
+  let aspect = (viewport.x / max(viewport.y, 1e-6f));
+  let correctedX = (uv.x * aspect);
+  let correctedY = (1f - uv.y);
+  let cosR = cos(rotationRad);
+  let sinR = sin(rotationRad);
+  let centerX = (aspect * 0.5f);
+  const centerY = 0.5;
+  let cx = (correctedX - centerX);
+  let cy = (correctedY - centerY);
+  let rotX = (((cx * cosR) - (cy * sinR)) + centerX);
+  let rotY = (((cx * sinR) + (cy * cosR)) + centerY);
+  let cellRX = ((floor((rotX * cells)) + 0.5f) / cells);
+  let cellRY = ((floor((rotY * cells)) + 0.5f) / cells);
+  let ccx = (cellRX - centerX);
+  let ccy = (cellRY - centerY);
+  let unrotX = (((ccx * cosR) + (ccy * sinR)) + centerX);
+  let unrotY = (((ccx * -(sinR)) + (ccy * cosR)) + centerY);
+  return vec2f((unrotX / aspect), (1f - unrotY));
+}
+
+fn cellHash(id: vec2f) -> f32 {
+  let q0 = fract((id * vec2f(123.33999633789062, 345.45001220703125)));
+  let q1 = (q0 + dot(q0, (q0 + 34.345f)));
+  return fract((q1.x * q1.y));
+}
+
+fn variationFactor(rand: f32, variation: f32) -> f32 {
+  return max((1f + (((rand - 0.5f) * 2f) * variation)), 0f);
+}
+
+fn rowSpeedHash(row: f32) -> f32 {
+  return fract((sin((row * 127.1f)) * 43758.5453f));
+}
+
+fn rowSpeedMultiplier(rowHash: f32, variance: f32) -> f32 {
+  return (1f + (((rowHash - 0.5f) * 4f) * variance));
+}
+
+struct cellsProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn cellsProbe(_arg_0: cellsProbe_Input) -> @location(0) vec4f {
+  let tile = squareTiling((_arg_0.uv * 8f));
+  let hex = hexTiling((_arg_0.uv * 6f), vec2f(1.7320507764816284, 1));
+  let tri = triLattice((_arg_0.uv * 5f));
+  let centre = cellCentreUV(_arg_0.uv, vec2f(1600, 900), 10f);
+  let centreRot = cellCentreUVRotated(_arg_0.uv, vec2f(1600, 900), 10f, 0.5f);
+  let rand = cellHash(tile.cell);
+  let varied = variationFactor(rand, 0.5f);
+  let speed = rowSpeedMultiplier(rowSpeedHash(tile.cell.y), 0.3f);
+  return vec4f(((tile.local.x + hex.gv.x) + tri.y), (centre.x + centreRot.y), (varied * speed), rand);
+}"
+`;

@@ -1,0 +1,141 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CursorRipples (a) compute wave field → displacement texture → chromatic fragment > RTTs the child, registers a displacement (compute) texture, samples it + the child (3 chromatic taps) > final-pass 1`] = `
+"fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+struct ChromaticSplitUVs {
+  rUV: vec2f,
+  gUV: vec2f,
+  bUV: vec2f,
+}
+
+fn chromaticDisplaceUVs(uv: vec2f, disp: vec2f, strength: f32, chromaticSplit: f32) -> ChromaticSplitUVs {
+  let scaled = (disp * (strength * 0.1f));
+  const maxDisp = 0.15;
+  let clamped = clamp(scaled, vec2f(-(maxDisp), -(maxDisp)), vec2f(maxDisp, maxDisp));
+  let chromaticScale = (chromaticSplit * 0.1f);
+  let rUV = (uv - (clamped * (1f + chromaticScale)));
+  let gUV = (uv - clamped);
+  let bUV = (uv - (clamped * (1f - chromaticScale)));
+  return ChromaticSplitUVs(rUV, gUV, bUV);
+}
+
+@group(1) @binding(1) var compute_0: texture_2d<f32>;
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  intensity: f32,
+  decay: f32,
+  radius: f32,
+  chromaticSplit: f32,
+  edges: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_cr: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = unpremultiplyAlpha(vec4f((textureSample(rtt_0, linearClamp, (chromaticDisplaceUVs(uv, (textureSample(compute_0, linearClamp, uv)).xy, uniforms.n_cr.intensity, uniforms.n_cr.chromaticSplit)).rUV)).r, (textureSample(rtt_0, linearClamp, (chromaticDisplaceUVs(uv, (textureSample(compute_0, linearClamp, uv)).xy, uniforms.n_cr.intensity, uniforms.n_cr.chromaticSplit)).gUV)).g, (textureSample(rtt_0, linearClamp, (chromaticDisplaceUVs(uv, (textureSample(compute_0, linearClamp, uv)).xy, uniforms.n_cr.intensity, uniforms.n_cr.chromaticSplit)).bUV)).b, (textureSample(rtt_0, linearClamp, (chromaticDisplaceUVs(uv, (textureSample(compute_0, linearClamp, uv)).xy, uniforms.n_cr.intensity, uniforms.n_cr.chromaticSplit)).gUV)).a));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`CursorRipples (d) kernels resolve (D3 rules) > propagate / gradient kernels resolve with storage buffers + textureStore > propagateKernel 1`] = `
+"struct uniform_1 {
+  cursorX: f32,
+  cursorY: f32,
+  cursorSpeed: f32,
+  dt: f32,
+  damping: f32,
+  radius: f32,
+  aspect: f32,
+}
+
+@group(0) @binding(2) var<uniform> params: uniform_1;
+
+@group(0) @binding(0) var<storage, read> readBuf: array<f32, 16384>;
+
+@group(0) @binding(1) var<storage, read_write> writeBuf: array<f32, 16384>;
+
+fn waveFieldPropagate_128(cx: u32, cy: u32) {
+  if (((((cx > 0u) && (cx < 127u)) && (cy > 0u)) && (cy < 127u))) {
+    let p = (&params);
+    const gs = 128u;
+    let idx = ((cy * gs) + cx);
+    let left = readBuf[(idx - 1u)];
+    let right = readBuf[(idx + 1u)];
+    let up = readBuf[(idx - gs)];
+    let down = readBuf[(idx + gs)];
+    let avg = ((((left + right) + up) + down) * 0.5f);
+    let prev = writeBuf[idx];
+    let dampFactor = (1f - ((*p).damping * 4e-3f));
+    var next = ((avg - prev) * dampFactor);
+    let cellX = ((f32(cx) + 0.5f) / 128f);
+    let cellY = ((f32(cy) + 0.5f) / 128f);
+    let ddx = select((cellX - (*p).cursorX), ((cellX - (*p).cursorX) * (*p).aspect), ((*p).aspect >= 1f));
+    let ddy = select(((cellY - (*p).cursorY) / (*p).aspect), (cellY - (*p).cursorY), ((*p).aspect >= 1f));
+    let distSq = ((ddx * ddx) + (ddy * ddy));
+    let influenceRadius = ((*p).radius * 3f);
+    if (((distSq < (influenceRadius * influenceRadius)) && ((*p).cursorSpeed > 0.01f))) {
+      let influence = ((exp(((distSq / ((*p).radius * (*p).radius)) * -1f)) - 1.2340980408667956e-4f) * 1.000123425035946f);
+      next = (next - (((influence * (*p).cursorSpeed) * (*p).dt) * 3f));
+    }
+    writeBuf[idx] = next;
+  }
+}"
+`;

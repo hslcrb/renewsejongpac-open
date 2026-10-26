@@ -1,0 +1,218 @@
+{
+  "startedAt": "2026-10-15T07:52:58.861Z",
+  "completedAt": "2026-10-15T07:53:43.640Z",
+  "target": "http://127.0.0.1:8000/v3/index.html",
+  "status": "passed",
+  "publishedRouteCount": 132,
+  "checks": [
+    {
+      "name": "entry offers all three versions",
+      "status": "passed",
+      "detail": {
+        "destinations": [
+          "/legacy.html",
+          "/v2/index.html",
+          "/v3/index.html"
+        ]
+      },
+      "durationMs": 2630
+    },
+    {
+      "name": "v3 preserves the 132 published routes and 15 programs",
+      "status": "passed",
+      "detail": {
+        "routes": 132,
+        "programs": 15
+      },
+      "durationMs": 6
+    },
+    {
+      "name": "local Pretendard font loads from v3",
+      "status": "passed",
+      "detail": {
+        "loaded": true,
+        "resources": [
+          "http://127.0.0.1:8000/v3/assets/fonts/PretendardVariable.woff2"
+        ]
+      },
+      "durationMs": 10
+    },
+    {
+      "name": "132 routes at 1440px",
+      "status": "passed",
+      "detail": {
+        "executed": 132,
+        "passed": 132
+      },
+      "durationMs": 16801
+    },
+    {
+      "name": "132 routes at 390px",
+      "status": "passed",
+      "detail": {
+        "executed": 132,
+        "passed": 132
+      },
+      "durationMs": 9457
+    },
+    {
+      "name": "homepage at 320, 768 and 1024px",
+      "status": "passed",
+      "detail": [
+        {
+          "width": 320,
+          "scrollWidth": 320,
+          "membership": true,
+          "hero": 320,
+          "badImages": []
+        },
+        {
+          "width": 768,
+          "scrollWidth": 768,
+          "membership": true,
+          "hero": 768,
+          "badImages": []
+        },
+        {
+          "width": 1024,
+          "scrollWidth": 1024,
+          "membership": true,
+          "hero": 1024,
+          "badImages": []
+        }
+      ],
+      "durationMs": 639
+    },
+    {
+      "name": "home filters preserve program counts",
+      "status": "passed",
+      "detail": {
+        "전체": 4,
+        "공연": 4,
+        "전시": 2,
+        "교육": 3
+      },
+      "durationMs": 491
+    },
+    {
+      "name": "favorites persist and leave legacy and v2 storage intact",
+      "status": "passed",
+      "detail": {
+        "program": "dance",
+        "namespace": "sejong-v3:",
+        "otherVersionKeysPreserved": [
+          "sejong:favorites",
+          "sejong-v2:favorites",
+          "sejong:bookings",
+          "sejong-v2:bookings"
+        ]
+      },
+      "durationMs": 1082
+    },
+    {
+      "name": "search submits and menu Escape restores focus",
+      "status": "passed",
+      "durationMs": 363
+    },
+    {
+      "name": "reduced motion starts paused and supports carousel controls",
+      "status": "passed",
+      "durationMs": 1159
+    },
+    {
+      "name": "booking completes, persists and cancels in v3",
+      "status": "passed",
+      "detail": {
+        "program": "carmen",
+        "total": 72000,
+        "status": "cancelled"
+      },
+      "durationMs": 1591
+    },
+    {
+      "name": "membership destination and neutral homepage controls",
+      "status": "passed",
+      "detail": {
+        "heroAction": "rgb(255, 255, 255)",
+        "invitation": "rgb(243, 244, 244)",
+        "currentTag": [
+          "rgb(255, 255, 255)",
+          "rgb(255, 255, 255)",
+          "rgb(255, 255, 255)"
+        ]
+      },
+      "durationMs": 297
+    },
+    {
+      "name": "desktop and mobile homepage screenshots",
+      "status": "passed",
+      "detail": [
+        {
+          "name": "desktop",
+          "path": ".lemonade/v3/desktop.png",
+          "width": 1440,
+          "height": 1000
+        },
+        {
+          "name": "mobile",
+          "path": ".lemonade/v3/mobile.png",
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "durationMs": 3494
+    },
+    {
+      "name": "no browser errors, failed local requests or HTTP errors",
+      "status": "passed",
+      "durationMs": 2
+    }
+  ],
+  "homeWidths": [
+    {
+      "width": 320,
+      "scrollWidth": 320,
+      "membership": true,
+      "hero": 320,
+      "badImages": []
+    },
+    {
+      "width": 768,
+      "scrollWidth": 768,
+      "membership": true,
+      "hero": 768,
+      "badImages": []
+    },
+    {
+      "width": 1024,
+      "scrollWidth": 1024,
+      "membership": true,
+      "hero": 1024,
+      "badImages": []
+    }
+  ],
+  "browserErrors": [],
+  "consoleErrors": [],
+  "failedRequests": [],
+  "failedResponses": [],
+  "routes": {
+    "executed": 264,
+    "passed": 264,
+    "widths": [
+      1440,
+      390
+    ]
+  },
+  "copy": {
+    "base": "3abeb221b3e701bdd090173e2b376055933b608e",
+    "files": 10181,
+    "missingAfterCopy": 0,
+    "activeEntryReplacedOriginal": true,
+    "preservedEntry": "v3/version-selection.html"
+  },
+  "source": {
+    "repository": "https://github.com/hslcrb/renewsejongpac-philosophized",
+    "commit": "bbac18b66c547a2fe7c65414190ef99a8ca9d86a",
+    "basis": "User explicitly identified repository after ZIP transfer exceeded size limit"
+  }
+}

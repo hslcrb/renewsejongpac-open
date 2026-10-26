@@ -1,0 +1,11 @@
+/* [구·신버전 공통 알림 형태 / Shared feedback shape across both versions]
+   짧은 상태 알림은 완전히 둥근 캡슐로 표시합니다.
+   Short, nonblocking status messages use fully rounded capsule ends. */
+.toast {
+    border-radius: var(--radius-pill, 9999px);
+    min-height: 48px;
+    padding: 14px 28px;
+    font-size: var(--text-sm, 1rem);
+    line-height: 1.5;
+    text-align: center;
+}

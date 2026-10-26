@@ -1,0 +1,18 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> sejongpac-v5@5.0.0 test:orb:motion
+> node tests/violet-fur-motion.cjs
+
+✔ idle tuft flutter stays small and preserves every cached root (8.883419ms)
+✔ pointer and signed spin bend tips locally, then settle back to idle (7.79713ms)
+✔ opposite touch rotation produces opposite tangential response (1.215101ms)
+✔ a delayed frame uses a bounded timestep and cannot jump the pile (1.477291ms)
+✔ live painting has a fixed small budget on desktop, mobile and the closed orb (0.799692ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 33.918392

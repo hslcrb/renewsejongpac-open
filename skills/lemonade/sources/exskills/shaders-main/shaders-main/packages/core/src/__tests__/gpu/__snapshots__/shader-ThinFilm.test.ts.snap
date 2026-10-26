@@ -1,0 +1,165 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ThinFilm (a) flat rainbow iridescent generator > emits the analytic circle sampler + thinFilmShade + thinFilmRainbow + thinFilmCompose, no RTT pass > final-pass 1`] = `
+"fn thinFilmCompose(baseColor: vec3f, rim: f32, intensity: f32, saturation: f32) -> vec4f {
+  let white = vec3f(1);
+  let col = mix(white, baseColor, saturation);
+  let rgb = ((col * rim) * intensity);
+  let alpha = clamp(rim, 0f, 1f);
+  return vec4f(rgb.x, rgb.y, rgb.z, alpha);
+}
+
+fn cosinePalette(t: f32, phaseR: f32, phaseG: f32, phaseB: f32) -> vec3f {
+  return vec3f(((cos(((t + phaseR) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseG) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseB) * 6.283185307179586f)) * 0.5f) + 0.5f));
+}
+
+fn thinFilmRainbow(phase: f32) -> vec3f {
+  return cosinePalette(phase, 0f, 0.3333f, 0.6667f);
+}
+
+fn thinFilmShade(sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, edgeSoftness: f32, rimWidthUniform: f32, thickness: f32, dispersion: f32, hueShift: f32, lightAngle: f32, animTime: f32, volumetric: f32) -> vec2f {
+  let sdf = (sdfRaw / scale);
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let gLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let nx = (gradX / gLen);
+  let ny = (gradY / gLen);
+  let rb1 = clamp((((sdf * -1f) / sharp) * 32f), 0f, 1f);
+  let rimWidth = max((rimWidthUniform * 0.1f), 1e-3f);
+  let depth = clamp(((sdf * -1f) / rimWidth), 0f, 1f);
+  let cosView = (1f / sqrt(((gLen * gLen) + 1f)));
+  let exponent = mix(7f, 1.5f, clamp(rimWidthUniform, 0f, 1f));
+  let volRim = (pow((1f - cosView), exponent) * rb1);
+  let flatRim = (((1f - depth) * (1f - depth)) * rb1);
+  let rim = select(flatRim, volRim, (volumetric > 0.5f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let baseCos = ((nx * lx) + (ny * ly));
+  let baseSin = ((ny * lx) - (nx * ly));
+  let theta = (animTime * 6.283185307179586f);
+  let rotatedDot = ((baseCos * cos(theta)) + (baseSin * sin(theta)));
+  let thickVol = ((thickness * max((sdf * -1f), 0f)) * 10f);
+  let thickFlat = ((thickness * depth) * 2f);
+  let thicknessTerm = select(thickFlat, thickVol, (volumetric > 0.5f));
+  let phase = ((hueShift + (dispersion * rotatedDot)) + thicknessTerm);
+  return vec2f(phase, rim);
+}
+
+fn circleSdf(dx: f32, dy: f32, radius: f32) -> f32 {
+  return (sqrt(((dx * dx) + (dy * dy))) - radius);
+}
+
+fn analyticSdf_circleSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = circleSdf(rdx, rdy, r);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  center: vec2f,
+  scale: f32,
+  rotation: f32,
+  intensity: f32,
+  rimWidth: f32,
+  edgeSoftness: f32,
+  thickness: f32,
+  dispersion: f32,
+  saturation: f32,
+  hueShift: f32,
+  lightAngle: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  colorC: vec4f,
+  colorSpace: f32,
+  speed: f32,
+  _opacity: f32,
+  _animTime: f32,
+  _vfOriginX: f32,
+  _vfOriginY: f32,
+  _vfSpanX: f32,
+  _vfSpanY: f32,
+  _vfActiveRes: f32,
+  _vfRBound: f32,
+  _saRadius: f32,
+  _saSides: f32,
+  _saRounding: f32,
+  _saInnerRatio: f32,
+  _saRotation: f32,
+  _saHeight: f32,
+  _saOffset: f32,
+  _saAperture: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_t: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn glassGradient(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  var composed_0 = thinFilmCompose(thinFilmRainbow((thinFilmShade((analyticSdf_circleSDF(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, uniforms.n_t.scale, (glassGradient((analyticSdf_circleSDF(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), 0.01, 0.0), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), 0.0, 0.01), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r)).x, (glassGradient((analyticSdf_circleSDF(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), 0.01, 0.0), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), 0.0, 0.01), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r)).y, uniforms.n_t.edgeSoftness, uniforms.n_t.rimWidth, uniforms.n_t.thickness, uniforms.n_t.dispersion, uniforms.n_t.hueShift, uniforms.n_t.lightAngle, uniforms.n_t._animTime, 0.0)).x), (thinFilmShade((analyticSdf_circleSDF(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, uniforms.n_t.scale, (glassGradient((analyticSdf_circleSDF(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), 0.01, 0.0), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), 0.0, 0.01), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r)).x, (glassGradient((analyticSdf_circleSDF(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), 0.01, 0.0), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r, (analyticSdf_circleSDF(offsetUV(sdfSpaceUV(uniforms.n_t.center, uniforms.n_t.scale, uniforms.n_t.rotation, uv, uniforms._sys.aspect), 0.0, 0.01), uniforms.n_t._saRadius, uniforms.n_t._saSides, uniforms.n_t._saRounding, uniforms.n_t._saInnerRatio, uniforms.n_t._saRotation, uniforms.n_t._saHeight, uniforms.n_t._saOffset, uniforms.n_t._saAperture)).r)).y, uniforms.n_t.edgeSoftness, uniforms.n_t.rimWidth, uniforms.n_t.thickness, uniforms.n_t.dispersion, uniforms.n_t.hueShift, uniforms.n_t.lightAngle, uniforms.n_t._animTime, 0.0)).y, uniforms.n_t.intensity, uniforms.n_t.saturation);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

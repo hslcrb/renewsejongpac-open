@@ -1,0 +1,141 @@
+<frame id="268:1525" name="Group 633085" x="176" y="8964" width="12609" height="5853.818359375">
+  <frame id="13:3633" name="Group 2142" x="3024" y="8964" width="4954" height="2726.4541015625">
+    <text id="11:2624" name="두 가지 이용자 여정" x="4919" y="8964" width="1630" height="300" />
+    <shape-with-text id="11:2631" x="5377" y="9473.4541015625" width="714" height="192" name="SQUARE">HOME</shape-with-text>
+    <shape-with-text id="11:2650" x="6464" y="10154.4541015625" width="992" height="192" name="SQUARE">대관 개요 확인</shape-with-text>
+    <shape-with-text id="11:2689" x="6464" y="10490.4541015625" width="992" height="192" name="SQUARE">시설 확인</shape-with-text>
+    <connector id="11:2690" x="6960" y="10354.4541015625" connectorStart="11:2650" connectorStartCap="NONE" connectorEnd="11:2689" connectorEndCap="ARROW_LINES"></connector>
+    <shape-with-text id="11:2726" x="6464" y="10826.4541015625" width="992" height="192" name="SQUARE">일정 확인</shape-with-text>
+    <connector id="11:2727" x="6960" y="10690.4541015625" connectorStart="11:2689" connectorStartCap="NONE" connectorEnd="11:2726" connectorEndCap="ARROW_LINES"></connector>
+    <shape-with-text id="11:2740" x="6464" y="11162.4541015625" width="992" height="192" name="SQUARE">절차 확인</shape-with-text>
+    <connector id="11:2741" x="6960" y="11026.4541015625" connectorStart="11:2726" connectorStartCap="NONE" connectorEnd="11:2740" connectorEndCap="ARROW_LINES"></connector>
+    <shape-with-text id="11:2761" x="6464" y="11498.4541015625" width="992" height="192" name="SQUARE">대관 신청</shape-with-text>
+    <connector id="11:2762" x="6960" y="11362.4541015625" connectorStart="11:2740" connectorStartCap="NONE" connectorEnd="11:2761" connectorEndCap="ARROW_LINES"></connector>
+    <shape-with-text id="11:2778" x="6240" y="9789.4541015625" width="992" height="192" name="SQUARE">대관 이용자 경로</shape-with-text>
+    <connector id="11:2796" x="6736" y="9989.4541015625" connectorStart="11:2778" connectorStartCap="NONE" connectorEnd="11:2650" connectorEndCap="ARROW_LINES"></connector>
+    <text id="11:2806" name="대관안내" x="7488" y="10238.2724609375" width="260" height="108" />
+    <text id="11:2810" name="공간별 규모·장비" x="7488" y="10574.2724609375" width="490" height="108" />
+    <text id="11:2814" name="가능일 캘린더" x="7488" y="10910.2724609375" width="407" height="108" />
+    <text id="11:2818" name="서류·심사기준" x="7488" y="11246.2724609375" width="408" height="108" />
+    <shape-with-text id="11:2836" x="4036" y="10154.4541015625" width="992" height="192" name="SQUARE">공연·전시 찾기</shape-with-text>
+    <shape-with-text id="11:2837" x="4036" y="10490.4541015625" width="992" height="192" name="SQUARE">상세 페이지 확인</shape-with-text>
+    <connector id="11:2838" x="4532" y="10354.4541015625" connectorStart="11:2836" connectorStartCap="NONE" connectorEnd="11:2837" connectorEndCap="ARROW_LINES"></connector>
+    <shape-with-text id="11:2839" x="4036" y="10826.4541015625" width="992" height="192" name="SQUARE">예매 / 신청하기</shape-with-text>
+    <connector id="11:2840" x="4532" y="10690.4541015625" connectorStart="11:2837" connectorStartCap="NONE" connectorEnd="11:2839" connectorEndCap="ARROW_LINES"></connector>
+    <shape-with-text id="11:2845" x="4246" y="9789.4541015625" width="992" height="192" name="SQUARE">일반 관람객 경로</shape-with-text>
+    <connector id="11:2846" x="4532" y="9989.4541015625" connectorStart="11:2845" connectorStartCap="NONE" connectorEnd="11:2836" connectorEndCap="ARROW_LINES"></connector>
+    <text id="11:2847" name="공연/전시/교육 목록 · 캘린더 보기" x="3024" y="10238.2724609375" width="980" height="108" />
+    <text id="11:2889" name="두 경로 모두 이용안내 · 소식과 참여 · 세종문화회관 공통 영역은 GNB에서 언제든 별도로 접근 가능 (경로에 종속되지 않음)" x="4004" y="9263.63671875" width="3688" height="120" />
+    <connector id="11:2907" x="4742" y="9673.4541015625" connectorStart="11:2631" connectorStartCap="NONE" connectorEnd="11:2845" connectorEndCap="ARROW_LINES"></connector>
+    <connector id="11:2935" x="5734" y="9673.4541015625" connectorStart="11:2631" connectorStartCap="NONE" connectorEnd="11:2778" connectorEndCap="ARROW_LINES"></connector>
+  </frame>
+  <text id="73:1073" name="시민에게 고품격의 문화 예술을 선사 환경보호실천, 사회풍요기여, 경제가치창출 &amp; ESG 프로그램" x="11037" y="13488.818359375" width="1748" height="216" />
+  <frame id="73:1092" name="Group 2147" x="176" y="11232.2724609375" width="11945" height="3585.5458984375">
+    <frame id="63:1077" name="Group 2146" x="176" y="11232.2724609375" width="11945" height="3585.5458984375">
+      <frame id="25:1256" name="Group 2144" x="176" y="11232.2724609375" width="11945" height="3585.5458984375">
+        <shape-with-text id="11:3084" x="7978" y="12829.4697265625" width="992" height="192" name="SQUARE">공지사항</shape-with-text>
+        <shape-with-text id="11:3085" x="7978" y="13165.4697265625" width="992" height="192" name="SQUARE">이벤트</shape-with-text>
+        <shape-with-text id="11:3087" x="7978" y="13501.4697265625" width="992" height="192" name="SQUARE">뉴스레터 · 세종문화N</shape-with-text>
+        <shape-with-text id="11:3089" x="7978" y="13837.4697265625" width="992" height="192" name="SQUARE">멤버십</shape-with-text>
+        <shape-with-text id="11:3091" x="10013" y="14494" width="992" height="192" name="SQUARE">후원</shape-with-text>
+        <shape-with-text id="11:3093" x="7754" y="12464.4697265625" width="992" height="192" name="SQUARE">소식과 혜택</shape-with-text>
+        <connector id="25:1158" x="176" y="11232.2724609375" connectorStart="11:3093" connectorStartCap="NONE" connectorEnd="11:3093" connectorEndCap="ARROW_LINES"></connector>
+        <text id="11:3095" name="티켓오픈 소식 포함" x="9002" y="12913.2880859375" width="554" height="108" />
+        <text id="11:3096" name="진행중 · 종료 · 당첨자발표" x="9002" y="13249.2880859375" width="755" height="108" />
+        <text id="11:3098" name="소개, 혜택" x="9002" y="13921.2880859375" width="296" height="108" />
+        <text id="11:3127" name="안내, 참여" x="11037" y="14535.818359375" width="296" height="108" />
+        <shape-with-text id="11:3131" x="10013" y="12829" width="992" height="192" name="SQUARE">기관소개</shape-with-text>
+        <shape-with-text id="11:3132" x="10013" y="13165" width="992" height="192" name="SQUARE">서울시예술단</shape-with-text>
+        <shape-with-text id="11:3134" x="10013" y="13501" width="992" height="192" name="SQUARE">ESG</shape-with-text>
+        <shape-with-text id="11:3136" x="10013" y="13837" width="992" height="192" name="SQUARE">정보공개</shape-with-text>
+        <shape-with-text id="11:3138" x="10013" y="14173" width="992" height="192" name="SQUARE">협력 및 협찬</shape-with-text>
+        <shape-with-text id="11:3140" x="9789" y="12464" width="992" height="192" name="SQUARE">세종문화회관</shape-with-text>
+        <text id="11:3142" name="인사말, 조직도, CI, 걸어온 역사 통합" x="11037" y="12912.818359375" width="1084" height="108" />
+        <text id="11:3143" name="소개, 공연 및 활동" x="11037" y="13248.818359375" width="525" height="108" />
+        <text id="11:3144" name="정보공개, 경영공시" x="11037" y="13920.818359375" width="554" height="108" />
+        <shape-with-text id="11:3174" x="1372" y="12826" width="992" height="192" name="SQUARE">공연</shape-with-text>
+        <shape-with-text id="11:3175" x="1372" y="13162" width="992" height="192" name="SQUARE">전시</shape-with-text>
+        <shape-with-text id="11:3177" x="1372" y="13498" width="992" height="192" name="SQUARE">교육</shape-with-text>
+        <shape-with-text id="11:3179" x="2014" y="12461" width="992" height="192" name="SQUARE">프로그램</shape-with-text>
+        <connector id="21:1095" x="2372.5" y="12661" connectorStart="11:3179" connectorStartCap="NONE" connectorEnd="11:3174" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="21:1087" x="2372.5" y="12661" connectorStart="11:3179" connectorStartCap="NONE" connectorEnd="11:3177" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="21:1083" x="2372.5" y="12661" connectorStart="11:3179" connectorStartCap="NONE" connectorEnd="11:3175" connectorEndCap="ARROW_LINES"></connector>
+        <text id="11:3181" name="공연 목록, 공연 상세, 예매안내 관람객" x="416" y="12813.818359375" width="924" height="216" />
+        <shape-with-text id="11:3182" x="1372" y="13834" width="992" height="192" name="SQUARE">기획·시즌 프로그램</shape-with-text>
+        <connector id="21:1091" x="2372.5" y="12661" connectorStart="11:3179" connectorStartCap="NONE" connectorEnd="11:3182" connectorEndCap="ARROW_LINES"></connector>
+        <shape-with-text id="11:3226" x="5703" y="12829" width="992" height="192" name="SQUARE">공간안내</shape-with-text>
+        <shape-with-text id="11:3227" x="5703" y="13165" width="992" height="192" name="SQUARE">오시는 길·주차</shape-with-text>
+        <shape-with-text id="11:3229" x="5703" y="13501" width="992" height="192" name="SQUARE">편의시설</shape-with-text>
+        <shape-with-text id="11:3231" x="5703" y="13837" width="992" height="192" name="SQUARE">장애인 이용안내</shape-with-text>
+        <shape-with-text id="11:3233" x="5703" y="14173" width="992" height="192" name="SQUARE">관람 유의사항</shape-with-text>
+        <shape-with-text id="11:3235" x="5479" y="12464" width="992" height="192" name="SQUARE">이용안내</shape-with-text>
+        <shape-with-text id="11:3276" x="5703" y="14509" width="992" height="192" name="SQUARE">고객지원</shape-with-text>
+        <text id="11:3283" name="공연장·전시장 위치, 좌석배치도 공통 · 관람객용 정보" x="6752" y="12816.818359375" width="924" height="216" />
+        <text id="11:3284" name="대중교통 안내, 주차안내 공통" x="6752" y="13152.818359375" width="924" height="216" />
+        <text id="11:3285" name="관람객 안내 통합 공통" x="6752" y="14160.818359375" width="528" height="216" />
+        <text id="11:3286" name="FAQ, 문의하기, 분실물 통합 공통" x="6752" y="14496.818359375" width="924" height="216" />
+        <text id="11:3309" name="공통 영역" x="5479" y="12041.2724609375" width="771" height="300" />
+        <shape-with-text id="11:3328" x="3235" y="12461" width="992" height="192" name="SQUARE">대관</shape-with-text>
+        <connector id="25:1089" x="176" y="11232.2724609375" connectorStart="11:3328" connectorStartCap="NONE" connectorEnd="11:3328" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1077" x="176" y="11232.2724609375" connectorStart="11:3328" connectorStartCap="NONE" connectorEnd="11:3328" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1073" x="176" y="11232.2724609375" connectorStart="11:3328" connectorStartCap="NONE" connectorEnd="11:3328" connectorEndCap="ARROW_LINES"></connector>
+        <shape-with-text id="11:3330" x="3459" y="14506" width="992" height="192" name="SQUARE">대관문의</shape-with-text>
+        <text id="11:3334" name="신청 순서, 필요 서류, 심사 기준" x="4508" y="13875.818359375" width="924" height="108" />
+        <text id="11:3335" name="1~5단계 어디서든 접근 가능한 상시 지원 채널 (사이드 레일) 상시 접근" x="4508" y="14493.818359375" width="924" height="324" />
+        <text id="13:3370" name="관람객 경로 진입점" x="1469" y="12041.2724609375" width="1537" height="300" />
+        <text id="13:3378" name="대관이용자 경로 진입점" x="3224" y="12041" width="1896" height="300" />
+        <shape-with-text id="13:3407" x="1452" y="12865" width="130" height="110" name="TRIANGLE_UP"></shape-with-text>
+        <shape-with-text id="13:3458" x="1452" y="13203" width="130" height="110" name="TRIANGLE_UP"></shape-with-text>
+        <shape-with-text id="13:3465" x="1452" y="13541" width="130" height="110" name="TRIANGLE_UP"></shape-with-text>
+        <text id="13:3479" name="전시 목록, 전시 상세 관람객" x="416" y="13149.818359375" width="924" height="216" />
+        <text id="13:3484" name="교육 목록, 교육 상세, 신청안내 관람객" x="416" y="13487.818359375" width="924" height="216" />
+        <text id="13:3489" name="시즌&amp;특별 프로그램 통합 큐레이션 목록 관람객" x="176" y="13821.818359375" width="1164" height="216" />
+        <text id="13:3494" name="기존 &quot;프로그램 캘린더&quot; 메뉴는 삭제, 위 3개 목록의 보기 방식(리스트⇄캘린더)으로 흡수 흰색 삼각형 = 리스트/캘린더 전환" x="848" y="14079.818359375" width="1516" height="324" />
+        <text id="13:3503" name="대관 개요, 이용대상, 요금 체계" x="4508" y="12867.818359375" width="884" height="108" />
+        <text id="13:3514" name="대관 심사용(규모·장비), 관람 예매용(좌석·동선) (같은공간 다른목적) 공간별 규모·장비·도면 대극장, M씨어터, S씨어터, 체임버홀, 전시장" x="4508" y="13168.4541015625" width="1108" height="180" />
+        <text id="13:3522" name="공간별 대관 가능일 캘린더 기존 &#39;대관공고&#39;는 별도 메뉴 대신 이 페이지에 공고 리스트로 흡수" x="4508" y="13515.818359375" width="1044" height="156" />
+        <text id="13:3542" name="신청서 작성 및 제출" x="4508" y="14211.818359375" width="571" height="108" />
+        <frame id="13:3634" name="Group 2143" x="1485" y="11232.2724609375" width="4831" height="443.818359375">
+          <text id="13:3568" name="전체 정보구조(IA)" x="1485" y="11232.2724609375" width="1630" height="300" />
+          <text id="13:3576" name="공연·전시 - 관람객 경로" x="1648" y="11532.0908203125" width="914" height="144" />
+          <shape-with-text id="13:3583" x="1536" y="11556" width="99" height="96" name="SQUARE"></shape-with-text>
+          <text id="13:3596" name="대관 - 대관이용자 경로" x="2752" y="11532" width="889" height="144" />
+          <shape-with-text id="13:3597" x="2640" y="11555.9091796875" width="99" height="96" name="SQUARE"></shape-with-text>
+          <text id="13:3618" name="이용안내 - 공통" x="3831" y="11532" width="608" height="144" />
+          <shape-with-text id="13:3619" x="3719" y="11555.9091796875" width="99" height="96" name="SQUARE"></shape-with-text>
+          <text id="13:3623" name="소식과 참여 - 공통" x="4629" y="11532" width="717" height="144" />
+          <shape-with-text id="13:3624" x="4517" y="11555.9091796875" width="99" height="96" name="SQUARE"></shape-with-text>
+          <text id="13:3628" name="세종문화회관 - 공통" x="5536" y="11532" width="780" height="144" />
+          <shape-with-text id="13:3629" x="5424" y="11555.9091796875" width="99" height="96" name="SQUARE"></shape-with-text>
+        </frame>
+        <shape-with-text id="11:3319" x="3459" y="12826" width="992" height="192" name="SQUARE">대관안내</shape-with-text>
+        <shape-with-text id="11:3320" x="3459" y="13162" width="992" height="192" name="SQUARE">대관시설</shape-with-text>
+        <shape-with-text id="11:3322" x="3459" y="13498" width="992" height="192" name="SQUARE">대관일정</shape-with-text>
+        <shape-with-text id="11:3324" x="3459" y="13834" width="992" height="192" name="SQUARE">대관절차</shape-with-text>
+        <shape-with-text id="11:3326" x="3459" y="14170" width="992" height="192" name="SQUARE">대관신청</shape-with-text>
+        <connector id="25:1085" x="3411" y="12661" connectorStart="11:3328" connectorStartCap="NONE" connectorEnd="11:3319" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1093" x="3408" y="12661" connectorStart="11:3328" connectorStartCap="NONE" connectorEnd="25:1256" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1098" x="3408" y="12653" connectorStart="11:3328" connectorStartCap="NONE" connectorEnd="11:3322" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1103" x="3408" y="12661" connectorStart="11:3328" connectorStartCap="NONE" connectorEnd="25:1256" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1108" x="3408" y="12661" connectorStart="11:3328" connectorStartCap="NONE" connectorEnd="25:1256" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1113" x="5648" y="12656" connectorStart="25:1256" connectorStartCap="NONE" connectorEnd="25:1256" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1118" x="5648" y="12656" connectorStart="25:1256" connectorStartCap="NONE" connectorEnd="11:3229" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1123" x="5648" y="12656" connectorStart="25:1256" connectorStartCap="NONE" connectorEnd="11:3231" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1128" x="5648" y="12656" connectorStart="25:1256" connectorStartCap="NONE" connectorEnd="11:3233" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1133" x="5648" y="12656" connectorStart="25:1256" connectorStartCap="NONE" connectorEnd="11:3276" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1162" x="7930" y="12664.4697265625" connectorStart="11:3093" connectorStartCap="NONE" connectorEnd="11:3084" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1166" x="7936" y="12656" connectorStart="25:1256" connectorStartCap="NONE" connectorEnd="11:3085" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1187" x="5655" y="12664" connectorStart="11:3235" connectorStartCap="NONE" connectorEnd="11:3226" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1205" x="7930" y="12664.4697265625" connectorStart="11:3093" connectorStartCap="NONE" connectorEnd="11:3087" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1209" x="7930" y="12664.4697265625" connectorStart="11:3093" connectorStartCap="NONE" connectorEnd="11:3089" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1231" x="9965" y="12664" connectorStart="11:3140" connectorStartCap="NONE" connectorEnd="11:3131" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1240" x="9965" y="12664" connectorStart="11:3140" connectorStartCap="NONE" connectorEnd="11:3132" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1244" x="9965" y="12664" connectorStart="11:3140" connectorStartCap="NONE" connectorEnd="11:3134" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1248" x="9965" y="12664" connectorStart="11:3140" connectorStartCap="NONE" connectorEnd="11:3136" connectorEndCap="ARROW_LINES"></connector>
+        <connector id="25:1252" x="9965" y="12664" connectorStart="11:3140" connectorStartCap="NONE" connectorEnd="11:3138" connectorEndCap="ARROW_LINES"></connector>
+      </frame>
+      <text id="59:1067" name="이것은 GNB이기도 하다" x="7857" y="11741.2724609375" width="1953" height="300" />
+    </frame>
+    <connector id="73:1084" x="9968" y="12656" connectorStart="73:1092" connectorStartCap="NONE" connectorEnd="11:3091" connectorEndCap="ARROW_LINES"></connector>
+  </frame>
+</frame>

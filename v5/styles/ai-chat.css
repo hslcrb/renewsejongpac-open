@@ -1,0 +1,11 @@
+.sejong-ai-widget{position:fixed;right:22px;bottom:22px;z-index:80;font-family:inherit}
+.sejong-ai-trigger{position:relative;display:grid;place-items:center;width:54px;height:54px;border:0;border-radius:50%;background:#5f398d;color:#fff;font-size:25px;box-shadow:0 8px 22px #30204335;cursor:pointer}
+.sejong-ai-trigger:focus-visible,.sejong-ai-panel-head button:focus-visible{outline:3px solid #a783dd;outline-offset:3px}
+.sejong-ai-trigger-tip{pointer-events:none;position:absolute;right:64px;top:50%;transform:translateY(-50%);opacity:0;white-space:nowrap;padding:9px 12px;border-radius:12px;background:#241a31;color:#fff;font-size:13px;transition:opacity .15s}
+.sejong-ai-trigger:hover .sejong-ai-trigger-tip,.sejong-ai-trigger:focus-visible .sejong-ai-trigger-tip{opacity:1}
+.sejong-ai-panel{position:absolute;bottom:68px;right:0;width:min(370px,calc(100vw - 32px));border-radius:19px;overflow:hidden;background:#fff;border:1px solid #ddd5e7;box-shadow:0 16px 55px #241a3130}
+.sejong-ai-panel-head{display:flex;justify-content:space-between;align-items:center;padding:13px 17px;color:#fff;background:#5f398d}
+.sejong-ai-panel-head button{border:0;background:transparent;color:inherit;font-size:26px;line-height:1;cursor:pointer}
+.sejong-ai-loading{min-height:150px;padding:24px}
+@media(max-width:600px){.sejong-ai-widget{right:12px;bottom:12px}.sejong-ai-panel{bottom:65px}}
+@media(prefers-reduced-motion:reduce){.sejong-ai-trigger-tip{transition:none}}

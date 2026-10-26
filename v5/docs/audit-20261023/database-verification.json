@@ -1,0 +1,63 @@
+{
+    "project": "cowalyqaoqoclrfmxszp",
+    "migrations": [
+        "20261023013321_catalog_reservations",
+        "20261023015030_catalog_reservation_indexes"
+    ],
+    "finalImport": [
+        {
+            "verification": {
+                "media": 16,
+                "pages": 98,
+                "venues": 5,
+                "notices": 6,
+                "checksum": "71a6a8a9f8ffa16452685252cfad5387",
+                "features": 3,
+                "openings": 2,
+                "programs": 15,
+                "companies": 7,
+                "legacySeats": 40,
+                "revisionCount": 155,
+                "enabledSessions": 0
+            }
+        }
+    ],
+    "repeatedImport": [
+        {
+            "verification": {
+                "media": 16,
+                "pages": 98,
+                "venues": 5,
+                "notices": 6,
+                "checksum": "71a6a8a9f8ffa16452685252cfad5387",
+                "features": 3,
+                "openings": 2,
+                "programs": 15,
+                "companies": 7,
+                "legacySeats": 40,
+                "revisionCount": 155,
+                "enabledSessions": 0
+            }
+        }
+    ],
+    "localPostgres": {
+        "version": "17.11",
+        "independentHoldConnections": 100,
+        "winners": 1,
+        "independentConfirmConnections": 100,
+        "distinctExpiry": 1,
+        "ownerIsolation": true,
+        "remainingOccupiedSeats": 0,
+        "command": "node scripts/catalog/local-sql-check.ts"
+    },
+    "productionRpcVerification": {
+        "passed": true,
+        "mode": "transaction-scoped SQL using authenticated roles and request claims; rolled back",
+        "script": "supabase/tests/reservations-live-rollback.sql",
+        "remainingFixtures": {
+            "programs": 0,
+            "accounts": 0,
+            "bookings": 0
+        }
+    }
+}

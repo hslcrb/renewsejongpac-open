@@ -1,0 +1,176 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FilmStock (a) compute → RTT input → LUT-graded composite > RTTs the child, uploads the LUT atlas (media), runs the halation pre-pass, grades + screens > final-pass 1`] = `
+"fn tintedScreenGlow(base: vec4f, glow: vec4f, tintStrength: vec4f) -> vec4f {
+  let strength = tintStrength.w;
+  let bloomC = clamp(((glow.xyz * tintStrength.xyz) * strength), vec3f(), vec3f(1));
+  let one = vec3f(1);
+  let screened = (one - ((one - base.xyz) * (one - bloomC)));
+  let a = (base.w + ((glow.w * strength) * (1f - base.w)));
+  return vec4f(screened.x, screened.y, screened.z, clamp(a, 0f, 1f));
+}
+
+fn tonemap_linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tonemap_srgbToLinear(color: vec3f) -> vec3f {
+  let hi = pow(((color + vec3f(0.054999999701976776)) / vec3f(1.0549999475479126)), vec3f(2.4000000953674316));
+  let lo = (color / vec3f(12.920000076293945));
+  let isLow = (color <= vec3f(0.040449999272823334));
+  return select(hi, lo, isLow);
+}
+
+fn lutAtlasApply(color: vec4f, tapLo: vec4f, tapHi: vec4f, strength: f32) -> vec4f {
+  let enc = tonemap_linearToSrgb(clamp(color.xyz, vec3f(), vec3f(1)));
+  let slice = (enc.z * 16f);
+  let f = (slice - floor(slice));
+  let graded = tonemap_srgbToLinear(mix(tapLo.xyz, tapHi.xyz, vec3f(f, f, f)));
+  let rgb = mix(color.xyz, graded, vec3f(strength, strength, strength));
+  return vec4f(rgb.x, rgb.y, rgb.z, color.w);
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn swayUV(uv: vec2f, amount: f32, t: f32) -> vec2f {
+  let amp = (amount * 6e-3f);
+  let ox = (((sin((t * 1.7f)) * 0.5f) + (sin(((t * 0.9f) + 1.3f)) * 0.5f)) * amp);
+  let oy = (((sin(((t * 1.3f) + 0.7f)) * 0.5f) + (sin((t * 2.3f)) * 0.5f)) * amp);
+  let ang = ((sin((t * 0.6f)) * amount) * 4e-3f);
+  let c = cos(ang);
+  let s = sin(ang);
+  let p = (uv - vec2f(0.5));
+  let rx = ((p.x * c) - (p.y * s));
+  let ry = ((p.x * s) + (p.y * c));
+  return vec2f(((rx + 0.5f) + ox), ((ry + 0.5f) + oy));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  strength: f32,
+  halation: f32,
+  halationRadius: f32,
+  weave: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_2 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_fs: padded_1,
+  n_gen: padded_2,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(1) var media_0: texture_2d<f32>;
+
+fn lutAtlasUv(color: vec4f, hi: f32) -> vec2f {
+  let enc = tonemap_linearToSrgb(clamp(color.xyz, vec3f(), vec3f(1)));
+  let slice = (enc.z * 16f);
+  let s = clamp((floor(slice) + hi), 0f, 16f);
+  let u = ((((s * 17f) + 0.5f) + (enc.x * 16f)) * 0.0034602077212184668f);
+  let v = ((0.5f + (enc.y * 16f)) * 0.05882352963089943f);
+  return vec2f(u, v);
+}
+
+@group(1) @binding(2) var compute_0: texture_2d<f32>;
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = tintedScreenGlow(lutAtlasApply(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, swayUV(uv, uniforms.n_fs.weave, uniforms.n_fs.weaveTime))), textureSample(media_0, linearClamp, lutAtlasUv(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, swayUV(uv, uniforms.n_fs.weave, uniforms.n_fs.weaveTime))), 0.0)), textureSample(media_0, linearClamp, lutAtlasUv(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, swayUV(uv, uniforms.n_fs.weave, uniforms.n_fs.weaveTime))), 1.0)), uniforms.n_fs.strength), textureSample(compute_0, linearClamp, swayUV(uv, uniforms.n_fs.weave, uniforms.n_fs.weaveTime)), vec4f(1.0, 0.38, 0.16, uniforms.n_fs.halation));
+  return vec4f(tonemap_linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`FilmStock (c) pre-pass kernel resolves (D3 rules) > extract kernel resolves with a sampled textureLoad + TWO storage textureStores > halationExtract 1`] = `
+"@group(0) @binding(0) var childTexture: texture_2d<f32>;
+
+@group(0) @binding(1) var brightMap: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(2) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct Params {
+  threshold: f32,
+  size: f32,
+  inputWidth: f32,
+  inputHeight: f32,
+}
+
+@group(0) @binding(3) var<uniform> params: Params;
+
+fn bloomExtractSoftKnee(childTexture_1: texture_2d<f32>, cx: u32, cy: u32, inputSize: vec2f, computeSize: vec2f, threshold: f32) -> vec4f {
+  let iw = inputSize.x;
+  let ih = inputSize.y;
+  let inputWm1 = i32((iw - 1f));
+  let inputHm1 = i32((ih - 1f));
+  var sample = vec4f();
+  for (var ty = 0; (ty < 4i); ty++) {
+    for (var tx = 0; (tx < 4i); tx++) {
+      let su = ((f32(cx) + ((f32(tx) + 0.5f) / 4f)) / computeSize.x);
+      let sv = ((f32(cy) + ((f32(ty) + 0.5f) / 4f)) / computeSize.y);
+      let sx = clamp(i32((su * iw)), 0i, inputWm1);
+      let sy = clamp(i32((sv * ih)), 0i, inputHm1);
+      sample = (sample + textureLoad(childTexture_1, vec2u(u32(sx), u32(sy)), 0));
+    }
+  }
+  sample = (sample * 0.0625f);
+  let knee = ((threshold * 0.5f) + 1e-4f);
+  let lum = dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  let soft = clamp(((lum - threshold) + knee), 0f, (knee * 2f));
+  let softCurve = ((soft * soft) / (knee * 4f));
+  let mask = (max(softCurve, (lum - threshold)) / max(lum, 1e-4f));
+  return vec4f((sample.xyz * mask), (sample.w * mask));
+}
+
+fn filmStockHalationExtract(cx: u32, cy: u32) {
+  let p = (&params);
+  let bright = bloomExtractSoftKnee(childTexture, cx, cy, vec2f((*p).inputWidth, (*p).inputHeight), vec2f(1024, 640), (*p).threshold);
+  textureStore(brightMap, vec2u(cx, cy), bright);
+  textureStore(blurMap, vec2u(cx, cy), vec4f((*p).size, 0f, 0f, 1f));
+}"
+`;

@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-10-15T07:25:10.230Z",
+  "origin": "http://127.0.0.1:8000",
+  "widths": [
+    {
+      "width": 390,
+      "count": 132,
+      "failed": [],
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "count": 132,
+      "failed": [],
+      "overflow": []
+    }
+  ],
+  "errors": [],
+  "failedResponses": []
+}

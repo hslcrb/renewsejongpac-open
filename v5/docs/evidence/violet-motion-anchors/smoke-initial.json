@@ -1,0 +1,78 @@
+{
+  "baseURL": "http://127.0.0.1:8765/v5/",
+  "checks": [
+    {
+      "name": "desktop fixed fur roots and bounded live tuft painting",
+      "status": "PASS",
+      "detail": {
+        "sampledMilliseconds": 650,
+        "drawnFrames": 10,
+        "maxDrawsPerFrame": 2,
+        "maxCurvesPerFrame": 1008,
+        "maxFillsPerFrame": 10,
+        "fixedRoots": 504,
+        "strokes": 0,
+        "gradients": 0
+      }
+    },
+    {
+      "name": "desktop quick scroll fades out and back in",
+      "status": "FAIL",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0.995215 !== 1\n\n    at /workspace/scratch/5fb8e33ceacf/renewsejongpac/v5/tests/violet-quick-menu-smoke.cjs:169:14\n    at async check (/workspace/scratch/5fb8e33ceacf/renewsejongpac/v5/tests/violet-quick-menu-smoke.cjs:16:20)\n    at async main (/workspace/scratch/5fb8e33ceacf/renewsejongpac/v5/tests/violet-quick-menu-smoke.cjs:132:5)"
+    },
+    {
+      "name": "reduced motion stops fur and menu animations",
+      "status": "PASS",
+      "detail": {
+        "furDraws": 0,
+        "rootTransition": "0s",
+        "runningAnimations": []
+      }
+    },
+    {
+      "name": "390 mobile touch open, spin and native booking",
+      "status": "PASS",
+      "detail": {
+        "initial": 0,
+        "snappedRotation": 120,
+        "opacity": 0,
+        "visibility": "hidden",
+        "display": "block",
+        "state": "closed",
+        "hidden": false,
+        "focus": "quick-booking-heading",
+        "scrollY": 1024
+      }
+    },
+    {
+      "name": "390 mobile scroll return fades in without overflow",
+      "status": "PASS",
+      "detail": {
+        "middle": {
+          "elapsed": 21,
+          "opacity": 0.149454,
+          "display": "block",
+          "visibility": "visible",
+          "visible": "true",
+          "ariaHidden": "false",
+          "inert": false,
+          "state": "closed"
+        },
+        "end": {
+          "elapsed": 354,
+          "opacity": 1,
+          "display": "block",
+          "visibility": "visible",
+          "visible": "true",
+          "ariaHidden": "false",
+          "inert": false,
+          "state": "closed"
+        },
+        "overflow": 0
+      }
+    }
+  ],
+  "browserErrors": [],
+  "requests": [],
+  "browser": "151.0.7922.34"
+}

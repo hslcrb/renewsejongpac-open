@@ -1,0 +1,38 @@
+{
+  "version": 2,
+  "installCommand": "npm --prefix v5 install --prefer-offline --no-audit",
+  "buildCommand": "NEXT_TELEMETRY_DISABLED=1 npm --prefix v5 run build",
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": true,
+  "rewrites": [
+    {
+      "source": "/v5",
+      "destination": "/v5/out/index.html"
+    },
+    {
+      "source": "/v5/",
+      "destination": "/v5/out/index.html"
+    },
+    {
+      "source": "/v5/_next/:path*",
+      "destination": "/v5/out/_next/:path*"
+    },
+    {
+      "source": "/v5/assets/:path*",
+      "destination": "/v5/out/assets/:path*"
+    },
+    {
+      "source": "/v5/(.*\\.[a-zA-Z0-9]+)$",
+      "destination": "/v5/out/$1"
+    },
+    {
+      "source": "/v5/:path*/",
+      "destination": "/v5/out/:path*/index.html"
+    },
+    {
+      "source": "/v5/:path*",
+      "destination": "/v5/out/:path*/index.html"
+    }
+  ]
+}

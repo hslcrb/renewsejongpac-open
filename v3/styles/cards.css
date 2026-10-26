@@ -1,0 +1,281 @@
+/* [공통 카드 입력과 미디어 / Shared card input and media]
+   카드-히어로·카드-포스터·카드-배너의 드래그와 크롭 규칙을 공유합니다.
+   Hero, poster and banner cards share input and proportional media rules. */
+.card {
+    position: relative;
+    min-width: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.card * {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* [카드-포스터 / Card-poster] */
+.card--poster {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.card-poster-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+}
+
+.poster-media,
+.card--poster .program-art,
+.card-poster-actions {
+    aspect-ratio: 3 / 4;
+}
+
+.poster-media,
+.card--poster .program-art {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background: #f0f1ef;
+}
+
+.poster-media img,
+.card--poster .program-art img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    object-fit: cover;
+    max-height: none;
+    transform: none;
+}
+
+.poster-tag {
+    position: absolute;
+    inset: 14px auto auto 14px;
+    padding: 5px 9px;
+    border-radius: 4px;
+    background: white;
+    color: var(--ink);
+    font-size: var(--text-meta);
+    font-weight: var(--weight-title);
+}
+
+.poster-tag.today { background: var(--human); }
+
+/* [포스터 하단 관심 버튼 / Favorite at the poster bottom]
+   링크와 독립된 이미지 크기의 영역으로 하트를 고정하고 포스터 클릭을 유지합니다.
+   Match the media bounds outside the link, allowing clicks through the overlay. */
+.card-poster-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.card--poster .favorite-button {
+    position: absolute;
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    width: var(--control-size);
+    height: var(--control-size);
+    border: 0;
+    border-radius: 50%;
+    color: var(--ink);
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    transform: none;
+    transition: opacity 180ms ease;
+}
+
+.card--poster:is(:hover, :focus-within) .favorite-button {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.card--poster .favorite-button.selected { background: var(--human); }
+
+.card--poster .program-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin: 20px 0 8px;
+    padding: 0;
+    color: var(--muted);
+    font-size: var(--text-meta);
+}
+
+.card--poster h3 {
+    min-height: 0;
+    margin: 0 0 12px;
+    padding: 0;
+    font-size: var(--text-card-title);
+    font-weight: var(--weight-title);
+    line-height: 1.5;
+}
+
+.card--poster :is(.program-card-date, .program-card-venue) {
+    margin: 4px 0 0;
+    padding: 0;
+    color: var(--muted);
+    font-size: var(--text-meta);
+    line-height: 1.7;
+    font-variant-numeric: tabular-nums;
+}
+
+/* [카드-히어로와 트랙 / Card-hero and track]
+   전환마다 새 검은 막을 붙이지 않고 고정 pseudo-element의 opacity를 보간합니다.
+   Interpolate a persistent shade instead of inserting a dark overlay on each change. */
+.season-stage {
+    touch-action: pan-y;
+    cursor: grab;
+}
+
+.season-stage[data-dragging="true"] { cursor: grabbing; }
+
+.season-track {
+    display: flex;
+    gap: var(--slide-gap);
+    width: max-content;
+    margin-left: calc((100% - var(--slide-width)) / 2);
+    transform: translate3d(calc(-2 * (var(--slide-width) + var(--slide-gap)) + var(--drag-x, 0px)), 0, 0);
+}
+
+.season-track.is-moving {
+    transition: transform var(--carousel-duration, 800ms) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.card--hero {
+    isolation: isolate;
+    width: var(--slide-width);
+    min-height: clamp(500px, 39vw, 600px);
+    flex: 0 0 var(--slide-width);
+    overflow: hidden;
+    border-radius: var(--radius-banner);
+    background: #10100e;
+    color: white;
+}
+
+.card--hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: #000000;
+    opacity: 0.32;
+    transition: opacity 650ms ease;
+}
+
+.card--hero.is-active::before { opacity: 0; }
+
+.card--hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgb(0 0 0 / 70%), rgb(0 0 0 / 8%) 80%);
+}
+
+.season-card-link {
+    display: block;
+    min-height: inherit;
+    height: 100%;
+    color: inherit;
+}
+
+.card--hero .season-image {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    object-fit: cover;
+    object-position: 64% center;
+}
+
+.season-copy {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: inherit;
+    padding: clamp(32px, 4.6vw, 72px);
+    opacity: 0;
+    transition: opacity 650ms ease;
+}
+
+.is-active .season-copy { opacity: 1; }
+.season-label { margin: 0 0 24px; font-size: var(--text-meta); font-weight: 550; }
+.season-copy h2 { margin: 0 0 30px; font-size: clamp(42px, 4.3vw, 66px); font-weight: 650; line-height: 1.22; letter-spacing: -0.055em; }
+.season-name { margin: 0 0 8px; font-size: var(--text-item-title); font-weight: 600; line-height: 1.5; }
+.season-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 0 28px; font-size: var(--text-meta); }
+
+/* [카드-배너 / Card-banner] */
+.card--banner {
+    overflow: hidden;
+    padding: 0;
+    border-radius: var(--radius-banner);
+    background: var(--sky);
+    color: var(--ink);
+}
+
+.card-banner-link {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+    padding: 48px 64px;
+    color: inherit;
+}
+
+.card--banner h2 { margin: 0 0 22px; font-size: clamp(28px, 2.8vw, 38px); line-height: 1.35; }
+.invitation-art { position: relative; display: flex; flex-direction: column; justify-content: center; min-width: 260px; padding-right: 24px; line-height: 0.9; }
+.invitation-art > span { position: relative; z-index: 1; font-size: 72px; font-weight: 750; letter-spacing: -0.07em; }
+.invitation-art b { position: relative; z-index: 1; margin-top: 12px; font-size: 40px; font-weight: 650; letter-spacing: -0.045em; }
+.invitation-art i { position: absolute; top: 4px; right: 0; width: 180px; height: 180px; border: 1px solid rgb(0 0 0 / 35%); border-radius: 50%; }
+
+@media (hover: none), (pointer: coarse) {
+    .card--poster .favorite-button { opacity: 1; pointer-events: auto; }
+}
+
+@media (max-width: 800px) {
+    .card--hero { min-height: 510px; }
+    .season-copy { padding: 36px; }
+    .season-copy h2 { font-size: 46px; }
+    .card-banner-link { padding: 36px; gap: 24px; }
+    .invitation-art { min-width: 160px; }
+    .invitation-art > span { font-size: 58px; }
+    .invitation-art b { font-size: 30px; }
+    .invitation-art i { width: 140px; height: 140px; }
+}
+
+@media (max-width: 600px) {
+    .card--hero { min-height: 540px; }
+    .card--hero .season-image { object-position: 72% center; }
+    .card--hero::after { background: linear-gradient(0deg, rgb(0 0 0 / 85%), rgb(0 0 0 / 15%) 90%); }
+    .season-copy { justify-content: flex-end; padding: 28px 24px; }
+    .season-label { margin-bottom: 14px; }
+    .season-copy h2 { font-size: clamp(34px, 8.5vw, 44px); margin-bottom: 20px; }
+    .season-meta { gap: 4px 12px; margin-bottom: 22px; }
+    .season-copy .button { padding: 12px 18px; font-size: var(--text-sm); }
+    .card-banner-link { padding: 30px 26px; }
+    .card--banner h2 { font-size: 28px; }
+    .invitation-art { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card--hero::before, .season-copy, .card--poster .favorite-button { transition-duration: 0.01ms; }
+}

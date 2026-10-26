@@ -1,0 +1,465 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FlutedGlass (RTT refraction filter) > samples the child RTT through the flute geometry + unpremultiplies (default: mirror, aberration on) > flutedglass-mirror-aberration 1`] = `
+"struct FlutedGeom {
+  refractedUV: vec2f,
+  chrOff: vec2f,
+  slope: f32,
+}
+
+fn flutedGlassGeom(uv: vec2f, aspect: f32, t: f32, angleDeg: f32, frequency: f32, softness: f32, waveAmp: f32, waveFreq: f32, refraction: f32, aberration: f32, shapeParams: vec3f) -> FlutedGeom {
+  let expHi = shapeParams.x;
+  let expLo = shapeParams.y;
+  let wavesFlag = shapeParams.z;
+  let r = ((angleDeg * 3.141592653589793f) / 180f);
+  let cosA = cos(r);
+  let sinA = sin(r);
+  let aspCorr = vec2f(((uv.x - 0.5f) * aspect), (uv.y - 0.5f));
+  let u = ((aspCorr.x * cosA) + (aspCorr.y * sinA));
+  let v = ((-(aspCorr.x) * sinA) + (aspCorr.y * cosA));
+  let waveTerm = (sin((((v * waveFreq) * 6.283185307179586f) + (t * 2f))) * waveAmp);
+  let fluteU = (u + (wavesFlag * waveTerm));
+  let flutePos = ((fluteU * frequency) + t);
+  let cellPos = ((fract(flutePos) - 0.5f) * 2f);
+  let absCell = max(abs(cellPos), 1e-4f);
+  let exponent = mix(expHi, expLo, softness);
+  let slope = (sign(cellPos) * pow(absCell, exponent));
+  let halfCell = (0.5f / max(frequency, 1e-3f));
+  let refrU = -(((slope * refraction) * halfCell));
+  let refractedUV = vec2f((uv.x + ((refrU * cosA) / aspect)), (uv.y + (refrU * sinA)));
+  let chrU = ((refrU * aberration) * 0.5f);
+  let chrOff = vec2f(((chrU * cosA) / aspect), (chrU * sinA));
+  return FlutedGeom(refractedUV, chrOff, slope);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  shape: f32,
+  angle: f32,
+  frequency: f32,
+  softness: f32,
+  waveAmplitude: f32,
+  waveFrequency: f32,
+  speed: f32,
+  refraction: f32,
+  aberration: f32,
+  lightAngle: f32,
+  highlight: f32,
+  highlightSoftness: f32,
+  highlightColor: vec4f,
+  edges: f32,
+  _opacity: f32,
+  _animTime: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_gen: padded_1,
+  n_fg: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn genBody(uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, 0.5f, 1f);
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn edgeMirrorUV(uv: vec2f) -> vec2f {
+  let mirrorX = (abs(uv.x) % 2f);
+  let mirrorY = (abs(uv.y) % 2f);
+  return vec2f(select(mirrorX, (2f - mirrorX), (mirrorX >= 1f)), select(mirrorY, (2f - mirrorY), (mirrorY >= 1f)));
+}
+
+fn blinnHighlight(slope: f32, lightAngleDeg: f32, intensity: f32, softness: f32) -> f32 {
+  let slopeSq = min((slope * slope), 1f);
+  let nz = sqrt((1f - slopeSq));
+  let half = ((lightAngleDeg * 3.141592653589793f) / 360f);
+  let hx = sin(half);
+  let hy = cos(half);
+  let nDotH = max(((slope * hx) + (nz * hy)), 0f);
+  let shininess = exp2((8f - (softness * 7f)));
+  let fresnel = pow((1f - nz), 5f);
+  let fresnelMix = (0.04f + (0.96f * fresnel));
+  return ((pow(nDotH, shininess) * fresnelMix) * intensity);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let flute_0 = flutedGlassGeom(uv, uniforms._sys.aspect, (uniforms.n_fg._animTime * -1.0), uniforms.n_fg.angle, uniforms.n_fg.frequency, uniforms.n_fg.softness, uniforms.n_fg.waveAmplitude, uniforms.n_fg.waveFrequency, uniforms.n_fg.refraction, uniforms.n_fg.aberration, vec3f(16.0, 4.0, 0.0));
+  var composed_1 = mix(genBody(uv), vec4f(((unpremultiplyAlpha(vec4f((textureSample(rtt_0, linearClamp, edgeMirrorUV((flute_0.refractedUV + flute_0.chrOff)))).r, (textureSample(rtt_0, linearClamp, edgeMirrorUV(flute_0.refractedUV))).g, (textureSample(rtt_0, linearClamp, edgeMirrorUV((flute_0.refractedUV + (flute_0.chrOff * -1.0))))).b, (textureSample(rtt_0, linearClamp, edgeMirrorUV(flute_0.refractedUV))).a))).rgb + (uniforms.n_fg.highlightColor.rgb * (blinnHighlight(flute_0.slope, uniforms.n_fg.lightAngle, uniforms.n_fg.highlight, uniforms.n_fg.highlightSoftness) * (unpremultiplyAlpha(vec4f((textureSample(rtt_0, linearClamp, edgeMirrorUV((flute_0.refractedUV + flute_0.chrOff)))).r, (textureSample(rtt_0, linearClamp, edgeMirrorUV(flute_0.refractedUV))).g, (textureSample(rtt_0, linearClamp, edgeMirrorUV((flute_0.refractedUV + (flute_0.chrOff * -1.0))))).b, (textureSample(rtt_0, linearClamp, edgeMirrorUV(flute_0.refractedUV))).a))).a))), (unpremultiplyAlpha(vec4f((textureSample(rtt_0, linearClamp, edgeMirrorUV((flute_0.refractedUV + flute_0.chrOff)))).r, (textureSample(rtt_0, linearClamp, edgeMirrorUV(flute_0.refractedUV))).g, (textureSample(rtt_0, linearClamp, edgeMirrorUV((flute_0.refractedUV + (flute_0.chrOff * -1.0))))).b, (textureSample(rtt_0, linearClamp, edgeMirrorUV(flute_0.refractedUV))).a))).a), uniforms.n_fg._opacity);
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;
+
+exports[`Godrays (animated generator) > reads _animTime and emits the ray field + composite > godrays 1`] = `
+"fn coverageOver(rayColor: vec4f, bgColor: vec4f, coverage: f32) -> vec4f {
+  let rayA = (coverage * rayColor.w);
+  let finalAlpha = (rayA + (bgColor.w * (1f - rayA)));
+  let safeAlpha = clamp(finalAlpha, 1e-3f, 1f);
+  let rayContribution = (rayColor.xyz * rayA);
+  let bgContribution = ((bgColor.xyz * bgColor.w) * (1f - rayA));
+  let finalColor = ((rayContribution + bgContribution) / safeAlpha);
+  return vec4f(finalColor, finalAlpha);
+}
+
+struct struct_1 {
+  center: vec2f,
+  density: f32,
+  intensity: f32,
+  spotty: f32,
+  speed: f32,
+  rayColor: vec4f,
+  backgroundColor: vec4f,
+  _opacity: f32,
+  _animTime: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_n: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn noise_hash12(p: vec2f) -> f32 {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  return (f32(((u.x ^ u.y) * 3141592653u)) / 4294967296f);
+}
+
+fn godraysHash(p: vec2f) -> f32 {
+  return noise_hash12(p);
+}
+
+fn godraysValueNoise(st: vec2f) -> f32 {
+  let i = floor(st);
+  let f = fract(st);
+  let a = godraysHash(i);
+  let b = godraysHash(vec2f((i.x + 1f), i.y));
+  let c = godraysHash(vec2f(i.x, (i.y + 1f)));
+  let e = godraysHash(vec2f((i.x + 1f), (i.y + 1f)));
+  let u = ((f * f) * ((f * -2f) + 3f));
+  let x1 = mix(a, b, u.x);
+  let x2 = mix(c, e, u.x);
+  return mix(x1, x2, u.y);
+}
+
+fn godraysRaysShape(a: f32, aWrapped: f32, blend: f32, r: f32, freq: f32, intensity: f32) -> f32 {
+  let nLeft = pow(godraysValueNoise(vec2f((a * freq), r)), intensity);
+  let nRight = pow(godraysValueNoise(vec2f((aWrapped * freq), r)), intensity);
+  return mix(nRight, nLeft, blend);
+}
+
+fn godraysRayLayer(frame: vec4f, animTime: f32, spots: f32, intensityCalc: f32, dens: f32, sched: vec4f, freqs: vec2f) -> f32 {
+  let rA = ((frame.w * sched.x) - (animTime * sched.y));
+  let rB = (((frame.w * sched.z) * (1f + spots)) - (animTime * sched.w));
+  let f = (dens * freqs.x);
+  let shapeA = godraysRaysShape(frame.x, frame.y, frame.z, rA, f, intensityCalc);
+  let shapeB = godraysRaysShape(frame.x, frame.y, frame.z, rB, (f * freqs.y), intensityCalc);
+  return (shapeA * shapeB);
+}
+
+fn godraysRayStack(frame: vec4f, animTimeRaw: f32, density: f32, intensity: f32, spotty: f32) -> f32 {
+  let animTime = (animTimeRaw * 0.2f);
+  let spots = (6.5f * abs(spotty));
+  let intensityCalc = (4f - (3f * clamp(intensity, 0f, 1f)));
+  let dens = (6f * density);
+  let layer1 = godraysRayLayer(frame, animTime, spots, intensityCalc, dens, vec4f(1, 3, 0.5, 2), vec2f(5, 4));
+  let layer2 = godraysRayLayer(frame, animTime, spots, intensityCalc, dens, vec4f(1.399999976158142, 2.5, 0.699999988079071, 1.7999999523162842), vec2f(4.5, 3.5));
+  return clamp((layer1 + (layer2 * 0.7f)), 0f, 1f);
+}
+
+fn geom_aspectOf(viewport: vec2f) -> f32 {
+  return (viewport.x / max(viewport.y, 1e-6f));
+}
+
+fn lightfields_seamlessAngularField(delta: vec2f) -> vec3f {
+  let angle = atan2(delta.y, delta.x);
+  let angleWrapped = (angle - (6.283185307179586f * floor((angle / 6.283185307179586f))));
+  let blend = smoothstep(-0.15f, 0.15f, delta.x);
+  return vec3f(angle, angleWrapped, blend);
+}
+
+fn godraysFrame(uv: vec2f, viewport: vec2f, center: vec2f) -> vec4f {
+  let aspect = geom_aspectOf(viewport);
+  let centerPos = vec2f(center.x, (1f - center.y));
+  let delta = (uv - centerPos);
+  let shapeUV = vec2f((delta.x * aspect), delta.y);
+  let ang = lightfields_seamlessAngularField(shapeUV);
+  return vec4f(ang.x, ang.y, ang.z, length(shapeUV));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  var composed_0 = coverageOver(uniforms.n_n.rayColor, uniforms.n_n.backgroundColor, godraysRayStack(godraysFrame(uv, uniforms._sys.viewportSize, uniforms.n_n.center), uniforms.n_n._animTime, uniforms.n_n.density, uniforms.n_n.intensity, uniforms.n_n.spotty));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`LensFlare (animated procedural generator) > emits the flare stack (ghosts + spectral) reading _animTime > lensflare 1`] = `
+"fn geom_aspectOf(viewport: vec2f) -> f32 {
+  return (viewport.x / max(viewport.y, 1e-6f));
+}
+
+struct FlareFrame {
+  aspect: f32,
+  lightPos: vec2f,
+  flareAxis: vec2f,
+  masterFade: f32,
+  lightDist: f32,
+  lightAngle: f32,
+}
+
+fn flareFrame(uv: vec2f, viewport: vec2f, t: f32, lightPosRaw: vec2f, intensity: f32, edgeFade: f32) -> FlareFrame {
+  let aspect = geom_aspectOf(viewport);
+  let lightPos = vec2f(lightPosRaw.x, (1f - lightPosRaw.y));
+  let flareAxis = vec2f((0.5f - lightPos.x), (0.5f - lightPos.y));
+  let shimmer = ((((sin((t * 3.7f)) * 0.04f) + (sin((t * 7.3f)) * 0.03f)) + (sin((t * 13.1f)) * 0.02f)) + 0.97f);
+  let edgeDist = max((abs((lightPos.x - 0.5f)) * 2f), (abs((lightPos.y - 0.5f)) * 2f));
+  let fadeStart = (1f - (edgeFade * 0.5f));
+  let edgeFadeV = mix(1f, (1f - smoothstep(fadeStart, 1f, edgeDist)), edgeFade);
+  let masterFade = ((intensity * edgeFadeV) * shimmer);
+  let toLightAR = vec2f(((uv.x - lightPos.x) * aspect), (uv.y - lightPos.y));
+  let lightDist = length(toLightAR);
+  let lightAngle = atan2(toLightAR.y, toLightAR.x);
+  return FlareFrame(aspect, lightPos, flareAxis, masterFade, lightDist, lightAngle);
+}
+
+struct struct_1 {
+  lightPosition: vec2f,
+  intensity: f32,
+  ghostIntensity: f32,
+  ghostSpread: f32,
+  ghostChroma: f32,
+  haloIntensity: f32,
+  haloRadius: f32,
+  haloChroma: f32,
+  haloSoftness: f32,
+  starburstIntensity: f32,
+  starburstPoints: f32,
+  streakIntensity: f32,
+  streakLength: f32,
+  glareIntensity: f32,
+  glareSize: f32,
+  edgeFade: f32,
+  speed: f32,
+  _opacity: f32,
+  _animTime: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_n: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn tone_luma601Dot(rgb: vec3f) -> f32 {
+  return dot(rgb, vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464));
+}
+
+fn flareComposite(flareTotal: vec3f, masterFade: f32) -> vec4f {
+  let finalColor = (flareTotal * masterFade);
+  let flareAlpha = clamp((tone_luma601Dot(finalColor) * 2f), 0f, 1f);
+  return vec4f(finalColor, flareAlpha);
+}
+
+fn lightfields_chromaticRingBand(dist: f32, center: f32, spread: f32, width: f32) -> vec3f {
+  let w = max(width, 1e-4f);
+  let r = (1f - smoothstep(0f, w, abs((dist - (center + spread)))));
+  let g = (1f - smoothstep(0f, w, abs((dist - center))));
+  let b = (1f - smoothstep(0f, w, abs((dist - (center - spread)))));
+  return vec3f(r, g, b);
+}
+
+fn lensFlareGhost(uv: vec2f, aspect: f32, lightPos: vec2f, flareAxis: vec2f, t: f32, ghostSpread: f32, ghostChroma: f32, ghostInt: f32, disc: vec4f, tint: vec4f) -> vec3f {
+  let offset = disc.x;
+  let size = disc.y;
+  let bright = disc.z;
+  let hollow = disc.w;
+  let r = tint.x;
+  let g = tint.y;
+  let b = tint.z;
+  let gPhase = tint.w;
+  let ghostPos = (lightPos + (flareAxis * ((offset * ghostSpread) * 2f)));
+  let toGhost = vec2f(((uv.x - ghostPos.x) * aspect), (uv.y - ghostPos.y));
+  let dist = length(toGhost);
+  let sz = size;
+  let discShape = (1f - smoothstep((sz * 0.12f), sz, dist));
+  let innerFade = (1f - smoothstep((sz * 0.05f), (sz * 0.45f), dist));
+  let shape = (discShape * (1f - (innerFade * hollow)));
+  let gShimmer = (((sin(((t * 4.3f) + gPhase)) * 0.08f) + (sin(((t * 9.1f) + (gPhase * 1.7f))) * 0.05f)) + 0.95f);
+  let ringCenter = (sz * 0.78f);
+  let chromaSpread = ((sz * ghostChroma) * 0.14f);
+  let ringWidth = (sz * 0.1f);
+  let ring = lightfields_chromaticRingBand(dist, ringCenter, chromaSpread, ringWidth);
+  let rRing = ring.x;
+  let gRing = ring.y;
+  let bRing = ring.z;
+  let brightness = ((bright * ghostInt) * gShimmer);
+  return vec3f((((shape * r) + (rRing * ghostChroma)) * brightness), (((shape * g) + (gRing * ghostChroma)) * brightness), (((shape * b) + (bRing * ghostChroma)) * brightness));
+}
+
+fn flareHalo(uv: vec2f, aspect: f32, lightPos: vec2f, t: f32, haloInt: f32, haloRad: f32, haloChroma: f32, haloSoft: f32) -> vec3f {
+  let antiLight = vec2f((1f - lightPos.x), (1f - lightPos.y));
+  let toAntiLight = vec2f(((uv.x - antiLight.x) * aspect), (uv.y - antiLight.y));
+  let antiLightDist = length(toAntiLight);
+  let haloChromaSpread = ((haloRad * haloChroma) * 0.06f);
+  let haloWidth = ((haloSoft * 0.12f) + 5e-3f);
+  let halo = lightfields_chromaticRingBand(antiLightDist, haloRad, haloChromaSpread, haloWidth);
+  let haloAngle = atan2(toAntiLight.y, toAntiLight.x);
+  let haloAngVar = ((sin(((haloAngle * 3f) + (t * 0.5f))) * 0.12f) + 0.88f);
+  return ((halo * haloInt) * haloAngVar);
+}
+
+fn lightfields_angularCosineSpikes(angle: f32, halfCount: f32, power: f32) -> f32 {
+  return pow(abs(cos((angle * halfCount))), power);
+}
+
+fn lensFlareSpectral(t: f32) -> vec3f {
+  return vec3f(((cos((6.283185307179586f * t)) * 0.5f) + 0.5f), ((cos((6.283185307179586f * (t - 0.333f))) * 0.5f) + 0.5f), ((cos((6.283185307179586f * (t - 0.666f))) * 0.5f) + 0.5f));
+}
+
+fn flareStarburst(lightAngle: f32, flareAxis: vec2f, aspect: f32, t: f32, lightDist: f32, starburstPts: f32, starburstInt: f32) -> vec3f {
+  let axisAng = atan2(flareAxis.y, (flareAxis.x * aspect));
+  let rotation = ((axisAng * 0.5f) + (t * 0.06f));
+  let spikeAngle = (lightAngle + rotation);
+  let primarySpikes = lightfields_angularCosineSpikes(spikeAngle, (starburstPts / 2f), 3.5f);
+  let secondarySpikes = (lightfields_angularCosineSpikes((spikeAngle + 0.25f), (starburstPts / 2f), 7f) * 0.4f);
+  let radialFall = (1f / (1f + ((lightDist * lightDist) * 60f)));
+  let starSpectral = lensFlareSpectral(((spikeAngle / 6.283185307179586f) + 0.5f));
+  let starTint = mix(vec3f(1, 0.9700000286102295, 0.9200000166893005), starSpectral, 0.12f);
+  return (starTint * (((primarySpikes + secondarySpikes) * radialFall) * starburstInt));
+}
+
+fn flareStreak(uv: vec2f, lightPos: vec2f, streakLen: f32, streakInt: f32) -> vec3f {
+  let dy = abs((uv.y - lightPos.y));
+  let dx = abs((uv.x - lightPos.x));
+  let vertFall = exp(((-800f * dy) * dy));
+  let lenSq = (((streakLen * streakLen) * 0.25f) + 1e-3f);
+  let rStreak = exp((((-1f * dx) * dx) / (lenSq * 0.7f)));
+  let gStreak = exp((((-1f * dx) * dx) / lenSq));
+  let bStreak = exp((((-1f * dx) * dx) / (lenSq * 1.4f)));
+  return (vec3f(((vertFall * rStreak) * 0.5f), ((vertFall * gStreak) * 0.65f), ((vertFall * bStreak) * 0.9f)) * streakInt);
+}
+
+fn lightfields_radialGaussianFalloff(dist: f32, sharpness: f32) -> f32 {
+  return exp(-(((dist * dist) * sharpness)));
+}
+
+fn flareGlare(lightDist: f32, glareSz: f32, glareInt: f32) -> vec3f {
+  let glareSharpness = (1f / ((glareSz * glareSz) + 0.01f));
+  let glareFalloff = lightfields_radialGaussianFalloff(lightDist, glareSharpness);
+  return (vec3f(1, 0.9800000190734863, 0.949999988079071) * (glareFalloff * glareInt));
+}
+
+fn flareCore(lightDist: f32, intensity: f32) -> vec3f {
+  let coreSoft = exp(((-500f * lightDist) * lightDist));
+  let coreSharp = (1f - smoothstep(0f, 0.025f, lightDist));
+  return (vec3f(1, 0.9800000190734863, 0.9599999785423279) * ((coreSoft + (coreSharp * 1.5f)) * intensity));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let flare_0 = flareFrame(uv, uniforms._sys.viewportSize, uniforms.n_n._animTime, uniforms.n_n.lightPosition, uniforms.n_n.intensity, uniforms.n_n.edgeFade);
+  var composed_1 = flareComposite((((((((((((lensFlareGhost(uv, flare_0.aspect, flare_0.lightPos, flare_0.flareAxis, uniforms.n_n._animTime, uniforms.n_n.ghostSpread, uniforms.n_n.ghostChroma, uniforms.n_n.ghostIntensity, vec4f(0.15, 0.2, 0.3, 0.1), vec4f(1.0, 0.95, 0.9, 0.0)) + lensFlareGhost(uv, flare_0.aspect, flare_0.lightPos, flare_0.flareAxis, uniforms.n_n._animTime, uniforms.n_n.ghostSpread, uniforms.n_n.ghostChroma, uniforms.n_n.ghostIntensity, vec4f(0.3, 0.12, 0.25, 0.65), vec4f(1.0, 0.85, 0.55, 2.17))) + lensFlareGhost(uv, flare_0.aspect, flare_0.lightPos, flare_0.flareAxis, uniforms.n_n._animTime, uniforms.n_n.ghostSpread, uniforms.n_n.ghostChroma, uniforms.n_n.ghostIntensity, vec4f(0.5, 0.08, 0.35, 0.15), vec4f(0.62, 0.82, 1.0, 4.34))) + lensFlareGhost(uv, flare_0.aspect, flare_0.lightPos, flare_0.flareAxis, uniforms.n_n._animTime, uniforms.n_n.ghostSpread, uniforms.n_n.ghostChroma, uniforms.n_n.ghostIntensity, vec4f(0.72, 0.14, 0.18, 0.75), vec4f(0.75, 1.0, 0.7, 6.51))) + lensFlareGhost(uv, flare_0.aspect, flare_0.lightPos, flare_0.flareAxis, uniforms.n_n._animTime, uniforms.n_n.ghostSpread, uniforms.n_n.ghostChroma, uniforms.n_n.ghostIntensity, vec4f(0.95, 0.06, 0.3, 0.0), vec4f(1.0, 0.6, 0.85, 8.68))) + lensFlareGhost(uv, flare_0.aspect, flare_0.lightPos, flare_0.flareAxis, uniforms.n_n._animTime, uniforms.n_n.ghostSpread, uniforms.n_n.ghostChroma, uniforms.n_n.ghostIntensity, vec4f(1.25, 0.1, 0.15, 0.8), vec4f(0.55, 0.88, 1.0, 10.85))) + lensFlareGhost(uv, flare_0.aspect, flare_0.lightPos, flare_0.flareAxis, uniforms.n_n._animTime, uniforms.n_n.ghostSpread, uniforms.n_n.ghostChroma, uniforms.n_n.ghostIntensity, vec4f(1.55, 0.07, 0.2, 0.25), vec4f(1.0, 0.92, 0.6, 13.02))) + flareHalo(uv, flare_0.aspect, flare_0.lightPos, uniforms.n_n._animTime, uniforms.n_n.haloIntensity, uniforms.n_n.haloRadius, uniforms.n_n.haloChroma, uniforms.n_n.haloSoftness)) + flareStarburst(flare_0.lightAngle, flare_0.flareAxis, flare_0.aspect, uniforms.n_n._animTime, flare_0.lightDist, uniforms.n_n.starburstPoints, uniforms.n_n.starburstIntensity)) + flareStreak(uv, flare_0.lightPos, uniforms.n_n.streakLength, uniforms.n_n.streakIntensity)) + flareGlare(flare_0.lightDist, uniforms.n_n.glareSize, uniforms.n_n.glareIntensity)) + flareCore(flare_0.lightDist, uniforms.n_n.intensity)), flare_0.masterFade);
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;

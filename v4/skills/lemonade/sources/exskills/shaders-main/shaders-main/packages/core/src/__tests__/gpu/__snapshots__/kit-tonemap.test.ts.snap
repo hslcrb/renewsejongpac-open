@@ -1,0 +1,85 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`tonemap — tonemapFns record + resolve gate > all curves + OETF resolve to WGSL (snapshot) 1`] = `
+"fn item(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+fn item_1(color: vec3f) -> vec3f {
+  return clamp((color / (color + 1f)), vec3f(), vec3f(1));
+}
+
+fn item_2(color: vec3f) -> vec3f {
+  let c = max((color - 4e-3f), vec3f());
+  let a = (c * ((c * 6.2f) + 0.5f));
+  let b = ((c * ((c * 6.2f) + 1.7f)) + 0.06f);
+  return pow((a / b), vec3f(2.200000047683716));
+}
+
+fn rrtAndODTFit(v: vec3f) -> vec3f {
+  let a = ((v * (v + 0.0245786f)) - 9.0537e-5f);
+  let b = ((v * ((v + 0.432951f) * 0.983729f)) + 0.238081f);
+  return (a / b);
+}
+
+fn item_3(color: vec3f) -> vec3f {
+  var c = (color / 0.6f);
+  c = (mat3x3f(0.5971900224685669, 0.07599999755620956, 0.0284000001847744, 0.35457998514175415, 0.9083399772644043, 0.1338299959897995, 0.04822999984025955, 0.01565999910235405, 0.8377699851989746) * c);
+  c = rrtAndODTFit(c);
+  c = (mat3x3f(1.6047500371932983, -0.10208000242710114, -0.003269999986514449, -0.5310800075531006, 1.1081299781799316, -0.07276000082492828, -0.07366999983787537, -0.006049999967217445, 1.0760200023651123) * c);
+  return clamp(c, vec3f(), vec3f(1));
+}
+
+fn agxContrastApprox(x: vec3f) -> vec3f {
+  let x2 = (x * x);
+  let x4 = (x2 * x2);
+  return ((((x4 * x2) * 15.5f) - ((x4 * x) * 40.14f)) + (((x4 * 31.96f) - ((x2 * x) * 6.868f)) + ((x2 * 0.4298f) + ((x * 0.1191f) - 0.00232f))));
+}
+
+fn item_4(color: vec3f) -> vec3f {
+  var c = (mat3x3f(0.6273999810218811, 0.06909999996423721, 0.01640000008046627, 0.3292999863624573, 0.9194999933242798, 0.08799999952316284, 0.043299999088048935, 0.011300000362098217, 0.8956000208854675) * color);
+  c = (mat3x3f(0.8566271662712097, 0.13731896877288818, 0.11189821362495422, 0.09512124210596085, 0.7612419724464417, 0.0767994150519371, 0.04825160652399063, 0.10143903642892838, 0.8113023638725281) * c);
+  c = max(c, vec3f(1.000000013351432e-10));
+  c = log2(c);
+  c = ((c - -12.47393f) / 16.499999f);
+  c = clamp(c, vec3f(), vec3f(1));
+  c = agxContrastApprox(c);
+  c = (mat3x3f(1.1271005868911743, -0.14132976531982422, -0.14132976531982422, -0.11060664057731628, 1.1578236818313599, -0.11060664057731628, -0.016493938863277435, -0.016493938863277435, 1.251936435699463) * c);
+  c = pow(max(c, vec3f()), vec3f(2.200000047683716));
+  c = (mat3x3f(1.6605000495910645, -0.12460000067949295, -0.018200000748038292, -0.5875999927520752, 1.1328999996185303, -0.1005999967455864, -0.07280000299215317, -0.008299999870359898, 1.1187000274658203) * c);
+  return clamp(c, vec3f(), vec3f(1));
+}
+
+fn item_5(color: vec3f) -> vec3f {
+  let x = min(color.x, min(color.y, color.z));
+  let offset = select(0.04f, (x - ((6.25f * x) * x)), (x < 0.08f));
+  var c = (color - offset);
+  let peak = max(c.x, max(c.y, c.z));
+  if ((peak < 0.76f)) {
+    return c;
+  }
+  const dd = 0.24;
+  let newPeak = (1f - ((dd * dd) / ((peak + dd) - 0.76f)));
+  c = (c * (newPeak / peak));
+  let g = (1f - (1f / ((0.15f * (peak - newPeak)) + 1f)));
+  return mix(c, vec3f(newPeak), g);
+}
+
+fn item_6(color: vec3f) -> vec3f {
+  let x = (color * 16f);
+  let num = ((x * ((x * 0.15f) + 0.05f)) + 4e-3f);
+  let den = ((x * ((x * 0.15f) + 0.5f)) + 0.06f);
+  return ((num / den) - 0.06666666666666667f);
+}
+
+fn item_7(color: vec3f) -> vec3f {
+  return ((color / (color + 0.155f)) * 1.019f);
+}
+
+fn item_8(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}"
+`;

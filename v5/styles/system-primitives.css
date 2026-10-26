@@ -1,0 +1,563 @@
+/* [공통 조작 / Shared controls]
+   기존 색상과 서체를 보존하고 모든 화면의 조작 크기를 토큰으로 통일합니다.
+   Preserve the palette and font while sharing token based control dimensions. */
+
+.ds-button[data-context] {
+    --control-target-size: var(--control-size);
+    --control-stroke-color: var(--color-transparent);
+    --control-focus-color: var(--border-focus);
+    --control-selected-background: var(--action-primary);
+    --control-selected-color: var(--text-inverse);
+    --control-selected-hover-background: var(--action-primary-hover);
+    --control-selected-focus: var(--focus-on-dark);
+    --control-selected-stroke: var(--color-transparent);
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-width: var(--control-target-size);
+    min-height: var(--control-target-size);
+    padding: 10px 20px;
+    border: 0;
+    border-radius: var(--radius-control);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--control-stroke-color);
+    font: 600 max(var(--text-min), 1rem)/1.5 var(--font);
+    letter-spacing: var(--tracking-body);
+    text-decoration: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color var(--duration-feedback) var(--ease-standard), color var(--duration-feedback) var(--ease-standard), box-shadow var(--duration-feedback) var(--ease-standard);
+}
+
+.ds-button[data-context="flow"] {
+    --control-target-size: var(--control-flow-button-size);
+    padding: 14px 22px;
+    border-radius: var(--radius-flow);
+    line-height: 1.45;
+}
+
+.ds-button.ds-button-primary[data-context] {
+    --control-focus-color: var(--focus-on-dark);
+    color: var(--text-inverse);
+    background: var(--action-primary);
+}
+
+.ds-button.ds-button-secondary[data-context] {
+    --control-stroke-color: var(--stroke-control);
+    color: var(--text-primary);
+    background: var(--surface-default);
+}
+
+.ds-button.ds-button-accent[data-context] {
+    --control-focus-color: var(--focus-on-brand);
+    color: var(--text-on-brand);
+    background: var(--action-secondary);
+}
+
+.ds-button.ds-button-highlight[data-context] {
+    --control-focus-color: var(--focus-on-brand);
+    color: var(--text-on-brand);
+    background: var(--accent-highlight);
+}
+
+.ds-button.ds-button-quiet[data-context] {
+    color: var(--text-primary);
+    background: var(--color-transparent);
+}
+
+.ds-button.ds-button-inverse[data-context] {
+    color: var(--text-primary);
+    background: var(--surface-default);
+}
+
+.ds-button.ds-button-inverse-outline[data-context] {
+    --control-focus-color: var(--focus-on-dark);
+    --control-stroke-color: var(--stroke-inverse);
+    color: var(--text-inverse);
+    background: var(--color-transparent);
+}
+
+.ds-button.ds-button-inverse-quiet[data-context] {
+    --control-focus-color: var(--focus-on-dark);
+    color: var(--text-inverse);
+    background: var(--color-transparent);
+}
+
+/* [밝은/어두운 토글과 브랜드 선택 / Paired neutral inversion and retained brand fills]
+   배경·전경·초점·경계를 같은 상태에서 결정합니다. / Resolve the whole palette from one state. */
+.ds-button:is(.ds-button-primary, .ds-button-inverse-outline, .ds-button-inverse-quiet)[data-context] {
+    --control-selected-background: var(--surface-default);
+    --control-selected-color: var(--text-primary);
+    --control-selected-hover-background: var(--surface-subtle);
+    --control-selected-focus: var(--border-focus);
+    --control-selected-stroke: var(--stroke-control);
+}
+
+.ds-button.ds-button-accent[data-context] {
+    --control-selected-background: var(--action-secondary);
+    --control-selected-color: var(--text-on-brand);
+    --control-selected-hover-background: var(--action-secondary);
+    --control-selected-focus: var(--focus-on-brand);
+    --control-selected-stroke: var(--stroke-control);
+}
+
+.ds-button.ds-button-highlight[data-context] {
+    --control-selected-background: var(--accent-highlight);
+    --control-selected-color: var(--text-on-brand);
+    --control-selected-hover-background: var(--accent-highlight);
+    --control-selected-focus: var(--focus-on-brand);
+    --control-selected-stroke: var(--stroke-control);
+}
+
+.ds-button[data-context][data-shape="pill"] {
+    border-radius: var(--radius-pill);
+}
+
+.ds-button[data-context][data-shape="circle"] {
+    flex: none;
+    width: var(--control-target-size);
+    height: var(--control-target-size);
+    padding: 0;
+    border-radius: 50%;
+}
+
+.ds-button.ds-icon-button[data-context] {
+    flex: none;
+    min-width: var(--control-target-size);
+    min-height: var(--control-target-size);
+    padding: 0;
+}
+
+@media (hover: hover) {
+    .ds-button.ds-button-primary[data-context]:hover:not(:disabled):not([aria-pressed="true"]) {
+        color: var(--text-inverse);
+        background: var(--action-primary-hover);
+    }
+
+    .ds-button:is(.ds-button-secondary, .ds-button-quiet, .ds-button-inverse)[data-context]:hover:not(:disabled):not([aria-pressed="true"]) {
+        color: var(--text-primary);
+        background: var(--surface-subtle);
+    }
+
+    .ds-button:is(.ds-button-accent, .ds-button-highlight)[data-context]:hover:not(:disabled):not([aria-pressed="true"]) {
+        color: var(--text-on-brand);
+        --control-stroke-color: var(--stroke-control);
+    }
+
+    .ds-button:is(.ds-button-inverse-outline, .ds-button-inverse-quiet)[data-context]:hover:not(:disabled):not([aria-pressed="true"]) {
+        color: var(--text-inverse);
+        background: var(--color-detail-1rqvsa);
+    }
+}
+
+/* [선택과 hover의 결합 / Selection with hover]
+   선택된 버튼에 기본 hover 팔레트가 섞이지 않게 합니다. / Never mix resting hover with selected foreground. */
+.ds-button[data-context][aria-pressed] {
+    /* 반전 중 중간 회색끼리 겹치는 프레임을 만들지 않습니다.
+       Switch both faces atomically; hover remains a tone change within the selected palette. */
+    transition-property: box-shadow;
+}
+
+.ds-button[data-context][aria-pressed="true"]:not(:disabled) {
+    --control-focus-color: var(--control-selected-focus);
+    --control-stroke-color: var(--control-selected-stroke);
+    color: var(--control-selected-color);
+    background: var(--control-selected-background);
+}
+
+@media (hover: hover) {
+    .ds-button[data-context][aria-pressed="true"]:hover:not(:disabled) {
+        color: var(--control-selected-color);
+        background: var(--control-selected-hover-background);
+    }
+}
+
+.ds-button[data-context]:active:not(:disabled) {
+    filter: brightness(88%);
+}
+
+.ds-button[data-context]:disabled {
+    --control-stroke-color: var(--color-transparent);
+    color: var(--action-disabled-text);
+    background: var(--action-disabled);
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.ds-button[data-context]:focus-visible,
+.ds-tabs [role="tab"]:focus-visible,
+.ds-tabpanel:focus-visible,
+.ds-disclosure summary:focus-visible {
+    outline: var(--focus-width) solid var(--control-focus-color, var(--border-focus));
+    outline-offset: var(--focus-offset);
+}
+
+/* [폼과 선택 / Forms and selection] */
+
+.ds-field[data-component="field"] {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.ds-field[data-component="field"] > label {
+    color: var(--text-primary);
+    font-size: max(var(--text-min), 1rem);
+    font-weight: var(--weight-label);
+}
+
+.ds-field[data-component="field"] > [data-component="field-control"],
+.flow-page .ds-field[data-variant="flow"] > [data-component="field-control"] {
+    --field-stroke-color: var(--stroke-control);
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: var(--control-size);
+    padding: 11px 14px;
+    border: 0;
+    border-radius: var(--radius-control);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--field-stroke-color);
+    color: var(--text-primary);
+    background: var(--surface-default);
+    font: 400 max(var(--text-min), 1rem)/1.5 var(--font);
+    transition: box-shadow var(--duration-feedback) var(--ease-standard), background-color var(--duration-feedback) var(--ease-standard), color var(--duration-feedback) var(--ease-standard);
+}
+
+.ds-field[data-component="field"][data-variant="flow"] > [data-component="field-control"],
+.flow-page .ds-field[data-variant="flow"] > [data-component="field-control"] {
+    min-height: var(--control-flow-field-size, 54px);
+    padding: 14px 16px;
+    border-radius: var(--radius-flow);
+}
+
+.ds-field[data-component="field"] > textarea {
+    resize: vertical;
+}
+
+.ds-field[data-component="field"] > [data-component="field-control"]::placeholder {
+    color: var(--text-secondary);
+    opacity: 1;
+}
+
+.ds-field[data-component="field"] > [data-component="field-control"]:disabled {
+    color: var(--text-secondary);
+    background: var(--surface-subtle);
+    cursor: not-allowed;
+}
+
+.ds-field[data-component="field"] > [data-component="field-control"]:focus,
+.flow-page .ds-field[data-variant="flow"] > [data-component="field-control"]:focus {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+
+.ds-field[data-component="field"] > [data-component="field-control"][aria-invalid="true"],
+.flow-page .ds-field[data-variant="flow"] > [data-component="field-control"][aria-invalid="true"] {
+    --field-stroke-color: var(--semantic-error-border);
+}
+
+.ds-field[data-component="field"] > :is(.ds-field-error, .ds-field-hint) {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), 1rem);
+    line-height: 1.5;
+}
+
+.ds-field[data-component="field"] > .ds-field-error {
+    color: var(--semantic-error);
+    font-weight: 500;
+}
+
+.ds-check[data-component="checkbox"] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: var(--control-size);
+    font-size: max(var(--text-min), 1rem);
+    cursor: pointer;
+}
+
+.ds-check[data-component="checkbox"] input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    min-height: 0;
+    margin: 0;
+    accent-color: var(--text-primary);
+}
+
+.ds-check[data-component="checkbox"] input:focus-visible {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+
+.ds-check[data-component="checkbox"]:has(input:disabled) {
+    color: var(--action-disabled-text);
+    cursor: not-allowed;
+}
+
+.ds-field.site-search-field {
+    flex: 1;
+    min-width: 0;
+}
+
+.site-search .ds-field > input[data-component="field-control"] {
+    --field-stroke-color: var(--color-transparent);
+    padding: 14px 0;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-detail-j5afio);
+    font-size: max(var(--text-min), clamp(18px, 2vw, 26px));
+}
+
+.ds-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    clip-path: inset(50%) !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+/* [상태와 안내 / Status and feedback] */
+
+.ds-badge[data-component="badge"] {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    background: var(--surface-subtle);
+    font: 500 max(var(--text-min), 1rem)/1.5 var(--font);
+}
+
+.ds-badge.ds-badge-highlight[data-component="badge"] {
+    background: var(--accent-highlight);
+}
+
+.ds-badge.ds-badge-info[data-component="badge"] {
+    background: var(--accent-information);
+}
+
+.ds-badge[data-component="badge"][data-appearance="plain"] {
+    padding: 0;
+    border-radius: 0;
+    background: var(--color-detail-j5afio);
+}
+
+.ds-notice[data-component="notice"] {
+    --notice-stroke-color: var(--border-default);
+    --glass-edge: var(--notice-stroke-color);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-transparent);
+    color: var(--text-primary);
+    font: 400 max(var(--text-min), 1rem)/1.5 var(--font);
+}
+
+.ds-notice[data-component="notice"] > svg {
+    flex: none;
+}
+
+.ds-notice[data-component="notice"] > div {
+    min-width: 0;
+}
+
+.ds-notice[data-component="notice"] strong {
+    display: block;
+    font-size: max(var(--text-min), 1rem);
+    line-height: 1.5;
+}
+
+.ds-notice .ds-notice-content {
+    color: var(--text-primary);
+    font-size: max(var(--text-min), 1rem);
+    line-height: 1.5;
+}
+
+.ds-notice strong + .ds-notice-content {
+    margin-top: 6px;
+}
+
+.ds-notice .ds-notice-content > p {
+    margin: 0;
+}
+
+.ds-notice[data-component="notice"][data-variant="flow"] {
+    display: block;
+    padding: 20px 22px;
+    border-radius: var(--radius-flow);
+    line-height: 1.7;
+}
+
+.ds-notice[data-component="notice"][data-variant="flow"][data-error="true"] {
+    --notice-stroke-color: var(--semantic-error-border);
+    padding: 14px 18px;
+    margin: 0 0 22px;
+    color: var(--semantic-error);
+}
+
+.ds-notice[data-component="notice"][data-variant="flow"][data-error="true"] .ds-notice-content {
+    color: inherit;
+}
+
+.ds-notice[data-component="notice"]:focus {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+
+.ds-notice[data-component="notice"][hidden] {
+    display: none;
+}
+
+/* [탭과 기본 펼침 / Tabs and native disclosure] */
+
+.ds-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    border-bottom: 1px solid var(--border-default);
+}
+
+.ds-tabs[aria-orientation="vertical"] {
+    flex-direction: column;
+}
+
+.ds-tabs [role="tab"] {
+    min-width: var(--control-size);
+    min-height: var(--control-size);
+    padding: 8px 12px;
+    border: 0;
+    border-radius: var(--radius-control) var(--radius-control) 0 0;
+    color: var(--text-secondary);
+    background: var(--color-transparent);
+    font: 400 max(var(--text-min), 1rem)/1.5 var(--font);
+    cursor: pointer;
+}
+
+.ds-tabs [role="tab"][aria-selected="true"] {
+    color: var(--text-primary);
+    box-shadow: inset 0 -2px 0 var(--stroke-selected);
+    background: var(--surface-subtle);
+    font-weight: 700;
+}
+
+.ds-tabs [role="tab"]:disabled {
+    color: var(--action-disabled-text);
+    cursor: not-allowed;
+}
+
+.ds-tabpanel {
+    min-height: 110px;
+    padding: 24px 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), 1rem);
+}
+
+.ds-tabpanel[hidden] {
+    display: none;
+}
+
+.ds-disclosure[data-component="disclosure"] {
+    border-block: 1px solid var(--border-default);
+    background: var(--surface-default);
+}
+
+.ds-disclosure[data-component="disclosure"] > summary {
+    min-height: 56px;
+    padding: 16px;
+    font-size: max(var(--text-min), 1rem);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.ds-disclosure[data-component="disclosure"] > p {
+    margin: 0;
+    padding: 0 16px 20px;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), 1rem);
+}
+
+/* [네이티브 모달 / Native modal]
+   탐색 모달은 기존 너비를 유지하고 일반 모달만 공통 기본값을 사용합니다.
+   Navigation dialogs retain their existing dimensions. */
+
+.ds-dialog[data-component="dialog"]:not(.navigation-dialog):not(.ds-navigation-dialog) {
+    max-height: calc(100dvh - 48px);
+    overflow: auto;
+    padding: 28px;
+    border: 0;
+    border-radius: var(--radius-dialog);
+    box-shadow: inset 0 0 0 var(--stroke-width) var(--border-default);
+    color: var(--text-primary);
+    background: var(--surface-default);
+}
+
+.ds-dialog[data-component="dialog"]:not(.navigation-dialog):not(.ds-search-dialog):not(.ds-navigation-dialog) {
+    width: min(560px, calc(100% - 32px));
+}
+
+.ds-dialog[data-component="dialog"]:not(.navigation-dialog)::backdrop {
+    background: var(--color-detail-1iq0iqd);
+}
+
+.ds-dialog.navigation-dialog {
+    width: min(1100px, calc(100% - 40px));
+    max-height: calc(100dvh - 80px);
+    padding: clamp(24px, 4vw, 56px);
+}
+
+.ds-dialog.navigation-dialog::backdrop {
+    background: var(--color-detail-179bjkg);
+}
+
+.ds-dialog[data-component="dialog"][open] {
+    animation: ds-dialog-enter var(--duration-feedback) var(--ease-standard);
+}
+
+@keyframes ds-dialog-enter {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ds-button[data-context],
+    .ds-field[data-component="field"] > [data-component="field-control"] {
+        transition: none;
+    }
+
+    .ds-dialog[data-component="dialog"][open] {
+        animation: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .ds-dialog[data-component="dialog"]:not(.navigation-dialog):not(.ds-navigation-dialog) {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 700px) {
+    .ds-dialog.navigation-dialog {
+        max-height: calc(100dvh - 32px);
+        width: calc(100% - 24px);
+        padding: 24px;
+    }
+}

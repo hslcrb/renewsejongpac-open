@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`agentSystem (g) splat windows resolve to WGSL > the texel-space window is isotropic and takes a per-frame target extent > texelSplatWindow 1`] = `
+"struct SplatWindow {
+  x0: i32,
+  x1: i32,
+  y0: i32,
+  y1: i32,
+}
+
+fn texelSplatWindow(center: vec2f, rad: i32, last: vec2i) -> SplatWindow {
+  let cxi = i32(floor(center.x));
+  let cyi = i32(floor(center.y));
+  return SplatWindow(max((cxi - rad), 0i), min((cxi + rad), last.x), max((cyi - rad), 0i), min((cyi + rad), last.y));
+}"
+`;
+
+exports[`agentSystem (g) splat windows resolve to WGSL > the world-space window carries the per-axis aspect divide and a guarded aspect > worldSplatWindow 1`] = `
+"struct SplatWindow {
+  x0: i32,
+  x1: i32,
+  y0: i32,
+  y1: i32,
+}
+
+fn worldSplatWindow(pos: vec2f, reach: f32, aspect: f32, res: f32) -> SplatWindow {
+  let asp = max(aspect, 1e-5f);
+  let cxi = i32(floor(((pos.x / asp) * res)));
+  let cyi = i32(floor((pos.y * res)));
+  let radX = i32(ceil(((reach * res) / asp)));
+  let radY = i32(ceil((reach * res)));
+  let last = (i32(res) - 1i);
+  return SplatWindow(max((cxi - radX), 0i), min((cxi + radX), last), max((cyi - radY), 0i), min((cyi + radY), last));
+}"
+`;
+
+exports[`agentSystem (h) resolve + integrate helpers > the alpha curve saturates, starts at zero, and resolves to WGSL > energyCoverageAlpha 1`] = `
+"fn energyCoverageAlpha(energy: f32, k: f32) -> f32 {
+  return (1f - exp(((energy * k) * -1f)));
+}"
+`;
+
+exports[`agentSystem (h) resolve + integrate helpers > the integrator applies drag then clamps speed, and resolves to WGSL > integrateSemiImplicitEuler 1`] = `
+"fn integrateSemiImplicitEuler(vel: vec3f, force: vec3f, dt: f32, dragMul: f32, maxSpeed: f32) -> vec3f {
+  let v = ((vel + (force * dt)) * dragMul);
+  let spd = length(v);
+  return (v * (min(spd, maxSpeed) / max(spd, 1e-5f)));
+}"
+`;

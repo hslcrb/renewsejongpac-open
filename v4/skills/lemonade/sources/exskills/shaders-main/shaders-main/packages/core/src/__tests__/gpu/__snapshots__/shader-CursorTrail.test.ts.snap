@@ -1,0 +1,240 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CursorTrail (a) capsule-chain fragment over a CPU-written points texture > no compute / no RTT — a media data texture scanned by cursorTrailScan, colored by age > final-pass 1`] = `
+"fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn mixColors(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let rgb = awMix(colorA.xyz, colorB.xyz, weightA, weightB, safeWeight);
+  return vec4f(rgb, totalWeight);
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  colorA: vec4f,
+  colorB: vec4f,
+  colorsArray: array<vec4f, 8>,
+  positionsArray: array<vec4f, 2>,
+  convertedColorsArray: array<vec3f, 8>,
+  stopCount: f32,
+  radius: f32,
+  length: f32,
+  shrink: f32,
+  softness: f32,
+  colorSpace: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_ct: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn cursorTrailScan(pointsTex: texture_2d<f32>, uv: vec2f, aspect: f32, radius: f32, shrink: f32, softness: f32, viewportH: f32) -> vec2f {
+  let px = (uv.x * aspect);
+  let py = uv.y;
+  let baseRadius = (radius * 0.1f);
+  let edgeW = ((1.5f / max(viewportH, 1f)) + (softness * baseRadius));
+  let sharp = (4f / max(baseRadius, 5e-3f));
+  var minSdf = 100f;
+  var ageSum = 0f;
+  var wSum = 0f;
+  var prev = vec4f(0, 0, 1, 0);
+  var prev2 = vec4f(0, 0, 1, 0);
+  for (var i = 0; (i < 64i); i++) {
+    let cur = textureLoad(pointsTex, vec2u(u32(i), 0u), 0);
+    if ((cur.z < 1f)) {
+      let cx = (cur.x * aspect);
+      let cy = cur.y;
+      let linked = select(0f, 1f, (cur.w > 0f));
+      let prevAlive = select(0f, 1f, (prev.z < 1f));
+      if (((linked * prevAlive) > 0.5f)) {
+        let usePrev2 = ((select(0f, 1f, (prev.w > 0f)) * select(0f, 1f, (prev2.z < 1f))) > 0.5f);
+        let jx = (prev.x * aspect);
+        let jy = prev.y;
+        let sx0 = select(jx, (((prev2.x * aspect) + jx) * 0.5f), usePrev2);
+        let sy0 = select(jy, ((prev2.y + jy) * 0.5f), usePrev2);
+        let ageS = select(prev.z, ((prev2.z + prev.z) * 0.5f), usePrev2);
+        let widPrev = abs(prev.w);
+        let widS = select(widPrev, ((abs(prev2.w) + widPrev) * 0.5f), usePrev2);
+        let ex = ((jx + cx) * 0.5f);
+        let ey = ((jy + cy) * 0.5f);
+        let ageE = ((prev.z + cur.z) * 0.5f);
+        let widE = ((widPrev + abs(cur.w)) * 0.5f);
+        var sx = sx0;
+        var sy = sy0;
+        var sAge = ageS;
+        var sWid = widS;
+        var jMin = 100f;
+        var jAge = 1f;
+        for (var k = 0; (k < 3i); k++) {
+          let t = ((f32(k) + 1f) / 3f);
+          let omt = (1f - t);
+          let bx = ((((omt * omt) * sx0) + (((2f * omt) * t) * jx)) + ((t * t) * ex));
+          let by = ((((omt * omt) * sy0) + (((2f * omt) * t) * jy)) + ((t * t) * ey));
+          let bAge = mix(ageS, ageE, t);
+          let bWid = mix(widS, widE, t);
+          let ra = ((baseRadius * sWid) * (1f - (sAge * shrink)));
+          let rb = ((baseRadius * bWid) * (1f - (bAge * shrink)));
+          let bax = (bx - sx);
+          let bay = (by - sy);
+          let tt = clamp(((((px - sx) * bax) + ((py - sy) * bay)) / max(((bax * bax) + (bay * bay)), 1e-8f)), 0f, 1f);
+          let dist = (length(vec2f((px - (sx + (bax * tt))), (py - (sy + (bay * tt))))) - mix(ra, rb, tt));
+          if ((dist < jMin)) {
+            jMin = dist;
+            jAge = mix(sAge, bAge, tt);
+          }
+          sx = bx;
+          sy = by;
+          sAge = bAge;
+          sWid = bWid;
+        }
+        minSdf = min(minSdf, jMin);
+        let w = exp(((jMin * -1f) * sharp));
+        ageSum = (ageSum + (jAge * w));
+        wSum = (wSum + w);
+      }
+      else {
+        let dist = (length(vec2f((px - cx), (py - cy))) - ((baseRadius * abs(cur.w)) * (1f - (cur.z * shrink))));
+        minSdf = min(minSdf, dist);
+        let w = exp(((dist * -1f) * sharp));
+        ageSum = (ageSum + (cur.z * w));
+        wSum = (wSum + w);
+      }
+    }
+    prev2 = prev;
+    prev = cur;
+  }
+  let age = (ageSum / max(wSum, 1e-20f));
+  let coverage = ((1f - smoothstep((edgeW * -1f), edgeW, minSdf)) * (1f - smoothstep(0.8f, 1f, age)));
+  return vec2f(age, coverage);
+}
+
+@group(1) @binding(0) var media_0: texture_2d<f32>;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = vec4f((mixColors(uniforms.n_ct.colorA, uniforms.n_ct.colorB, (cursorTrailScan(media_0, uv, uniforms._sys.aspect, uniforms.n_ct.radius, uniforms.n_ct.shrink, uniforms.n_ct.softness, uniforms._sys.viewportSize.y)).x)).rgb, ((mixColors(uniforms.n_ct.colorA, uniforms.n_ct.colorB, (cursorTrailScan(media_0, uv, uniforms._sys.aspect, uniforms.n_ct.radius, uniforms.n_ct.shrink, uniforms.n_ct.softness, uniforms._sys.viewportSize.y)).x)).a * (cursorTrailScan(media_0, uv, uniforms._sys.aspect, uniforms.n_ct.radius, uniforms.n_ct.shrink, uniforms.n_ct.softness, uniforms._sys.viewportSize.y)).y));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`CursorTrail (c) scan fn resolves (D3 rules) > cursorTrailScan resolves standalone with a texture param + textureLoad loop > cursorTrailScan 1`] = `
+"fn cursorTrailScan(pointsTex: texture_2d<f32>, uv: vec2f, aspect: f32, radius: f32, shrink: f32, softness: f32, viewportH: f32) -> vec2f {
+  let px = (uv.x * aspect);
+  let py = uv.y;
+  let baseRadius = (radius * 0.1f);
+  let edgeW = ((1.5f / max(viewportH, 1f)) + (softness * baseRadius));
+  let sharp = (4f / max(baseRadius, 5e-3f));
+  var minSdf = 100f;
+  var ageSum = 0f;
+  var wSum = 0f;
+  var prev = vec4f(0, 0, 1, 0);
+  var prev2 = vec4f(0, 0, 1, 0);
+  for (var i = 0; (i < 64i); i++) {
+    let cur = textureLoad(pointsTex, vec2u(u32(i), 0u), 0);
+    if ((cur.z < 1f)) {
+      let cx = (cur.x * aspect);
+      let cy = cur.y;
+      let linked = select(0f, 1f, (cur.w > 0f));
+      let prevAlive = select(0f, 1f, (prev.z < 1f));
+      if (((linked * prevAlive) > 0.5f)) {
+        let usePrev2 = ((select(0f, 1f, (prev.w > 0f)) * select(0f, 1f, (prev2.z < 1f))) > 0.5f);
+        let jx = (prev.x * aspect);
+        let jy = prev.y;
+        let sx0 = select(jx, (((prev2.x * aspect) + jx) * 0.5f), usePrev2);
+        let sy0 = select(jy, ((prev2.y + jy) * 0.5f), usePrev2);
+        let ageS = select(prev.z, ((prev2.z + prev.z) * 0.5f), usePrev2);
+        let widPrev = abs(prev.w);
+        let widS = select(widPrev, ((abs(prev2.w) + widPrev) * 0.5f), usePrev2);
+        let ex = ((jx + cx) * 0.5f);
+        let ey = ((jy + cy) * 0.5f);
+        let ageE = ((prev.z + cur.z) * 0.5f);
+        let widE = ((widPrev + abs(cur.w)) * 0.5f);
+        var sx = sx0;
+        var sy = sy0;
+        var sAge = ageS;
+        var sWid = widS;
+        var jMin = 100f;
+        var jAge = 1f;
+        for (var k = 0; (k < 3i); k++) {
+          let t = ((f32(k) + 1f) / 3f);
+          let omt = (1f - t);
+          let bx = ((((omt * omt) * sx0) + (((2f * omt) * t) * jx)) + ((t * t) * ex));
+          let by = ((((omt * omt) * sy0) + (((2f * omt) * t) * jy)) + ((t * t) * ey));
+          let bAge = mix(ageS, ageE, t);
+          let bWid = mix(widS, widE, t);
+          let ra = ((baseRadius * sWid) * (1f - (sAge * shrink)));
+          let rb = ((baseRadius * bWid) * (1f - (bAge * shrink)));
+          let bax = (bx - sx);
+          let bay = (by - sy);
+          let tt = clamp(((((px - sx) * bax) + ((py - sy) * bay)) / max(((bax * bax) + (bay * bay)), 1e-8f)), 0f, 1f);
+          let dist = (length(vec2f((px - (sx + (bax * tt))), (py - (sy + (bay * tt))))) - mix(ra, rb, tt));
+          if ((dist < jMin)) {
+            jMin = dist;
+            jAge = mix(sAge, bAge, tt);
+          }
+          sx = bx;
+          sy = by;
+          sAge = bAge;
+          sWid = bWid;
+        }
+        minSdf = min(minSdf, jMin);
+        let w = exp(((jMin * -1f) * sharp));
+        ageSum = (ageSum + (jAge * w));
+        wSum = (wSum + w);
+      }
+      else {
+        let dist = (length(vec2f((px - cx), (py - cy))) - ((baseRadius * abs(cur.w)) * (1f - (cur.z * shrink))));
+        minSdf = min(minSdf, dist);
+        let w = exp(((dist * -1f) * sharp));
+        ageSum = (ageSum + (cur.z * w));
+        wSum = (wSum + w);
+      }
+    }
+    prev2 = prev;
+    prev = cur;
+  }
+  let age = (ageSum / max(wSum, 1e-20f));
+  let coverage = ((1f - smoothstep((edgeW * -1f), edgeW, minSdf)) * (1f - smoothstep(0.8f, 1f, age)));
+  return vec2f(age, coverage);
+}"
+`;

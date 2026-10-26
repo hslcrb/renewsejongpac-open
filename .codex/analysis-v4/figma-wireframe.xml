@@ -1,0 +1,231 @@
+<section id="299:1656" name="Section 9" x="8479" y="6580" width="1801" height="4770">
+  <section id="280:1561" name="Section 7" x="491" y="4060" width="1" height="216" />
+  <section id="280:1562" name="Section 8" x="523" y="4066" width="1" height="210" />
+  <shape-with-text id="280:1563" x="91" y="3538" width="1616" height="848" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1564" x="91" y="116" width="1616" height="697" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1565" x="91" y="114" width="1616" height="158" name="SQUARE"></shape-with-text>
+  <frame id="280:1566" name="Group 633086" x="91" y="48" width="1616" height="66">
+    <shape-with-text id="280:1567" x="91" y="48" width="1616" height="66" name="SQUARE"></shape-with-text>
+    <shape-with-text id="280:1568" x="213" y="69" width="1456" height="24" name="SQUARE"></shape-with-text>
+    <shape-with-text id="280:1569" x="107" y="73" width="16" height="16" name="ELLIPSE"></shape-with-text>
+    <shape-with-text id="280:1570" x="133" y="73" width="16" height="16" name="ELLIPSE"></shape-with-text>
+    <shape-with-text id="280:1571" x="160" y="73" width="16" height="16" name="ELLIPSE"></shape-with-text>
+  </frame>
+  <text id="280:1572" name="교촌APP" x="1426" y="192" width="90" height="32" />
+  <text id="280:1573" name="로그인" x="1467" y="127" width="44" height="24" />
+  <text id="280:1574" name="고객센터" x="1528" y="127" width="59" height="24" />
+  <text id="280:1575" name="상품권" x="1604" y="127" width="44" height="24" />
+  <text id="280:1576" name="MENU" x="531" y="192" width="71" height="32" />
+  <text id="280:1577" name="EVENT" x="764" y="192" width="78" height="32" />
+  <text id="280:1578" name="BRAND" x="973" y="192" width="82" height="32" />
+  <text id="280:1579" name="STORE" x="1237" y="192" width="77" height="32" />
+  <shape-with-text id="280:1580" x="133" y="136" width="112" height="112" name="ELLIPSE">YOUR LOGO</shape-with-text>
+  <shape-with-text id="280:1581" x="1619" y="313" width="134" height="461" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1582" x="48" y="313" width="134" height="461" name="SQUARE"></shape-with-text>
+  <boolean-operation id="280:1583" name="Subtract" x="67" y="500" width="96" height="77.97723388671875" />
+  <boolean-operation id="280:1587" name="Subtract" x="1638" y="500" width="96" height="77.97723388671875" />
+  <shape-with-text id="280:1591" x="93" y="813" width="1616" height="2725" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1592" x="343" y="914" width="852" height="315" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1593" x="384" y="952" width="432" height="241" name="SQUARE"></shape-with-text>
+  <text id="280:1594" name="CALENDAR" x="495" y="1042.4541015625" width="209" height="60" />
+  <shape-with-text id="280:1595" x="1232" y="915" width="443" height="315" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1596" x="93" y="116" width="1616" height="158" name="SQUARE"></shape-with-text>
+  <text id="280:1597" name="JOIN" x="1530" y="129" width="37" height="24" />
+  <text id="280:1598" name="LOGIN" x="1606" y="129" width="49" height="24" />
+  <frame id="280:1599" name="Group 633087" x="308" y="171.5908203125" width="1012" height="46">
+    <text id="280:1600" name="세종문화회관" x="1157" y="172.5909080505371" width="163" height="45" />
+    <text id="280:1601" name="프로그램" x="308" y="172" width="109" height="45" />
+    <text id="280:1602" name="대관" x="525" y="172.5909080505371" width="55" height="45" />
+    <text id="280:1603" name="이용안내" x="688" y="171.5909080505371" width="109" height="45" />
+    <text id="280:1604" name="소식과 혜택" x="905" y="172.5909080505371" width="144" height="45" />
+  </frame>
+  <frame id="280:1605" name="Group 633088" x="1395" y="176" width="64" height="38">
+    <shape-with-text id="280:1606" x="1395" y="179.0908203125" width="64" height="32" name="ROUNDED_RECTANGLE"></shape-with-text>
+    <text id="280:1607" name="EN" x="1410" y="176" width="34" height="38" />
+  </frame>
+  <shape-with-text id="280:1608" x="1395" y="813" width="117" height="122" name="SQUARE"></shape-with-text>
+  <text id="280:1609" name="Search" x="1530" y="175.9091796875" width="81" height="38" />
+  <text id="280:1610" name="장식용 그래픽 요소 자리" x="162.5" y="1018.2724609375" width="115" height="108" />
+  <shape-with-text id="280:1611" x="1366" y="948" width="176" height="249" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1612" x="1395" y="1210" width="117" height="174" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1613" x="91" y="813" width="1616" height="101" name="SQUARE"></shape-with-text>
+  <text id="280:1614" name="빠르게 확인하고 예매할 수 있어요" x="343" y="834.4541015625" width="543" height="60" />
+  <text id="280:1615" name="32일 오늘의 행사" x="1232" y="858.2724609375" width="172" height="36" />
+  <shape-with-text id="280:1616" x="214" y="294" width="1373" height="486" name="SQUARE"></shape-with-text>
+  <text id="280:1617" name="세종대왕은 조선의 “계몽군주”이다" x="624" y="667.4541015625" width="553" height="60" />
+  <boolean-operation id="280:1618" name="Subtract" x="797" y="444" width="204" height="165.7016143798828" />
+  <text id="280:1622" name="여기에 서브 텍스트 입력" x="784" y="631.2724609375" width="234" height="36" />
+  <shape-with-text id="280:1623" x="91" y="1230" width="1616" height="308" name="SQUARE"></shape-with-text>
+  <text id="280:1624" name="아래에서 모든 프로그램을 볼 수 있어요." x="577" y="1308.2734375" width="383" height="36" />
+  <frame id="280:1625" name="Group 633089" x="1252" y="1007.2724609375" width="96" height="95.818359375">
+    <text id="280:1626" name="KING: 세종의 삶" x="1252" y="1007.2724609375" width="93" height="72" />
+    <text id="280:1627" name="양녕대군을 넘어, 세자가 되고 조선 천지의 성군이 되다" x="1253" y="1079.0908203125" width="95" height="24" />
+  </frame>
+  <text id="280:1628" name="Shake it!" x="1422" y="928.181640625" width="64" height="24" />
+  <text id="280:1629" name="티켓오픈 AM 00:30 ~ PM 17:50" x="1560" y="1016.181640625" width="88" height="72" />
+  <shape-with-text id="280:1630" x="1560" y="1090" width="83" height="32" name="SQUARE"></shape-with-text>
+  <frame id="280:1631" name="Group 633090" x="1569" y="1094.7275390625" width="55" height="27">
+    <text id="280:1632" name="예매하기" x="1569" y="1099" width="37" height="15" />
+    <text id="280:1633" name="↗" x="1606" y="1094.7275390625" width="18" height="27" />
+  </frame>
+  <text id="280:1634" name="모든 프로그램" x="343" y="1290.453125" width="227" height="60" />
+  <frame id="280:1635" name="Group 633091" x="219" y="1384" width="98" height="229.2734375">
+    <text id="280:1636" name="공연" x="262" y="1433.2734375" width="44" height="36" />
+    <text id="280:1637" name="전시" x="262" y="1481.2734375" width="44" height="36" />
+    <text id="280:1638" name="교육" x="262" y="1529.2734375" width="44" height="36" />
+    <text id="280:1639" name="기획시즌" x="219" y="1577.2734375" width="87" height="36" />
+    <frame id="280:1640" name="Group 633060" x="250" y="1384" width="67" height="38">
+      <shape-with-text id="280:1641" x="250" y="1384" width="67" height="38" name="ROUNDED_RECTANGLE"></shape-with-text>
+      <text id="280:1642" name="전체" x="262" y="1385.2734375" width="44" height="36" />
+      <connector id="280:1643" x="250" y="1384" connectorStart="280:1642" connectorStartCap="NONE" connectorEnd="280:1642" connectorEndCap="NONE"></connector>
+    </frame>
+  </frame>
+  <frame id="280:1644" name="Group 633092" x="399" y="1405" width="400" height="371">
+    <shape-with-text id="280:1645" x="399" y="1405" width="400" height="371" name="SQUARE"></shape-with-text>
+    <text id="280:1646" name="공연 |" x="416" y="1731.955078125" width="49" height="27" />
+    <text id="280:1647" name="2026년 9월 2일" x="474" y="1731.955078125" width="125" height="27" />
+    <text id="280:1648" name="2026 김동률 콘서트 ‘오래된 노래’" x="416" y="1661.955078125" width="251" height="27" />
+    <boolean-operation id="280:1649" name="Subtract" x="498" y="1453" width="204" height="165.7016143798828" />
+  </frame>
+  <boolean-operation id="280:1653" name="Subtract" x="1406" y="1033" width="96" height="77.97723388671875" />
+  <frame id="280:1657" name="Group 633093" x="832" y="1405" width="400" height="371">
+    <shape-with-text id="280:1658" x="832" y="1405" width="400" height="371" name="SQUARE"></shape-with-text>
+    <text id="280:1659" name="공연 |" x="849" y="1731.955078125" width="49" height="27" />
+    <text id="280:1660" name="2026년 9월 2일" x="907" y="1731.955078125" width="125" height="27" />
+    <text id="280:1661" name="한밭숲 음악회; Begin Again 스페셜게스트 is 이문세" x="849" y="1661.955078125" width="251" height="54" />
+    <boolean-operation id="280:1662" name="Subtract" x="931" y="1453" width="204" height="165.7016143798828" />
+  </frame>
+  <frame id="280:1666" name="Group 633094" x="399" y="1813" width="400" height="371">
+    <shape-with-text id="280:1667" x="399" y="1813" width="400" height="371" name="SQUARE"></shape-with-text>
+    <text id="280:1668" name="공연 |" x="416" y="2139.955078125" width="49" height="27" />
+    <text id="280:1669" name="2026년 9월 2일" x="474" y="2139.955078125" width="125" height="27" />
+    <text id="280:1670" name="2026 김동률 콘서트 ‘오래된 노래’" x="416" y="2069.955078125" width="251" height="27" />
+    <boolean-operation id="280:1671" name="Subtract" x="498" y="1861" width="204" height="165.7016143798828" />
+  </frame>
+  <frame id="280:1675" name="Group 633095" x="832" y="1813" width="400" height="371">
+    <shape-with-text id="280:1676" x="832" y="1813" width="400" height="371" name="SQUARE"></shape-with-text>
+    <text id="280:1677" name="공연 |" x="849" y="2139.955078125" width="49" height="27" />
+    <text id="280:1678" name="2026년 9월 2일" x="907" y="2139.955078125" width="125" height="27" />
+    <text id="280:1679" name="한밭숲 음악회; Begin Again 스페셜게스트 is 이문세" x="849" y="2069.955078125" width="251" height="54" />
+    <boolean-operation id="280:1680" name="Subtract" x="931" y="1861" width="204" height="165.7016143798828" />
+  </frame>
+  <shape-with-text id="280:1684" x="1299" y="1453" width="309" height="686" name="SQUARE"></shape-with-text>
+  <text id="280:1685" name="여기에 이벤트 배너 자리" x="1340" y="1783.455078125" width="227" height="120" />
+  <boolean-operation id="280:1686" name="Subtract" x="1405.5" y="1689" width="96" height="77.97723388671875" />
+  <frame id="280:1690" name="Group 633096" x="1252" y="308" width="436.9996643066406" height="459">
+    <frame id="280:1691" name="Group 633066" x="1295.587890625" y="308" width="393.4117736816406" height="459">
+      <shape-with-text id="280:1692" x="1295.587890625" y="308" width="393.4117736816406" height="85" name="SQUARE"></shape-with-text>
+      <shape-with-text id="280:1693" x="1295.587890625" y="407" width="393.4117736816406" height="260" name="SQUARE"></shape-with-text>
+      <shape-with-text id="280:1694" x="1295.587890625" y="682" width="393.4117736816406" height="85" name="SQUARE"></shape-with-text>
+    </frame>
+    <text id="280:1695" name="완전 불투명 X 호버 카드" x="1315.705883026123" y="478.63671875" width="353.1764831542969" height="168" />
+    <shape-with-text id="280:1696" x="1252" y="492" width="24.58823585510254" height="102" name="ROUNDED_RECTANGLE">&gt;</shape-with-text>
+  </frame>
+  <frame id="280:1697" name="세종문화회관 심볼Asset 1 2" x="144" y="147" width="90" height="90" />
+  <text id="280:1701" name="인원 선택하기" x="832" y="952.2724609375" width="137" height="32" />
+  <text id="280:1702" name="시간대 선택하기" x="832" y="1102.2724609375" width="158" height="32" />
+  <shape-with-text id="280:1703" x="832" y="994" width="315" height="48" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1704" x="832" y="1142" width="315" height="51" name="SQUARE"></shape-with-text>
+  <frame id="280:1705" name="Group 633097" x="408" y="1692" width="98" height="38">
+    <shape-with-text id="280:1706" x="408" y="1692" width="98" height="38" name="ROUNDED_RECTANGLE"></shape-with-text>
+    <text id="280:1707" name="Today" x="422.8046875" y="1692.3984375" width="77.3905029296875" height="36" />
+    <connector id="280:1708" x="24744" y="18343" connectorStart="280:1707" connectorStartCap="NONE" connectorEnd="280:1707" connectorEndCap="NONE"></connector>
+  </frame>
+  <text id="280:1709" name="처음이어도 괜찮아요," x="343" y="2239.455078125" width="345" height="60" />
+  <text id="280:1710" name="세종문회화관의 모든 이용정보가 한곳에!" x="702" y="2257.2734375" width="393" height="36" />
+  <shape-with-text id="280:1711" x="338" y="2311" width="528" height="304" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1712" x="899" y="2311" width="528" height="304" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1713" x="338" y="2643" width="528" height="304" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1714" x="899" y="2643" width="528" height="304" name="SQUARE"></shape-with-text>
+  <boolean-operation id="280:1715" name="Subtract" x="505" y="2380" width="204" height="165.7016143798828" />
+  <boolean-operation id="280:1719" name="Subtract" x="1056" y="2385" width="204" height="165.7016143798828" />
+  <boolean-operation id="280:1723" name="Subtract" x="505" y="2707" width="204" height="165.7016143798828" />
+  <boolean-operation id="280:1727" name="Subtract" x="1056" y="2707" width="204" height="165.7016143798828" />
+  <text id="280:1731" name="세종문화회관이 처음인가요?" x="379" y="2455.591796875" width="190" height="90" />
+  <text id="280:1732" name="괜찮아요! 필요한 정보는 여기 있어요." x="379" y="2555.7265625" width="305" height="30" />
+  <text id="280:1733" name="—————" x="379" y="2532.7265625" width="100" height="30" />
+  <text id="280:1734" name="세종문화회관은 누구나 즐길 수 있어요." x="939" y="2456" width="274" height="90" />
+  <text id="280:1735" name="장애인과 어린이부터 어르신까지. 모두를 위한 회관" x="939" y="2556.134765625" width="413" height="30" />
+  <text id="280:1736" name="—————" x="939" y="2533.134765625" width="100" height="30" />
+  <text id="280:1737" name="잠깐! 이것만 주의해줘요, 모두 문화 시민으로 즐겨봐요." x="379" y="2786" width="355" height="90" />
+  <text id="280:1738" name="문화 시민은 즐기는 자리도 문화입니다." x="379" y="2886.134765625" width="317" height="30" />
+  <text id="280:1739" name="—————" x="379" y="2863.134765625" width="100" height="30" />
+  <text id="280:1740" name="오고 가는 길과, 그리고 언제나 이어지는 서포트" x="939" y="2786" width="375" height="90" />
+  <text id="280:1741" name="처음 오는 길도 안전하게, 그리고 고객의 편의를 위해" x="939" y="2886.134765625" width="423" height="30" />
+  <text id="280:1742" name="—————" x="939" y="2863.134765625" width="100" height="30" />
+  <text id="280:1743" name="세종문화회관의 소식을 나눠요," x="343" y="3004.455078125" width="498" height="60" />
+  <text id="280:1744" name="보도자료와 공지부터, 뉴스레터까지!" x="859" y="3020.2734375" width="350" height="36" />
+  <shape-with-text id="280:1745" x="191" y="3075" width="336" height="192" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1746" x="552" y="3075" width="336" height="192" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1747" x="913" y="3075" width="336" height="192" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1748" x="1274" y="3075" width="336" height="192" name="SQUARE"></shape-with-text>
+  <boolean-operation id="280:1749" name="Subtract" x="311" y="3132" width="96" height="77.97723388671875" />
+  <boolean-operation id="280:1753" name="Subtract" x="672" y="3132" width="96" height="77.97723388671875" />
+  <boolean-operation id="280:1757" name="Subtract" x="1033" y="3132" width="96" height="77.97723388671875" />
+  <boolean-operation id="280:1761" name="Subtract" x="1394" y="3132" width="96" height="77.97723388671875" />
+  <text id="280:1765" name="홈페이지 리뉴얼 안내" x="191" y="3277.591796875" width="259" height="45" />
+  <text id="280:1766" name="세종문화회관의 홈페이지가 리뉴얼 작업중에 있습니다. 양해바랍니다." x="191" y="3333.2734375" width="337" height="72" />
+  <frame id="280:1767" name="Group 633098" x="1428" y="3011" width="28" height="45">
+    <text id="280:1768" name="＿" x="1428" y="3011" width="24" height="36" />
+    <text id="280:1769" name="&gt;" x="1440" y="3020" width="16" height="36" />
+  </frame>
+  <frame id="280:1770" name="Group 633099" x="1422" y="3069" width="28.00000393402479" height="45.00000244783769">
+    <text id="280:1771" name="＿" x="1422" y="3069" width="24.000003147219104" height="36.00000209814607" />
+    <text id="280:1772" name="&gt;" x="1410.000000786805" y="3059.9999989509265" width="16.000003147219104" height="36.00000139876465" />
+  </frame>
+  <frame id="280:1773" name="Group 633100" x="191" y="3416" width="120" height="38">
+    <shape-with-text id="280:1774" x="191" y="3416" width="120" height="38" name="ROUNDED_RECTANGLE"></shape-with-text>
+    <text id="280:1775" name="공지사항" x="207.8046875" y="3416.3984375" width="93.1953125" height="36" />
+    <connector id="280:1776" x="24527" y="20067" connectorStart="280:1775" connectorStartCap="NONE" connectorEnd="280:1775" connectorEndCap="NONE"></connector>
+  </frame>
+  <text id="280:1777" name="무언가 사업 성과" x="552" y="3278" width="205" height="45" />
+  <text id="280:1778" name="무슨 사업이 어떠한 이유로 인해 순항중에 있는 상황입니다." x="552" y="3333.681640625" width="306" height="72" />
+  <frame id="280:1779" name="Group 633101" x="552" y="3416.408203125" width="120" height="38">
+    <shape-with-text id="280:1780" x="552" y="3416.408203125" width="120" height="38" name="ROUNDED_RECTANGLE"></shape-with-text>
+    <text id="280:1781" name="보도자료" x="568.8046875" y="3416.806640625" width="93.1953125" height="36" />
+    <connector id="280:1782" x="24888" y="20067.408203125" connectorStart="280:1781" connectorStartCap="NONE" connectorEnd="280:1781" connectorEndCap="NONE"></connector>
+  </frame>
+  <text id="280:1783" name="King 세종; 비긴어게인 티켓오픈!" x="913" y="3277.591796875" width="276" height="90" />
+  <frame id="280:1784" name="Group 633102" x="913" y="3414" width="120" height="38">
+    <shape-with-text id="280:1785" x="913" y="3414" width="120" height="38" name="ROUNDED_RECTANGLE"></shape-with-text>
+    <text id="280:1786" name="티켓오픈" x="929.8046875" y="3414.3984375" width="93.1953125" height="36" />
+    <connector id="280:1787" x="25249" y="20065" connectorStart="280:1786" connectorStartCap="NONE" connectorEnd="280:1786" connectorEndCap="NONE"></connector>
+  </frame>
+  <text id="280:1788" name="놓치면 안될 세종문화회관의 고유 멤버십과 혜택들!" x="1274" y="3285.591796875" width="340" height="90" />
+  <frame id="280:1789" name="Group 633103" x="1274" y="3414" width="120" height="38">
+    <shape-with-text id="280:1790" x="1274" y="3414" width="120" height="38" name="ROUNDED_RECTANGLE"></shape-with-text>
+    <text id="280:1791" name="혜택정보" x="1290.8046875" y="3414.3984375" width="93.1953125" height="36" />
+    <connector id="280:1792" x="25610" y="20065" connectorStart="280:1791" connectorStartCap="NONE" connectorEnd="280:1791" connectorEndCap="NONE"></connector>
+  </frame>
+  <frame id="280:1793" name="Group 633104" x="883" y="3927" width="120" height="38">
+    <shape-with-text id="280:1794" x="883" y="3927" width="120" height="38" name="ROUNDED_RECTANGLE"></shape-with-text>
+    <text id="280:1795" name="바로가기" x="899.8046875" y="3927.3984375" width="93.1953125" height="36" />
+    <connector id="280:1796" x="25219" y="20578" connectorStart="280:1795" connectorStartCap="NONE" connectorEnd="280:1795" connectorEndCap="NONE"></connector>
+  </frame>
+  <shape-with-text id="280:1797" x="91" y="4386" width="1618" height="336" name="SQUARE"></shape-with-text>
+  <frame id="280:1798" name="Layer_1" x="132" y="4434" width="529.7886352539062" height="96" />
+  <text id="280:1800" name="연락처 010-5490-5377 재단법인 세종문화회관" x="1237" y="4434.455078125" width="415" height="120" />
+  <text id="280:1801" name="패밀리 사이트↗" x="1237" y="4574.36328125" width="214" height="48" />
+  <boolean-operation id="280:1802" name="Subtract" x="393" y="3821" width="96" height="77.97723388671875" />
+  <boolean-operation id="280:1806" name="Subtract" x="819" y="3767" width="96" height="77.97723388671875" />
+  <text id="280:1810" name="티켓예매↗" x="1538" y="4574.36328125" width="147" height="48" />
+  <text id="280:1811" name="개인정보처리방침" x="1451" y="4649.36328125" width="234" height="48" />
+  <boolean-operation id="280:1812" name="Subtract" x="636" y="3758" width="462.90435791015625" height="376" />
+  <text id="280:1816" name="세종문화회관을 소개합니다" x="611" y="3580.7265625" width="707" height="96" />
+  <shape-with-text id="280:1817" x="203" y="3698" width="502" height="288" name="SQUARE"></shape-with-text>
+  <text id="280:1818" name="ESG" x="218" y="3709.7265625" width="125" height="96" />
+  <shape-with-text id="280:1819" x="731" y="3698" width="272" height="216" name="SQUARE"></shape-with-text>
+  <shape-with-text id="280:1820" x="218" y="4060" width="1392" height="216" name="ROUNDED_RECTANGLE"></shape-with-text>
+  <text id="280:1821" name="정보공개" x="283" y="4112.455078125" width="146" height="60" />
+  <text id="280:1822" name="수도의, 예술" x="747" y="3709.7265625" width="191" height="192" />
+  <text id="280:1823" name="저희 세종문화회관은, 다가오는 시대속에서 국민의 문화생활을 더욱 풍요롭게 하며 환경과 사회에 이바지하겠습니다." x="220" y="3806.2734375" width="442" height="108" />
+  <shape-with-text id="280:1824" x="1019" y="3698" width="595" height="288" name="SQUARE"></shape-with-text>
+  <boolean-operation id="280:1825" name="Subtract" x="1269" y="3803" width="96" height="77.97723388671875" />
+  <text id="280:1829" name="유튜브 홍보동영상" x="1166" y="3812.455078125" width="302" height="60" />
+  <text id="280:1830" name="경영정보, 재단 감사 및 정관" x="283" y="4188.2734375" width="269" height="36" />
+  <text id="280:1831" name="협력 및 협찬" x="1020" y="4112.455078125" width="203" height="60" />
+  <text id="280:1832" name="세종문화회관과의 협력과 협찬" x="1020" y="4188.2734375" width="294" height="36" />
+  <text id="280:1833" name="서비스약관" x="1271" y="4649.36328125" width="146" height="48" />
+  <text id="280:1834" name="서울특별시 / 서울 마이 소울" x="132" y="4637.455078125" width="449" height="60" />
+  <text id="280:1835" name="고객서비스 헌장 등등..." x="900" y="4574.36328125" width="305" height="48" />
+</section>

@@ -1,0 +1,78 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`lighting — resolve gate > every exported body fn transpiles to WGSL > lighting-wgsl 1`] = `
+"fn fieldGradient(surf0: vec4f, surfX: vec4f, surfY: vec4f, eps: f32) -> vec2f {
+  return vec2f(((surfX.x - surf0.x) / eps), ((surfY.x - surf0.x) / eps));
+}
+
+fn volumetricNormal(surf0: vec4f, surfX: vec4f, surfY: vec4f, eps: f32, gradClamp: f32) -> vec3f {
+  let ddx = clamp(((surfX.w - surf0.w) / eps), (gradClamp * -1f), gradClamp);
+  let ddy = clamp(((surfY.w - surf0.w) / eps), (gradClamp * -1f), gradClamp);
+  return normalize(vec3f(ddx, ddy, -1f));
+}
+
+fn bevelledFlatNormal(grad: vec2f, sinTilt: f32) -> vec3f {
+  let glen = max(length(grad), 1e-4f);
+  let sB = min(sinTilt, 0.9995f);
+  return vec3f(((grad.x / glen) * sB), ((grad.y / glen) * sB), (sqrt((1f - (sB * sB))) * -1f));
+}
+
+fn patternCoords(sdfUV: vec2f, surf0: vec4f, volumetric: f32) -> vec2f {
+  return vec2f(select((sdfUV.x - 0.5f), surf0.y, (volumetric > 0.5f)), select((sdfUV.y - 0.5f), surf0.z, (volumetric > 0.5f)));
+}
+
+fn outsideShape(sdf: f32, pxH: f32) -> bool {
+  return (sdf > (pxH * 2f));
+}
+
+fn insideMask(sdf: f32, sharpEdge: f32, pxH: f32, minPixels: f32) -> f32 {
+  let w = max((sharpEdge * 0.03125f), (pxH * minPixels));
+  return clamp(((sdf * -1f) / w), 0f, 1f);
+}
+
+fn perspectiveViewRay(uv: vec2f, aspect: f32, fov: f32) -> vec3f {
+  return normalize(vec3f((((uv.x - 0.5f) * aspect) * fov), ((uv.y - 0.5f) * fov), 1f));
+}
+
+struct TangentFrame {
+  tangent: vec3f,
+  bitangent: vec3f,
+}
+
+fn orthonormalTangentFrame(normal: vec3f, dir: vec3f) -> TangentFrame {
+  let T3 = normalize((dir - (normal * dot(normal, dir))));
+  let B3 = vec3f(((normal.y * T3.z) - (normal.z * T3.y)), ((normal.z * T3.x) - (normal.x * T3.z)), ((normal.x * T3.y) - (normal.y * T3.x)));
+  return TangentFrame(T3, B3);
+}
+
+struct WardSpecularInput {
+  normal: vec3f,
+  tangent: vec3f,
+  light: vec3f,
+  view: vec3f,
+  alphaAlong: f32,
+  alphaAcross: f32,
+}
+
+fn wardAnisotropicSpecular(p: WardSpecularInput) -> f32 {
+  let frame = orthonormalTangentFrame(p.normal, p.tangent);
+  let H = normalize((p.light - p.view));
+  let hT = dot(H, frame.tangent);
+  let hB = dot(H, frame.bitangent);
+  let hN = clamp(abs(dot(H, p.normal)), 1e-4f, 1f);
+  let aT = max(p.alphaAlong, 1e-4f);
+  let aB = max(p.alphaAcross, 1e-4f);
+  let expo = ((((hT / aT) * (hT / aT)) + ((hB / aB) * (hB / aB))) / ((hN + 1f) * 0.5f));
+  return exp((expo * -1f));
+}
+
+fn cosinePalette(t: f32, phaseR: f32, phaseG: f32, phaseB: f32) -> vec3f {
+  return vec3f(((cos(((t + phaseR) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseG) * 6.283185307179586f)) * 0.5f) + 0.5f), ((cos(((t + phaseB) * 6.283185307179586f)) * 0.5f) + 0.5f));
+}
+                fn __probe() {
+                    fieldGradient(); volumetricNormal(); bevelledFlatNormal(); patternCoords();
+                    outsideShape(); insideMask(); perspectiveViewRay(); orthonormalTangentFrame();
+                    wardAnisotropicSpecular(); cosinePalette();
+                }
+            "
+`;

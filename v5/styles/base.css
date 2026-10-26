@@ -1,0 +1,155 @@
+/* [가독성 크기 체계 / Readable type scale]
+   보조 글자는 defaults.css의 최소 크기를 사용합니다.
+   Supporting text uses the minimum size defined in defaults.css. */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-padding-top: var(--anchor-header-offset, 100px);
+    color-scheme: light;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: var(--weight-body);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-body);
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+}
+
+button, a, input, select, textarea {
+    -webkit-tap-highlight-color: var(--color-detail-j5afio);
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+img, svg {
+    max-width: 100%;
+}
+
+img {
+    display: block;
+}
+
+svg {
+    flex-shrink: 0;
+}
+
+a {
+    color: inherit;
+}
+
+p {
+    line-height: var(--leading-body);
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--display-font);
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    text-wrap: balance;
+}
+
+[hidden]:not([hidden="until-found"]) {
+    display: none !important;
+}
+
+.container {
+    width: min(var(--container), calc(100% - var(--page-gutter) * 2));
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+.page-content {
+    padding-top: 48px;
+    padding-bottom: var(--section-gap);
+}
+
+#main {
+    min-height: 65vh;
+    outline: none;
+}
+
+section[id], main[id] {
+    scroll-margin-top: 100px;
+}
+
+/* Fragment targets reserve the measured sticky header plus a small reading gap. */
+.home-v4-wrap [id], .home-v4-wrap[id], .renewal-footer[id], .renewal-footer [id] {
+    scroll-margin-top: 16px;
+}
+
+::selection {
+    color: var(--ink, var(--color-black));
+    background: var(--yellow, var(--color-yellow));
+}
+
+.skip-link {
+    z-index: 200;
+}
+
+.eyebrow {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 650;
+    letter-spacing: 0.09em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ==========================================================================
+   [텍스트 선택·드래그 방지 / Selection & Drag Guard]
+   사용자 요청에 따라 화면 전체 텍스트 선택과 이미지 끌어당김을 막고,
+   입력·복사가 필요한 폼 요소는 선택을 다시 허용합니다.
+   Disable text selection and image dragging site-wide by request,
+   while re-enabling selection for form fields that need editing or copying.
+   ========================================================================== */
+* {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+img,
+svg {
+    -webkit-user-drag: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"],
+[contenteditable=""] {
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    user-select: text;
+}

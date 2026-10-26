@@ -1,0 +1,300 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Dither (a) default (bayer4, custom), shipped-v1 replace over a preceding sibling (blendWithChildren:false parity) > RTTs + unpremultiplies the child, dithers, REPLACES the sibling (shipped v1 parity) > dither-bayer4-custom 1`] = `
+"fn ditherCoord(uv: vec2f, gridRes: vec2f, pixelSize: f32) -> vec2f {
+  return floor(vec2f(((uv.x * gridRes.x) / pixelSize), ((uv.y * gridRes.y) / pixelSize)));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  seed: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct struct_1 {
+  pattern: f32,
+  pixelSize: f32,
+  threshold: f32,
+  spread: f32,
+  colorMode: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_gen: padded_1,
+  n_di: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn ditherPixUV(coord: vec2f, pixelSize: f32, gridRes: vec2f) -> vec2f {
+  return vec2f((((coord.x + 0.5f) * pixelSize) / gridRes.x), (((coord.y + 0.5f) * pixelSize) / gridRes.y));
+}
+
+fn genBody(seed: f32, uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, seed, 1f);
+}
+
+fn ditherComposeCustom(colorA: vec4f, colorB: vec4f, ditherResult: f32) -> vec4f {
+  let rgb = mix(vec3f(colorA.x, colorA.y, colorA.z), vec3f(colorB.x, colorB.y, colorB.z), vec3f(ditherResult));
+  let a = mix(colorA.w, colorB.w, ditherResult);
+  return vec4f(rgb.x, rgb.y, rgb.z, a);
+}
+
+fn ditherOrderedResult(ditherValue: f32, luminance: f32, threshold: f32, spread: f32) -> f32 {
+  let adjustedDither = (0.5f + ((ditherValue - 0.5f) * spread));
+  return step(adjustedDither, (luminance + (threshold - 0.5f)));
+}
+
+fn ditherBayerQuad(a: f32, b: f32) -> f32 {
+  return (((b * 3f) + (a * 2f)) - ((a * b) * 4f));
+}
+
+fn ditherPeriodic(coord: vec2f) -> vec4f {
+  let tx = (coord.x - (8f * floor((coord.x / 8f))));
+  let ty = (coord.y - (8f * floor((coord.y / 8f))));
+  let x2 = (tx - (2f * floor((tx / 2f))));
+  let y2 = (ty - (2f * floor((ty / 2f))));
+  let x4 = (tx - (4f * floor((tx / 4f))));
+  let y4 = (ty - (4f * floor((ty / 4f))));
+  let x4h = floor((x4 / 2f));
+  let y4h = floor((y4 / 2f));
+  let x8h = floor((tx / 4f));
+  let y8h = floor((ty / 4f));
+  let b00 = ditherBayerQuad(x2, y2);
+  let b11 = ditherBayerQuad(x4h, y4h);
+  let b22 = ditherBayerQuad(x8h, y8h);
+  let bayer2 = (b00 / 4f);
+  let bayer4 = (((b00 * 4f) + b11) / 16f);
+  let bayer8 = ((((b00 * 16f) + (b11 * 4f)) + b22) / 64f);
+  let idx = ((i32(y4) * 4i) + i32(x4));
+  var cd = 0.75;
+  cd = select(cd, 0.3125f, (idx == 1i));
+  cd = select(cd, 0.375f, (idx == 2i));
+  cd = select(cd, 0.8125f, (idx == 3i));
+  cd = select(cd, 0.25f, (idx == 4i));
+  cd = select(cd, 0f, (idx == 5i));
+  cd = select(cd, 0.0625f, (idx == 6i));
+  cd = select(cd, 0.4375f, (idx == 7i));
+  cd = select(cd, 0.6875f, (idx == 8i));
+  cd = select(cd, 0.1875f, (idx == 9i));
+  cd = select(cd, 0.125f, (idx == 10i));
+  cd = select(cd, 0.5f, (idx == 11i));
+  cd = select(cd, 0.9375f, (idx == 12i));
+  cd = select(cd, 0.625f, (idx == 13i));
+  cd = select(cd, 0.5625f, (idx == 14i));
+  cd = select(cd, 0.875f, (idx == 15i));
+  return vec4f(bayer2, bayer4, bayer8, cd);
+}
+
+fn ditherLuma(c: vec4f) -> f32 {
+  return (dot(vec3f(c.x, c.y, c.z), vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464)) * c.w);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let ditherCoord_0 = ditherCoord(uv, uniforms._sys.logicalViewportSize, uniforms.n_di.pixelSize);
+  let ditherSource_1 = unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherPixUV(ditherCoord_0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)));
+  var composed_2 = mix(genBody(uniforms.n_gen.seed, uv), ditherComposeCustom(uniforms.n_di.colorA, uniforms.n_di.colorB, ditherOrderedResult((ditherPeriodic(ditherCoord_0)).y, ditherLuma(ditherSource_1), uniforms.n_di.threshold, uniforms.n_di.spread)), uniforms.n_di._opacity);
+  return vec4f(linearToSrgb(tone_linear(composed_2.rgb)), composed_2.a);
+}"
+`;
+
+exports[`Dither (b) compile-time pattern branches > floydSteinberg emits the diffusion body + a 64-element luminance array > dither-floydsteinberg 1`] = `
+"fn ditherCoord(uv: vec2f, gridRes: vec2f, pixelSize: f32) -> vec2f {
+  return floor(vec2f(((uv.x * gridRes.x) / pixelSize), ((uv.y * gridRes.y) / pixelSize)));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  seed: f32,
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct struct_1 {
+  pattern: f32,
+  pixelSize: f32,
+  threshold: f32,
+  spread: f32,
+  colorMode: f32,
+  colorA: vec4f,
+  colorB: vec4f,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_gen: padded_1,
+  n_di: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn genBody(seed: f32, uv: vec2f) -> vec4f {
+  return vec4f(uv.x, uv.y, seed, 1f);
+}
+
+fn ditherComposeCustom(colorA: vec4f, colorB: vec4f, ditherResult: f32) -> vec4f {
+  let rgb = mix(vec3f(colorA.x, colorA.y, colorA.z), vec3f(colorB.x, colorB.y, colorB.z), vec3f(ditherResult));
+  let a = mix(colorA.w, colorB.w, ditherResult);
+  return vec4f(rgb.x, rgb.y, rgb.z, a);
+}
+
+fn ditherFloydSteinberg(lum: array<f32, 64>, lic: f32, threshold: f32, spread: f32) -> f32 {
+  let thr = (0.5f - (threshold - 0.5f));
+  var ecur = array<f32, 8>();
+  var enext = array<f32, 8>();
+  let licInt = i32(lic);
+  var result = 0f;
+  for (var y = 0; (y < 8i); y++) {
+    let ltr = ((y & 1i) == 0i);
+    for (var xi = 0; (xi < 8i); xi++) {
+      let x = select((7i - xi), xi, ltr);
+      let idx = ((y * 8i) + x);
+      let val = (lum[idx] + ecur[x]);
+      let qv = step(thr, val);
+      result = select(result, qv, (idx == licInt));
+      let e = ((val - qv) * spread);
+      let dir = select(-1i, 1i, ltr);
+      let xr = (x + dir);
+      if ((xr >= 0i)) {
+        if ((xr < 8i)) {
+          ecur[xr] = (ecur[xr] + (e * 0.4375f));
+        }
+      }
+      if ((y < 7i)) {
+        let xbl = (x - dir);
+        let xbr = (x + dir);
+        if ((xbl >= 0i)) {
+          if ((xbl < 8i)) {
+            enext[xbl] = (enext[xbl] + (e * 0.1875f));
+          }
+        }
+        enext[x] = (enext[x] + (e * 0.3125f));
+        if ((xbr >= 0i)) {
+          if ((xbr < 8i)) {
+            enext[xbr] = (enext[xbr] + (e * 0.0625f));
+          }
+        }
+      }
+    }
+    for (var k = 0; (k < 8i); k++) {
+      ecur[k] = enext[k];
+      enext[k] = 0f;
+    }
+  }
+  return result;
+}
+
+fn ditherLuma(c: vec4f) -> f32 {
+  return (dot(vec3f(c.x, c.y, c.z), vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464)) * c.w);
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn ditherCellUV(blockOrigin: vec2f, lx: f32, ly: f32, pixelSize: f32, gridRes: vec2f) -> vec2f {
+  return vec2f(((((blockOrigin.x + lx) + 0.5f) * pixelSize) / gridRes.x), ((((blockOrigin.y + ly) + 0.5f) * pixelSize) / gridRes.y));
+}
+
+fn ditherBlockOrigin(coord: vec2f) -> vec2f {
+  return (floor((coord / vec2f(8))) * vec2f(8));
+}
+
+fn ditherLocalCellIndex(coord: vec2f, blockOrigin: vec2f) -> f32 {
+  return (((coord.y - blockOrigin.y) * 8f) + (coord.x - blockOrigin.x));
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let ditherCoord_0 = ditherCoord(uv, uniforms._sys.logicalViewportSize, uniforms.n_di.pixelSize);
+  var composed_1 = mix(genBody(uniforms.n_gen.seed, uv), ditherComposeCustom(uniforms.n_di.colorA, uniforms.n_di.colorB, ditherFloydSteinberg(array<f32, 64>(ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 0.0, 0.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 1.0, 0.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 2.0, 0.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 3.0, 0.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 4.0, 0.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 5.0, 0.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 6.0, 0.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 7.0, 0.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 0.0, 1.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 1.0, 1.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 2.0, 1.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 3.0, 1.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 4.0, 1.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 5.0, 1.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 6.0, 1.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 7.0, 1.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 0.0, 2.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 1.0, 2.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 2.0, 2.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 3.0, 2.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 4.0, 2.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 5.0, 2.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 6.0, 2.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 7.0, 2.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 0.0, 3.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 1.0, 3.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 2.0, 3.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 3.0, 3.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 4.0, 3.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 5.0, 3.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 6.0, 3.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 7.0, 3.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 0.0, 4.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 1.0, 4.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 2.0, 4.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 3.0, 4.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 4.0, 4.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 5.0, 4.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 6.0, 4.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 7.0, 4.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 0.0, 5.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 1.0, 5.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 2.0, 5.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 3.0, 5.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 4.0, 5.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 5.0, 5.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 6.0, 5.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 7.0, 5.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 0.0, 6.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 1.0, 6.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 2.0, 6.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 3.0, 6.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 4.0, 6.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 5.0, 6.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 6.0, 6.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 7.0, 6.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 0.0, 7.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 1.0, 7.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 2.0, 7.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 3.0, 7.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 4.0, 7.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 5.0, 7.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 6.0, 7.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize)))), ditherLuma(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, ditherCellUV(ditherBlockOrigin(ditherCoord_0), 7.0, 7.0, uniforms.n_di.pixelSize, uniforms._sys.logicalViewportSize))))), ditherLocalCellIndex(ditherCoord_0, ditherBlockOrigin(ditherCoord_0)), uniforms.n_di.threshold, uniforms.n_di.spread)), uniforms.n_di._opacity);
+  return vec4f(linearToSrgb(tone_linear(composed_1.rgb)), composed_1.a);
+}"
+`;

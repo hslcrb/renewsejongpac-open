@@ -1,0 +1,536 @@
+/* [모든 주요 경로가 공유하는 넓은 지면 / A shared wide frame for primary routes]
+   외부 폭과 여백은 전역 토큰을 따르고, 높이는 내용과 줄바꿈으로 결정합니다.
+   The outer frame follows global tokens while content and wrapping determine height. */
+
+.page-layout {
+    min-width: 0;
+    padding-block: var(--space-12) var(--space-24);
+}
+
+.page-layout-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-bottom: var(--space-8);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: var(--leading-label);
+}
+
+.page-layout-breadcrumbs > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.page-layout-breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.page-layout-breadcrumbs a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.page-layout-breadcrumbs [aria-current] {
+    color: var(--text-primary);
+    font-weight: var(--weight-action);
+}
+
+.page-layout-heading {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+    margin-bottom: var(--space-10);
+}
+
+.page-layout-heading h1 {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-title));
+    font-weight: var(--weight-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+    overflow-wrap: anywhere;
+}
+
+.page-layout-heading > p {
+    max-width: var(--content-reading-width);
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-lead));
+    line-height: var(--leading-body);
+}
+
+.page-layout-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+.page-layout-actions > :is(a, button) {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+/* [읽는 글과 사실 정보의 폭 / Reading measure and intrinsic fact columns]
+   문단과 입력에는 읽기 폭을 두되 제목과 카드 목록은 넓은 지면을 사용합니다.
+   Prose retains a reading measure while headings and card collections use the full frame. */
+
+.page-layout-prose {
+    max-width: var(--content-reading-width);
+    min-width: 0;
+}
+
+.page-layout-prose h2,
+.booking-page-panel h2,
+.page-layout-empty h2 {
+    margin: 0 0 var(--space-4);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+    line-height: var(--leading-label);
+}
+
+.page-layout-prose p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+
+.page-layout-prose p + p {
+    margin-top: var(--space-4);
+}
+
+.page-layout-facts {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--space-4) var(--space-6);
+    min-width: 0;
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+
+.page-layout-facts dt {
+    color: var(--text-secondary);
+    font-weight: var(--weight-label);
+}
+
+.page-layout-facts dd {
+    min-width: 0;
+    margin: 0;
+    color: var(--text-primary);
+    overflow-wrap: anywhere;
+}
+
+/* [프로그램 목록의 자동 열 배치 / Automatic columns for the program collection] */
+
+.programs-page-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-bottom: var(--space-8);
+}
+
+.programs-page-search {
+    flex: 1 1 18rem;
+    min-width: 0;
+    max-width: 30rem;
+}
+
+.programs-page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-10) var(--space-6);
+}
+
+.programs-page-grid > * {
+    min-width: 0;
+}
+
+.page-layout-empty {
+    padding: var(--space-16) var(--space-6);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-media);
+    background: var(--surface-subtle);
+    text-align: center;
+}
+
+.page-layout-empty p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+}
+
+/* [원본 비율의 포스터와 유연한 상세 열 / Natural poster ratio and flexible details] */
+
+.program-detail-page-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(2rem, 5vw, 5rem);
+}
+
+.program-detail-page-poster {
+    width: 100%;
+    max-width: 42rem;
+    overflow: hidden;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-media);
+}
+
+.program-detail-page-poster img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.program-detail-page-summary {
+    min-width: 0;
+}
+
+.program-detail-page-facts {
+    padding-block: var(--space-6);
+    border-block: 1px solid var(--border-default);
+}
+
+.program-detail-page-description {
+    margin-block: var(--space-8);
+}
+
+.program-detail-page-actions > a:first-child {
+    flex: 1 1 15rem;
+}
+
+/* [높이를 고정하지 않는 예매 양식 / Booking forms that grow with their content]
+   양식은 한눈에 값을 비교할 수 있는 폭을 유지하고 페이지 바깥 지면은 공통 폭을 사용합니다.
+   Forms keep related values within reading distance inside the shared page frame. */
+
+.booking-page-content {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    min-width: 0;
+}
+
+.booking-page-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-8);
+    margin: 0 0 var(--space-8);
+    padding: 0 0 var(--space-6);
+    border-bottom: 1px solid var(--border-default);
+    list-style: none;
+}
+
+.booking-page-steps li {
+    display: flex;
+    flex: 1 1 12rem;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-label);
+}
+
+.booking-page-steps li > span {
+    display: grid;
+    flex: 0 0 auto;
+    min-width: 2rem;
+    min-height: 2rem;
+    padding: var(--space-1);
+    place-items: center;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-pill);
+    font-variant-numeric: tabular-nums;
+}
+
+.booking-page-steps [aria-current="step"] {
+    color: var(--text-primary);
+    font-weight: var(--weight-action);
+}
+
+.booking-page-steps [aria-current="step"] > span {
+    color: var(--text-inverse);
+    background: var(--action-primary);
+    border-color: var(--stroke-selected);
+}
+
+.booking-page-panel {
+    display: grid;
+    gap: var(--space-6);
+    min-width: 0;
+}
+
+.booking-page-panel h2 {
+    margin: 0;
+}
+
+.booking-page-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    align-items: start;
+    gap: var(--space-6);
+    min-width: 0;
+}
+
+.booking-page-section-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+}
+
+.booking-page-section-heading p,
+.booking-page-seat-help {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-body));
+    overflow-wrap: anywhere;
+}
+
+.booking-page-actions {
+    justify-content: flex-end;
+}
+
+.booking-page-actions > :is(a, button) {
+    flex: 0 1 auto;
+}
+
+.booking-page-review {
+    padding: var(--space-6);
+    border-radius: var(--radius-control);
+    background: var(--surface-subtle);
+}
+
+.booking-page-total {
+    margin-top: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-default);
+    font-weight: var(--weight-action);
+}
+
+.booking-page-total strong {
+    font-size: max(var(--text-min), var(--text-subheading));
+    font-weight: var(--weight-heading);
+}
+
+.booking-page-complete {
+    justify-items: center;
+    text-align: center;
+}
+
+.booking-page-complete > p {
+    max-width: var(--content-reading-width);
+    margin: 0;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+}
+
+.booking-page-complete .page-layout-actions {
+    justify-content: center;
+}
+
+/* [좌석의 공간 관계와 48px 조작 크기 / Spatial seat relationships with 48px targets]
+   좌석의 최소 크기는 공통 조작 토큰을 따르며 좁은 화면에서는 내부만 스크롤합니다.
+   Seat targets follow the shared control token and scroll inside their own viewport. */
+
+.booking-page-seat-scroll {
+    min-width: 0;
+    max-width: 100%;
+    padding: var(--space-2);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    border-radius: var(--radius-control);
+}
+
+.booking-page-seat-scroll:focus-visible {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+
+.booking-page-seat-canvas {
+    width: max-content;
+    min-width: 100%;
+}
+
+.booking-page-stage {
+    padding: var(--space-3);
+    margin-bottom: var(--space-8);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    background: var(--surface-subtle);
+    color: var(--text-secondary);
+    text-align: center;
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-action);
+}
+
+.booking-page-seat-rows {
+    display: grid;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+.booking-page-seat-row {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(var(--control-size), max-content));
+    gap: var(--space-2);
+}
+
+.booking-page-seat {
+    min-width: var(--control-size);
+    min-height: var(--control-size);
+    padding: var(--space-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-control);
+    background: var(--surface-default);
+    color: var(--text-primary);
+    font: var(--weight-action) max(var(--text-min), var(--text-body))/var(--leading-label) var(--font);
+    transition: background-color var(--duration-feedback), border-color var(--duration-feedback), color var(--duration-feedback);
+}
+
+.booking-page-seat[aria-pressed="true"] {
+    color: var(--text-inverse);
+    background: var(--action-primary);
+    border-color: var(--stroke-selected);
+    box-shadow: inset 0 0 0 1px var(--stroke-selected);
+}
+
+.booking-page-seat:focus-visible {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+
+@media (hover: hover) {
+    .booking-page-seat:not([aria-pressed="true"]):hover {
+        background: var(--state-hover);
+    }
+}
+
+/* [안내 페이지의 넓은 탐색과 좁은 문단 / Wide information navigation with readable prose] */
+
+.catalog-page-heading {
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--border-default);
+}
+
+.catalog-page-category {
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: var(--weight-action);
+}
+
+.catalog-page-navigation {
+    margin-top: var(--space-2);
+}
+
+.catalog-page-navigation a[aria-current="page"] {
+    border-color: var(--stroke-selected);
+    background: var(--action-primary);
+    color: var(--text-inverse);
+    font-weight: var(--weight-action);
+}
+
+.catalog-page-content {
+    min-width: 0;
+    padding-block: var(--space-4);
+}
+
+.catalog-page-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+    margin-bottom: var(--space-6);
+    color: var(--text-secondary);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+
+.catalog-page-actions {
+    margin-top: var(--space-8);
+}
+
+/* [작은 화면과 글자 확대의 재배치 / Reflow for smaller screens and enlarged text] */
+
+@media (max-width: 56rem) {
+    .program-detail-page-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .program-detail-page-poster {
+        max-width: 36rem;
+    }
+}
+
+@media (max-width: 37.5rem) {
+    .page-layout {
+        padding-block: var(--space-8) var(--space-16);
+    }
+
+    .page-layout-heading {
+        margin-bottom: var(--space-8);
+    }
+
+    .programs-page-search {
+        max-width: none;
+    }
+
+    .booking-page-steps li {
+        flex-basis: 100%;
+    }
+
+    .booking-page-actions > :is(a, button),
+    .program-detail-page-actions > a {
+        flex: 1 1 100%;
+    }
+
+    .booking-page-review {
+        padding: var(--space-4);
+    }
+
+    .booking-page-review {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--space-2);
+    }
+
+    .booking-page-review dd {
+        margin-bottom: var(--space-4);
+    }
+
+    .booking-page-review .booking-page-total {
+        margin: 0;
+    }
+
+    .booking-page-review dd.booking-page-total {
+        padding-top: 0;
+        border-top: 0;
+    }
+}
+
+/* [확대된 소식 문구의 자연스러운 줄바꿈 / Intrinsic news copy when text is enlarged] */
+.home-news-layout > * {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* [정보 블록의 반응형 배치 / Responsive information blocks] */
+.catalog-content-block { display: grid; gap: 24px; margin-block: 32px 48px; }
+.catalog-space-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; margin-block: 32px; }
+.catalog-space-grid h2 { margin-bottom: 16px; }
+.catalog-space-grid p { margin-bottom: 20px; }
+.page-layout-facts > div { display: contents; }
+.catalog-timeline { display: grid; gap: 32px; list-style: none; padding: 0; }
+.catalog-content-source { margin-block: 40px; color: var(--text-secondary); }
+.renewal-header[data-header-variant="inverse"] { background: var(--surface-inverse); color: var(--text-inverse); }
+.renewal-header[data-header-variant="inverse"] .sejong-wordmark { filter: invert(1); }
+.renewal-header[data-header-variant="inverse"] .desktop-nav a,
+.renewal-header[data-header-variant="inverse"] .masthead-actions > a { color: var(--text-inverse); }

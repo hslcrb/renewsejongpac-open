@@ -1,0 +1,118 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PixelThrow (a) RTT displacement filter over a flow-field data texture > samples the flow field + child, displaces by key-scaled flow, unpremultiplies > final-pass 1`] = `
+"@group(1) @binding(0) var media_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+struct PixelThrowBicubicTaps {
+  uvA: vec2f,
+  uvB: vec2f,
+  uvC: vec2f,
+  uvD: vec2f,
+  w: vec4f,
+}
+
+fn pixelThrowBicubicSetup(uv: vec2f) -> PixelThrowBicubicTaps {
+  const gf = 128f;
+  let tx = ((uv.x * gf) - 0.5f);
+  let ty = ((uv.y * gf) - 0.5f);
+  let pxf = floor(tx);
+  let pyf = floor(ty);
+  let fx = (tx - pxf);
+  let fy = (ty - pyf);
+  let ofx = (1f - fx);
+  let wx0 = (((ofx * ofx) * ofx) * 0.16666667f);
+  let wx1 = (((((fx * fx) * fx) * 0.5f) - (fx * fx)) + 0.66666667f);
+  let wx3 = (((fx * fx) * fx) * 0.16666667f);
+  let wx2 = (((1f - wx0) - wx1) - wx3);
+  let ofy = (1f - fy);
+  let wy0 = (((ofy * ofy) * ofy) * 0.16666667f);
+  let wy1 = (((((fy * fy) * fy) * 0.5f) - (fy * fy)) + 0.66666667f);
+  let wy3 = (((fy * fy) * fy) * 0.16666667f);
+  let wy2 = (((1f - wy0) - wy1) - wy3);
+  let g0x = (wx0 + wx1);
+  let g1x = (wx2 + wx3);
+  let g0y = (wy0 + wy1);
+  let g1y = (wy2 + wy3);
+  let h0x = ((pxf - 1f) + (wx1 / g0x));
+  let h1x = ((pxf + 1f) + (wx3 / g1x));
+  let h0y = ((pyf - 1f) + (wy1 / g0y));
+  let h1y = ((pyf + 1f) + (wy3 / g1y));
+  return PixelThrowBicubicTaps(vec2f(((h0x + 0.5f) / gf), ((h0y + 0.5f) / gf)), vec2f(((h1x + 0.5f) / gf), ((h0y + 0.5f) / gf)), vec2f(((h0x + 0.5f) / gf), ((h1y + 0.5f) / gf)), vec2f(((h1x + 0.5f) / gf), ((h1y + 0.5f) / gf)), vec4f((g0x * g0y), (g1x * g0y), (g0x * g1y), (g1x * g1y)));
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(1) var rtt_0: texture_2d<f32>;
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  throwKey: f32,
+  strength: f32,
+  keyInfluence: f32,
+  radius: f32,
+  friction: f32,
+  momentum: f32,
+  edges: f32,
+  _opacity: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_pt: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  let flowVec_1 = (((((textureSample(media_0, linearClamp, (pixelThrowBicubicSetup(uv)).uvA)).xy * ((pixelThrowBicubicSetup(uv)).w).x) + ((textureSample(media_0, linearClamp, (pixelThrowBicubicSetup(uv)).uvB)).xy * ((pixelThrowBicubicSetup(uv)).w).y)) + ((textureSample(media_0, linearClamp, (pixelThrowBicubicSetup(uv)).uvC)).xy * ((pixelThrowBicubicSetup(uv)).w).z)) + ((textureSample(media_0, linearClamp, (pixelThrowBicubicSetup(uv)).uvD)).xy * ((pixelThrowBicubicSetup(uv)).w).w));
+  let displacedUV_0 = (uv - (flowVec_1 * mix(1.0, clamp(dot((unpremultiplyAlpha(textureSample(rtt_0, linearClamp, (uv - (flowVec_1 * 0.5))))).rgb, vec3f(0.299, 0.587, 0.114)), 0.0, 1.0), uniforms.n_pt.keyInfluence)));
+  var composed_2 = unpremultiplyAlpha(textureSample(rtt_0, linearClamp, displacedUV_0));
+  return vec4f(linearToSrgb(tone_linear(composed_2.rgb)), composed_2.a);
+}"
+`;

@@ -1,0 +1,204 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Glow (a) compute → RTT input → bloom composite > RTTs the child, registers a compute-output texture, composites original + bloom × intensity > final-pass 1`] = `
+"fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+fn glowCompose(original: vec4f, bloom: vec4f, intensity: f32) -> vec4f {
+  let finalColor = (original.xyz + (bloom.xyz * intensity));
+  let glowAlpha = clamp((bloom.w * intensity), 0f, 1f);
+  let finalAlpha = (original.w + (glowAlpha * (1f - original.w)));
+  return vec4f(finalColor, finalAlpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+@group(1) @binding(1) var compute_0: texture_2d<f32>;
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  intensity: f32,
+  threshold: f32,
+  size: f32,
+  _opacity: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_gl: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = in.uv;
+  var composed_0 = unpremultiplyAlpha(glowCompose(textureSample(rtt_0, linearClamp, uv), textureSample(compute_0, linearClamp, uv), uniforms.n_gl.intensity));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`Glow (c) pre-pass kernel resolves (D3 rules) > extract+fill kernel resolves with a sampled textureLoad + TWO storage textureStores > extractAndFill 1`] = `
+"@group(0) @binding(0) var childTexture: texture_2d<f32>;
+
+@group(0) @binding(1) var brightMap: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(2) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct Params {
+  threshold: f32,
+  size: f32,
+  inputWidth: f32,
+  inputHeight: f32,
+}
+
+@group(0) @binding(3) var<uniform> params: Params;
+
+fn bloomExtractSoftKnee(childTexture_1: texture_2d<f32>, cx: u32, cy: u32, inputSize: vec2f, computeSize: vec2f, threshold: f32) -> vec4f {
+  let iw = inputSize.x;
+  let ih = inputSize.y;
+  let inputWm1 = i32((iw - 1f));
+  let inputHm1 = i32((ih - 1f));
+  var sample = vec4f();
+  for (var ty = 0; (ty < 4i); ty++) {
+    for (var tx = 0; (tx < 4i); tx++) {
+      let su = ((f32(cx) + ((f32(tx) + 0.5f) / 4f)) / computeSize.x);
+      let sv = ((f32(cy) + ((f32(ty) + 0.5f) / 4f)) / computeSize.y);
+      let sx = clamp(i32((su * iw)), 0i, inputWm1);
+      let sy = clamp(i32((sv * ih)), 0i, inputHm1);
+      sample = (sample + textureLoad(childTexture_1, vec2u(u32(sx), u32(sy)), 0));
+    }
+  }
+  sample = (sample * 0.0625f);
+  let knee = ((threshold * 0.5f) + 1e-4f);
+  let lum = dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  let soft = clamp(((lum - threshold) + knee), 0f, (knee * 2f));
+  let softCurve = ((soft * soft) / (knee * 4f));
+  let mask = (max(softCurve, (lum - threshold)) / max(lum, 1e-4f));
+  return vec4f((sample.xyz * mask), (sample.w * mask));
+}
+
+fn glowExtractAndFill(cx: u32, cy: u32) {
+  let p = (&params);
+  let bright = bloomExtractSoftKnee(childTexture, cx, cy, vec2f((*p).inputWidth, (*p).inputHeight), vec2f(1024, 640), (*p).threshold);
+  textureStore(brightMap, vec2u(cx, cy), bright);
+  textureStore(blurMap, vec2u(cx, cy), vec4f((*p).size, 0f, 0f, 1f));
+}"
+`;
+
+exports[`Glow (c2) map-driven pre-pass kernel resolves (e0 compute-map interplay) > extract+fill kernel samples BOTH child + size-map source, writes bright + per-pixel radius > extractAndFillVariable 1`] = `
+"@group(0) @binding(0) var childTexture: texture_2d<f32>;
+
+@group(0) @binding(1) var source: texture_2d<f32>;
+
+@group(0) @binding(2) var brightMap: texture_storage_2d<rgba16float, write>;
+
+@group(0) @binding(3) var blurMap: texture_storage_2d<rgba32float, write>;
+
+struct Params {
+  threshold: f32,
+  inputWidth: f32,
+  inputHeight: f32,
+  inputMin: f32,
+  inputMax: f32,
+  outputMin: f32,
+  outputMax: f32,
+  curve: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: Params;
+
+fn bloomExtractSoftKnee(childTexture_1: texture_2d<f32>, cx: u32, cy: u32, inputSize: vec2f, computeSize: vec2f, threshold: f32) -> vec4f {
+  let iw = inputSize.x;
+  let ih = inputSize.y;
+  let inputWm1 = i32((iw - 1f));
+  let inputHm1 = i32((ih - 1f));
+  var sample = vec4f();
+  for (var ty = 0; (ty < 4i); ty++) {
+    for (var tx = 0; (tx < 4i); tx++) {
+      let su = ((f32(cx) + ((f32(tx) + 0.5f) / 4f)) / computeSize.x);
+      let sv = ((f32(cy) + ((f32(ty) + 0.5f) / 4f)) / computeSize.y);
+      let sx = clamp(i32((su * iw)), 0i, inputWm1);
+      let sy = clamp(i32((sv * ih)), 0i, inputHm1);
+      sample = (sample + textureLoad(childTexture_1, vec2u(u32(sx), u32(sy)), 0));
+    }
+  }
+  sample = (sample * 0.0625f);
+  let knee = ((threshold * 0.5f) + 1e-4f);
+  let lum = dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+  let soft = clamp(((lum - threshold) + knee), 0f, (knee * 2f));
+  let softCurve = ((soft * soft) / (knee * 4f));
+  let mask = (max(softCurve, (lum - threshold)) / max(lum, 1e-4f));
+  return vec4f((sample.xyz * mask), (sample.w * mask));
+}
+
+fn mapSourceScalar_luminance(sample: vec4f) -> f32 {
+  return dot(sample.xyz, vec3f(0.2125999927520752, 0.7152000069618225, 0.0722000002861023));
+}
+
+fn applyRemapWindow(raw: f32, inputMin: f32, inputMax: f32, outputMin: f32, outputMax: f32, curve: f32) -> f32 {
+  let inputRange = max((inputMax - inputMin), 1e-4f);
+  let normalised = clamp(((raw - inputMin) / inputRange), 0f, 1f);
+  let exponent = pow(2f, (-(curve) * 2f));
+  let eased = pow(normalised, exponent);
+  return mix(outputMin, outputMax, eased);
+}
+
+fn glowExtractAndFillVariable(cx: u32, cy: u32) {
+  let p = (&params);
+  let iw = (*p).inputWidth;
+  let ih = (*p).inputHeight;
+  let bright = bloomExtractSoftKnee(childTexture, cx, cy, vec2f(iw, ih), vec2f(1024, 640), (*p).threshold);
+  textureStore(brightMap, vec2u(cx, cy), bright);
+  let u = ((f32(cx) + 0.5f) / 1024f);
+  let v = ((f32(cy) + 0.5f) / 640f);
+  let srcX = clamp(i32(round((u * iw))), 0i, i32((iw - 1f)));
+  let srcY = clamp(i32(round((v * ih))), 0i, i32((ih - 1f)));
+  let mapSample = textureLoad(source, vec2u(u32(srcX), u32(srcY)), 0);
+  let radius = applyRemapWindow(mapSourceScalar_luminance(mapSample), (*p).inputMin, (*p).inputMax, (*p).outputMin, (*p).outputMax, (*p).curve);
+  textureStore(blurMap, vec2u(cx, cy), vec4f(radius, 0f, 0f, 1f));
+}"
+`;

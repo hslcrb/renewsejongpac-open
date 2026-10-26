@@ -1,0 +1,38 @@
+{
+  "verifiedAt": "2026-10-21T06:22:16.667Z",
+  "baseCommit": "d6d6900c09b4e9854614c1847524ee84ab0d7b3a",
+  "components": {
+    "total": 43,
+    "product": 41,
+    "documentationOnly": 2,
+    "unused": 0
+  },
+  "widths": [
+    320,
+    390,
+    768,
+    1024,
+    1440
+  ],
+  "unit": {
+    "total": 97,
+    "passed": 96,
+    "failed": 0,
+    "skipped": 1
+  },
+  "browser": {
+    "account-space.json": 14,
+    "account-auth.json": 10,
+    "component-system.json": 12,
+    "design-system.json": 22,
+    "hero-companion.json": 11,
+    "floating-menu.json": 15,
+    "media-feedback.json": 10
+  },
+  "productionBuild": true,
+  "exportFiles": 8307,
+  "htmlPages": 160,
+  "mirrorExact": true,
+  "googleConsentAndReturnVerified": false,
+  "scope": "Auth SDK integration and live Google authorization endpoint verified; final consent is performed by the account owner."
+}

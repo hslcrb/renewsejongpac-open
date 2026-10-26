@@ -1,0 +1,465 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MagneticFilings (a) compute simulation → resolved texture > registers the filings (compute) texture and samples it in the fragment (GENERATOR) > final-pass 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  colorA: vec4f,
+  colorB: vec4f,
+  colorSpace: f32,
+  count: f32,
+  size: f32,
+  strength: f32,
+  reach: f32,
+  response: f32,
+  _opacity: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_mf: struct_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+@group(1) @binding(0) var compute_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = in.uv;
+  var composed_0 = textureSample(compute_0, linearClamp, uv);
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;
+
+exports[`MagneticFilings (c) kernels resolve (D3 rules) > every shape variant of the render splat resolves and accumulates atomically > splatKernel 1`] = `
+"struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  count: f32,
+  dt: f32,
+  aspect: f32,
+  domainX: f32,
+  cursorX: f32,
+  cursorY: f32,
+  axisX: f32,
+  axisY: f32,
+  fieldType: f32,
+  restMode: f32,
+  strength: f32,
+  reachSq: f32,
+  alignK: f32,
+  damping: f32,
+  restK: f32,
+  pullK: f32,
+  homeK: f32,
+  omegaRef: f32,
+  agitCool: f32,
+  gridCols: f32,
+  cellW: f32,
+  cellH: f32,
+  jitter: f32,
+  bodyR: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 12288>;
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn noise_hash22(p: vec2f) -> vec2f {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  let h = (u.x ^ u.y);
+  let prod = (vec2u(h, h) * vec2u(3141592653, 1618033988));
+  return (vec2f(f32(prod.x), f32(prod.y)) / 4294967296f);
+}
+
+fn agentJitteredHome(fi: f32) -> vec2f {
+  let prm = (&params);
+  let cols = (*prm).gridCols;
+  let row = floor((fi / max(cols, 1f)));
+  let col = (fi - (row * max(cols, 1f)));
+  let h = noise_hash22(vec2f(((fi * 0.7548f) + 0.11f), ((fi * 1.3236f) + 5.31f)));
+  let jx = ((h.x - 0.5f) * (*prm).jitter);
+  let jy = ((h.y - 0.5f) * (*prm).jitter);
+  return vec2f(((((col + 0.5f) + jx) * (*prm).cellW) - 0.14f), ((((row + 0.5f) + jy) * (*prm).cellH) - 0.14f));
+}
+
+struct AgentPose {
+  pos: vec2f,
+  dir: vec2f,
+  spd: f32,
+}
+
+fn filingsSplatPose(i: u32) -> AgentPose {
+  let a = (&agents[i]);
+  let homeP = agentJitteredHome(f32(i));
+  return AgentPose(vec2f((homeP.x + (*a).x), (homeP.y + (*a).y)), vec2f(cos((*a).z), sin((*a).z)), 0f);
+}
+
+@group(0) @binding(1) var<storage, read_write> agit: array<f32, 12288>;
+
+fn filingsSplatExcitement(i: u32, _spd: f32) -> f32 {
+  return clamp(agit[i], 0f, 1f);
+}
+
+struct SplatWindow {
+  x0: i32,
+  x1: i32,
+  y0: i32,
+  y1: i32,
+}
+
+fn worldSplatWindow(pos: vec2f, reach: f32, aspect: f32, res: f32) -> SplatWindow {
+  let asp = max(aspect, 1e-5f);
+  let cxi = i32(floor(((pos.x / asp) * res)));
+  let cyi = i32(floor((pos.y * res)));
+  let radX = i32(ceil(((reach * res) / asp)));
+  let radY = i32(ceil((reach * res)));
+  let last = (i32(res) - 1i);
+  return SplatWindow(max((cxi - radX), 0i), min((cxi + radX), last), max((cyi - radY), 0i), min((cyi + radY), last));
+}
+
+fn agentCapsuleSdf(t: f32, n: f32, hl: f32, r: f32) -> f32 {
+  let tc = (t - clamp(t, -(hl), hl));
+  return (sqrt(((tc * tc) + (n * n))) - r);
+}
+
+fn agentTexelWeight(_q: f32, t: f32, n: f32, bodyR: f32, aaW: f32) -> f32 {
+  let sd = agentCapsuleSdf(t, n, (bodyR * 1.7f), (bodyR * 0.8f));
+  return (1f - smoothstep(-(aaW), aaW, sd));
+}
+
+fn filingsSplatWeight(dSq: f32, offX: f32, offY: f32, dir: vec2f, bodyR: f32, bodyRSq: f32, aaW: f32) -> f32 {
+  let t = ((offX * dir.x) + (offY * dir.y));
+  let n = ((offX * -(dir.y)) + (offY * dir.x));
+  return agentTexelWeight((dSq / bodyRSq), t, n, bodyR, aaW);
+}
+
+@group(0) @binding(2) var<storage, read_write> accumE: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(3) var<storage, read_write> accumS: array<atomic<u32>, 1048576>;
+
+fn filingsSplat(i: u32) {
+  let prm = (&params);
+  let p = filingsSplatPose(i);
+  let agitI = filingsSplatExcitement(i, p.spd);
+  let agitGain = (agitI * 637f);
+  let aspect = max((*prm).aspect, 1e-5f);
+  let bodyR = clamp((*prm).bodyR, 1e-6f, 0.013671875f);
+  let bodyRSq = (bodyR * bodyR);
+  let radW = ((bodyR * 2.6f) + 0.00146484375f);
+  let extSq = (radW * radW);
+  let win = worldSplatWindow(p.pos, radW, aspect, 1024f);
+  for (var py = win.y0; (py <= win.y1); py++) {
+    let offY = (((f32(py) + 0.5f) * 9.765625e-4f) - p.pos.y);
+    let offYSq = (offY * offY);
+    for (var px = win.x0; (px <= win.x1); px++) {
+      let offX = ((((f32(px) + 0.5f) * 9.765625e-4f) * aspect) - p.pos.x);
+      let dSq = ((offX * offX) + offYSq);
+      if ((dSq < extSq)) {
+        let w = filingsSplatWeight(dSq, offX, offY, p.dir, bodyR, bodyRSq, 7.32421875e-4f);
+        let e = u32((w * 637f));
+        if ((e > 0u)) {
+          let idx = u32(((py * 1024i) + px));
+          atomicAdd(&accumE[idx], e);
+          if ((agitI > 0f)) {
+            atomicAdd(&accumS[idx], u32((w * agitGain)));
+          }
+        }
+      }
+    }
+  }
+}"
+`;
+
+exports[`MagneticFilings (c) kernels resolve (D3 rules) > the resolve kernel color-mixes rest→excited and writes the texture > resolveKernel 1`] = `
+"struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  count: f32,
+  dt: f32,
+  aspect: f32,
+  domainX: f32,
+  cursorX: f32,
+  cursorY: f32,
+  axisX: f32,
+  axisY: f32,
+  fieldType: f32,
+  restMode: f32,
+  strength: f32,
+  reachSq: f32,
+  alignK: f32,
+  damping: f32,
+  restK: f32,
+  pullK: f32,
+  homeK: f32,
+  omegaRef: f32,
+  agitCool: f32,
+  gridCols: f32,
+  cellW: f32,
+  cellH: f32,
+  jitter: f32,
+  bodyR: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: SimParams;
+
+@group(0) @binding(2) var<storage, read_write> accumE: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(3) var<storage, read_write> accumS: array<atomic<u32>, 1048576>;
+
+fn filingsResolveEnergy(eRaw: f32) -> f32 {
+  return (eRaw * 0.00392156862745098f);
+}
+
+fn p3ToSRGB(p3: vec3f) -> vec3f {
+  let r = (((p3.x * 1.2249401f) - (p3.y * 0.2249404f)) - (p3.z * 0f));
+  let g = (((p3.x * -0.0420569f) + (p3.y * 1.0420571f)) + (p3.z * 0f));
+  let b = (((p3.x * -0.0196376f) - (p3.y * 0.0786361f)) + (p3.z * 1.0982735f));
+  return vec3f(r, g, b);
+}
+
+fn rgbToOklab(rgb: vec3f) -> vec3f {
+  let r = rgb.x;
+  let g = rgb.y;
+  let b = rgb.z;
+  let l = (((r * 0.4122214708f) + (g * 0.5363325363f)) + (b * 0.0514459929f));
+  let m = ((r * 0.2119034982f) + ((g * 0.6806995451f) + (b * 0.1073969566f)));
+  let s = (((r * 0.0883024619f) + (g * 0.2817188376f)) + (b * 0.6299787005f));
+  let l_ = (sign(l) * pow(abs(l), 0.3333333333333333f));
+  let m_ = (sign(m) * pow(abs(m), 0.3333333333333333f));
+  let s_ = (sign(s) * pow(abs(s), 0.3333333333333333f));
+  return vec3f((((l_ * 0.2104542553f) + (m_ * 0.793617785f)) - (s_ * 0.0040720468f)), (((l_ * 1.9779984951f) - (m_ * 2.428592205f)) + (s_ * 0.4505937099f)), (((l_ * 0.0259040371f) + (m_ * 0.7827717662f)) - (s_ * 0.808675766f)));
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixFn(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let oklabA = rgbToOklab(p3ToSRGB(colorA.xyz));
+  let oklabB = rgbToOklab(p3ToSRGB(colorB.xyz));
+  let mixed = awMix(oklabA, oklabB, weightA, weightB, safeWeight);
+  let rgb = sRGBToP3(oklabToRgb(mixed));
+  return vec4f(rgb, totalWeight);
+}
+
+fn energyCoverageAlpha(energy: f32, k: f32) -> f32 {
+  return (1f - exp(((energy * k) * -1f)));
+}
+
+@group(0) @binding(5) var outTex: texture_storage_2d<rgba16float, write>;
+
+fn filingsResolve(x: u32, y: u32) {
+  let prm = (&params);
+  let idx = ((y * 1024u) + x);
+  let eRaw = f32(atomicLoad(&accumE[idx]));
+  atomicStore(&accumE[idx], 0u);
+  let sRaw = f32(atomicLoad(&accumS[idx]));
+  atomicStore(&accumS[idx], 0u);
+  if ((eRaw > 0f)) {
+    let energy = filingsResolveEnergy(eRaw);
+    let agitAvg = (sRaw / max(eRaw, 1f));
+    let col = mixFn((*prm).colA, (*prm).colB, clamp(agitAvg, 0f, 1f));
+    let a = (energyCoverageAlpha(energy, 1.6f) * col.w);
+    textureStore(outTex, vec2u(x, y), vec4f(col.x, col.y, col.z, a));
+  }
+  else {
+    textureStore(outTex, vec2u(x, y), vec4f((*prm).colA.x, (*prm).colA.y, (*prm).colA.z, 0f));
+  }
+}"
+`;
+
+exports[`MagneticFilings (c) kernels resolve (D3 rules) > the update integrator resolves with the nematic torque (atan2 + sin) and a runtime-count break > updateKernel 1`] = `
+"struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  count: f32,
+  dt: f32,
+  aspect: f32,
+  domainX: f32,
+  cursorX: f32,
+  cursorY: f32,
+  axisX: f32,
+  axisY: f32,
+  fieldType: f32,
+  restMode: f32,
+  strength: f32,
+  reachSq: f32,
+  alignK: f32,
+  damping: f32,
+  restK: f32,
+  pullK: f32,
+  homeK: f32,
+  omegaRef: f32,
+  agitCool: f32,
+  gridCols: f32,
+  cellW: f32,
+  cellH: f32,
+  jitter: f32,
+  bodyR: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 12288>;
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn noise_hash22(p: vec2f) -> vec2f {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  let h = (u.x ^ u.y);
+  let prod = (vec2u(h, h) * vec2u(3141592653, 1618033988));
+  return (vec2f(f32(prod.x), f32(prod.y)) / 4294967296f);
+}
+
+fn agentJitteredHome(fi: f32) -> vec2f {
+  let prm = (&params);
+  let cols = (*prm).gridCols;
+  let row = floor((fi / max(cols, 1f)));
+  let col = (fi - (row * max(cols, 1f)));
+  let h = noise_hash22(vec2f(((fi * 0.7548f) + 0.11f), ((fi * 1.3236f) + 5.31f)));
+  let jx = ((h.x - 0.5f) * (*prm).jitter);
+  let jy = ((h.y - 0.5f) * (*prm).jitter);
+  return vec2f(((((col + 0.5f) + jx) * (*prm).cellW) - 0.14f), ((((row + 0.5f) + jy) * (*prm).cellH) - 0.14f));
+}
+
+fn agentDipoleOrRadialField(rhat: vec2f, axis: vec2f, fieldType: f32) -> vec2f {
+  let mdotr = dot(axis, rhat);
+  let dipoleB = ((rhat * (2f * mdotr)) - axis);
+  return select(dipoleB, rhat, (fieldType > 0.5f));
+}
+
+struct AgentFieldSample {
+  rhat: vec2f,
+  strength: f32,
+  phi: f32,
+}
+
+fn agentFieldDipoleOrRadial(pos: vec2f) -> AgentFieldSample {
+  let prm = (&params);
+  let cursor = vec2f((*prm).cursorX, (*prm).cursorY);
+  let delta = (pos - cursor);
+  let r = max(length(delta), 1e-4f);
+  let rhat = (delta / r);
+  let axis = vec2f((*prm).axisX, (*prm).axisY);
+  let B = agentDipoleOrRadialField(rhat, axis, (*prm).fieldType);
+  let fieldStr = ((*prm).strength * exp((((r * r) / max((*prm).reachSq, 1e-6f)) * -1f)));
+  return AgentFieldSample(rhat, fieldStr, atan2(B.y, B.x));
+}
+
+fn agentNematicTorque(k: f32, target_1: f32, theta: f32) -> f32 {
+  return (k * sin((2f * (target_1 - theta))));
+}
+
+fn torqueAlignToField(fld: AgentFieldSample, theta: f32, _fi: f32) -> f32 {
+  return agentNematicTorque((params.alignK * fld.strength), fld.phi, theta);
+}
+
+fn floatBitsToUint1(x: f32) -> u32 { return bitcast<u32>(x); }
+
+fn noise_hash11(p: f32) -> f32 {
+  let u = floatBitsToUint1((p * 3141592653f));
+  return (f32(((u * u) * 3141592653u)) / 4294967296f);
+}
+
+fn agentRestAngle(fi: f32, restMode: f32) -> f32 {
+  let randAng = (noise_hash11(((fi * 2.3987f) + 0.517f)) * 3.141592653589793f);
+  let a = select(randAng, 0f, (restMode > 0.5f));
+  return select(a, 1.5707963705062866f, (restMode > 1.5f));
+}
+
+fn torqueRest(_fld: AgentFieldSample, theta: f32, fi: f32) -> f32 {
+  let prm = (&params);
+  return agentNematicTorque((*prm).restK, agentRestAngle(fi, (*prm).restMode), theta);
+}
+
+fn torqueSum1(fld: AgentFieldSample, theta: f32, fi: f32) -> f32 {
+  return (torqueAlignToField(fld, theta, fi) + torqueRest(fld, theta, fi));
+}
+
+@group(0) @binding(1) var<storage, read_write> agit: array<f32, 12288>;
+
+fn filingsUpdate(i: u32) {
+  let prm = (&params);
+  let st = (&agents[i]);
+  var off = vec2f((*st).x, (*st).y);
+  var theta = (*st).z;
+  var omega = (*st).w;
+  let dt = (*prm).dt;
+  let fi = f32(i);
+  let homeP = agentJitteredHome(fi);
+  let pos = vec2f((homeP.x + off.x), (homeP.y + off.y));
+  let fld = agentFieldDipoleOrRadial(pos);
+  omega = (omega + (torqueSum1(fld, theta, fi) * dt));
+  omega = (omega * exp((((*prm).damping * dt) * -1f)));
+  theta = (theta + (omega * dt));
+  let raw = clamp((abs(omega) / max((*prm).omegaRef, 1e-5f)), 0f, 1f);
+  let cooled = (agit[i] * exp((dt * -((*prm).agitCool))));
+  agit[i] = max(raw, cooled);
+  let pull = (fld.rhat * (((*prm).pullK * fld.strength) * -1f));
+  off = (off + (pull * dt));
+  off = (off * exp((((*prm).homeK * dt) * -1f)));
+  let offLen = length(off);
+  off = select(off, ((off / max(offLen, 1e-5f)) * 0.12f), (offLen > 0.12f));
+  agents[i] = vec4f(off.x, off.y, theta, omega);
+}"
+`;

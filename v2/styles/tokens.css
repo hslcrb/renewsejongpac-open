@@ -1,0 +1,31 @@
+@font-face {
+    font-family: "Pretendard Variable";
+    src: url("../assets/fonts/PretendardVariable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --color-cheon: #54c8e8;
+    --color-ji: #c36d15;
+    --color-in: #ffe800;
+    --sky: var(--color-cheon);
+    --earth: var(--color-ji);
+    --human: var(--color-in);
+    --ink: #000000;
+    --paper: #ffffff;
+    --muted: #626872;
+    --soft: #f5f6f8;
+    --line: #e3e5e8;
+    --yellow: var(--human);
+    --yellow-dark: color-mix(in srgb, var(--human) 90%, #000000);
+    --font: "Pretendard Variable", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --display-font: var(--font);
+    --radius: clamp(8px, 0.85vw, 12px);
+    --radius-media: clamp(10px, 1.1vw, 16px);
+    --radius-banner: clamp(14px, 1.4vw, 22px);
+    --page-gutter: clamp(20px, 4vw, 64px);
+    --section-gap: clamp(72px, 8vw, 128px);
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

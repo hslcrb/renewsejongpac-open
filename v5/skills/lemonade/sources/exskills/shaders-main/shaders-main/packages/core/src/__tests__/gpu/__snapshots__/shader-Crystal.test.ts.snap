@@ -1,0 +1,353 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Crystal (a) flat analytic polygon lens over an RTT child > RTTs the child, traces the kaleidoscope Worley facets, and assembles the crystal composite > final-pass 1`] = `
+"fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  center: vec2f,
+  scale: f32,
+  rotation: f32,
+  cutout: f32,
+  refraction: f32,
+  dispersion: f32,
+  facets: f32,
+  fresnel: f32,
+  fresnelSoftness: f32,
+  fresnelColor: vec4f,
+  edgeSoftness: f32,
+  innerZoom: f32,
+  lightAngle: f32,
+  highlights: f32,
+  shadows: f32,
+  brightness: f32,
+  tintColor: vec4f,
+  tintIntensity: f32,
+  tintPreserveLuminosity: f32,
+  _opacity: f32,
+  _vfOriginX: f32,
+  _vfOriginY: f32,
+  _vfSpanX: f32,
+  _vfSpanY: f32,
+  _vfActiveRes: f32,
+  _vfRBound: f32,
+  _saRadius: f32,
+  _saSides: f32,
+  _saRounding: f32,
+  _saInnerRatio: f32,
+  _saRotation: f32,
+  _saHeight: f32,
+  _saOffset: f32,
+  _saAperture: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_c: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn polygonSdf(dx: f32, dy: f32, radius: f32, sides: f32) -> f32 {
+  let len = sqrt(((dx * dx) + (dy * dy)));
+  let angle = atan2(dy, dx);
+  let sectorAngle = (6.283185307179586f / sides);
+  let sectorIdx = floor(((angle / sectorAngle) + 0.5f));
+  let canonicalAngle = (angle - (sectorIdx * sectorAngle));
+  return ((len * cos(canonicalAngle)) - radius);
+}
+
+fn circleSdf(dx: f32, dy: f32, radius: f32) -> f32 {
+  return (sqrt(((dx * dx) + (dy * dy))) - radius);
+}
+
+fn analyticSdf_polygonSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = mix(polygonSdf(rdx, rdy, r, n), circleSdf(rdx, rdy, r), round_1);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn fieldGradient(surf0: vec4f, surfX: vec4f, surfY: vec4f, eps: f32) -> vec2f {
+  return vec2f(((surfX.x - surf0.x) / eps), ((surfY.x - surf0.x) / eps));
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn patternCoords(sdfUV: vec2f, surf0: vec4f, volumetric: f32) -> vec2f {
+  return vec2f(select((sdfUV.x - 0.5f), surf0.y, (volumetric > 0.5f)), select((sdfUV.y - 0.5f), surf0.z, (volumetric > 0.5f)));
+}
+
+fn mxRotl32(x: u32, k: i32) -> u32 {
+  return ((x << u32(k)) | (x >> u32((32i - k))));
+}
+
+fn mxBjfinal(a0: u32, b0: u32, c0: u32) -> u32 {
+  var a = a0;
+  var b = b0;
+  var c = c0;
+  c = (c ^ b);
+  c = (c - mxRotl32(b, 14i));
+  a = (a ^ c);
+  a = (a - mxRotl32(c, 11i));
+  b = (b ^ a);
+  b = (b - mxRotl32(a, 25i));
+  c = (c ^ b);
+  c = (c - mxRotl32(b, 16i));
+  a = (a ^ c);
+  a = (a - mxRotl32(c, 4i));
+  b = (b ^ a);
+  b = (b - mxRotl32(a, 14i));
+  c = (c ^ b);
+  c = (c - mxRotl32(b, 24i));
+  return c;
+}
+
+fn mxHashInt2(x: i32, y: i32, z: i32) -> u32 {
+  const len = 3u;
+  let seed = ((3735928559u + (len << 2u)) + 13u);
+  let a = (seed + u32(x));
+  let b = (seed + u32(y));
+  let c = (seed + u32(z));
+  return mxBjfinal(a, b, c);
+}
+
+fn mxBitsTo01(bits: u32) -> f32 {
+  return (f32(bits) / 4294967296f);
+}
+
+fn mxCellNoiseVec3_2d(p: vec2f) -> vec3f {
+  let ix = i32(floor(p.x));
+  let iy = i32(floor(p.y));
+  return vec3f(mxBitsTo01(mxHashInt2(ix, iy, 0i)), mxBitsTo01(mxHashInt2(ix, iy, 1i)), mxBitsTo01(mxHashInt2(ix, iy, 2i)));
+}
+
+fn mxWorleyDistance2d(p: vec2f, x: i32, y: i32, xoff: i32, yoff: i32, jitter: f32, metric: i32) -> f32 {
+  let tmp = mxCellNoiseVec3_2d(vec2f(f32((x + xoff)), f32((y + yoff))));
+  var off = vec2f(tmp.x, tmp.y);
+  off = (((off - 0.5f) * jitter) + 0.5f);
+  let cellpos = (vec2f(f32(x), f32(y)) + off);
+  let diff = (cellpos - p);
+  if ((metric == 2i)) {
+    return (abs(diff.x) + abs(diff.y));
+  }
+  if ((metric == 3i)) {
+    return max(abs(diff.x), abs(diff.y));
+  }
+  return dot(diff, diff);
+}
+
+fn mxWorleyNoiseFloat2(p: vec2f, jitter: f32, metric: i32) -> f32 {
+  let X = i32(floor(p.x));
+  let Y = i32(floor(p.y));
+  let localpos = vec2f((p.x - f32(X)), (p.y - f32(Y)));
+  var sqdist = 1e+6f;
+  for (var x = -1; (x <= 1i); x++) {
+    for (var y = -1; (y <= 1i); y++) {
+      let dist = mxWorleyDistance2d(localpos, x, y, X, Y, jitter, metric);
+      sqdist = min(sqdist, dist);
+    }
+  }
+  if ((metric == 0i)) {
+    sqdist = sqrt(sqdist);
+  }
+  return sqdist;
+}
+
+fn mxWorleyNoiseFloat2Pub(p: vec2f, jitter: f32) -> f32 {
+  return mxWorleyNoiseFloat2(p, jitter, 1i);
+}
+
+fn insideMask(sdf: f32, sharpEdge: f32, pxH: f32, minPixels: f32) -> f32 {
+  let w = max((sharpEdge * 0.03125f), (pxH * minPixels));
+  return clamp(((sdf * -1f) / w), 0f, 1f);
+}
+
+fn grazingView(n: vec3f) -> f32 {
+  return (1f - clamp((n.z * -1f), 0f, 1f));
+}
+
+struct KeyLight {
+  L: vec3f,
+  H: vec3f,
+}
+
+fn keyLight(lx: f32, ly: f32, lz: f32) -> KeyLight {
+  let L = normalize(vec3f(lx, ly, lz));
+  let H = normalize((L + vec3f(0, 0, -1)));
+  return KeyLight(L, H);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let sdfUV_5 = sdfSpaceUV(uniforms.n_c.center, uniforms.n_c.scale, uniforms.n_c.rotation, uv, uniforms._sys.aspect);
+  let s0_4 = analyticSdf_polygonSDF(sdfUV_5, uniforms.n_c._saRadius, uniforms.n_c._saSides, uniforms.n_c._saRounding, uniforms.n_c._saInnerRatio, uniforms.n_c._saRotation, uniforms.n_c._saHeight, uniforms.n_c._saOffset, uniforms.n_c._saAperture);
+  let sX_6 = analyticSdf_polygonSDF(offsetUV(sdfUV_5, 0.01, 0.0), uniforms.n_c._saRadius, uniforms.n_c._saSides, uniforms.n_c._saRounding, uniforms.n_c._saInnerRatio, uniforms.n_c._saRotation, uniforms.n_c._saHeight, uniforms.n_c._saOffset, uniforms.n_c._saAperture);
+  let sY_7 = analyticSdf_polygonSDF(offsetUV(sdfUV_5, 0.0, 0.01), uniforms.n_c._saRadius, uniforms.n_c._saSides, uniforms.n_c._saRounding, uniforms.n_c._saInnerRatio, uniforms.n_c._saRotation, uniforms.n_c._saHeight, uniforms.n_c._saOffset, uniforms.n_c._saAperture);
+  let grad_3 = fieldGradient(s0_4, sX_6, sY_7, 0.01);
+  let sdf_9 = (s0_4.x / uniforms.n_c.scale);
+  let outerWarp_8 = ((1.0 - smoothstep(0.0, 0.03, sdf_9)) * 0.4);
+  let aspect_10 = (uniforms._sys.viewportSize.x / uniforms._sys.viewportSize.y);
+  let haloOffX_2 = ((((grad_3.x * -1.0) * (uniforms.n_c.refraction * 0.15)) * outerWarp_8) / aspect_10);
+  let haloOffY_11 = (((grad_3.y * -1.0) * (uniforms.n_c.refraction * 0.15)) * outerWarp_8);
+  let baseColor_1 = unpremultiplyAlpha(textureSample(rtt_0, linearClamp, vec2f((uv.x + haloOffX_2), (uv.y + haloOffY_11))));
+  let centerPosX_16 = uniforms.n_c.center.x;
+  let suv_25 = sdfUV_5;
+  let pat_24 = patternCoords(suv_25, s0_4, 0.0);
+  let crystalRNorm_23 = (sqrt(((pat_24.x * pat_24.x) + (pat_24.y * pat_24.y))) / 0.35);
+  let tableMask_22 = (1.0 - smoothstep(0.22, 0.32, crystalRNorm_23));
+  let bevelSlope_21 = (((1.0 - smoothstep(0.0, 1.0, clamp(((sdf_9 * -1.0) / 0.15), 0.0, 1.0))) * 1.7) * (1.0 - tableMask_22));
+  let nSurf_20 = normalize(vec3f((grad_3.x * bevelSlope_21), (grad_3.y * bevelSlope_21), -1.0));
+  let kfDx_31 = ((pat_24.x + 0.5) - 0.5);
+  let kfDy_32 = ((pat_24.y + 0.5) - 0.5);
+  let kfR_30 = sqrt(((kfDx_31 * kfDx_31) + (kfDy_32 * kfDy_32)));
+  let sAngle_35 = (6.283185307179586 / uniforms.n_c.facets);
+  let kfInSector_34 = (fract(((atan2(kfDy_32, kfDx_31) + 3.141592653589793) / sAngle_35)) * sAngle_35);
+  let kfFolded_33 = min(kfInSector_34, (sAngle_35 - kfInSector_34));
+  let fUv_29 = vec2f((kfR_30 * cos(kfFolded_33)), (kfR_30 * sin(kfFolded_33)));
+  let vScale1_36 = ((uniforms.n_c.facets * 1.2) * (1.0 + (clamp(crystalRNorm_23, 0.0, 1.0) * 0.6)));
+  let fUvS1_28 = (fUv_29 * vScale1_36);
+  let facet10_37 = mxWorleyNoiseFloat2Pub(fUvS1_28, 1.0);
+  let facet1X_27 = ((mxWorleyNoiseFloat2Pub((fUvS1_28 + vec2f(0.02, 0.0)), 1.0) - facet10_37) / 0.02);
+  let facet1Y_39 = ((mxWorleyNoiseFloat2Pub((fUvS1_28 + vec2f(0.0, 0.02)), 1.0) - facet10_37) / 0.02);
+  let gLen1_38 = max(sqrt(((facet1X_27 * facet1X_27) + (facet1Y_39 * facet1Y_39))), 0.001);
+  let nx1_26 = (facet1X_27 / gLen1_38);
+  let facetRefrAmp_40 = clamp((uniforms.n_c.refraction * 0.8), 0.0, 1.6);
+  let tableSuppress_41 = (1.0 - (tableMask_22 * 0.9));
+  let ny1_42 = (facet1Y_39 / gLen1_38);
+  let fUvS2_45 = ((fUv_29 * (vScale1_36 * 1.7)) + vec2f(3.7, 1.2));
+  let facet20_46 = mxWorleyNoiseFloat2Pub(fUvS2_45, 1.0);
+  let facet2X_44 = ((mxWorleyNoiseFloat2Pub((fUvS2_45 + vec2f(0.02, 0.0)), 1.0) - facet20_46) / 0.02);
+  let facet2Y_48 = ((mxWorleyNoiseFloat2Pub((fUvS2_45 + vec2f(0.0, 0.02)), 1.0) - facet20_46) / 0.02);
+  let gLen2_47 = max(sqrt(((facet2X_44 * facet2X_44) + (facet2Y_48 * facet2Y_48))), 0.001);
+  let nx2_43 = (facet2X_44 / gLen2_47);
+  let ny2_49 = (facet2Y_48 / gLen2_47);
+  let nRefr_19 = normalize(((nSurf_20 + vec3f((((nx1_26 * 0.75) * facetRefrAmp_40) * tableSuppress_41), (((ny1_42 * 0.75) * facetRefrAmp_40) * tableSuppress_41), 0.0)) + vec3f(((nx2_43 * 0.55) * facetRefrAmp_40), ((ny2_49 * 0.55) * facetRefrAmp_40), 0.0)));
+  let refr_18 = refract(vec3f(0.0, 0.0, 1.0), nRefr_19, (1.0 / (1.0 + (uniforms.n_c.refraction * 0.55))));
+  let thickEff_51 = (clamp((s0_4.x * -1.0), 0.0, 0.12) * 1.6);
+  let cellId1_53 = floor(fUvS1_28);
+  let cellRand_52 = fract((sin(((cellId1_53.x * 12.9898) + (cellId1_53.y * 78.233))) * 43758.5453));
+  let sharp_55 = max((uniforms.n_c.edgeSoftness * 0.5), 0.001);
+  let pxH_56 = (1.0 / uniforms._sys.viewportSize.y);
+  let rb1_54 = insideMask(sdf_9, sharp_55, pxH_56, 1.5);
+  let offMag_50 = (((thickEff_51 * (0.55 + (cellRand_52 * 0.9))) * uniforms.n_c.scale) * rb1_54);
+  let totalOffX_17 = ((((refr_18.x / max(refr_18.z, 0.25)) * offMag_50) / aspect_10) + haloOffX_2);
+  let lensX_15 = ((centerPosX_16 + ((uv.x - centerPosX_16) / uniforms.n_c.innerZoom)) + totalOffX_17);
+  let chrOffX_57 = (totalOffX_17 * (uniforms.n_c.dispersion * 0.12));
+  let centerPosY_59 = (1.0 - uniforms.n_c.center.y);
+  let totalOffY_60 = (((refr_18.y / max(refr_18.z, 0.25)) * offMag_50) + haloOffY_11);
+  let lensY_58 = ((centerPosY_59 + ((uv.y - centerPosY_59) / uniforms.n_c.innerZoom)) + totalOffY_60);
+  let chrOffY_61 = (totalOffY_60 * (uniforms.n_c.dispersion * 0.12));
+  let sampledR_14 = unpremultiplyAlpha(textureSample(rtt_0, linearClamp, vec2f((lensX_15 + chrOffX_57), (lensY_58 + chrOffY_61))));
+  let sampledG_62 = unpremultiplyAlpha(textureSample(rtt_0, linearClamp, vec2f(lensX_15, lensY_58)));
+  let sampledB_63 = unpremultiplyAlpha(textureSample(rtt_0, linearClamp, vec2f((lensX_15 - chrOffX_57), (lensY_58 - chrOffY_61))));
+  let nBack_66 = normalize(vec3f((nx2_43 * 0.7), (ny2_49 * 0.7), -1.0));
+  let bounce_65 = reflect(refr_18, nBack_66);
+  let bounceMag_67 = (((thickEff_51 * uniforms.n_c.scale) * rb1_54) * 0.8);
+  let innerSample_64 = unpremultiplyAlpha(textureSample(rtt_0, linearClamp, vec2f((lensX_15 + (((bounce_65.x / max(abs(bounce_65.z), 0.3)) * bounceMag_67) / aspect_10)), (lensY_58 + ((bounce_65.y / max(abs(bounce_65.z), 0.3)) * bounceMag_67)))));
+  let grazing_69 = grazingView(nSurf_20);
+  let innerW_68 = ((((grazing_69 * 0.5) + 0.18) * ((cellRand_52 * 0.7) + 0.3)) * rb1_54);
+  let nF1_71 = normalize((nSurf_20 + vec3f((nx1_26 * 0.55), (ny1_42 * 0.55), 0.0)));
+  let lx_73 = (cos((uniforms.n_c.lightAngle * 0.017453292519943295)) + ((centerPosX_16 - 0.5) * 3.0));
+  let ly_74 = (sin((uniforms.n_c.lightAngle * 0.017453292519943295)) + ((centerPosY_59 - 0.5) * 3.0));
+  let kl1_72 = keyLight(lx_73, ly_74, -0.75);
+  let ndlS_75 = dot(nSurf_20, kl1_72.L);
+  let ndl1_70 = ((dot(nF1_71, kl1_72.L) - ndlS_75) * 2.2);
+  let nF2_77 = normalize((nSurf_20 + vec3f((nx2_43 * 0.4), (ny2_49 * 0.4), 0.0)));
+  let kl2_78 = keyLight((ly_74 * -1.0), lx_73, -0.4);
+  let ndl2_76 = ((dot(nF2_77, kl2_78.L) - dot(nSurf_20, kl2_78.L)) * 2.2);
+  let kfDx_83 = (((pat_24.x + (((refr_18.x / max(refr_18.z, 0.25)) * thickEff_51) * 1.2)) + 0.5) - 0.5);
+  let kfDy_84 = (((pat_24.y + (((refr_18.y / max(refr_18.z, 0.25)) * thickEff_51) * 1.2)) + 0.5) - 0.5);
+  let kfR_82 = sqrt(((kfDx_83 * kfDx_83) + (kfDy_84 * kfDy_84)));
+  let kfInSector_86 = (fract(((atan2(kfDy_84, kfDx_83) + 3.141592653589793) / sAngle_35)) * sAngle_35);
+  let kfFolded_85 = min(kfInSector_86, (sAngle_35 - kfInSector_86));
+  let fUvS3_81 = ((vec2f((kfR_82 * cos(kfFolded_85)), (kfR_82 * sin(kfFolded_85))) * (vScale1_36 * 1.4)) + vec2f(9.1, 4.7));
+  let cellId3_80 = floor(fUvS3_81);
+  let cellRand3_79 = fract((sin(((cellId3_80.x * 31.727) + (cellId3_80.y * 57.131))) * 43758.5453));
+  let facet30_90 = mxWorleyNoiseFloat2Pub(fUvS3_81, 1.0);
+  let facet3X_89 = ((mxWorleyNoiseFloat2Pub((fUvS3_81 + vec2f(0.02, 0.0)), 1.0) - facet30_90) / 0.02);
+  let facet3Y_92 = ((mxWorleyNoiseFloat2Pub((fUvS3_81 + vec2f(0.0, 0.02)), 1.0) - facet30_90) / 0.02);
+  let gLen3_91 = max(sqrt(((facet3X_89 * facet3X_89) + (facet3Y_92 * facet3Y_92))), 0.001);
+  let nx3_88 = (facet3X_89 / gLen3_91);
+  let ny3_93 = (facet3Y_92 / gLen3_91);
+  let wedgeLit_87 = ((((nx3_88 * lx_73) + (ny3_93 * ly_74)) * 0.5) + 0.5);
+  let w3_94 = ((clamp((thickEff_51 * 2.5), 0.0, 1.0) * clamp((uniforms.n_c.refraction * 1.2), 0.0, 1.0)) * rb1_54);
+  let litRgb_13 = (mix(vec3f(sampledR_14.x, sampledG_62.y, sampledB_63.z), vec3f(innerSample_64.x, innerSample_64.y, innerSample_64.z), vec3f(innerW_68)) * ((((((max(((1.0 + (clamp(ndl1_70, 0.0, 1.0) * uniforms.n_c.highlights)) - (clamp((ndl1_70 * -1.0), 0.0, 1.0) * uniforms.n_c.shadows)), 0.02) * ((1.0 + (clamp(ndl2_76, 0.0, 1.0) * (uniforms.n_c.highlights * 0.5))) - (clamp((ndl2_76 * -1.0), 0.0, 1.0) * (uniforms.n_c.shadows * 0.5)))) * ((1.0 + ((clamp(ndlS_75, 0.0, 1.0) * uniforms.n_c.highlights) * 0.4)) - ((clamp((ndlS_75 * -1.0), 0.0, 1.0) * uniforms.n_c.shadows) * 0.6))) + (tableMask_22 * 0.25)) * ((mix(smoothstep(0.2, 0.8, gLen1_38), 1.0, tableMask_22) * 0.4) + 0.6)) * mix(1.0, ((((cellRand3_79 * 0.9) + 0.55) * ((wedgeLit_87 * 0.7) + 0.65)) * ((smoothstep(0.15, 0.7, gLen3_91) * 0.45) + 0.55)), w3_94)) * uniforms.n_c.brightness));
+  let tinted_12 = mix(litRgb_13, uniforms.n_c.tintColor.rgb, vec3f(uniforms.n_c.tintIntensity));
+  let ndh1_96 = clamp(dot(nF1_71, kl1_72.H), 0.0, 1.0);
+  let flashContrib_95 = ((((((pow(ndh1_96, 110.0) * 2.2) + (pow(clamp(dot(nF2_77, kl2_78.H), 0.0, 1.0), 56.0) * 0.9)) + (smoothstep(0.965, 0.995, ndh1_96) * 3.0)) + ((smoothstep(0.75, 1.0, (wedgeLit_87 * (cellRand3_79 + 0.4))) * w3_94) * 0.8)) * uniforms.n_c.highlights) * uniforms.n_c.brightness);
+  let rb2_97 = (((clamp(((((sdf_9 - pxH_56) * -1.0) / sharp_55) * 16.0), 0.0, 1.0) - clamp((((sdf_9 * -1.0) / sharp_55) * 16.0), 0.0, 1.0)) * ((((grad_3.x * lx_73) + (grad_3.y * ly_74)) * 0.5) + 0.5)) * 0.35);
+  let transition_98 = smoothstep(0.0, 1.0, rb1_54);
+  let composited_0 = mix(baseColor_1, vec4f((((select(tinted_12, (tinted_12 * (dot(litRgb_13, vec3f(0.299, 0.587, 0.114)) / max(dot(tinted_12, vec3f(0.299, 0.587, 0.114)), 0.0001))), (uniforms.n_c.tintPreserveLuminosity > 0.5)) + vec3f(flashContrib_95)) + (uniforms.n_c.fresnelColor.rgb * (((pow(grazing_69, mix(6.0, 1.5, clamp((uniforms.n_c.fresnelSoftness * 0.5), 0.0, 1.0))) * uniforms.n_c.fresnel) * 2.0) * rb1_54))) + vec3f(rb2_97)), sampledG_62.w), vec4f(transition_98));
+  var composed_99 = vec4f(composited_0.xyz, (composited_0.w * 1.0));
+  return vec4f(linearToSrgb(tone_linear(composed_99.rgb)), composed_99.a);
+}"
+`;

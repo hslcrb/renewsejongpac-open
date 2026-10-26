@@ -1,0 +1,250 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Glass (a) flat analytic circle over an RTT child > RTTs the child, samples the analytic circle SDF, and assembles the glass composite > final-pass 1`] = `
+"fn sdfSpaceUV(center: vec2f, scale: f32, rotation: f32, uv: vec2f, aspect: f32) -> vec2f {
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let dxAc = ((uv.x - centerX) * aspect);
+  let dy = (uv.y - centerY);
+  let rotRad = (rotation * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_1 {
+  center: vec2f,
+  scale: f32,
+  rotation: f32,
+  cutout: f32,
+  refraction: f32,
+  edgeSoftness: f32,
+  blur: f32,
+  thickness: f32,
+  aberration: f32,
+  innerZoom: f32,
+  lightAngle: f32,
+  highlight: f32,
+  highlightColor: vec4f,
+  highlightSoftness: f32,
+  fresnel: f32,
+  fresnelSoftness: f32,
+  fresnelColor: vec4f,
+  tintColor: vec4f,
+  tintIntensity: f32,
+  tintPreserveLuminosity: f32,
+  _opacity: f32,
+  _vfOriginX: f32,
+  _vfOriginY: f32,
+  _vfSpanX: f32,
+  _vfSpanY: f32,
+  _vfActiveRes: f32,
+  _vfRBound: f32,
+  _saRadius: f32,
+  _saSides: f32,
+  _saRounding: f32,
+  _saInnerRatio: f32,
+  _saRotation: f32,
+  _saHeight: f32,
+  _saOffset: f32,
+  _saAperture: f32,
+}
+
+struct padded_1 {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct struct_2 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_g: struct_1,
+  n_gen: padded_1,
+  _sys: struct_2,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn circleSdf(dx: f32, dy: f32, radius: f32) -> f32 {
+  return (sqrt(((dx * dx) + (dy * dy))) - radius);
+}
+
+fn analyticSdf_circleSDF(uv: vec2f, r: f32, n: f32, round_1: f32, inner: f32, rot: f32, h: f32, off: f32, ap: f32) -> vec4f {
+  let dx = (uv.x - 0.5f);
+  let dy = (uv.y - 0.5f);
+  let rotRad = (rot * 0.017453292519943295f);
+  let cosR = cos(rotRad);
+  let sinR = sin(rotRad);
+  let rdx = ((dx * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dx * sinR));
+  var dist = 0f;
+  dist = circleSdf(rdx, rdy, r);
+  return vec4f(dist, 0f, 0f, 1f);
+}
+
+fn glassGradient(sdfRaw: f32, sdfX: f32, sdfY: f32) -> vec2f {
+  const eps = 0.01;
+  return vec2f(((sdfX - sdfRaw) / eps), ((sdfY - sdfRaw) / eps));
+}
+
+fn offsetUV(uv: vec2f, ox: f32, oy: f32) -> vec2f {
+  return vec2f((uv.x + ox), (uv.y + oy));
+}
+
+fn glassRefrStrength(sdf: f32, thickness: f32, volumetric: f32) -> f32 {
+  let thicknessRange = max((thickness * 0.3f), 5e-3f);
+  let depthNorm = clamp(((sdf * -1f) / thicknessRange), 0f, 1f);
+  let vol = smoothstep(0f, 1f, depthNorm);
+  let flat = ((1f - depthNorm) * (1f - depthNorm));
+  return select(flat, vol, (volumetric > 0.5f));
+}
+
+struct GlassLensUVs {
+  lensUV: vec2f,
+  rUV: vec2f,
+  bUV: vec2f,
+}
+
+fn glassLensUVs(uv: vec2f, center: vec2f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, refraction: f32, innerZoom: f32, thickness: f32, aberration: f32, aspect: f32, volumetric: f32) -> GlassLensUVs {
+  let sdf = (sdfRaw / scale);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let refrScale = (refraction * 0.15f);
+  let slopeLen = max(sqrt(((gradX * gradX) + (gradY * gradY))), 1e-4f);
+  let slopeScale = min(1f, (12f / slopeLen));
+  let offsetX = (((((gradX * slopeScale) * -1f) * refrScale) * refrStrength) / aspect);
+  let offsetY = ((((gradY * slopeScale) * -1f) * refrScale) * refrStrength);
+  let centerX = center.x;
+  let centerY = (1f - center.y);
+  let zoomedX = (centerX + ((uv.x - centerX) / innerZoom));
+  let zoomedY = (centerY + ((uv.y - centerY) / innerZoom));
+  let lensX = (zoomedX + offsetX);
+  let lensY = (zoomedY + offsetY);
+  let chrScale = (aberration * 0.06f);
+  let chrOffX = (offsetX * chrScale);
+  let chrOffY = (offsetY * chrScale);
+  return GlassLensUVs(vec2f(lensX, lensY), vec2f((lensX + chrOffX), (lensY + chrOffY)), vec2f((lensX - chrOffX), (lensY - chrOffY)));
+}
+
+fn glassBorderHighlight(sdf: f32, edgeSoftness: f32, pxH: f32, gradX: f32, gradY: f32, lightAngle: f32, highlight: f32) -> f32 {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let w2 = max((sharp * 0.0625f), (pxH * 1.5f));
+  let sdfOuter = (sdf - pxH);
+  let rb2base = (clamp(((sdfOuter * -1f) / w2), 0f, 1f) - clamp(((sdf * -1f) / w2), 0f, 1f));
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  let normalDotLight = ((gradX * lx) + (gradY * ly));
+  let lightFacing = clamp(((normalDotLight * 0.5f) + 0.5f), 0f, 1f);
+  return ((rb2base * lightFacing) * highlight);
+}
+
+fn glassTint(rgb: vec3f, tintColor: vec3f, tintIntensity: f32, preserveLum: f32) -> vec3f {
+  let lumWeights = vec3f(0.29899999499320984, 0.5870000123977661, 0.11400000005960464);
+  let origLum = dot(rgb, lumWeights);
+  let tinted = mix(rgb, tintColor, tintIntensity);
+  let tintedLum = dot(tinted, lumWeights);
+  let lumPreserved = (tinted * (origLum / max(tintedLum, 1e-4f)));
+  let preserveFactor = select(0f, 1f, (preserveLum > 0.5f));
+  return mix(tinted, lumPreserved, preserveFactor);
+}
+
+fn glassSpecular(gradX: f32, gradY: f32, lightAngle: f32, highlight: f32, highlightSoftness: f32, refrStrength: f32) -> f32 {
+  let lx = cos((lightAngle * 0.017453292519943295f));
+  let ly = sin((lightAngle * 0.017453292519943295f));
+  const nz = 2f;
+  let nLen = sqrt((((gradX * gradX) + (gradY * gradY)) + (nz * nz)));
+  let nx = (gradX / nLen);
+  let ny = (gradY / nLen);
+  let nnz = (nz / nLen);
+  let nDotH = (((nx * (lx * 0.4472135954999579f)) + (ny * (ly * 0.4472135954999579f))) + (nnz * 0.8944271909999159f));
+  let shininess = exp2((8f - (highlightSoftness * 7f)));
+  return ((pow(clamp(nDotH, 0f, 1f), shininess) * highlight) * refrStrength);
+}
+
+fn glassFresnelRim(sdf: f32, gradX: f32, gradY: f32, fresnel: f32, fresnelSoftness: f32, rb1: f32, volumetric: f32) -> f32 {
+  let slopeSq = ((gradX * gradX) + (gradY * gradY));
+  let cosView = (1f / sqrt((slopeSq + 1f)));
+  let exponent = mix(6f, 1.5f, clamp(fresnelSoftness, 0f, 1f));
+  let volRim = (((pow((1f - cosView), exponent) * fresnel) * 2f) * rb1);
+  let fresnelWidth = max((fresnelSoftness * 0.06f), 1e-3f);
+  let fresnelDepth = clamp(((sdf * -1f) / fresnelWidth), 0f, 1f);
+  let flatRim = ((((1f - fresnelDepth) * (1f - fresnelDepth)) * fresnel) * rb1);
+  return select(flatRim, volRim, (volumetric > 0.5f));
+}
+
+fn glassComposite(baseColor: vec4f, blurred: vec4f, sdfRaw: f32, scale: f32, gradX: f32, gradY: f32, viewportSize: vec2f, edgeSoftness: f32, lightAngle: f32, highlight: f32, highlightColor: vec3f, highlightSoftness: f32, fresnel: f32, fresnelColor: vec3f, fresnelSoftness: f32, thickness: f32, tintColor: vec3f, tintIntensity: f32, tintPreserveLuminosity: f32, cutout: f32, volumetric: f32) -> vec4f {
+  let sharp = max((edgeSoftness * 0.5f), 1e-3f);
+  let pxH = (1f / viewportSize.y);
+  let sdf = (sdfRaw / scale);
+  let w1 = max((sharp * 0.03125f), (pxH * 1.5f));
+  let rb1 = clamp(((sdf * -1f) / w1), 0f, 1f);
+  let refrStrength = glassRefrStrength(sdf, thickness, volumetric);
+  let rb2 = glassBorderHighlight(sdf, edgeSoftness, pxH, gradX, gradY, lightAngle, highlight);
+  let blurredRgb = vec3f(blurred.x, blurred.y, blurred.z);
+  let tintedRgb = glassTint(blurredRgb, tintColor, tintIntensity, tintPreserveLuminosity);
+  let specGlint = glassSpecular(gradX, gradY, lightAngle, highlight, highlightSoftness, refrStrength);
+  let fresnelRim = glassFresnelRim(sdf, gradX, gradY, fresnel, fresnelSoftness, rb1, volumetric);
+  let litR = (((tintedRgb.x + (highlightColor.x * rb2)) + (highlightColor.x * specGlint)) + (fresnelColor.x * fresnelRim));
+  let litG = (((tintedRgb.y + (highlightColor.y * rb2)) + (highlightColor.y * specGlint)) + (fresnelColor.y * fresnelRim));
+  let litB = (((tintedRgb.z + (highlightColor.z * rb2)) + (highlightColor.z * specGlint)) + (fresnelColor.z * fresnelRim));
+  let litA = (blurred.w + rb2);
+  let lighting = vec4f(litR, litG, litB, litA);
+  let transition = smoothstep(0f, 1f, rb1);
+  let composited = mix(baseColor, lighting, transition);
+  let cutoutAlpha = select(1f, transition, (cutout > 0.5f));
+  return vec4f(composited.x, composited.y, composited.z, (composited.w * cutoutAlpha));
+}
+
+fn unpremultiplyAlpha(color2: vec4f) -> vec4f {
+  let alpha = color2.w;
+  let straightRGB = select(vec3f(), (color2.xyz / alpha), (alpha > 1e-3f));
+  return vec4f(straightRGB, alpha);
+}
+
+@group(1) @binding(0) var rtt_0: texture_2d<f32>;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  let glassSdfUV_2 = sdfSpaceUV(uniforms.n_g.center, uniforms.n_g.scale, uniforms.n_g.rotation, uv, uniforms._sys.aspect);
+  let glassSurf_1 = analyticSdf_circleSDF(glassSdfUV_2, uniforms.n_g._saRadius, uniforms.n_g._saSides, uniforms.n_g._saRounding, uniforms.n_g._saInnerRatio, uniforms.n_g._saRotation, uniforms.n_g._saHeight, uniforms.n_g._saOffset, uniforms.n_g._saAperture);
+  let glassGrad_3 = glassGradient(glassSurf_1.r, (analyticSdf_circleSDF(offsetUV(glassSdfUV_2, 0.01, 0.0), uniforms.n_g._saRadius, uniforms.n_g._saSides, uniforms.n_g._saRounding, uniforms.n_g._saInnerRatio, uniforms.n_g._saRotation, uniforms.n_g._saHeight, uniforms.n_g._saOffset, uniforms.n_g._saAperture)).r, (analyticSdf_circleSDF(offsetUV(glassSdfUV_2, 0.0, 0.01), uniforms.n_g._saRadius, uniforms.n_g._saSides, uniforms.n_g._saRounding, uniforms.n_g._saInnerRatio, uniforms.n_g._saRotation, uniforms.n_g._saHeight, uniforms.n_g._saOffset, uniforms.n_g._saAperture)).r);
+  let glassLens_0 = glassLensUVs(uv, uniforms.n_g.center, glassSurf_1.r, uniforms.n_g.scale, glassGrad_3.x, glassGrad_3.y, uniforms.n_g.refraction, uniforms.n_g.innerZoom, uniforms.n_g.thickness, uniforms.n_g.aberration, uniforms._sys.aspect, 0.0);
+  var composed_4 = glassComposite(unpremultiplyAlpha(textureSample(rtt_0, linearClamp, uv)), unpremultiplyAlpha(vec4f((textureSample(rtt_0, linearClamp, glassLens_0.rUV)).r, (textureSample(rtt_0, linearClamp, glassLens_0.lensUV)).g, (textureSample(rtt_0, linearClamp, glassLens_0.bUV)).b, (textureSample(rtt_0, linearClamp, glassLens_0.lensUV)).a)), glassSurf_1.r, uniforms.n_g.scale, glassGrad_3.x, glassGrad_3.y, uniforms._sys.viewportSize, uniforms.n_g.edgeSoftness, uniforms.n_g.lightAngle, uniforms.n_g.highlight, uniforms.n_g.highlightColor.rgb, uniforms.n_g.highlightSoftness, uniforms.n_g.fresnel, uniforms.n_g.fresnelColor.rgb, uniforms.n_g.fresnelSoftness, uniforms.n_g.thickness, uniforms.n_g.tintColor.rgb, uniforms.n_g.tintIntensity, uniforms.n_g.tintPreserveLuminosity, uniforms.n_g.cutout, 0.0);
+  return vec4f(linearToSrgb(tone_linear(composed_4.rgb)), composed_4.a);
+}"
+`;

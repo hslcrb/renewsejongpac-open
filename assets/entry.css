@@ -1,0 +1,695 @@
+@font-face {
+    font-family: "Wanted Sans Variable";
+    src: url("./fonts/woff2/WantedSansVariable.woff2") format("woff2-variations"),
+         url("./fonts/woff2/WantedSansVariable.woff2") format("woff2");
+    font-weight: 400 1000;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    color-scheme: light;
+    --color-cheon: #54c8e8;
+    --color-ji: #c36d15;
+    --color-in: #ffe800;
+    --color-ink: #000000;
+    --color-muted: #5f6369;
+    font-family: "Wanted Sans Variable", "Wanted Sans", -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+    font-synthesis: none;
+    color: var(--color-ink);
+    background: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+h1,
+h2,
+p {
+    margin: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:focus-visible {
+    outline: 3px solid #16647a;
+    outline-offset: 7px;
+}
+
+.entry-header,
+.entry-main,
+.entry-footer {
+    width: min(1120px, calc(100% - 80px));
+    margin-inline: auto;
+}
+
+.entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 40px;
+}
+
+.entry-header img {
+    display: block;
+    width: 190px;
+    max-width: 48%;
+    height: auto;
+}
+
+.entry-header > span {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    font-weight: 650;
+}
+
+.entry-main {
+    flex: 1;
+    padding-block: clamp(44px, 6vw, 88px) 80px;
+    display: grid;
+    grid-template-columns: 0.85fr 1.45fr;
+    align-items: center;
+    align-content: center;
+    gap: clamp(36px, 5vw, 80px);
+}
+
+.entry-eyebrow {
+    margin-bottom: 25px;
+    font-size: 15px;
+    font-weight: 550;
+}
+
+.entry-heading h1 {
+    font-size: clamp(38px, 4.4vw, 60px);
+    font-weight: 750;
+    line-height: 1.22;
+    letter-spacing: -0.045em;
+}
+
+.entry-description {
+    margin-top: 28px;
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.mobile-break {
+    display: none;
+}
+
+.version-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.version-option {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 360px;
+    padding: clamp(24px, 2.5vw, 36px);
+    border-radius: clamp(12px, 1.2vw, 18px);
+}
+
+.legacy-option {
+    background: #f3f4f5;
+}
+
+.renewed-option {
+    background: var(--color-in);
+}
+
+.version-label {
+    margin-bottom: 48px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+}
+
+.version-option h2 {
+    font-size: clamp(25px, 2.5vw, 32px);
+    letter-spacing: -0.04em;
+    line-height: 1.3;
+    font-weight: 700;
+}
+
+.version-option p {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #45494e;
+    line-height: 1.65;
+}
+
+.renewed-option p {
+    color: #494405;
+}
+
+.version-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 36px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.version-action > span {
+    font-size: 24px;
+    font-weight: 450;
+}
+
+.version-option:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.version-option:hover .version-action {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+.entry-footer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-top: 1px solid #e5e7e9;
+    padding-block: 25px 32px;
+    color: var(--color-muted);
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.identity-colors {
+    display: flex;
+    gap: 5px;
+    flex: 0 0 auto;
+}
+
+.identity-colors span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-cheon);
+}
+
+.identity-colors span:nth-child(2) {
+    background: var(--color-ji);
+}
+
+.identity-colors span:nth-child(3) {
+    background: var(--color-in);
+}
+
+.entry-credit {
+    margin-left: auto;
+}
+
+@media (max-width: 1000px) {
+    .entry-main {
+        grid-template-columns: 1fr;
+        gap: 42px;
+    }
+
+    .entry-heading h1 br {
+        display: none;
+    }
+
+    .version-option {
+        min-height: 320px;
+    }
+
+    .version-label {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .entry-header,
+    .entry-main,
+    .entry-footer {
+        width: calc(100% - 40px);
+    }
+
+    .entry-header {
+        padding-block: 26px;
+        gap: 16px;
+    }
+
+    .entry-header > span {
+        font-size: 9px;
+        letter-spacing: 0.08em;
+    }
+
+    .entry-main {
+        padding-block: 38px 48px;
+        gap: 34px;
+    }
+
+    .entry-heading h1 br,
+    .mobile-break {
+        display: initial;
+    }
+
+    .entry-eyebrow {
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .entry-description {
+        margin-top: 22px;
+        font-size: 15px;
+    }
+
+    .version-options {
+        gap: 12px;
+    }
+
+    .version-option {
+        min-height: 285px;
+        padding: 22px 18px;
+    }
+
+    .version-label {
+        font-size: 10px;
+    }
+
+    .version-option h2 {
+        font-size: clamp(20px, 5.7vw, 28px);
+    }
+
+    .version-option p {
+        font-size: 13px;
+    }
+
+    .version-option p br {
+        display: none;
+    }
+
+    .version-action {
+        font-size: 14px;
+        gap: 10px;
+        padding-top: 28px;
+    }
+
+    .entry-footer {
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 11px;
+    }
+
+    .entry-credit {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+/* [세 가지 버전의 선택 / Three-version selection]
+   비교 진입은 중립색으로 정돈하고 v3는 검정 면으로 구분합니다.
+   Neutral surfaces keep the comparison quiet; a black surface identifies v3. */
+.entry-header,
+.entry-main,
+.entry-footer {
+    width: min(1320px, calc(100% - 80px));
+}
+
+.entry-main {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+.entry-heading h1 br {
+    display: none;
+}
+
+.entry-header > span,
+.entry-eyebrow,
+.version-label,
+.version-option p,
+.entry-footer {
+    font-size: 1rem;
+    letter-spacing: 0;
+}
+
+.version-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.version-option {
+    min-height: 23rem;
+}
+
+.renewed-option {
+    background: #e9edef;
+}
+
+.renewed-option p {
+    color: #45494e;
+}
+
+.mutual-option {
+    color: #ffffff;
+    background: #111111;
+}
+
+.mutual-option p {
+    color: #d7dadd;
+}
+
+/* [네 버전의 동등한 진입 / Equal access to four versions] */
+.version-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.experience-option {
+    background: #ffe800;
+    color: #111111;
+}
+
+.experience-option p {
+    color: #34332d;
+}
+
+.nextjs-option {
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #333333;
+}
+
+.nextjs-option .version-label {
+    color: var(--color-cheon);
+}
+
+.nextjs-option p {
+    color: #b0b4b8;
+}
+
+.nextjs-option .version-action {
+    color: #ffffff;
+}
+
+.version-action {
+    font-size: 1.125rem;
+    min-height: 3rem;
+}
+
+@media (max-width: 800px) {
+    .version-options {
+        grid-template-columns: 1fr;
+    }
+
+    .version-option {
+        min-height: 20rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .entry-header,
+    .entry-main,
+    .entry-footer {
+        width: calc(100% - 40px);
+    }
+
+    .entry-header {
+        flex-wrap: wrap;
+    }
+
+    .entry-header > span {
+        font-size: 1rem;
+    }
+
+    .version-option p,
+    .version-label,
+    .entry-footer {
+        font-size: 1rem;
+    }
+
+    .version-action {
+        font-size: 1.125rem;
+    }
+}
+
+/* =========================================================================
+   디자인 찾기 인터페이스 & 문서 허브 / Design discovery hub
+   브랜드 기본색과 단정한 플랫 카드로 디자인 시스템과 가이드 문서를 직관적으로 탐색·검색합니다.
+   ========================================================================= */
+.design-hub {
+    width: 100%;
+    margin-top: clamp(48px, 6vw, 72px);
+    padding-top: clamp(32px, 4vw, 48px);
+    border-top: 1px solid #e5e7e9;
+}
+
+.design-hub-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.design-hub-header h2 {
+    font-size: clamp(20px, 2.2vw, 26px);
+    font-weight: 750;
+    letter-spacing: -0.035em;
+    color: #000000;
+    margin: 0;
+}
+
+.design-hub-header p {
+    margin-top: 8px;
+    font-size: 15px;
+    color: var(--color-muted);
+    line-height: 1.6;
+}
+
+.design-hub-primary-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: #000000;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 650;
+    text-decoration: none;
+    border-radius: 9999px;
+    transition: background-color 160ms ease, transform 160ms ease;
+    white-space: nowrap;
+}
+
+.design-hub-primary-btn:hover {
+    background: #2b2b2b;
+    transform: translateY(-1px);
+}
+
+.design-hub-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border: 1px solid #e5e7e9;
+    border-radius: 12px;
+}
+
+.design-search-box {
+    position: relative;
+    flex: 1;
+    min-width: 220px;
+}
+
+.design-search-box svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888888;
+    pointer-events: none;
+}
+
+.design-search-input {
+    width: 100%;
+    padding: 9px 12px 9px 38px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #ffffff;
+    border: 1px solid #d5d7da;
+    border-radius: 8px;
+    color: #000000;
+    outline: none;
+    transition: border-color 140ms ease, box-shadow 140ms ease;
+    box-sizing: border-box;
+}
+
+.design-search-input:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+
+.design-search-input::placeholder {
+    color: #888888;
+}
+
+.design-filter-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.design-filter-btn {
+    appearance: none;
+    background: #ffffff;
+    border: 1px solid #d5d7da;
+    color: #444444;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 140ms ease;
+}
+
+.design-filter-btn:hover {
+    border-color: #000000;
+    color: #000000;
+}
+
+.design-filter-btn.is-active {
+    background: #000000;
+    border-color: #000000;
+    color: #ffffff;
+}
+
+.design-hub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.design-hub-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 22px;
+    background: #ffffff;
+    border: 1px solid #e5e7e9;
+    border-radius: 12px;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.design-hub-card:hover {
+    border-color: #000000;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+}
+
+.design-hub-card.is-hidden {
+    display: none !important;
+}
+
+.design-hub-card-category {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+}
+
+.design-hub-card h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    color: #000000;
+    line-height: 1.4;
+}
+
+.design-hub-card p {
+    margin: 10px 0 0 0;
+    font-size: 13.5px;
+    color: #55595e;
+    line-height: 1.6;
+}
+
+.design-hub-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 24px;
+    font-size: 13px;
+    font-weight: 650;
+    color: #000000;
+}
+
+.design-hub-card:hover .design-hub-card-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.design-empty-message {
+    grid-column: 1 / -1;
+    padding: 48px 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border: 1px dashed #d5d7da;
+    border-radius: 12px;
+    color: #666666;
+    font-size: 14px;
+}
+
+@media (max-width: 1080px) {
+    .design-hub-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .design-hub-grid {
+        grid-template-columns: 1fr;
+    }
+    .design-hub-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .design-filter-pills {
+        justify-content: flex-start;
+    }
+}
+
+
+
+/* 대화형 디자인 문서 검색 - 필요할 때만 열리고 기존 검색 필터는 유지됩니다. */
+.design-conversational-search{margin:20px 0 24px;border:1px solid #e3dceb;border-radius:18px;background:#fcfaff;overflow:hidden}
+.design-conversational-search summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 22px;cursor:pointer;font-size:16px;font-weight:700;color:#423050}
+.design-conversational-search summary span{font-size:14px;font-weight:500;color:#775b90}
+.design-conversational-search[open] summary{border-bottom:1px solid #e3dceb}
+.design-deep-search-mount{min-height:130px;padding:18px 22px;font-size:16px}
+.design-deep-search-mount p{font-size:16px}
+.design-conversational-search summary:focus-visible{outline:3px solid #a583ce;outline-offset:-3px}

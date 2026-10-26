@@ -1,0 +1,84 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`VideoTexture (a) external-texture sampling > declares a texture_external, samples with textureSampleBaseClampToEdge, reads dimensions on GPU > final-pass-fill 1`] = `
+"struct padded {
+  _opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  objectFit: f32,
+  loop_: f32,
+  _opacity: f32,
+  _pad0: f32,
+}
+
+struct struct_1 {
+  time: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+}
+
+struct combined {
+  n_root: padded,
+  n_vid: padded_1,
+  _sys: struct_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;
+
+fn srgbToLinear(color: vec3f) -> vec3f {
+  let hi = pow(((color + vec3f(0.054999999701976776)) / vec3f(1.0549999475479126)), vec3f(2.4000000953674316));
+  let lo = (color / vec3f(12.920000076293945));
+  let isLow = (color <= vec3f(0.040449999272823334));
+  return select(hi, lo, isLow);
+}
+
+fn mediaAlphaCut(color: vec4f, uv: vec2f) -> vec4f {
+  let linear = srgbToLinear(vec3f(color.x, color.y, color.z));
+  let outOfBounds = ((((uv.x < 0f) || (uv.x > 1f)) || (uv.y < 0f)) || (uv.y > 1f));
+  let alpha = select(color.w, 0f, outOfBounds);
+  return vec4f(linear.x, linear.y, linear.z, alpha);
+}
+
+@group(1) @binding(0) var video_0: texture_external;
+
+@group(2) @binding(0) var linearClamp: sampler;
+
+fn mediaSampleUV(uv: vec2f, uvScale: vec2f) -> vec2f {
+  let centeredUV = (uv - vec2f(0.5));
+  let scaledUV = vec2f((centeredUV.x / uvScale.x), (centeredUV.y / uvScale.y));
+  return (scaledUV + vec2f(0.5));
+}
+
+fn scaleFill() -> vec2f {
+  return vec2f(1);
+}
+
+fn linearToSrgb(color: vec3f) -> vec3f {
+  let a = ((pow(color, vec3f(0.41666001081466675)) * 1.055f) - 0.055f);
+  let b = (color * 12.92f);
+  let factor = (color <= vec3f(0.0031308000907301903));
+  return select(a, b, factor);
+}
+
+fn tone_linear(color: vec3f) -> vec3f {
+  return vec3f(color.x, color.y, color.z);
+}
+
+struct final_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn final_1(in: final_Input) -> @location(0)  vec4f {
+  _ = uniforms._sys.time;
+  var uv = vec2f(in.uv.x, 1.0 - in.uv.y);
+  var composed_0 = mediaAlphaCut(textureSampleBaseClampToEdge(video_0, linearClamp, mediaSampleUV(uv, scaleFill())), mediaSampleUV(uv, scaleFill()));
+  return vec4f(linearToSrgb(tone_linear(composed_0.rgb)), composed_0.a);
+}"
+`;

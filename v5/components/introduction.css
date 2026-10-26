@@ -1,0 +1,65 @@
+/* [기관의 공간과 읽기 위계 / Venues and editorial hierarchy] */
+.sejong-intro {
+    background: var(--surface-default);
+    color: var(--text-primary);
+}
+.intro-scenes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-block: 16px;
+}
+.intro-scenes [aria-current="step"] { background: var(--surface-subtle); }
+.intro-panel { scroll-margin-top: 100px; }
+.intro-cover {
+    position: relative;
+    isolation: isolate;
+    min-height: 580px;
+    display: flex;
+    align-items: center;
+    background: var(--surface-inverse);
+    color: var(--text-inverse);
+}
+.intro-cover > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .42;
+    z-index: -1;
+}
+.intro-cover-copy { padding-block: 80px; }
+.intro-cover-copy h1 { margin-block: 24px; max-width: 18ch; }
+.intro-cover-copy p { max-width: 38ch; margin-block: 24px; }
+.intro-editorial {
+    display: grid;
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    gap: clamp(32px, 6vw, 112px);
+    align-items: center;
+    padding-block: clamp(56px, 8vw, 128px);
+}
+.intro-editorial-reverse { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); }
+.intro-editorial h2 { margin-block: 16px 24px; }
+.intro-editorial p { max-width: 36ch; margin-bottom: 32px; }
+.intro-editorial figure { min-width: 0; margin: 0; }
+.intro-editorial img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--radius-panel);
+}
+.intro-editorial figcaption { color: var(--text-secondary); margin-top: 12px; }
+.intro-visit {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+    margin-bottom: 80px;
+}
+@media (max-width: 768px) {
+    .intro-cover { min-height: 520px; }
+    .intro-editorial, .intro-editorial-reverse, .intro-visit { grid-template-columns: minmax(0, 1fr); }
+    .intro-scenes { gap: 4px; }
+}

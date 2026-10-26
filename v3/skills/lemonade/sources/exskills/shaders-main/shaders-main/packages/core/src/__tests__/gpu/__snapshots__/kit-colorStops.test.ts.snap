@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`colorStops — resolve gate (GPU unroll helpers) > matches WGSL snapshot 1`] = `
+"struct colorStopsUnrollProbe_Input {
+  @location(0) uv: vec2f,
+}
+
+@fragment fn colorStopsUnrollProbe(_arg_0: colorStopsUnrollProbe_Input) -> @location(0) vec4f {
+  let t = clamp(_arg_0.uv.x, 0f, 1f);
+  let seg1 = clamp(((t - 0f) / 0.5f), 0f, 1f);
+  let seg2 = clamp(((t - 0.5f) / 0.5f), 0f, 1f);
+  let wA1 = (1f * (1f - seg1));
+  let wB1 = (1f * seg1);
+  let c1 = (((vec3f(1, 0, 0) * wA1) + (vec3f(0, 1, 0) * wB1)) / max((wA1 + wB1), 1e-3f));
+  let a1 = (wA1 + wB1);
+  let wA2 = (a1 * (1f - seg2));
+  let wB2 = (1f * seg2);
+  let c2 = (((c1 * wA2) + (vec3f(0, 0, 1) * wB2)) / max((wA2 + wB2), 1e-3f));
+  return vec4f(c2, (wA2 + wB2));
+}"
+`;

@@ -1,0 +1,3000 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`fluids scaffold (a) kernel sets resolve per configuration > clamped + densityAge: every pass resolves with the consumer name prefix > clamped-densityAge 1`] = `
+"fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 7i);
+  let col = clamp((ji + dj), 0i, 7i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn gateACurl(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = (&velA[nidx(ii, ji, 0i, -1i)]);
+  let vR = (&velA[nidx(ii, ji, 0i, 1i)]);
+  let vU = (&velA[nidx(ii, ji, -1i, 0i)]);
+  let vD = (&velA[nidx(ii, ji, 1i, 0i)]);
+  let curlZ = ((((*vR).y - (*vL).y) - ((*vD).x - (*vU).x)) * 0.5f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((*vel).x, (*vel).y, curlZ, 0f);
+}
+struct Params {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: Params;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 7i);
+  let col = clamp((ji + dj), 0i, 7i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn gateAVorticity(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let cL = abs(velA[nidx(ii, ji, 0i, -1i)].z);
+  let cR = abs(velA[nidx(ii, ji, 0i, 1i)].z);
+  let cU = abs(velA[nidx(ii, ji, -1i, 0i)].z);
+  let cD = abs(velA[nidx(ii, ji, 1i, 0i)].z);
+  let cc = velA[idx].z;
+  let gx = ((cR - cL) * 0.5f);
+  let gy = ((cD - cU) * 0.5f);
+  let gl = max(sqrt(((gx * gx) + (gy * gy))), 9.999999747378752e-6f);
+  let fx = ((((gy / gl) * cc) * (*p).curlStrength) * (*p).dt);
+  let fy = (((((gx / gl) * -1f) * cc) * (*p).curlStrength) * (*p).dt);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + fx), ((*vel).y + fy), (*vel).z, 0f);
+}
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 7i);
+  let col = clamp((ji + dj), 0i, 7i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 64>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 64>;
+
+fn gateADivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let jf = f32(cx);
+  let iF = f32(cy);
+  let selfVel = (&velA[idx]);
+  let normalL = velA[nidx(ii, ji, 0i, -1i)].x;
+  let normalR = velA[nidx(ii, ji, 0i, 1i)].x;
+  let normalU = velA[nidx(ii, ji, -1i, 0i)].y;
+  let normalD = velA[nidx(ii, ji, 1i, 0i)].y;
+  let L = select(normalL, ((*selfVel).x * -1f), (jf < 0.5f));
+  let R = select(normalR, ((*selfVel).x * -1f), (jf > 6.5f));
+  let T = select(normalU, ((*selfVel).y * -1f), (iF < 0.5f));
+  let B = select(normalD, ((*selfVel).y * -1f), (iF > 6.5f));
+  let div = (((R - L) + (B - T)) * 0.5f);
+  pressure[idx] = (pressure[idx] * 0.8f);
+  divergence[idx] = div;
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 7i);
+  let col = clamp((ji + dj), 0i, 7i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 64>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 64>;
+
+fn gateAJacobi(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let div = divergence[idx];
+  pressure[idx] = (((((pL + pR) + pU) + pD) - div) * 0.25f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 7i);
+  let col = clamp((ji + dj), 0i, 7i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 64>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn gateAGradSubtract(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x - ((pR - pL) * 0.5f)), ((*vel).y - ((pD - pU) * 0.5f)), (*vel).z, 0f);
+}
+struct Params {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: Params;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 64>;
+
+fn gateAAdvectVel(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 8u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 7f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 7f);
+  let x0 = clamp(floor(srcX), 0f, 6f);
+  let y0 = clamp(floor(srcY), 0f, 6f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let v00 = (&velA[u32(((iy0 * 8i) + ix0))]);
+  let v10 = (&velA[u32((((iy0 * 8i) + ix0) + 1i))]);
+  let v01 = (&velA[u32((((iy0 + 1i) * 8i) + ix0))]);
+  let v11 = (&velA[u32(((((iy0 + 1i) * 8i) + ix0) + 1i))]);
+  let decay = (1f + ((*p).velFade * (*p).dt));
+  velB[idx] = vec4f((mix(mix((*v00).x, (*v10).x, sx), mix((*v01).x, (*v11).x, sx), sy) / decay), (mix(mix((*v00).y, (*v10).y, sx), mix((*v01).y, (*v11).y, sx), sy) / decay), 0f, 0f);
+}
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 64>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn gateACopyVel(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let v = (&velB[idx]);
+  velA[idx] = vec4f((*v).x, (*v).y, 0f, 0f);
+}
+struct Params {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: Params;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 64>;
+
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 64>;
+
+fn gateAAdvectDens(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 8u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 7f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 7f);
+  let x0 = clamp(floor(srcX), 0f, 6f);
+  let y0 = clamp(floor(srcY), 0f, 6f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let d00 = (&dyeA[u32(((iy0 * 8i) + ix0))]);
+  let d10 = (&dyeA[u32((((iy0 * 8i) + ix0) + 1i))]);
+  let d01 = (&dyeA[u32((((iy0 + 1i) * 8i) + ix0))]);
+  let d11 = (&dyeA[u32(((((iy0 + 1i) * 8i) + ix0) + 1i))]);
+  let dens = mix(mix((*d00).x, (*d10).x, sx), mix((*d01).x, (*d11).x, sx), sy);
+  let age = mix(mix((*d00).y, (*d10).y, sx), mix((*d01).y, (*d11).y, sx), sy);
+  let decay = (1f + ((*p).dyeFade * (*p).dt));
+  dyeB[idx] = vec4f(max((dens / decay), 0f), min((age + (((*p).dt * 0.4f) * (*p).colorDecay)), 1f), 0f, 0f);
+}
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 64>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 64>;
+
+fn gateACopyDens(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let dd = (&dyeB[idx]);
+  dyeA[idx] = vec4f((*dd).x, (*dd).y, 0f, 0f);
+}"
+`;
+
+exports[`fluids scaffold (a) kernel sets resolve per configuration > solidMask turns mask cells into walls in the divergence pass > masked-divergence 1`] = `
+"@group(0) @binding(6) var<storage, read> maskBuf: array<vec4f, 64>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 7i);
+  let col = clamp((ji + dj), 0i, 7i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 64>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 64>;
+
+fn gateMaskDivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let jf = f32(cx);
+  let iF = f32(cy);
+  let selfMask = maskBuf[idx].x;
+  let selfVel = (&velA[idx]);
+  let isWallL = ((jf < 0.5f) || (maskBuf[nidx(ii, ji, 0i, -1i)].x < 0.5f));
+  let isWallR = ((jf > 6.5f) || (maskBuf[nidx(ii, ji, 0i, 1i)].x < 0.5f));
+  let isWallT = ((iF < 0.5f) || (maskBuf[nidx(ii, ji, -1i, 0i)].x < 0.5f));
+  let isWallB = ((iF > 6.5f) || (maskBuf[nidx(ii, ji, 1i, 0i)].x < 0.5f));
+  let L = select(velA[nidx(ii, ji, 0i, -1i)].x, ((*selfVel).x * -1f), isWallL);
+  let R = select(velA[nidx(ii, ji, 0i, 1i)].x, ((*selfVel).x * -1f), isWallR);
+  let T = select(velA[nidx(ii, ji, -1i, 0i)].y, ((*selfVel).y * -1f), isWallT);
+  let B = select(velA[nidx(ii, ji, 1i, 0i)].y, ((*selfVel).y * -1f), isWallB);
+  let div = ((((R - L) + (B - T)) * 0.5f) * selfMask);
+  pressure[idx] = ((pressure[idx] * 0.8f) * selfMask);
+  divergence[idx] = div;
+}"
+`;
+
+exports[`fluids scaffold (a) kernel sets resolve per configuration > toroidal wraps instead of clamping, and the velocity cap only appears when asked for > toroidal-capped 1`] = `
+"fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 8i) % 8i);
+  let col = (((ji + dj) + 8i) % 8i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn gateTCurl(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = (&velA[nw(ii, ji, 0i, -1i)]);
+  let vR = (&velA[nw(ii, ji, 0i, 1i)]);
+  let vU = (&velA[nw(ii, ji, -1i, 0i)]);
+  let vD = (&velA[nw(ii, ji, 1i, 0i)]);
+  let curlZ = ((((*vR).y - (*vL).y) - ((*vD).x - (*vU).x)) * 0.5f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((*vel).x, (*vel).y, curlZ, 0f);
+}
+struct Params {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: Params;
+
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 8i) % 8i);
+  let col = (((ji + dj) + 8i) % 8i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn gateTVorticity(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let cL = abs(velA[nw(ii, ji, 0i, -1i)].z);
+  let cR = abs(velA[nw(ii, ji, 0i, 1i)].z);
+  let cU = abs(velA[nw(ii, ji, -1i, 0i)].z);
+  let cD = abs(velA[nw(ii, ji, 1i, 0i)].z);
+  let cc = velA[idx].z;
+  let gx = ((cR - cL) * 0.5f);
+  let gy = ((cD - cU) * 0.5f);
+  let gl = max(sqrt(((gx * gx) + (gy * gy))), 9.999999747378752e-6f);
+  let fx = ((((gy / gl) * cc) * (*p).curlStrength) * (*p).dt);
+  let fy = (((((gx / gl) * -1f) * cc) * (*p).curlStrength) * (*p).dt);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + fx), ((*vel).y + fy), (*vel).z, 0f);
+}
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 8i) % 8i);
+  let col = (((ji + dj) + 8i) % 8i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 64>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 64>;
+
+fn gateTDivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = velA[nw(ii, ji, 0i, -1i)].x;
+  let vR = velA[nw(ii, ji, 0i, 1i)].x;
+  let vU = velA[nw(ii, ji, -1i, 0i)].y;
+  let vD = velA[nw(ii, ji, 1i, 0i)].y;
+  let div = (((vR - vL) + (vD - vU)) * 0.5f);
+  pressure[idx] = (pressure[idx] * 0.8f);
+  divergence[idx] = div;
+}
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 8i) % 8i);
+  let col = (((ji + dj) + 8i) % 8i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 64>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 64>;
+
+fn gateTJacobi(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nw(ii, ji, 0i, -1i)];
+  let pR = pressure[nw(ii, ji, 0i, 1i)];
+  let pU = pressure[nw(ii, ji, -1i, 0i)];
+  let pD = pressure[nw(ii, ji, 1i, 0i)];
+  let div = divergence[idx];
+  pressure[idx] = (((((pL + pR) + pU) + pD) - div) * 0.25f);
+}
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 8i) % 8i);
+  let col = (((ji + dj) + 8i) % 8i);
+  return u32(((row * 8i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 64>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn gateTGradSubtract(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nw(ii, ji, 0i, -1i)];
+  let pR = pressure[nw(ii, ji, 0i, 1i)];
+  let pU = pressure[nw(ii, ji, -1i, 0i)];
+  let pD = pressure[nw(ii, ji, 1i, 0i)];
+  let vel = (&velA[idx]);
+  let vx = ((*vel).x - ((pR - pL) * 0.5f));
+  let vy = ((*vel).y - ((pD - pU) * 0.5f));
+  const maxVel = 4.800000190734863f;
+  let vLen = max(sqrt(((vx * vx) + (vy * vy))), 9.999999974752427e-7f);
+  let capScale = (maxVel / max(vLen, maxVel));
+  velA[idx] = vec4f((vx * capScale), (vy * capScale), (*vel).z, 0f);
+}
+struct Params {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: Params;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 64>;
+
+fn gateTAdvectVel(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 8u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = (((f32(cx) - ((*vel).x * (*p).dt)) + 8f) % 8f);
+  let srcY = (((f32(cy) - ((*vel).y * (*p).dt)) + 8f) % 8f);
+  let x0 = floor(srcX);
+  let y0 = floor(srcY);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let ix1 = ((ix0 + 1i) % 8i);
+  let iy1 = ((iy0 + 1i) % 8i);
+  let v00 = (&velA[u32(((iy0 * 8i) + ix0))]);
+  let v10 = (&velA[u32(((iy0 * 8i) + ix1))]);
+  let v01 = (&velA[u32(((iy1 * 8i) + ix0))]);
+  let v11 = (&velA[u32(((iy1 * 8i) + ix1))]);
+  let decay = (1f + ((*p).velFade * (*p).dt));
+  velB[idx] = vec4f((mix(mix((*v00).x, (*v10).x, sx), mix((*v01).x, (*v11).x, sx), sy) / decay), (mix(mix((*v00).y, (*v10).y, sx), mix((*v01).y, (*v11).y, sx), sy) / decay), 0f, 0f);
+}
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 64>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+fn gateTCopyVel(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let v = (&velB[idx]);
+  velA[idx] = vec4f((*v).x, (*v).y, 0f, 0f);
+}
+struct Params {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: Params;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 64>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 64>;
+
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 64>;
+
+fn gateTAdvectDens(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 8u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = (((f32(cx) - ((*vel).x * (*p).dt)) + 8f) % 8f);
+  let srcY = (((f32(cy) - ((*vel).y * (*p).dt)) + 8f) % 8f);
+  let x0 = floor(srcX);
+  let y0 = floor(srcY);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let ix1 = ((ix0 + 1i) % 8i);
+  let iy1 = ((iy0 + 1i) % 8i);
+  let d00 = (&dyeA[u32(((iy0 * 8i) + ix0))]);
+  let d10 = (&dyeA[u32(((iy0 * 8i) + ix1))]);
+  let d01 = (&dyeA[u32(((iy1 * 8i) + ix0))]);
+  let d11 = (&dyeA[u32(((iy1 * 8i) + ix1))]);
+  dyeB[idx] = vec4f(mix(mix((*d00).x, (*d10).x, sx), mix((*d01).x, (*d11).x, sx), sy), mix(mix((*d00).y, (*d10).y, sx), mix((*d01).y, (*d11).y, sx), sy), 0f, 0f);
+}
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 64>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 64>;
+
+fn gateTCopyDens(cx: u32, cy: u32) {
+  let idx = ((cy * 8u) + cx);
+  let dd = (&dyeB[idx]);
+  dyeA[idx] = vec4f((*dd).x, (*dd).y, 0f, 0f);
+}"
+`;
+
+exports[`fluids scaffold (b) the six consumers > Fog resolves its whole solver chain > Fog-kernels 1`] = `
+"struct FogParams {
+  dt: f32,
+  time: f32,
+  seed: f32,
+  turbulence: f32,
+  curlStrength: f32,
+  velFade: f32,
+  blending: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FogParams;
+
+fn floatBitsToUint1(x: f32) -> u32 { return bitcast<u32>(x); }
+
+fn noise_hash11(p: f32) -> f32 {
+  let u = floatBitsToUint1((p * 3141592653f));
+  return (f32(((u * u) * 3141592653u)) / 4294967296f);
+}
+
+fn seedLattice(x: f32, y: f32, seed: f32, cellsPerTexel: f32) -> vec2f {
+  let sdx = (noise_hash11((seed * 37.31f)) * 97f);
+  let sdy = (noise_hash11((seed * 83.17f)) * 97f);
+  return vec2f(((x * cellsPerTexel) + sdx), ((y * cellsPerTexel) + sdy));
+}
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn noise_hash12(p: vec2f) -> f32 {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  return (f32(((u.x ^ u.y) * 3141592653u)) / 4294967296f);
+}
+
+fn valueHash(px: f32, py: f32) -> f32 {
+  return noise_hash12(vec2f(px, py));
+}
+
+fn valueNoise2D(nx: f32, ny: f32) -> f32 {
+  let ix = floor(nx);
+  let iy = floor(ny);
+  let sx = fract(nx);
+  let sy = fract(ny);
+  let ux = ((sx * sx) * (3f - (sx * 2f)));
+  let uy = ((sy * sy) * (3f - (sy * 2f)));
+  return mix(mix(valueHash(ix, iy), valueHash((ix + 1f), iy), ux), mix(valueHash(ix, (iy + 1f)), valueHash((ix + 1f), (iy + 1f)), ux), uy);
+}
+
+fn fbm(nx: f32, ny: f32) -> f32 {
+  return (((valueNoise2D(nx, ny) * 0.5f) + (valueNoise2D(((nx * 2f) + 5.37f), ((ny * 2f) + 9.13f)) * 0.3f)) + (valueNoise2D(((nx * 4f) + 1.79f), ((ny * 4f) + 3.51f)) * 0.2f));
+}
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn fogInit(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let lat = seedLattice(f32(cx), f32(cy), (*p).seed, 0.01171875f);
+  let dens0 = clamp(((fbm((lat.x + 31.7f), (lat.y + 53.3f)) * 0.75f) + 0.25f), 0.15f, 0.9f);
+  let colorVar = clamp(fbm(lat.x, lat.y), 0f, 1f);
+  dyeA[idx] = vec4f(dens0, colorVar, 0f, 0f);
+  dyeB[idx] = vec4f(dens0, colorVar, 0f, 0f);
+  velA[idx] = vec4f();
+  velB[idx] = vec4f();
+  pressure[idx] = 0f;
+  divergence[idx] = 0f;
+}
+struct FogParams {
+  dt: f32,
+  time: f32,
+  seed: f32,
+  turbulence: f32,
+  curlStrength: f32,
+  velFade: f32,
+  blending: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FogParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn gaussianBrushSq(distSq: f32, radiusSq: f32) -> f32 {
+  return exp(((distSq / radiusSq) * -1f));
+}
+
+fn fogForce(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let jf = (f32(cx) + 0.5f);
+  let iF = (f32(cy) + 0.5f);
+  let x = ((jf / 256f) * 6.283185307179586f);
+  let y = ((iF / 256f) * 6.283185307179586f);
+  let t = (*p).time;
+  let vel = (&velA[idx]);
+  let fx = (((((sin(((x * 2f) + (t * 0.31f))) * cos(((y * 1.5f) + (t * 0.23f)))) + (sin((((x * 0.7f) + (y * 1.3f)) + (t * 0.17f))) * 0.4f)) * (*p).turbulence) * 10.24f) * (*p).dt);
+  let fy = (((((cos(((x * 1.5f) + (t * 0.27f))) * sin(((y * 2f) + (t * 0.19f)))) + (cos((((x * 1.1f) + (y * 0.9f)) + (t * 0.21f))) * 0.4f)) * (*p).turbulence) * 10.24f) * (*p).dt);
+  let cdx = (jf - (*p).cursorX);
+  let cdy = (iF - (*p).cursorY);
+  let cursorDistSq = ((cdx * cdx) + (cdy * cdy));
+  let cursorInf = (gaussianBrushSq(cursorDistSq, max((*p).mouseRadSq, 1f)) * (*p).mouseActive);
+  velA[idx] = vec4f((((*vel).x + fx) + ((*p).cursorVelX * cursorInf)), (((*vel).y + fy) + ((*p).cursorVelY * cursorInf)), (*vel).z, 0f);
+}
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 256i) % 256i);
+  let col = (((ji + dj) + 256i) % 256i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn fogCurl(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = (&velA[nw(ii, ji, 0i, -1i)]);
+  let vR = (&velA[nw(ii, ji, 0i, 1i)]);
+  let vU = (&velA[nw(ii, ji, -1i, 0i)]);
+  let vD = (&velA[nw(ii, ji, 1i, 0i)]);
+  let curlZ = ((((*vR).y - (*vL).y) - ((*vD).x - (*vU).x)) * 0.5f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((*vel).x, (*vel).y, curlZ, 0f);
+}
+struct FogParams {
+  dt: f32,
+  time: f32,
+  seed: f32,
+  turbulence: f32,
+  curlStrength: f32,
+  velFade: f32,
+  blending: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FogParams;
+
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 256i) % 256i);
+  let col = (((ji + dj) + 256i) % 256i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn fogVorticity(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let cL = abs(velA[nw(ii, ji, 0i, -1i)].z);
+  let cR = abs(velA[nw(ii, ji, 0i, 1i)].z);
+  let cU = abs(velA[nw(ii, ji, -1i, 0i)].z);
+  let cD = abs(velA[nw(ii, ji, 1i, 0i)].z);
+  let cc = velA[idx].z;
+  let gx = ((cR - cL) * 0.5f);
+  let gy = ((cD - cU) * 0.5f);
+  let gl = max(sqrt(((gx * gx) + (gy * gy))), 9.999999747378752e-6f);
+  let fx = ((((gy / gl) * cc) * (*p).curlStrength) * (*p).dt);
+  let fy = (((((gx / gl) * -1f) * cc) * (*p).curlStrength) * (*p).dt);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + fx), ((*vel).y + fy), (*vel).z, 0f);
+}
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 256i) % 256i);
+  let col = (((ji + dj) + 256i) % 256i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn fogDivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = velA[nw(ii, ji, 0i, -1i)].x;
+  let vR = velA[nw(ii, ji, 0i, 1i)].x;
+  let vU = velA[nw(ii, ji, -1i, 0i)].y;
+  let vD = velA[nw(ii, ji, 1i, 0i)].y;
+  let div = (((vR - vL) + (vD - vU)) * 0.5f);
+  pressure[idx] = (pressure[idx] * 0.8f);
+  divergence[idx] = div;
+}
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 256i) % 256i);
+  let col = (((ji + dj) + 256i) % 256i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn fogJacobi(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nw(ii, ji, 0i, -1i)];
+  let pR = pressure[nw(ii, ji, 0i, 1i)];
+  let pU = pressure[nw(ii, ji, -1i, 0i)];
+  let pD = pressure[nw(ii, ji, 1i, 0i)];
+  let div = divergence[idx];
+  pressure[idx] = (((((pL + pR) + pU) + pD) - div) * 0.25f);
+}
+fn nw(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = (((ii + di) + 256i) % 256i);
+  let col = (((ji + dj) + 256i) % 256i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn fogGradSubtract(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nw(ii, ji, 0i, -1i)];
+  let pR = pressure[nw(ii, ji, 0i, 1i)];
+  let pU = pressure[nw(ii, ji, -1i, 0i)];
+  let pD = pressure[nw(ii, ji, 1i, 0i)];
+  let vel = (&velA[idx]);
+  let vx = ((*vel).x - ((pR - pL) * 0.5f));
+  let vy = ((*vel).y - ((pD - pU) * 0.5f));
+  const maxVel = 153.60000610351562f;
+  let vLen = max(sqrt(((vx * vx) + (vy * vy))), 9.999999974752427e-7f);
+  let capScale = (maxVel / max(vLen, maxVel));
+  velA[idx] = vec4f((vx * capScale), (vy * capScale), (*vel).z, 0f);
+}
+struct FogParams {
+  dt: f32,
+  time: f32,
+  seed: f32,
+  turbulence: f32,
+  curlStrength: f32,
+  velFade: f32,
+  blending: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FogParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+fn fogAdvectVel(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = (((f32(cx) - ((*vel).x * (*p).dt)) + 256f) % 256f);
+  let srcY = (((f32(cy) - ((*vel).y * (*p).dt)) + 256f) % 256f);
+  let x0 = floor(srcX);
+  let y0 = floor(srcY);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let ix1 = ((ix0 + 1i) % 256i);
+  let iy1 = ((iy0 + 1i) % 256i);
+  let v00 = (&velA[u32(((iy0 * 256i) + ix0))]);
+  let v10 = (&velA[u32(((iy0 * 256i) + ix1))]);
+  let v01 = (&velA[u32(((iy1 * 256i) + ix0))]);
+  let v11 = (&velA[u32(((iy1 * 256i) + ix1))]);
+  let decay = (1f + ((*p).velFade * (*p).dt));
+  velB[idx] = vec4f((mix(mix((*v00).x, (*v10).x, sx), mix((*v01).x, (*v11).x, sx), sy) / decay), (mix(mix((*v00).y, (*v10).y, sx), mix((*v01).y, (*v11).y, sx), sy) / decay), 0f, 0f);
+}
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn fogCopyVel(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let v = (&velB[idx]);
+  velA[idx] = vec4f((*v).x, (*v).y, 0f, 0f);
+}
+struct FogParams {
+  dt: f32,
+  time: f32,
+  seed: f32,
+  turbulence: f32,
+  curlStrength: f32,
+  velFade: f32,
+  blending: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FogParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+fn fogAdvectDens(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = (((f32(cx) - ((*vel).x * (*p).dt)) + 256f) % 256f);
+  let srcY = (((f32(cy) - ((*vel).y * (*p).dt)) + 256f) % 256f);
+  let x0 = floor(srcX);
+  let y0 = floor(srcY);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let ix1 = ((ix0 + 1i) % 256i);
+  let iy1 = ((iy0 + 1i) % 256i);
+  let d00 = (&dyeA[u32(((iy0 * 256i) + ix0))]);
+  let d10 = (&dyeA[u32(((iy0 * 256i) + ix1))]);
+  let d01 = (&dyeA[u32(((iy1 * 256i) + ix0))]);
+  let d11 = (&dyeA[u32(((iy1 * 256i) + ix1))]);
+  dyeB[idx] = vec4f(mix(mix((*d00).x, (*d10).x, sx), mix((*d01).x, (*d11).x, sx), sy), mix(mix((*d00).y, (*d10).y, sx), mix((*d01).y, (*d11).y, sx), sy), 0f, 0f);
+}
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+fn fogCopyDens(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let dd = (&dyeB[idx]);
+  dyeA[idx] = vec4f((*dd).x, (*dd).y, 0f, 0f);
+}
+struct FogParams {
+  dt: f32,
+  time: f32,
+  seed: f32,
+  turbulence: f32,
+  curlStrength: f32,
+  velFade: f32,
+  blending: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FogParams;
+
+fn floatBitsToUint1(x: f32) -> u32 { return bitcast<u32>(x); }
+
+fn noise_hash11(p: f32) -> f32 {
+  let u = floatBitsToUint1((p * 3141592653f));
+  return (f32(((u * u) * 3141592653u)) / 4294967296f);
+}
+
+fn seedLattice(x: f32, y: f32, seed: f32, cellsPerTexel: f32) -> vec2f {
+  let sdx = (noise_hash11((seed * 37.31f)) * 97f);
+  let sdy = (noise_hash11((seed * 83.17f)) * 97f);
+  return vec2f(((x * cellsPerTexel) + sdx), ((y * cellsPerTexel) + sdy));
+}
+
+fn floatBitsToUint2(v: vec2f) -> vec2u { return bitcast<vec2u>(v); }
+
+fn noise_hash12(p: vec2f) -> f32 {
+  let u = floatBitsToUint2((p * vec2f(141421360, 2718281728)));
+  return (f32(((u.x ^ u.y) * 3141592653u)) / 4294967296f);
+}
+
+fn valueHash(px: f32, py: f32) -> f32 {
+  return noise_hash12(vec2f(px, py));
+}
+
+fn valueNoise2D(nx: f32, ny: f32) -> f32 {
+  let ix = floor(nx);
+  let iy = floor(ny);
+  let sx = fract(nx);
+  let sy = fract(ny);
+  let ux = ((sx * sx) * (3f - (sx * 2f)));
+  let uy = ((sy * sy) * (3f - (sy * 2f)));
+  return mix(mix(valueHash(ix, iy), valueHash((ix + 1f), iy), ux), mix(valueHash(ix, (iy + 1f)), valueHash((ix + 1f), (iy + 1f)), ux), uy);
+}
+
+fn fbm(nx: f32, ny: f32) -> f32 {
+  return (((valueNoise2D(nx, ny) * 0.5f) + (valueNoise2D(((nx * 2f) + 5.37f), ((ny * 2f) + 9.13f)) * 0.3f)) + (valueNoise2D(((nx * 4f) + 1.79f), ((ny * 4f) + 3.51f)) * 0.2f));
+}
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+fn fogColorRestore(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let lat = seedLattice(f32(cx), f32(cy), (*p).seed, 0.01171875f);
+  let refRaw = fbm(lat.x, lat.y);
+  let invBlend = (1f - (*p).blending);
+  let contrastBoost = (1f + (invBlend * 5f));
+  let refBoosted = clamp((((refRaw - 0.5f) * contrastBoost) + 0.5f), 0f, 1f);
+  let cell = (&dyeA[idx]);
+  let rateMult = (1f + (invBlend * 2.5f));
+  let blendRate = min((((*p).dt * 0.5f) * rateMult), 0.3f);
+  dyeA[idx] = vec4f((*cell).x, mix((*cell).y, refBoosted, blendRate), 0f, 0f);
+}
+@group(0) @binding(0) var<storage, read> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var outTex: texture_storage_2d<rgba16float, write>;
+
+fn fogOutput(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let dd = (&dyeA[idx]);
+  textureStore(outTex, vec2u(cx, cy), vec4f((*dd).x, (*dd).y, 0f, 0f));
+}"
+`;
+
+exports[`fluids scaffold (b) the six consumers > InkFlow resolves its whole solver chain > InkFlow-kernels 1`] = `
+"struct SplatParams {
+  posX: f32,
+  posY: f32,
+  velX: f32,
+  velY: f32,
+  colR: f32,
+  colG: f32,
+  colB: f32,
+  col2R: f32,
+  col2G: f32,
+  col2B: f32,
+  mixT: f32,
+  radius: f32,
+  strength: f32,
+}
+
+@group(0) @binding(2) var<uniform> sparams: SplatParams;
+
+fn gaussianBrushSq(distSq: f32, radiusSq: f32) -> f32 {
+  return exp(((distSq / radiusSq) * -1f));
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixFn(convA: vec3f, convB: vec3f, alphaA: f32, alphaB: f32, t: f32) -> vec4f {
+  let weightA = (alphaA * (1f - t));
+  let weightB = (alphaB * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let mixed = awMix(convA, convB, weightA, weightB, safeWeight);
+  return vec4f(sRGBToP3(oklabToRgb(mixed)), totalWeight);
+}
+
+@group(0) @binding(1) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn inkFlowSplat2(cx: u32, cy: u32) {
+  let p = (&sparams);
+  let idx = ((cy * 256u) + cx);
+  let cellX = (f32(cx) + 0.5f);
+  let cellY = (f32(cy) + 0.5f);
+  let dx = (cellX - (*p).posX);
+  let dy = (cellY - (*p).posY);
+  let distSq = ((dx * dx) + (dy * dy));
+  let radSq = max(((*p).radius * (*p).radius), 1f);
+  let inf = gaussianBrushSq(distSq, radSq);
+  let w = clamp((inf * (*p).strength), 0f, 1f);
+  let brush = mixFn(vec3f((*p).colR, (*p).colG, (*p).colB), vec3f((*p).col2R, (*p).col2G, (*p).col2B), 1f, 1f, (*p).mixT);
+  let cell = (&dyeA[idx]);
+  dyeA[idx] = vec4f(mix((*cell).x, brush.x, w), mix((*cell).y, brush.y, w), mix((*cell).z, brush.z, w), 0f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + ((*p).velX * inf)), ((*vel).y + ((*p).velY * inf)), (*vel).z, 0f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn inkFlowCurl(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = (&velA[nidx(ii, ji, 0i, -1i)]);
+  let vR = (&velA[nidx(ii, ji, 0i, 1i)]);
+  let vU = (&velA[nidx(ii, ji, -1i, 0i)]);
+  let vD = (&velA[nidx(ii, ji, 1i, 0i)]);
+  let curlZ = ((((*vR).y - (*vL).y) - ((*vD).x - (*vU).x)) * 0.5f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((*vel).x, (*vel).y, curlZ, 0f);
+}
+struct FlowParams {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FlowParams;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn inkFlowVorticity(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let cL = abs(velA[nidx(ii, ji, 0i, -1i)].z);
+  let cR = abs(velA[nidx(ii, ji, 0i, 1i)].z);
+  let cU = abs(velA[nidx(ii, ji, -1i, 0i)].z);
+  let cD = abs(velA[nidx(ii, ji, 1i, 0i)].z);
+  let cc = velA[idx].z;
+  let gx = ((cR - cL) * 0.5f);
+  let gy = ((cD - cU) * 0.5f);
+  let gl = max(sqrt(((gx * gx) + (gy * gy))), 9.999999747378752e-6f);
+  let fx = ((((gy / gl) * cc) * (*p).curlStrength) * (*p).dt);
+  let fy = (((((gx / gl) * -1f) * cc) * (*p).curlStrength) * (*p).dt);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + fx), ((*vel).y + fy), (*vel).z, 0f);
+}
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn inkFlowDivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let jf = f32(cx);
+  let iF = f32(cy);
+  let selfVel = (&velA[idx]);
+  let normalL = velA[nidx(ii, ji, 0i, -1i)].x;
+  let normalR = velA[nidx(ii, ji, 0i, 1i)].x;
+  let normalU = velA[nidx(ii, ji, -1i, 0i)].y;
+  let normalD = velA[nidx(ii, ji, 1i, 0i)].y;
+  let L = select(normalL, ((*selfVel).x * -1f), (jf < 0.5f));
+  let R = select(normalR, ((*selfVel).x * -1f), (jf > 254.5f));
+  let T = select(normalU, ((*selfVel).y * -1f), (iF < 0.5f));
+  let B = select(normalD, ((*selfVel).y * -1f), (iF > 254.5f));
+  let div = (((R - L) + (B - T)) * 0.5f);
+  pressure[idx] = (pressure[idx] * 0.8f);
+  divergence[idx] = div;
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn inkFlowJacobi(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let div = divergence[idx];
+  pressure[idx] = (((((pL + pR) + pU) + pD) - div) * 0.25f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn inkFlowGradSubtract(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x - ((pR - pL) * 0.5f)), ((*vel).y - ((pD - pU) * 0.5f)), (*vel).z, 0f);
+}
+struct FlowParams {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FlowParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+fn inkFlowAdvectVel(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let v00 = (&velA[u32(((iy0 * 256i) + ix0))]);
+  let v10 = (&velA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let v01 = (&velA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let v11 = (&velA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let decay = (1f + ((*p).velFade * (*p).dt));
+  velB[idx] = vec4f((mix(mix((*v00).x, (*v10).x, sx), mix((*v01).x, (*v11).x, sx), sy) / decay), (mix(mix((*v00).y, (*v10).y, sx), mix((*v01).y, (*v11).y, sx), sy) / decay), 0f, 0f);
+}
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn inkFlowCopyVel(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let v = (&velB[idx]);
+  velA[idx] = vec4f((*v).x, (*v).y, 0f, 0f);
+}
+struct FlowParams {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  dyeFade: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FlowParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+fn inkFlowAdvectDye(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let c00 = (&dyeA[u32(((iy0 * 256i) + ix0))]);
+  let c10 = (&dyeA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let c01 = (&dyeA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let c11 = (&dyeA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let r = mix(mix((*c00).x, (*c10).x, sx), mix((*c01).x, (*c11).x, sx), sy);
+  let g = mix(mix((*c00).y, (*c10).y, sx), mix((*c01).y, (*c11).y, sx), sy);
+  let b = mix(mix((*c00).z, (*c10).z, sx), mix((*c01).z, (*c11).z, sx), sy);
+  let decay = (1f + ((*p).dyeFade * (*p).dt));
+  dyeB[idx] = vec4f(max((r / decay), 0f), max((g / decay), 0f), max((b / decay), 0f), 0f);
+}
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+fn inkFlowCopyDye(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let c = (&dyeB[idx]);
+  dyeA[idx] = vec4f((*c).x, (*c).y, (*c).z, 0f);
+}
+@group(0) @binding(0) var<storage, read> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var outTex: texture_storage_2d<rgba16float, write>;
+
+fn inkFlowOutput(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let c = (&dyeA[idx]);
+  textureStore(outTex, vec2u(cx, cy), vec4f((*c).x, (*c).y, (*c).z, 1f));
+}"
+`;
+
+exports[`fluids scaffold (b) the six consumers > ParticleFlow resolves its whole solver chain > ParticleFlow-kernels 1`] = `
+"struct SplatParams {
+  posX: f32,
+  posY: f32,
+  velX: f32,
+  velY: f32,
+  radius: f32,
+}
+
+@group(0) @binding(5) var<uniform> sparams: SplatParams;
+
+fn gaussianBrushSq(distSq: f32, radiusSq: f32) -> f32 {
+  return exp(((distSq / radiusSq) * -1f));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn particleFlowForce(cx: u32, cy: u32) {
+  let p = (&sparams);
+  let idx = ((cy * 256u) + cx);
+  let cellX = (f32(cx) + 0.5f);
+  let cellY = (f32(cy) + 0.5f);
+  let dx = (cellX - (*p).posX);
+  let dy = (cellY - (*p).posY);
+  let distSq = ((dx * dx) + (dy * dy));
+  let radSq = max(((*p).radius * (*p).radius), 1f);
+  let inf = gaussianBrushSq(distSq, radSq);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + ((*p).velX * inf)), ((*vel).y + ((*p).velY * inf)), (*vel).z, 0f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn particleFlowCurl(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = (&velA[nidx(ii, ji, 0i, -1i)]);
+  let vR = (&velA[nidx(ii, ji, 0i, 1i)]);
+  let vU = (&velA[nidx(ii, ji, -1i, 0i)]);
+  let vD = (&velA[nidx(ii, ji, 1i, 0i)]);
+  let curlZ = ((((*vR).y - (*vL).y) - ((*vD).x - (*vU).x)) * 0.5f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((*vel).x, (*vel).y, curlZ, 0f);
+}
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(2) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(3) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn particleFlowDivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let jf = f32(cx);
+  let iF = f32(cy);
+  let selfVel = (&velA[idx]);
+  let normalL = velA[nidx(ii, ji, 0i, -1i)].x;
+  let normalR = velA[nidx(ii, ji, 0i, 1i)].x;
+  let normalU = velA[nidx(ii, ji, -1i, 0i)].y;
+  let normalD = velA[nidx(ii, ji, 1i, 0i)].y;
+  let L = select(normalL, ((*selfVel).x * -1f), (jf < 0.5f));
+  let R = select(normalR, ((*selfVel).x * -1f), (jf > 254.5f));
+  let T = select(normalU, ((*selfVel).y * -1f), (iF < 0.5f));
+  let B = select(normalD, ((*selfVel).y * -1f), (iF > 254.5f));
+  let div = (((R - L) + (B - T)) * 0.5f);
+  pressure[idx] = (pressure[idx] * 0.8f);
+  divergence[idx] = div;
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(2) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(3) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn particleFlowJacobi(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let div = divergence[idx];
+  pressure[idx] = (((((pL + pR) + pU) + pD) - div) * 0.25f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(2) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn particleFlowGradSubtract(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x - ((pR - pL) * 0.5f)), ((*vel).y - ((pD - pU) * 0.5f)), (*vel).z, 0f);
+}
+struct FlowParams {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  ambient: f32,
+  ambientTime: f32,
+  ambientFreq: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: FlowParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+fn particleFlowAdvectVel(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let v00 = (&velA[u32(((iy0 * 256i) + ix0))]);
+  let v10 = (&velA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let v01 = (&velA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let v11 = (&velA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let decay = (1f + ((*p).velFade * (*p).dt));
+  velB[idx] = vec4f((mix(mix((*v00).x, (*v10).x, sx), mix((*v01).x, (*v11).x, sx), sy) / decay), (mix(mix((*v00).y, (*v10).y, sx), mix((*v01).y, (*v11).y, sx), sy) / decay), 0f, 0f);
+}
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(6) var velOutTex: texture_storage_2d<rgba16float, write>;
+
+fn particleFlowCopyVel(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let v = (&velB[idx]);
+  velA[idx] = vec4f((*v).x, (*v).y, 0f, 0f);
+  textureStore(velOutTex, vec2u(cx, cy), vec4f((*v).x, (*v).y, 0f, 0f));
+}
+struct FlowParams {
+  dt: f32,
+  curlStrength: f32,
+  velFade: f32,
+  ambient: f32,
+  ambientTime: f32,
+  ambientFreq: f32,
+}
+
+@group(0) @binding(4) var<uniform> params: FlowParams;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn floatBitsToUint3(v: vec3f) -> vec3u { return bitcast<vec3u>(v); }
+
+fn hash33(p: vec3f) -> vec3f {
+  let u = floatBitsToUint3((p * vec3f(141421360, 2718281728, 1618034048)));
+  let h = ((u.x ^ u.y) ^ u.z);
+  let prod = (vec3u(h, h, h) * vec3u(1732050807, 2645751311, 3316624790));
+  return (vec3f(f32(prod.x), f32(prod.y), f32(prod.z)) / 4294967296f);
+}
+
+fn perlinGrad3(i: vec3f, f: vec3f, ox: f32, oy: f32, oz: f32) -> f32 {
+  let o = vec3f(ox, oy, oz);
+  return dot((f - o), normalize((hash33((i + o)) - 0.5f)));
+}
+
+fn perlin13(p: vec3f) -> f32 {
+  let i = floor(p);
+  let f = (p - i);
+  let u = (((f * f) * f) * ((f * ((f * 6f) - 15f)) + 10f));
+  let a0 = perlinGrad3(i, f, 0f, 0f, 0f);
+  let b0 = perlinGrad3(i, f, 1f, 0f, 0f);
+  let c0 = perlinGrad3(i, f, 0f, 1f, 0f);
+  let d0 = perlinGrad3(i, f, 1f, 1f, 0f);
+  let a1 = perlinGrad3(i, f, 0f, 0f, 1f);
+  let b1 = perlinGrad3(i, f, 1f, 0f, 1f);
+  let c1 = perlinGrad3(i, f, 0f, 1f, 1f);
+  let d1 = perlinGrad3(i, f, 1f, 1f, 1f);
+  let z0 = mix(mix(a0, b0, u.x), mix(c0, d0, u.x), u.y);
+  let z1 = mix(mix(a1, b1, u.x), mix(c1, d1, u.x), u.y);
+  return ((mix(z0, z1, u.z) * 0.7f) + 0.5f);
+}
+
+fn noise_curl22z(p: vec2f, z: f32) -> vec2f {
+  let pax = (p + vec2f(0.10000000149011612, 0));
+  let pay = (p + vec2f(0, 0.10000000149011612));
+  let pbx = (p - vec2f(0.10000000149011612, 0));
+  let pby = (p - vec2f(0, 0.10000000149011612));
+  let a = vec2f(perlin13(vec3f(pax.x, pax.y, z)), perlin13(vec3f(pay.x, pay.y, z)));
+  let b = vec2f(perlin13(vec3f(pbx.x, pbx.y, z)), perlin13(vec3f(pby.x, pby.y, z)));
+  return (((a - b) / 0.1f) * 0.5f);
+}
+
+fn particleFlowVorticity(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let cL = abs(velA[nidx(ii, ji, 0i, -1i)].z);
+  let cR = abs(velA[nidx(ii, ji, 0i, 1i)].z);
+  let cU = abs(velA[nidx(ii, ji, -1i, 0i)].z);
+  let cD = abs(velA[nidx(ii, ji, 1i, 0i)].z);
+  let cc = velA[idx].z;
+  let gx = ((cR - cL) * 0.5f);
+  let gy = ((cD - cU) * 0.5f);
+  let gl = max(sqrt(((gx * gx) + (gy * gy))), 9.999999747378752e-6f);
+  let fx = ((((gy / gl) * cc) * (*p).curlStrength) * (*p).dt);
+  let fy = (((((gx / gl) * -1f) * cc) * (*p).curlStrength) * (*p).dt);
+  var ax = 0f;
+  var ay = 0f;
+  if (((*p).ambient > 0f)) {
+    let uvx = ((f32(cx) + 0.5f) / 256f);
+    let uvy = ((f32(cy) + 0.5f) / 256f);
+    let amb = noise_curl22z(vec2f((uvx * (*p).ambientFreq), (uvy * (*p).ambientFreq)), (*p).ambientTime);
+    let af = (((*p).ambient * 26f) * (*p).dt);
+    ax = (amb.x * af);
+    ay = (amb.y * af);
+  }
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((((*vel).x + fx) + ax), (((*vel).y + fy) + ay), (*vel).z, 0f);
+}
+struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  dt: f32,
+  aspect: f32,
+  trails: f32,
+  bodyR: f32,
+  speedNorm: f32,
+  advect: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+fn floatBitsToUint3(v: vec3f) -> vec3u { return bitcast<vec3u>(v); }
+
+fn hash33(p: vec3f) -> vec3f {
+  let u = floatBitsToUint3((p * vec3f(141421360, 2718281728, 1618034048)));
+  let h = ((u.x ^ u.y) ^ u.z);
+  let prod = (vec3u(h, h, h) * vec3u(1732050807, 2645751311, 3316624790));
+  return (vec3f(f32(prod.x), f32(prod.y), f32(prod.z)) / 4294967296f);
+}
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 16384>;
+
+fn particleFlowInit(i: u32) {
+  let prm = (&params);
+  let fi = f32(i);
+  let r = hash33(vec3f(((fi * 1.6180339f) + 0.71f), ((fi * 2.7182818f) + 4.17f), ((fi * 3.1415926f) + 9.03f)));
+  agents[i] = vec4f((r.x * (*prm).aspect), r.y, 0f, 0f);
+}
+struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  dt: f32,
+  aspect: f32,
+  trails: f32,
+  bodyR: f32,
+  speedNorm: f32,
+  advect: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 16384>;
+
+struct AgentBilinearFrame {
+  x0: u32,
+  x1: u32,
+  y0: u32,
+  y1: u32,
+  fx: f32,
+  fy: f32,
+}
+
+fn agentBilinearTexelFrame(uv01: vec2f, dims: vec2f) -> AgentBilinearFrame {
+  let cu = ((uv01.x * dims.x) - 0.5f);
+  let cv = ((uv01.y * dims.y) - 0.5f);
+  let cx0 = floor(cu);
+  let cy0 = floor(cv);
+  return AgentBilinearFrame(u32(clamp(cx0, 0f, (dims.x - 1f))), u32(clamp((cx0 + 1f), 0f, (dims.x - 1f))), u32(clamp(cy0, 0f, (dims.y - 1f))), u32(clamp((cy0 + 1f), 0f, (dims.y - 1f))), (cu - cx0), (cv - cy0));
+}
+
+@group(0) @binding(4) var velTex: texture_2d<f32>;
+
+fn particleFlowIntegrate(i: u32) {
+  let prm = (&params);
+  let a = (&agents[i]);
+  let pos = vec2f((*a).x, (*a).y);
+  let dt = (*prm).dt;
+  let aspect = max((*prm).aspect, 1e-5f);
+  const NF = 256f;
+  let bf = agentBilinearTexelFrame(vec2f((pos.x / aspect), pos.y), vec2f(NF, NF));
+  let v00 = textureLoad(velTex, vec2u(bf.x0, bf.y0), 0);
+  let v10 = textureLoad(velTex, vec2u(bf.x1, bf.y0), 0);
+  let v01 = textureLoad(velTex, vec2u(bf.x0, bf.y1), 0);
+  let v11 = textureLoad(velTex, vec2u(bf.x1, bf.y1), 0);
+  let gvx = mix(mix(v00.x, v10.x, bf.fx), mix(v01.x, v11.x, bf.fx), bf.fy);
+  let gvy = mix(mix(v00.y, v10.y, bf.fx), mix(v01.y, v11.y, bf.fx), bf.fy);
+  let fieldVx = (((gvx / NF) * aspect) * (*prm).advect);
+  let fieldVy = ((gvy / NF) * (*prm).advect);
+  let blend = (1f - exp(((dt * 6f) * -1f)));
+  let fi = f32(i);
+  let homeX = (fract((0.5f + (fi * 0.7548776662466927f))) * aspect);
+  let homeY = fract((0.5f + (fi * 0.5698402909980532f)));
+  let velX = (mix((*a).z, fieldVx, blend) + ((homeX - pos.x) * (1.8f * dt)));
+  let velY = (mix((*a).w, fieldVy, blend) + ((homeY - pos.y) * (1.8f * dt)));
+  let nposX = clamp((pos.x + (velX * dt)), 0f, aspect);
+  let nposY = clamp((pos.y + (velY * dt)), 0f, 1f);
+  agents[i] = vec4f(nposX, nposY, velX, velY);
+}
+struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  dt: f32,
+  aspect: f32,
+  trails: f32,
+  bodyR: f32,
+  speedNorm: f32,
+  advect: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+@group(0) @binding(0) var<storage, read_write> agents: array<vec4f, 16384>;
+
+struct AgentPose {
+  pos: vec2f,
+  dir: vec2f,
+  spd: f32,
+}
+
+fn particleFlowSplatPose(i: u32) -> AgentPose {
+  let a = (&agents[i]);
+  let vel = vec2f((*a).z, (*a).w);
+  let spd = length(vel);
+  return AgentPose(vec2f((*a).x, (*a).y), select(vec2f(1, 0), (vel / max(spd, 1e-5f)), (spd > 1e-5f)), spd);
+}
+
+fn particleFlowSplatExcitement(_i: u32, spd: f32) -> f32 {
+  return clamp((spd / max(params.speedNorm, 1e-5f)), 0f, 1f);
+}
+
+struct SplatWindow {
+  x0: i32,
+  x1: i32,
+  y0: i32,
+  y1: i32,
+}
+
+fn worldSplatWindow(pos: vec2f, reach: f32, aspect: f32, res: f32) -> SplatWindow {
+  let asp = max(aspect, 1e-5f);
+  let cxi = i32(floor(((pos.x / asp) * res)));
+  let cyi = i32(floor((pos.y * res)));
+  let radX = i32(ceil(((reach * res) / asp)));
+  let radY = i32(ceil((reach * res)));
+  let last = (i32(res) - 1i);
+  return SplatWindow(max((cxi - radX), 0i), min((cxi + radX), last), max((cyi - radY), 0i), min((cyi + radY), last));
+}
+
+fn agentCapsuleSdf(t: f32, n: f32, hl: f32, r: f32) -> f32 {
+  let tc = (t - clamp(t, -(hl), hl));
+  return (sqrt(((tc * tc) + (n * n))) - r);
+}
+
+fn agentTexelWeight(_q: f32, t: f32, n: f32, bodyR: f32, aaW: f32) -> f32 {
+  let sd = agentCapsuleSdf(t, n, (bodyR * 1.7f), (bodyR * 0.8f));
+  return (1f - smoothstep(-(aaW), aaW, sd));
+}
+
+fn agentCometWeight(t: f32, n: f32, bodyR: f32, aaW: f32) -> f32 {
+  let hl = (bodyR * 1.7f);
+  let tGlow = (t - clamp(t, -(hl), hl));
+  let tEval = select(t, tGlow, false);
+  let tk = clamp(((hl - t) / max((hl * 2f), 1e-6f)), 0f, 1f);
+  let bright = (1f - ((0.55f * tk) * 0f));
+  let qEval = (((tEval * tEval) + (n * n)) / (bodyR * bodyR));
+  return (agentTexelWeight(qEval, tEval, n, bodyR, aaW) * bright);
+}
+
+fn particleFlowSplatWeight(_dSq: f32, offX: f32, offY: f32, dir: vec2f, bodyR: f32, _bodyRSq: f32, aaW: f32) -> f32 {
+  let t = ((offX * dir.x) + (offY * dir.y));
+  let n = ((offX * -(dir.y)) + (offY * dir.x));
+  return agentCometWeight(t, n, bodyR, aaW);
+}
+
+@group(0) @binding(1) var<storage, read_write> accumE: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(2) var<storage, read_write> accumS: array<atomic<u32>, 1048576>;
+
+fn particleFlowSplat(i: u32) {
+  let prm = (&params);
+  let p = particleFlowSplatPose(i);
+  let agitI = particleFlowSplatExcitement(i, p.spd);
+  let agitGain = (agitI * 637f);
+  let aspect = max((*prm).aspect, 1e-5f);
+  let bodyR = clamp((*prm).bodyR, 1e-6f, 0.013671875f);
+  let bodyRSq = (bodyR * bodyR);
+  let radW = ((bodyR * 2.6f) + 0.00146484375f);
+  let extSq = (radW * radW);
+  let win = worldSplatWindow(p.pos, radW, aspect, 1024f);
+  for (var py = win.y0; (py <= win.y1); py++) {
+    let offY = (((f32(py) + 0.5f) * 9.765625e-4f) - p.pos.y);
+    let offYSq = (offY * offY);
+    for (var px = win.x0; (px <= win.x1); px++) {
+      let offX = ((((f32(px) + 0.5f) * 9.765625e-4f) * aspect) - p.pos.x);
+      let dSq = ((offX * offX) + offYSq);
+      if ((dSq < extSq)) {
+        let w = particleFlowSplatWeight(dSq, offX, offY, p.dir, bodyR, bodyRSq, 7.32421875e-4f);
+        let e = u32((w * 637f));
+        if ((e > 0u)) {
+          let idx = u32(((py * 1024i) + px));
+          atomicAdd(&accumE[idx], e);
+          if ((agitI > 0f)) {
+            atomicAdd(&accumS[idx], u32((w * agitGain)));
+          }
+        }
+      }
+    }
+  }
+}
+struct SimParams {
+  colA: vec4f,
+  colB: vec4f,
+  dt: f32,
+  aspect: f32,
+  trails: f32,
+  bodyR: f32,
+  speedNorm: f32,
+  advect: f32,
+}
+
+@group(0) @binding(5) var<uniform> params: SimParams;
+
+@group(0) @binding(1) var<storage, read_write> accumE: array<atomic<u32>, 1048576>;
+
+@group(0) @binding(2) var<storage, read_write> accumS: array<atomic<u32>, 1048576>;
+
+fn particleFlowResolveEnergy(eRaw: f32) -> f32 {
+  return (eRaw * 0.00392156862745098f);
+}
+
+fn p3ToSRGB(p3: vec3f) -> vec3f {
+  let r = (((p3.x * 1.2249401f) - (p3.y * 0.2249404f)) - (p3.z * 0f));
+  let g = (((p3.x * -0.0420569f) + (p3.y * 1.0420571f)) + (p3.z * 0f));
+  let b = (((p3.x * -0.0196376f) - (p3.y * 0.0786361f)) + (p3.z * 1.0982735f));
+  return vec3f(r, g, b);
+}
+
+fn rgbToOklab(rgb: vec3f) -> vec3f {
+  let r = rgb.x;
+  let g = rgb.y;
+  let b = rgb.z;
+  let l = (((r * 0.4122214708f) + (g * 0.5363325363f)) + (b * 0.0514459929f));
+  let m = ((r * 0.2119034982f) + ((g * 0.6806995451f) + (b * 0.1073969566f)));
+  let s = (((r * 0.0883024619f) + (g * 0.2817188376f)) + (b * 0.6299787005f));
+  let l_ = (sign(l) * pow(abs(l), 0.3333333333333333f));
+  let m_ = (sign(m) * pow(abs(m), 0.3333333333333333f));
+  let s_ = (sign(s) * pow(abs(s), 0.3333333333333333f));
+  return vec3f((((l_ * 0.2104542553f) + (m_ * 0.793617785f)) - (s_ * 0.0040720468f)), (((l_ * 1.9779984951f) - (m_ * 2.428592205f)) + (s_ * 0.4505937099f)), (((l_ * 0.0259040371f) + (m_ * 0.7827717662f)) - (s_ * 0.808675766f)));
+}
+
+fn awMix(a: vec3f, b: vec3f, wA: f32, wB: f32, sw: f32) -> vec3f {
+  return (((a * wA) + (b * wB)) / sw);
+}
+
+fn oklabToRgb(lab: vec3f) -> vec3f {
+  let L = lab.x;
+  let a = lab.y;
+  let b = lab.z;
+  let l_ = ((L + (a * 0.3963377774f)) + (b * 0.2158037573f));
+  let m_ = ((L - (a * 0.1055613458f)) - (b * 0.0638541728f));
+  let s_ = ((L - (a * 0.0894841775f)) - (b * 1.291485548f));
+  let l = pow(l_, 3f);
+  let m = pow(m_, 3f);
+  let s = pow(s_, 3f);
+  return vec3f((((l * 4.0767416621f) - (m * 3.3077115913f)) + (s * 0.2309699292f)), (((l * -1.2684380046f) + (m * 2.6097574011f)) - (s * 0.3413193965f)), (((l * -0.0041960863f) - (m * 0.7034186147f)) + (s * 1.707614701f)));
+}
+
+fn sRGBToP3(srgb: vec3f) -> vec3f {
+  let r = (((srgb.x * 0.8224621f) + (srgb.y * 0.177538f)) + (srgb.z * 0f));
+  let g = (((srgb.x * 0.0331941f) + (srgb.y * 0.9668058f)) + (srgb.z * 0f));
+  let b = (((srgb.x * 0.0170826f) + (srgb.y * 0.0723974f)) + (srgb.z * 0.9105199f));
+  return vec3f(r, g, b);
+}
+
+fn mixFn(colorA: vec4f, colorB: vec4f, t: f32) -> vec4f {
+  let weightA = (colorA.w * (1f - t));
+  let weightB = (colorB.w * t);
+  let totalWeight = (weightA + weightB);
+  let safeWeight = max(totalWeight, 1e-3f);
+  let oklabA = rgbToOklab(p3ToSRGB(colorA.xyz));
+  let oklabB = rgbToOklab(p3ToSRGB(colorB.xyz));
+  let mixed = awMix(oklabA, oklabB, weightA, weightB, safeWeight);
+  let rgb = sRGBToP3(oklabToRgb(mixed));
+  return vec4f(rgb, totalWeight);
+}
+
+fn energyCoverageAlpha(energy: f32, k: f32) -> f32 {
+  return (1f - exp(((energy * k) * -1f)));
+}
+
+fn particleFlowResolveTrailComposite(col: vec4f, curA: f32, _idx: u32) -> vec4f {
+  return vec4f(col.x, col.y, col.z, curA);
+}
+
+@group(0) @binding(3) var<storage, read_write> trailBuf: array<vec4f, 1048576>;
+
+@group(0) @binding(6) var outTex: texture_storage_2d<rgba16float, write>;
+
+fn particleFlowResolve(x: u32, y: u32) {
+  let prm = (&params);
+  let idx = ((y * 1024u) + x);
+  let eRaw = f32(atomicLoad(&accumE[idx]));
+  atomicStore(&accumE[idx], 0u);
+  let sRaw = f32(atomicLoad(&accumS[idx]));
+  atomicStore(&accumS[idx], 0u);
+  let energy = particleFlowResolveEnergy(eRaw);
+  var col = (*prm).colA;
+  if ((eRaw > 0f)) {
+    let agitAvg = (sRaw / max(eRaw, 1f));
+    col = mixFn((*prm).colA, (*prm).colB, clamp(agitAvg, 0f, 1f));
+  }
+  let curA = (energyCoverageAlpha(energy, 1.6f) * col.w);
+  let out = particleFlowResolveTrailComposite(col, curA, idx);
+  trailBuf[idx] = out;
+  textureStore(outTex, vec2u(x, y), out);
+}"
+`;
+
+exports[`fluids scaffold (b) the six consumers > Smoke resolves its whole solver chain > Smoke-kernels 1`] = `
+"struct FluidParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FluidParams;
+
+fn gaussianBrushSq(distSq: f32, radiusSq: f32) -> f32 {
+  return exp(((distSq / radiusSq) * -1f));
+}
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeSplat(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let cellX = (f32(cx) + 0.5f);
+  let cellY = (f32(cy) + 0.5f);
+  let dx = (cellX - (*p).emitX);
+  let dy = (cellY - (*p).emitY);
+  let distSq = ((dx * dx) + (dy * dy));
+  let radSq = max(((*p).emitRad * (*p).emitRad), 1f);
+  let influence = gaussianBrushSq(distSq, radSq);
+  let cell = (&dyeA[idx]);
+  let oldDens = (*cell).x;
+  let addDens = ((((*p).emitIntensity * influence) * (*p).dt) * 8f);
+  let newDens = min((oldDens + addDens), 1f);
+  let rejuvenate = (addDens / max(newDens, 0.0010000000474974513f));
+  dyeA[idx] = vec4f(newDens, ((*cell).y * (1f - min(rejuvenate, 1f))), 0f, 0f);
+  let vel = (&velA[idx]);
+  let perpOff = (((dx * (*p).perpDirX) + (dy * (*p).perpDirY)) / max((*p).emitRad, 1f));
+  let vmSq = max((((*p).emitVelX * (*p).emitVelX) + ((*p).emitVelY * (*p).emitVelY)), 1f);
+  let tvx = ((*p).emitVelX + ((((*p).perpDirX * perpOff) * (*p).spreadFactor) * sqrt(vmSq)));
+  let tvy = ((*p).emitVelY + ((((*p).perpDirY * perpOff) * (*p).spreadFactor) * sqrt(vmSq)));
+  let br = min(((influence * (*p).dt) * 3f), 1f);
+  let gravForce = ((((*p).gravity * oldDens) * (*p).dt) * 20.48f);
+  let cursorDX = (cellX - (*p).cursorX);
+  let cursorDY = (cellY - (*p).cursorY);
+  let cursorDistSq = ((cursorDX * cursorDX) + (cursorDY * cursorDY));
+  let cursorInf = (gaussianBrushSq(cursorDistSq, max((*p).mouseRadSq, 1f)) * (*p).mouseActive);
+  velA[idx] = vec4f((mix((*vel).x, tvx, br) + ((*p).cursorVelX * cursorInf)), ((mix((*vel).y, tvy, br) + gravForce) + ((*p).cursorVelY * cursorInf)), (*vel).z, 0f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeCurl(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = (&velA[nidx(ii, ji, 0i, -1i)]);
+  let vR = (&velA[nidx(ii, ji, 0i, 1i)]);
+  let vU = (&velA[nidx(ii, ji, -1i, 0i)]);
+  let vD = (&velA[nidx(ii, ji, 1i, 0i)]);
+  let curlZ = ((((*vR).y - (*vL).y) - ((*vD).x - (*vU).x)) * 0.5f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((*vel).x, (*vel).y, curlZ, 0f);
+}
+struct FluidParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FluidParams;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeVorticity(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let cL = abs(velA[nidx(ii, ji, 0i, -1i)].z);
+  let cR = abs(velA[nidx(ii, ji, 0i, 1i)].z);
+  let cU = abs(velA[nidx(ii, ji, -1i, 0i)].z);
+  let cD = abs(velA[nidx(ii, ji, 1i, 0i)].z);
+  let cc = velA[idx].z;
+  let gx = ((cR - cL) * 0.5f);
+  let gy = ((cD - cU) * 0.5f);
+  let gl = max(sqrt(((gx * gx) + (gy * gy))), 9.999999747378752e-6f);
+  let fx = ((((gy / gl) * cc) * (*p).curlStrength) * (*p).dt);
+  let fy = (((((gx / gl) * -1f) * cc) * (*p).curlStrength) * (*p).dt);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + fx), ((*vel).y + fy), (*vel).z, 0f);
+}
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn smokeDivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let jf = f32(cx);
+  let iF = f32(cy);
+  let selfVel = (&velA[idx]);
+  let normalL = velA[nidx(ii, ji, 0i, -1i)].x;
+  let normalR = velA[nidx(ii, ji, 0i, 1i)].x;
+  let normalU = velA[nidx(ii, ji, -1i, 0i)].y;
+  let normalD = velA[nidx(ii, ji, 1i, 0i)].y;
+  let L = select(normalL, ((*selfVel).x * -1f), (jf < 0.5f));
+  let R = select(normalR, ((*selfVel).x * -1f), (jf > 254.5f));
+  let T = select(normalU, ((*selfVel).y * -1f), (iF < 0.5f));
+  let B = select(normalD, ((*selfVel).y * -1f), (iF > 254.5f));
+  let div = (((R - L) + (B - T)) * 0.5f);
+  pressure[idx] = (pressure[idx] * 0.8f);
+  divergence[idx] = div;
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn smokeJacobi(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let div = divergence[idx];
+  pressure[idx] = (((((pL + pR) + pU) + pD) - div) * 0.25f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeGradSubtract(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x - ((pR - pL) * 0.5f)), ((*vel).y - ((pD - pU) * 0.5f)), (*vel).z, 0f);
+}
+struct FluidParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FluidParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+fn smokeAdvectVel(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let v00 = (&velA[u32(((iy0 * 256i) + ix0))]);
+  let v10 = (&velA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let v01 = (&velA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let v11 = (&velA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let decay = (1f + ((*p).velFade * (*p).dt));
+  velB[idx] = vec4f((mix(mix((*v00).x, (*v10).x, sx), mix((*v01).x, (*v11).x, sx), sy) / decay), (mix(mix((*v00).y, (*v10).y, sx), mix((*v01).y, (*v11).y, sx), sy) / decay), 0f, 0f);
+}
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeCopyVel(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let v = (&velB[idx]);
+  velA[idx] = vec4f((*v).x, (*v).y, 0f, 0f);
+}
+struct FluidParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FluidParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+fn smokeAdvectDens(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let d00 = (&dyeA[u32(((iy0 * 256i) + ix0))]);
+  let d10 = (&dyeA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let d01 = (&dyeA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let d11 = (&dyeA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let dens = mix(mix((*d00).x, (*d10).x, sx), mix((*d01).x, (*d11).x, sx), sy);
+  let age = mix(mix((*d00).y, (*d10).y, sx), mix((*d01).y, (*d11).y, sx), sy);
+  let decay = (1f + ((*p).dyeFade * (*p).dt));
+  dyeB[idx] = vec4f(max((dens / decay), 0f), min((age + (((*p).dt * 0.4f) * (*p).colorDecay)), 1f), 0f, 0f);
+}
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+fn smokeCopyDens(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let dd = (&dyeB[idx]);
+  dyeA[idx] = vec4f((*dd).x, (*dd).y, 0f, 0f);
+}
+@group(0) @binding(0) var<storage, read> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var outTex: texture_storage_2d<rgba16float, write>;
+
+fn smokeOutput(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let dd = (&dyeA[idx]);
+  textureStore(outTex, vec2u(cx, cy), vec4f((*dd).x, (*dd).y, 0f, 0f));
+}"
+`;
+
+exports[`fluids scaffold (b) the six consumers > SmokeFill resolves its whole solver chain > SmokeFill-kernels 1`] = `
+"struct FillParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+  centerX: f32,
+  centerY: f32,
+  scale: f32,
+  rotation: f32,
+  aspect: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  saRadius: f32,
+  saSides: f32,
+  saRounding: f32,
+  saInnerRatio: f32,
+  saRotation: f32,
+  saHeight: f32,
+  saOffset: f32,
+  saAperture: f32,
+  vfOriginX: f32,
+  vfOriginY: f32,
+  vfSpanX: f32,
+  vfSpanY: f32,
+  vfActiveRes: f32,
+}
+
+@group(0) @binding(1) var<uniform> params: FillParams;
+
+fn gridShapeUV(u: f32, v: f32, centerX: f32, centerY: f32, scale: f32, rotation: f32, aspect: f32) -> vec2f {
+  let dxAc = ((u - centerX) * aspect);
+  let dy = (v - centerY);
+  let cosR = cos(rotation);
+  let sinR = sin(rotation);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+@group(0) @binding(2) var sdfSource: texture_2d<f32>;
+
+@group(0) @binding(0) var<storage, read_write> maskBuf: array<vec4f, 65536>;
+
+fn smokeFillSvgMask(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let u = ((f32(cx) + 0.5f) / 256f);
+  let v = ((f32(cy) + 0.5f) / 256f);
+  let sdfUV = gridShapeUV(u, v, (*p).centerX, (*p).centerY, (*p).scale, (*p).rotation, (*p).aspect);
+  const sizeM1 = 511;
+  let tx = clamp(i32((sdfUV.x * 512f)), 0i, sizeM1);
+  let ty = clamp(i32((sdfUV.y * 512f)), 0i, sizeM1);
+  let dist = textureLoad(sdfSource, vec2u(u32(tx), u32(ty)), 0).x;
+  let inside = select(0f, 1f, (dist < 0f));
+  maskBuf[idx] = vec4f(inside, dist, 0f, 0f);
+}
+struct FillParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+  centerX: f32,
+  centerY: f32,
+  scale: f32,
+  rotation: f32,
+  aspect: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  saRadius: f32,
+  saSides: f32,
+  saRounding: f32,
+  saInnerRatio: f32,
+  saRotation: f32,
+  saHeight: f32,
+  saOffset: f32,
+  saAperture: f32,
+  vfOriginX: f32,
+  vfOriginY: f32,
+  vfSpanX: f32,
+  vfSpanY: f32,
+  vfActiveRes: f32,
+}
+
+@group(0) @binding(1) var<uniform> params: FillParams;
+
+fn gridShapeUV(u: f32, v: f32, centerX: f32, centerY: f32, scale: f32, rotation: f32, aspect: f32) -> vec2f {
+  let dxAc = ((u - centerX) * aspect);
+  let dy = (v - centerY);
+  let cosR = cos(rotation);
+  let sinR = sin(rotation);
+  let rdx = ((dxAc * cosR) + (dy * sinR));
+  let rdy = ((dy * cosR) - (dxAc * sinR));
+  return vec2f(((rdx / scale) + 0.5f), ((rdy / scale) + 0.5f));
+}
+
+@group(0) @binding(2) var fieldTex: texture_2d<f32>;
+
+@group(0) @binding(0) var<storage, read_write> maskBuf: array<vec4f, 65536>;
+
+fn smokeFillVfMask(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let u = ((f32(cx) + 0.5f) / 256f);
+  let v = ((f32(cy) + 0.5f) / 256f);
+  let sdfUV = gridShapeUV(u, v, (*p).centerX, (*p).centerY, (*p).scale, (*p).rotation, (*p).aspect);
+  let uxc = clamp(sdfUV.x, (*p).vfOriginX, ((*p).vfOriginX + (*p).vfSpanX));
+  let uyc = clamp(sdfUV.y, (*p).vfOriginY, ((*p).vfOriginY + (*p).vfSpanY));
+  let outsideDist = length(vec2f((sdfUV.x - uxc), (sdfUV.y - uyc)));
+  let maxT = ((*p).vfActiveRes - 1f);
+  let tx = clamp(((((uxc - (*p).vfOriginX) / (*p).vfSpanX) * (*p).vfActiveRes) - 0.5f), 0f, maxT);
+  let ty = clamp(((((uyc - (*p).vfOriginY) / (*p).vfSpanY) * (*p).vfActiveRes) - 0.5f), 0f, maxT);
+  let dist = (textureLoad(fieldTex, vec2u(u32(tx), u32(ty)), 0).x + outsideDist);
+  let inside = select(0f, 1f, (dist < 0f));
+  maskBuf[idx] = vec4f(inside, dist, 0f, 0f);
+}
+struct FillParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+  centerX: f32,
+  centerY: f32,
+  scale: f32,
+  rotation: f32,
+  aspect: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  saRadius: f32,
+  saSides: f32,
+  saRounding: f32,
+  saInnerRatio: f32,
+  saRotation: f32,
+  saHeight: f32,
+  saOffset: f32,
+  saAperture: f32,
+  vfOriginX: f32,
+  vfOriginY: f32,
+  vfSpanX: f32,
+  vfSpanY: f32,
+  vfActiveRes: f32,
+}
+
+@group(0) @binding(7) var<uniform> params: FillParams;
+
+@group(0) @binding(6) var<storage, read> maskBuf: array<vec4f, 65536>;
+
+fn gaussianBrushSq(distSq: f32, radiusSq: f32) -> f32 {
+  return exp(((distSq / radiusSq) * -1f));
+}
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFillSplat(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let mask = maskBuf[idx].x;
+  let cellX = (f32(cx) + 0.5f);
+  let cellY = (f32(cy) + 0.5f);
+  let dx = (cellX - (*p).emitX);
+  let dy = (cellY - (*p).emitY);
+  let distSq = ((dx * dx) + (dy * dy));
+  let radSq = max(((*p).emitRad * (*p).emitRad), 1f);
+  let influence = (gaussianBrushSq(distSq, radSq) * mask);
+  let cell = (&dyeA[idx]);
+  let oldDens = (*cell).x;
+  let addDens = ((((*p).emitIntensity * influence) * (*p).dt) * 8f);
+  let newDens = min((oldDens + addDens), 1f);
+  let rejuvenate = (addDens / max(newDens, 0.0010000000474974513f));
+  dyeA[idx] = vec4f(newDens, ((*cell).y * (1f - min(rejuvenate, 1f))), 0f, 0f);
+  let vel = (&velA[idx]);
+  let perpOff = (((dx * (*p).perpDirX) + (dy * (*p).perpDirY)) / max((*p).emitRad, 1f));
+  let vmSq = max((((*p).emitVelX * (*p).emitVelX) + ((*p).emitVelY * (*p).emitVelY)), 1f);
+  let tvx = ((*p).emitVelX + ((((*p).perpDirX * perpOff) * (*p).spreadFactor) * sqrt(vmSq)));
+  let tvy = ((*p).emitVelY + ((((*p).perpDirY * perpOff) * (*p).spreadFactor) * sqrt(vmSq)));
+  let br = min(((influence * (*p).dt) * 3f), 1f);
+  let gravForce = (((((*p).gravity * oldDens) * (*p).dt) * 20.48f) * mask);
+  let cursorDX = (cellX - (*p).cursorX);
+  let cursorDY = (cellY - (*p).cursorY);
+  let cursorDistSq = ((cursorDX * cursorDX) + (cursorDY * cursorDY));
+  let cursorInf = ((gaussianBrushSq(cursorDistSq, max((*p).mouseRadSq, 1f)) * (*p).mouseActive) * mask);
+  velA[idx] = vec4f((mix((*vel).x, tvx, br) + ((*p).cursorVelX * cursorInf)), ((mix((*vel).y, tvy, br) + gravForce) + ((*p).cursorVelY * cursorInf)), (*vel).z, 0f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFillCurl(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = (&velA[nidx(ii, ji, 0i, -1i)]);
+  let vR = (&velA[nidx(ii, ji, 0i, 1i)]);
+  let vU = (&velA[nidx(ii, ji, -1i, 0i)]);
+  let vD = (&velA[nidx(ii, ji, 1i, 0i)]);
+  let curlZ = ((((*vR).y - (*vL).y) - ((*vD).x - (*vU).x)) * 0.5f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((*vel).x, (*vel).y, curlZ, 0f);
+}
+struct FillParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+  centerX: f32,
+  centerY: f32,
+  scale: f32,
+  rotation: f32,
+  aspect: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  saRadius: f32,
+  saSides: f32,
+  saRounding: f32,
+  saInnerRatio: f32,
+  saRotation: f32,
+  saHeight: f32,
+  saOffset: f32,
+  saAperture: f32,
+  vfOriginX: f32,
+  vfOriginY: f32,
+  vfSpanX: f32,
+  vfSpanY: f32,
+  vfActiveRes: f32,
+}
+
+@group(0) @binding(7) var<uniform> params: FillParams;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFillVorticity(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let cL = abs(velA[nidx(ii, ji, 0i, -1i)].z);
+  let cR = abs(velA[nidx(ii, ji, 0i, 1i)].z);
+  let cU = abs(velA[nidx(ii, ji, -1i, 0i)].z);
+  let cD = abs(velA[nidx(ii, ji, 1i, 0i)].z);
+  let cc = velA[idx].z;
+  let gx = ((cR - cL) * 0.5f);
+  let gy = ((cD - cU) * 0.5f);
+  let gl = max(sqrt(((gx * gx) + (gy * gy))), 9.999999747378752e-6f);
+  let fx = ((((gy / gl) * cc) * (*p).curlStrength) * (*p).dt);
+  let fy = (((((gx / gl) * -1f) * cc) * (*p).curlStrength) * (*p).dt);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + fx), ((*vel).y + fy), (*vel).z, 0f);
+}
+@group(0) @binding(6) var<storage, read> maskBuf: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn smokeFillDivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let jf = f32(cx);
+  let iF = f32(cy);
+  let selfMask = maskBuf[idx].x;
+  let selfVel = (&velA[idx]);
+  let isWallL = ((jf < 0.5f) || (maskBuf[nidx(ii, ji, 0i, -1i)].x < 0.5f));
+  let isWallR = ((jf > 254.5f) || (maskBuf[nidx(ii, ji, 0i, 1i)].x < 0.5f));
+  let isWallT = ((iF < 0.5f) || (maskBuf[nidx(ii, ji, -1i, 0i)].x < 0.5f));
+  let isWallB = ((iF > 254.5f) || (maskBuf[nidx(ii, ji, 1i, 0i)].x < 0.5f));
+  let L = select(velA[nidx(ii, ji, 0i, -1i)].x, ((*selfVel).x * -1f), isWallL);
+  let R = select(velA[nidx(ii, ji, 0i, 1i)].x, ((*selfVel).x * -1f), isWallR);
+  let T = select(velA[nidx(ii, ji, -1i, 0i)].y, ((*selfVel).y * -1f), isWallT);
+  let B = select(velA[nidx(ii, ji, 1i, 0i)].y, ((*selfVel).y * -1f), isWallB);
+  let div = ((((R - L) + (B - T)) * 0.5f) * selfMask);
+  pressure[idx] = ((pressure[idx] * 0.8f) * selfMask);
+  divergence[idx] = div;
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn smokeFillJacobi(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let div = divergence[idx];
+  pressure[idx] = (((((pL + pR) + pU) + pD) - div) * 0.25f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFillGradSubtract(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x - ((pR - pL) * 0.5f)), ((*vel).y - ((pD - pU) * 0.5f)), (*vel).z, 0f);
+}
+struct FillParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+  centerX: f32,
+  centerY: f32,
+  scale: f32,
+  rotation: f32,
+  aspect: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  saRadius: f32,
+  saSides: f32,
+  saRounding: f32,
+  saInnerRatio: f32,
+  saRotation: f32,
+  saHeight: f32,
+  saOffset: f32,
+  saAperture: f32,
+  vfOriginX: f32,
+  vfOriginY: f32,
+  vfSpanX: f32,
+  vfSpanY: f32,
+  vfActiveRes: f32,
+}
+
+@group(0) @binding(7) var<uniform> params: FillParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(6) var<storage, read> maskBuf: array<vec4f, 65536>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+fn smokeFillAdvectVel(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let v00 = (&velA[u32(((iy0 * 256i) + ix0))]);
+  let v10 = (&velA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let v01 = (&velA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let v11 = (&velA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let decay = (1f + ((*p).velFade * (*p).dt));
+  let m = maskBuf[idx].x;
+  velB[idx] = vec4f(((mix(mix((*v00).x, (*v10).x, sx), mix((*v01).x, (*v11).x, sx), sy) / decay) * m), ((mix(mix((*v00).y, (*v10).y, sx), mix((*v01).y, (*v11).y, sx), sy) / decay) * m), 0f, 0f);
+}
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFillCopyVel(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let v = (&velB[idx]);
+  velA[idx] = vec4f((*v).x, (*v).y, 0f, 0f);
+}
+struct FillParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  perpDirX: f32,
+  perpDirY: f32,
+  spreadFactor: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+  centerX: f32,
+  centerY: f32,
+  scale: f32,
+  rotation: f32,
+  aspect: f32,
+  cursorX: f32,
+  cursorY: f32,
+  cursorVelX: f32,
+  cursorVelY: f32,
+  mouseActive: f32,
+  mouseRadSq: f32,
+  saRadius: f32,
+  saSides: f32,
+  saRounding: f32,
+  saInnerRatio: f32,
+  saRotation: f32,
+  saHeight: f32,
+  saOffset: f32,
+  saAperture: f32,
+  vfOriginX: f32,
+  vfOriginY: f32,
+  vfSpanX: f32,
+  vfSpanY: f32,
+  vfActiveRes: f32,
+}
+
+@group(0) @binding(7) var<uniform> params: FillParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(6) var<storage, read> maskBuf: array<vec4f, 65536>;
+
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+fn smokeFillAdvectDens(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let d00 = (&dyeA[u32(((iy0 * 256i) + ix0))]);
+  let d10 = (&dyeA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let d01 = (&dyeA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let d11 = (&dyeA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let dens = mix(mix((*d00).x, (*d10).x, sx), mix((*d01).x, (*d11).x, sx), sy);
+  let age = mix(mix((*d00).y, (*d10).y, sx), mix((*d01).y, (*d11).y, sx), sy);
+  let decay = (1f + ((*p).dyeFade * (*p).dt));
+  let m = maskBuf[idx].x;
+  dyeB[idx] = vec4f((max((dens / decay), 0f) * m), min((age + (((*p).dt * 0.4f) * (*p).colorDecay)), 1f), 0f, 0f);
+}
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+fn smokeFillCopyDens(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let dd = (&dyeB[idx]);
+  dyeA[idx] = vec4f((*dd).x, (*dd).y, 0f, 0f);
+}
+@group(0) @binding(0) var<storage, read> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var outTex: texture_storage_2d<rgba16float, write>;
+
+fn smokeFillOutput(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let dd = (&dyeA[idx]);
+  textureStore(outTex, vec2u(cx, cy), vec4f((*dd).x, (*dd).y, 0f, 0f));
+}"
+`;
+
+exports[`fluids scaffold (b) the six consumers > SmokeFlow resolves its whole solver chain > SmokeFlow-kernels 1`] = `
+"struct FlowParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  emitGate: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FlowParams;
+
+fn gaussianBrushSq(distSq: f32, radiusSq: f32) -> f32 {
+  return exp(((distSq / radiusSq) * -1f));
+}
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFlowSplat(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let cellX = (f32(cx) + 0.5f);
+  let cellY = (f32(cy) + 0.5f);
+  let dx = (cellX - (*p).emitX);
+  let dy = (cellY - (*p).emitY);
+  let distSq = ((dx * dx) + (dy * dy));
+  let radSq = max(((*p).emitRad * (*p).emitRad), 1f);
+  let influence = (gaussianBrushSq(distSq, radSq) * (*p).emitGate);
+  let cell = (&dyeA[idx]);
+  let oldDens = (*cell).x;
+  let addDens = ((((*p).emitIntensity * influence) * (*p).dt) * 10f);
+  let newDens = min((oldDens + addDens), 1f);
+  let rejuvenate = (addDens / max(newDens, 0.0010000000474974513f));
+  dyeA[idx] = vec4f(newDens, ((*cell).y * (1f - min(rejuvenate, 1f))), 0f, 0f);
+  let vel = (&velA[idx]);
+  let br = min(((influence * (*p).dt) * 4f), 1f);
+  let gravForce = ((((*p).gravity * oldDens) * (*p).dt) * 20.48f);
+  velA[idx] = vec4f(mix((*vel).x, (*p).emitVelX, br), (mix((*vel).y, (*p).emitVelY, br) + gravForce), (*vel).z, 0f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFlowCurl(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let vL = (&velA[nidx(ii, ji, 0i, -1i)]);
+  let vR = (&velA[nidx(ii, ji, 0i, 1i)]);
+  let vU = (&velA[nidx(ii, ji, -1i, 0i)]);
+  let vD = (&velA[nidx(ii, ji, 1i, 0i)]);
+  let curlZ = ((((*vR).y - (*vL).y) - ((*vD).x - (*vU).x)) * 0.5f);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f((*vel).x, (*vel).y, curlZ, 0f);
+}
+struct FlowParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  emitGate: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FlowParams;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFlowVorticity(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let cL = abs(velA[nidx(ii, ji, 0i, -1i)].z);
+  let cR = abs(velA[nidx(ii, ji, 0i, 1i)].z);
+  let cU = abs(velA[nidx(ii, ji, -1i, 0i)].z);
+  let cD = abs(velA[nidx(ii, ji, 1i, 0i)].z);
+  let cc = velA[idx].z;
+  let gx = ((cR - cL) * 0.5f);
+  let gy = ((cD - cU) * 0.5f);
+  let gl = max(sqrt(((gx * gx) + (gy * gy))), 9.999999747378752e-6f);
+  let fx = ((((gy / gl) * cc) * (*p).curlStrength) * (*p).dt);
+  let fy = (((((gx / gl) * -1f) * cc) * (*p).curlStrength) * (*p).dt);
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x + fx), ((*vel).y + fy), (*vel).z, 0f);
+}
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn smokeFlowDivergence(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let jf = f32(cx);
+  let iF = f32(cy);
+  let selfVel = (&velA[idx]);
+  let normalL = velA[nidx(ii, ji, 0i, -1i)].x;
+  let normalR = velA[nidx(ii, ji, 0i, 1i)].x;
+  let normalU = velA[nidx(ii, ji, -1i, 0i)].y;
+  let normalD = velA[nidx(ii, ji, 1i, 0i)].y;
+  let L = select(normalL, ((*selfVel).x * -1f), (jf < 0.5f));
+  let R = select(normalR, ((*selfVel).x * -1f), (jf > 254.5f));
+  let T = select(normalU, ((*selfVel).y * -1f), (iF < 0.5f));
+  let B = select(normalD, ((*selfVel).y * -1f), (iF > 254.5f));
+  let div = (((R - L) + (B - T)) * 0.5f);
+  pressure[idx] = (pressure[idx] * 0.8f);
+  divergence[idx] = div;
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(5) var<storage, read_write> divergence: array<f32, 65536>;
+
+fn smokeFlowJacobi(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let div = divergence[idx];
+  pressure[idx] = (((((pL + pR) + pU) + pD) - div) * 0.25f);
+}
+fn nidx(ii: i32, ji: i32, di: i32, dj: i32) -> u32 {
+  let row = clamp((ii + di), 0i, 255i);
+  let col = clamp((ji + dj), 0i, 255i);
+  return u32(((row * 256i) + col));
+}
+
+@group(0) @binding(4) var<storage, read_write> pressure: array<f32, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFlowGradSubtract(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let ii = i32(cy);
+  let ji = i32(cx);
+  let pL = pressure[nidx(ii, ji, 0i, -1i)];
+  let pR = pressure[nidx(ii, ji, 0i, 1i)];
+  let pU = pressure[nidx(ii, ji, -1i, 0i)];
+  let pD = pressure[nidx(ii, ji, 1i, 0i)];
+  let vel = (&velA[idx]);
+  velA[idx] = vec4f(((*vel).x - ((pR - pL) * 0.5f)), ((*vel).y - ((pD - pU) * 0.5f)), (*vel).z, 0f);
+}
+struct FlowParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  emitGate: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FlowParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+fn smokeFlowAdvectVel(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let v00 = (&velA[u32(((iy0 * 256i) + ix0))]);
+  let v10 = (&velA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let v01 = (&velA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let v11 = (&velA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let decay = (1f + ((*p).velFade * (*p).dt));
+  velB[idx] = vec4f((mix(mix((*v00).x, (*v10).x, sx), mix((*v01).x, (*v11).x, sx), sy) / decay), (mix(mix((*v00).y, (*v10).y, sx), mix((*v01).y, (*v11).y, sx), sy) / decay), 0f, 0f);
+}
+@group(0) @binding(1) var<storage, read_write> velB: array<vec4f, 65536>;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+fn smokeFlowCopyVel(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let v = (&velB[idx]);
+  velA[idx] = vec4f((*v).x, (*v).y, 0f, 0f);
+}
+struct FlowParams {
+  dt: f32,
+  emitX: f32,
+  emitY: f32,
+  emitVelX: f32,
+  emitVelY: f32,
+  emitGate: f32,
+  emitRad: f32,
+  emitIntensity: f32,
+  dyeFade: f32,
+  velFade: f32,
+  curlStrength: f32,
+  gravity: f32,
+  colorDecay: f32,
+}
+
+@group(0) @binding(6) var<uniform> params: FlowParams;
+
+@group(0) @binding(0) var<storage, read_write> velA: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+fn smokeFlowAdvectDens(cx: u32, cy: u32) {
+  let p = (&params);
+  let idx = ((cy * 256u) + cx);
+  let vel = (&velA[idx]);
+  let srcX = clamp((f32(cx) - ((*vel).x * (*p).dt)), 0f, 255f);
+  let srcY = clamp((f32(cy) - ((*vel).y * (*p).dt)), 0f, 255f);
+  let x0 = clamp(floor(srcX), 0f, 254f);
+  let y0 = clamp(floor(srcY), 0f, 254f);
+  let sx = (srcX - x0);
+  let sy = (srcY - y0);
+  let ix0 = i32(x0);
+  let iy0 = i32(y0);
+  let d00 = (&dyeA[u32(((iy0 * 256i) + ix0))]);
+  let d10 = (&dyeA[u32((((iy0 * 256i) + ix0) + 1i))]);
+  let d01 = (&dyeA[u32((((iy0 + 1i) * 256i) + ix0))]);
+  let d11 = (&dyeA[u32(((((iy0 + 1i) * 256i) + ix0) + 1i))]);
+  let dens = mix(mix((*d00).x, (*d10).x, sx), mix((*d01).x, (*d11).x, sx), sy);
+  let age = mix(mix((*d00).y, (*d10).y, sx), mix((*d01).y, (*d11).y, sx), sy);
+  let decay = (1f + ((*p).dyeFade * (*p).dt));
+  dyeB[idx] = vec4f(max((dens / decay), 0f), min((age + (((*p).dt * 0.4f) * (*p).colorDecay)), 1f), 0f, 0f);
+}
+@group(0) @binding(3) var<storage, read_write> dyeB: array<vec4f, 65536>;
+
+@group(0) @binding(2) var<storage, read_write> dyeA: array<vec4f, 65536>;
+
+fn smokeFlowCopyDens(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let dd = (&dyeB[idx]);
+  dyeA[idx] = vec4f((*dd).x, (*dd).y, 0f, 0f);
+}
+@group(0) @binding(0) var<storage, read> dyeA: array<vec4f, 65536>;
+
+@group(0) @binding(1) var outTex: texture_storage_2d<rgba16float, write>;
+
+fn smokeFlowOutput(cx: u32, cy: u32) {
+  let idx = ((cy * 256u) + cx);
+  let dd = (&dyeA[idx]);
+  textureStore(outTex, vec2u(cx, cy), vec4f((*dd).x, (*dd).y, 0f, 0f));
+}"
+`;

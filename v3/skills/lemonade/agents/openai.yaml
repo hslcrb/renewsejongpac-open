@@ -1,0 +1,6 @@
+interface:
+  display_name: "lemonade"
+  short_description: "Unified UI, brand, motion, native and visual design"
+  icon_small: "./assets/brand/icon.png"
+  icon_large: "./assets/brand/logo.svg"
+  brand_color: "#173B2C"

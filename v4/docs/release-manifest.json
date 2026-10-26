@@ -1,0 +1,17 @@
+{
+    "version": "v4",
+    "date": "2026-10-16",
+    "entry": "v4/index.html",
+    "sourceVersion": "v3",
+    "sourceCommit": "b6b6d35fdcafecba34a7240fc89c6d7febdd06bf",
+    "foundationCommit": "dc701f2",
+    "featureCommit": "f8272d6",
+    "integrationCommit": "6272dd8",
+    "preservedV3Tree": "923efc723bbf5eca81df41d5aa305b181c0976ff",
+    "publishedRoutes": 140,
+    "nodeTestsPassed": 66,
+    "routeViewportChecksPassed": 420,
+    "motionChecksPassed": 14,
+    "independentReview": "approved",
+    "deployment": "Static source. Remote Git delivery does not itself assert a hosting deployment."
+}

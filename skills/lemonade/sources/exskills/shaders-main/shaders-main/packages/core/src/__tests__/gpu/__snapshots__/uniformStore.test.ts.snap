@@ -1,0 +1,38 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`uniformStore — WGSL schema validity (resolve gate) > the combined struct resolves to valid WGSL 1`] = `
+"struct struct_1 {
+  speed: f32,
+  center: vec2f,
+  color: vec4f,
+  colors: array<vec4f, 8>,
+}
+
+struct padded {
+  opacity: f32,
+  _pad0: f32,
+  _pad1: f32,
+  _pad2: f32,
+}
+
+struct padded_1 {
+  time: f32,
+  deltaTime: f32,
+  frame: f32,
+  viewportSize: vec2f,
+  logicalViewportSize: vec2f,
+  aspect: f32,
+  pointer: vec2f,
+  pointerActive: f32,
+  _pad0: f32,
+  _pad1: f32,
+}
+
+struct combined {
+  n_a: struct_1,
+  n_b: padded,
+  _sys: padded_1,
+}
+
+@group(0) @binding(0) var<uniform> uniforms: combined;"
+`;

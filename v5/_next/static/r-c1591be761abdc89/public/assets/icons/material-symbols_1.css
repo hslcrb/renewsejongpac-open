@@ -1,0 +1,3461 @@
+
+/* [가독성 크기 체계 / Readable type scale]
+   보조 글자는 defaults.css의 최소 크기를 사용합니다.
+   Supporting text uses the minimum size defined in defaults.css. */
+.info-page {
+    padding-bottom: clamp(72px, 8vw, 128px);
+}
+.info-page p {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: 1.75;
+}
+.info-page h2,
+.info-page h3 {
+    color: var(--ink);
+    letter-spacing: -0.045em;
+}
+.info-section {
+    margin-bottom: 72px;
+}
+.info-section-heading h2 {
+    font-size: max(var(--text-min), clamp(26px, 3vw, 38px));
+    font-weight: 650;
+}
+.overview-intro {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    grid-gap: clamp(32px, 5vw, 72px);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+    padding: 14px 0 64px;
+}
+.overview-intro-copy h2,
+.institution-story-heading h2,
+.news-editorial-copy h2 {
+    margin: 24px 0;
+    font-family: var(--display-font);
+    font-size: max(var(--text-min), clamp(34px, 4.1vw, 58px));
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.055em;
+}
+.overview-intro-copy > p,
+.institution-story-heading > p,
+.news-editorial-copy > p {
+    max-width: 440px;
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.8;
+}
+.overview-intro-media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background: var(--soft);
+    aspect-ratio: 1.16;
+}
+.overview-intro-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.overview-quick-facts {
+    display: grid;
+    grid-template-columns: 1.1fr 1.2fr 0.8fr;
+    margin: 0;
+    padding: 28px 0;
+    border-top: 1px solid var(--border-default);
+    border-bottom: 1px solid var(--line);
+}
+.overview-quick-facts > div {
+    padding: 0 30px;
+    border-left: 1px solid var(--line);
+}
+.overview-quick-facts > div:first-child {
+    padding-left: 0;
+    border-left: 0;
+}
+.overview-quick-facts dt {
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.overview-quick-facts dd {
+    margin: 0;
+    font-size: max(var(--text-min), 17px);
+    font-weight: 600;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+.overview-section {
+    padding-top: clamp(64px, 8vw, 112px);
+}
+.overview-section-heading {
+    margin-bottom: 36px;
+}
+.overview-section-heading h2,
+.overview-help h2,
+.identity-story h2 {
+    margin: 16px 0 20px;
+    font-size: max(var(--text-min), clamp(29px, 3.2vw, 44px));
+    font-weight: 650;
+    line-height: 1.3;
+}
+.overview-section-heading p {
+    max-width: 370px;
+}
+.overview-services {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-gap: 0 48px;
+    gap: 0 48px;
+}
+.overview-service {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) 24px;
+    grid-gap: 16px;
+    gap: 16px;
+    align-items: start;
+    padding: 32px 0;
+    border-top: 1px solid var(--line);
+}
+.overview-service-number {
+    padding-top: 6px;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 650;
+    letter-spacing: 0.04em;
+}
+.overview-service h3 {
+    margin: 0 0 10px;
+    font-size: max(var(--text-min), 23px);
+    font-weight: 650;
+}
+.overview-service p {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.overview-service > svg {
+    margin-top: 4px;
+}
+.overview-service:hover h3,
+.news-editorial-feature:hover h3 {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-decoration-thickness: 1px;
+}
+.overview-help {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    grid-gap: 56px;
+    gap: 56px;
+    align-items: center;
+    margin-top: 72px;
+    padding: clamp(28px, 4vw, 56px);
+    background: var(--color-detail-eff8fa);
+}
+.overview-help h2 {
+    margin-top: 18px;
+}
+.overview-help-links .text-link {
+    display: flex;
+    justify-content: space-between;
+    padding: 23px 0;
+    border-bottom: 1px solid var(--border-default);
+    font-size: max(var(--text-min), 18px);
+}
+.overview-process {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: 36px;
+    gap: 36px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.overview-process li {
+    padding-top: 26px;
+    border-top: 1px solid var(--border-default);
+}
+.overview-process li > span {
+    color: var(--earth);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 700;
+}
+.overview-process h3 {
+    margin: 32px 0 14px;
+    font-size: max(var(--text-min), 25px);
+}
+.overview-process .text-link {
+    margin-top: 24px;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.overview-section-split {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    grid-gap: 72px;
+    gap: 72px;
+}
+.overview-section-split .overview-services {
+    grid-template-columns: 1fr;
+}
+.institution-story-heading {
+    padding: 8px 0 38px;
+}
+.institution-story-heading > p {
+    max-width: 650px;
+}
+.institution-story figure {
+    margin: 0;
+}
+.institution-story figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 540px;
+    object-fit: cover;
+    object-position: center 45%;
+    border-radius: var(--radius-media);
+}
+/* [소개 하단 도형의 선별 복구 / Selective restoration of the identity diagram]
+   최신 사용자 지시에 따라 이 영역만 복구하고 제거한 머리말·캡션은 유지합니다.
+   Restore this diagram only, preserving the earlier removal of labels and captions. */
+.identity-story {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    grid-gap: 56px;
+    gap: 56px;
+    align-items: center;
+    margin-top: 80px;
+    padding: clamp(28px, 4vw, 56px);
+    background: var(--ink);
+    color: var(--color-white);
+}
+.identity-story h2 {
+    color: var(--color-white);
+}
+.identity-story p {
+    color: var(--color-detail-bfc4ca);
+}
+.identity-story .text-link {
+    margin-top: 16px;
+    color: var(--color-white);
+}
+.identity-story-channels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: 18px;
+    gap: 18px;
+    align-items: end;
+}
+.identity-channel {
+    min-width: 0;
+}
+.identity-channel strong,
+.identity-channel small {
+    display: block;
+    font-weight: 500;
+}
+.identity-channel strong {
+    margin: 26px 0 8px;
+    font-size: max(var(--text-min), 20px);
+}
+.identity-channel small {
+    color: var(--color-detail-bfc4ca);
+    font-size: max(var(--text-min), var(--text-sm));
+    letter-spacing: 0.04em;
+}
+.identity-shape {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+}
+.identity-channel-sky .identity-shape {
+    border-radius: 50%;
+    background: var(--sky);
+}
+.identity-channel-earth .identity-shape {
+    background: var(--earth);
+    -webkit-clip-path: polygon(0 55%, 100% 55%, 100% 85%, 0 85%);
+    clip-path: polygon(0 55%, 100% 55%, 100% 85%, 0 85%);
+}
+.identity-channel-human .identity-shape {
+    background: var(--human);
+    -webkit-clip-path: polygon(40% 0, 60% 0, 100% 100%, 75% 100%, 50% 38%, 25% 100%, 0 100%);
+    clip-path: polygon(40% 0, 60% 0, 100% 100%, 75% 100%, 50% 38%, 25% 100%, 0 100%);
+}
+.overview-service.overview-service--plain {
+    grid-template-columns: minmax(0, 1fr) 24px;
+}
+.news-editorial {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    grid-gap: 64px;
+    gap: 64px;
+    align-items: center;
+    padding: 16px 0 32px;
+}
+.news-editorial-copy .text-link {
+    margin-top: 20px;
+}
+.news-editorial-feature img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1.65;
+    object-fit: cover;
+    border-radius: var(--radius-media);
+}
+.news-editorial-feature > div {
+    position: relative;
+    padding: 23px 36px 0 0;
+}
+.news-editorial-feature h3 {
+    margin: 12px 0 0;
+    font-size: max(var(--text-min), 25px);
+    line-height: 1.45;
+}
+.news-editorial-feature > div > svg {
+    position: absolute;
+    top: 46px;
+    right: 0;
+}
+.news-overview-notices .overview-section-heading .text-link {
+    margin-top: 6px;
+}
+.info-link-card {
+    min-height: 180px;
+    border-color: var(--line);
+}
+.info-link-card p {
+    font-size: max(var(--text-min), 16px);
+}
+.info-tabs {
+    gap: 30px;
+    border-color: var(--line);
+}
+.info-tabs a,
+.info-chips a {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.info-chips a[aria-current] {
+    background: var(--ink);
+    border-color: var(--stroke-selected);
+    color: var(--color-white);
+}
+.info-note {
+    padding: 24px 28px;
+    border-left: 1px solid var(--border-default);
+    background: var(--soft);
+}
+.info-note p,
+.info-note strong {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.info-table,
+.info-facts > div {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.info-table thead,
+.info-rail {
+    background: var(--soft);
+}
+.info-table th,
+.info-table td,
+.info-facts > div {
+    border-color: var(--line);
+}
+.info-facts dd {
+    color: var(--muted);
+}
+.info-search input,
+.info-filter select,
+.newsletter-subscribe input[type="email"] {
+    min-height: 52px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-control);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: max(var(--text-min), 16px);
+}
+.faq-list summary {
+    padding: 27px 0;
+    font-size: max(var(--text-min), 19px);
+    line-height: 1.5;
+}
+.faq-category {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.faq-answer {
+    padding: 0 40px 28px 95px;
+}
+.faq-answer p {
+    font-size: max(var(--text-min), 16px);
+}
+.notice-row {
+    padding: 26px 0;
+    border-color: var(--line);
+}
+.notice-row h3 {
+    font-size: max(var(--text-min), 19px);
+    line-height: 1.5;
+}
+.notice-row time,
+.notice-category {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.venue-row-image,
+.venue-detail-hero,
+.info-map,
+.ci-specimen {
+    overflow: hidden;
+    border-radius: var(--radius-media);
+}
+.ci-specimen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 64px 24px;
+    background: var(--soft);
+}
+.ci-specimen img {
+    width: min(100%, 360px);
+    height: auto;
+}
+.ci-specimen > small {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+    letter-spacing: 0.08em;
+}
+.identity-palette {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-gap: 22px;
+    gap: 22px;
+    margin-top: 40px;
+}
+.identity-swatch > div {
+    height: 130px;
+    border: 1px solid var(--line);
+    border-radius: var(--surface-radius-compact);
+    background: var(--swatch);
+}
+.identity-swatch h3 {
+    margin: 18px 0 10px;
+    font-size: max(var(--text-min), 18px);
+}
+.identity-swatch p {
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.85;
+    word-break: normal;
+}
+.identity-swatch-black {
+    --swatch: var(--color-black);
+}
+.identity-swatch-sky {
+    --swatch: var(--sky);
+}
+.identity-swatch-earth {
+    --swatch: var(--earth);
+}
+.identity-swatch-human {
+    --swatch: var(--human);
+}
+.identity-swatch-white {
+    --swatch: var(--color-white);
+}
+.sitemap-group h2,
+.search-result h2,
+.english-grid h2 {
+    letter-spacing: -0.04em;
+}
+.sitemap-group a,
+.search-result p,
+.policy-content p,
+.english-grid p {
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.75;
+}
+.search-results-form input {
+    min-width: 0;
+    min-height: 58px;
+    border-radius: var(--radius-control);
+    font-size: max(var(--text-min), 18px);
+}
+@media (max-width: 1000px) {
+    .overview-intro,
+    .news-editorial {
+        gap: 32px;
+    }
+    .overview-section-split {
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 40px;
+    }
+    .identity-story {
+        grid-template-columns: 1fr;
+    }
+    .identity-palette {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .overview-process {
+        gap: 24px;
+    }
+}
+@media (max-width: 720px) {
+    .overview-intro,
+    .news-editorial,
+    .overview-section-split,
+    .overview-help {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+    .overview-intro {
+        padding: 0 0 36px;
+    }
+    .overview-intro-media {
+        aspect-ratio: 1.5;
+    }
+    .overview-intro-copy > p,
+    .institution-story-heading > p,
+    .news-editorial-copy > p {
+        font-size: max(var(--text-min), 16px);
+    }
+    .overview-intro-copy h2,
+    .institution-story-heading h2,
+    .news-editorial-copy h2 {
+        font-size: max(var(--text-min), clamp(31px, 8vw, 42px));
+    }
+    .overview-quick-facts {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+    .overview-quick-facts > div,
+    .overview-quick-facts > div:first-child {
+        display: grid;
+        grid-template-columns: 62px minmax(0, 1fr);
+        grid-gap: 16px;
+        gap: 16px;
+        padding: 0;
+        border: 0;
+    }
+    .overview-quick-facts dt {
+        margin: 0;
+        padding-top: 3px;
+    }
+    .overview-quick-facts dd {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .overview-services,
+    .overview-process {
+        grid-template-columns: 1fr;
+    }
+    .overview-service {
+        grid-template-columns: 32px minmax(0, 1fr) 22px;
+        gap: 12px;
+        padding: 26px 0;
+    }
+    .overview-service h3 {
+        font-size: max(var(--text-min), 21px);
+    }
+    .overview-service p {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .overview-section-heading {
+        margin-bottom: 28px;
+    }
+    .overview-help {
+        margin-top: 44px;
+    }
+    .overview-help-links .text-link {
+        padding: 19px 0;
+        font-size: max(var(--text-min), 16px);
+    }
+    .overview-process {
+        gap: 32px;
+    }
+    .overview-process h3 {
+        margin-top: 20px;
+        font-size: max(var(--text-min), 23px);
+    }
+    .identity-story {
+        margin-top: 44px;
+    }
+    .identity-channel small {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .institution-story figure img {
+        aspect-ratio: 1.4;
+        object-fit: cover;
+    }
+    .news-editorial-feature h3 {
+        font-size: max(var(--text-min), 22px);
+    }
+    .identity-palette {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 26px 16px;
+    }
+    .identity-swatch > div {
+        height: 100px;
+    }
+    .info-note {
+        padding: 20px;
+    }
+    .info-note p,
+    .info-note strong {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .faq-list summary {
+        font-size: max(var(--text-min), 17px);
+    }
+    .faq-answer {
+        padding: 0 0 24px;
+    }
+    .faq-answer p {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .notice-row h3 {
+        font-size: max(var(--text-min), 17px);
+    }
+    .notice-row time {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+}
+/* [복구한 도형의 반응형 / Responsive restored diagram] */
+@media (max-width: 900px) {
+    .identity-story-channels {
+        max-width: 440px;
+    }
+}
+@media (max-width: 600px) {
+    .identity-story-channels {
+        gap: 14px;
+    }
+    .identity-channel strong {
+        font-size: max(var(--text-min), var(--text-body));
+    }
+}
+/* [가독성 크기 체계 / Readable type scale]
+   보조 글자는 defaults.css의 최소 크기를 사용합니다.
+   Supporting text uses the minimum size defined in defaults.css. */
+.flow-content {
+    padding-top: 12px;
+    padding-bottom: 100px;
+}
+.flow-demo {
+    gap: 16px;
+    margin-bottom: 40px;
+    padding: 20px 24px;
+    border: 0;
+    border-radius: var(--surface-radius-compact);
+    background: var(--soft);
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.flow-demo p {
+    gap: 6px;
+    line-height: 1.7;
+}
+.flow-demo strong {
+    color: var(--ink);
+    font-size: max(var(--text-min), var(--text-sm));
+    letter-spacing: 0;
+}
+.flow-panel {
+    padding: clamp(24px, 3vw, 44px);
+    border: 1px solid var(--line);
+    border-radius: var(--surface-radius-panel);
+    background: var(--paper);
+}
+.flow-panel h2,
+.flow-panel-heading h2 {
+    color: var(--ink);
+    font-size: max(var(--text-min), 28px);
+    font-weight: 650;
+    line-height: 1.4;
+    letter-spacing: -0.04em;
+}
+.flow-kicker {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+    letter-spacing: 0.08em;
+}
+.flow-panel-heading p,
+.flow-fineprint,
+.flow-consent,
+.flow-info-box,
+.flow-review-list > div,
+.flow-detail-list > div {
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.7;
+}
+/* [보존 폼의 범위 / Legacy form scope]
+   공통 필드의 규격과 상태는 system-primitives.css만 소유합니다.
+   Shared field dimensions and states belong to system-primitives.css. */
+.flow-page .form-field:not([data-component="field"]) label {
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 600;
+}
+.flow-page .form-field:not([data-component="field"]) input:not([type="checkbox"]):not([type="radio"]),
+.flow-page .form-field:not([data-component="field"]) select,
+.flow-page .form-field:not([data-component="field"]) textarea {
+    min-height: 54px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-flow);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.5;
+}
+.flow-page .form-field:not([data-component="field"]) input:not([type="checkbox"]):not([type="radio"]):focus,
+.flow-page .form-field:not([data-component="field"]) select:focus,
+.flow-page .form-field:not([data-component="field"]) textarea:focus {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+    border-color: var(--border-default);
+}
+.flow-page .form-field:not([data-component="field"]) [aria-invalid="true"] {
+    border-color: var(--border-default);
+    outline-color: var(--semantic-error-border);
+}
+.flow-page .form-field:not([data-component="field"]) small {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.flow-page .button {
+    min-height: 50px;
+    padding: 14px 22px;
+    border-radius: var(--radius-flow);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 600;
+    line-height: 1.45;
+}
+.flow-page .button--dark {
+    border-color: var(--border-default);
+    background: var(--ink);
+    color: var(--color-white);
+}
+.flow-page .button--yellow {
+    border-color: var(--border-default);
+    background: var(--human);
+    color: var(--color-black);
+}
+.flow-page .button--outline {
+    border-color: var(--line);
+    background: var(--paper);
+    color: var(--ink);
+}
+.flow-page .button:hover {
+    filter: none;
+    opacity: 85%;
+}
+.flow-actions {
+    gap: 16px;
+    border-color: var(--line);
+}
+.flow-steps {
+    margin-bottom: 40px;
+}
+.flow-steps li {
+    gap: 10px;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.flow-steps li > span {
+    width: 30px;
+    height: 30px;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.flow-steps li.is-current > span {
+    background: var(--ink);
+    color: var(--color-white);
+}
+.flow-steps li.is-complete > span {
+    background: var(--sky);
+    color: var(--color-black);
+}
+.flow-radio-choice span {
+    border-radius: var(--radius-flow);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.flow-radio-choice input:checked + span {
+    border-color: var(--stroke-selected);
+    background: var(--human);
+    color: var(--color-black);
+}
+.flow-info-box {
+    border-radius: var(--surface-radius-compact);
+    background: var(--soft);
+}
+.booking-layout {
+    grid-template-columns: minmax(0, 1fr) 350px;
+    gap: 32px;
+}
+.booking-summary {
+    top: 110px;
+    padding: 30px;
+    border-top: 1px solid var(--border-default);
+    border-radius: 0 0 var(--surface-radius-panel) var(--surface-radius-panel);
+    background: var(--soft);
+}
+.booking-summary__program {
+    gap: 18px;
+}
+.booking-summary__program img,
+.account-booking > img {
+    border-radius: var(--radius-media);
+}
+.booking-summary__program h3 {
+    font-size: max(var(--text-min), 19px);
+    line-height: 1.5;
+}
+.booking-summary__program p {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.booking-total {
+    border-color: var(--line);
+}
+.booking-total strong {
+    font-size: max(var(--text-min), 30px);
+    letter-spacing: -0.04em;
+}
+.flow-error {
+    border-radius: var(--surface-radius-compact);
+    color: var(--color-detail-a71910);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.seat-map {
+    overflow-x: auto;
+    padding: 6px 0 18px;
+    overscroll-behavior-inline: contain;
+}
+.seat-rows {
+    min-width: 440px;
+    gap: 9px;
+}
+.seat-row {
+    grid-template-columns: 18px repeat(12, minmax(28px, 1fr));
+    gap: 6px;
+}
+.flow-page .seat {
+    min-height: 32px;
+    border-radius: 5px;
+}
+.seat.is-selected,
+.seat-legend i.selected {
+    border-color: var(--stroke-selected);
+    background: var(--human);
+    color: var(--color-black);
+    outline: 0;
+    box-shadow: inset 0 0 0 1px var(--stroke-selected);
+}
+.seat-legend span,
+.seat-caption {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.flow-consent input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--ink);
+}
+.flow-receipt {
+    padding: clamp(28px, 4vw, 56px);
+    border: 1px solid var(--line);
+    border-radius: var(--surface-radius-panel);
+}
+.receipt-check {
+    background: var(--sky);
+    color: var(--color-black);
+}
+.receipt-reference {
+    border-radius: var(--radius-control);
+    background: var(--soft);
+}
+.receipt-reference strong {
+    font-size: max(var(--text-min), 16px);
+    overflow-wrap: anywhere;
+}
+.account-nav {
+    gap: 28px;
+    border-color: var(--line);
+}
+.account-nav a {
+    padding-bottom: 18px;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.account-welcome h2 {
+    font-family: var(--display-font);
+    font-size: max(var(--text-min), clamp(34px, 4vw, 52px));
+    font-weight: 600;
+    letter-spacing: -0.05em;
+}
+.account-welcome p,
+.account-feature p {
+    color: var(--muted);
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.7;
+}
+.account-stats {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--surface-radius-panel);
+    background: var(--paper);
+}
+.account-stats a {
+    padding: 28px;
+    border-color: var(--line);
+}
+.account-stats a > span {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.account-stats strong {
+    font-size: max(var(--text-min), 36px);
+}
+.account-feature {
+    margin-top: 40px;
+    padding: 36px;
+    background: var(--color-detail-eff8fa);
+}
+.account-feature h3 {
+    font-size: max(var(--text-min), 28px);
+    letter-spacing: -0.04em;
+}
+.account-booking h3 {
+    font-size: max(var(--text-min), 23px);
+}
+.account-booking p,
+.application-record summary p {
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.7;
+}
+.flow-tag {
+    border-radius: var(--radius-control);
+    background: var(--color-detail-eff8fa);
+    color: var(--color-detail-174d5c);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.account-auth-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    max-width: 1080px;
+    gap: clamp(36px, 6vw, 84px);
+}
+.account-auth-intro {
+    min-height: 0;
+    padding: 18px 0 0;
+    overflow: visible;
+    background: var(--color-detail-j5afio);
+}
+.account-auth-intro .flow-kicker {
+    color: var(--muted);
+}
+.account-auth-intro h2 {
+    margin: 20px 0;
+    font-family: var(--display-font);
+    font-size: max(var(--text-min), clamp(30px, 3.1vw, 44px));
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.05em;
+}
+.account-auth-intro p {
+    max-width: 350px;
+    color: var(--muted);
+    font-size: max(var(--text-min), 17px);
+    line-height: 1.75;
+}
+.account-auth-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 36px;
+    border-radius: var(--radius-media);
+    aspect-ratio: 1.45;
+    object-fit: cover;
+}
+.account-auth-caption {
+    display: block;
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.account-auth-layout .flow-panel {
+    padding: 36px;
+}
+.account-auth-links a {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.account-narrow {
+    max-width: 680px;
+}
+@media (max-width: 1000px) {
+    .booking-layout {
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 24px;
+    }
+    .booking-summary {
+        padding: 24px;
+    }
+}
+@media (max-width: 800px) {
+    .booking-layout,
+    .account-auth-layout {
+        grid-template-columns: 1fr;
+    }
+    .booking-summary {
+        position: static;
+        order: 0;
+    }
+    .account-auth-intro {
+        display: block;
+        padding: 0;
+    }
+    .account-auth-photo,
+    .account-auth-caption {
+        display: none;
+    }
+    .account-auth-intro p {
+        max-width: 100%;
+        font-size: max(var(--text-min), 16px);
+    }
+    .account-auth-layout .flow-panel {
+        padding: 28px;
+    }
+}
+@media (max-width: 560px) {
+    .flow-content {
+        padding-top: 0;
+        padding-bottom: 72px;
+    }
+    .flow-panel {
+        padding: 24px 20px;
+    }
+    .flow-panel h2,
+    .flow-panel-heading h2 {
+        font-size: max(var(--text-min), 24px);
+    }
+    .flow-demo {
+        padding: 18px;
+        margin-bottom: 28px;
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .flow-steps {
+        gap: 8px;
+        margin-bottom: 28px;
+    }
+    .flow-steps li {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .flow-steps li::after {
+        display: none;
+    }
+    .flow-steps li > span {
+        width: 28px;
+        height: 28px;
+    }
+    .flow-page .button {
+        padding: 13px 17px;
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .flow-detail-list > div,
+    .flow-review-list > div {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .flow-review-list > div {
+        grid-template-columns: 88px minmax(0, 1fr);
+    }
+    .seat-row {
+        grid-template-columns: 18px repeat(12, minmax(28px, 1fr));
+        gap: 6px;
+    }
+    /* The compatibility stylesheet declares an important 8px seat label. */
+    .flow-page .seat {
+        font-size: max(var(--text-min), var(--text-sm)) !important;
+    }
+    .seat-legend span {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .flow-fineprint,
+    .flow-consent,
+    .flow-info-box {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .account-nav {
+        gap: 16px;
+    }
+    .account-nav a {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .account-stats a {
+        padding: 22px 12px;
+    }
+    .account-stats a > span {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .account-stats strong {
+        font-size: max(var(--text-min), 30px);
+    }
+    .account-feature {
+        padding: 28px 24px;
+    }
+    .account-feature h3 {
+        font-size: max(var(--text-min), 24px);
+    }
+    .account-auth-layout .flow-panel {
+        padding: 24px;
+    }
+    .account-auth-layout {
+        gap: 24px;
+    }
+    .account-auth-intro h2 {
+        font-size: max(var(--text-min), 32px);
+    }
+    .receipt-reference strong {
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+}
+/* [공통 카드 입력과 미디어 / Shared card input and media]
+   카드-히어로·카드-포스터·카드-배너의 드래그와 크롭 규칙을 공유합니다.
+   Hero, poster and banner cards share input and proportional media rules. */
+.card {
+    position: relative;
+    min-width: 0;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.card * {
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+}
+/* [카드-포스터 / Card-poster] */
+.card--poster {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: var(--color-detail-j5afio);
+    box-shadow: none;
+}
+.card-poster-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+}
+.poster-media,
+.card--poster .program-art,
+.card-poster-actions {
+    aspect-ratio: 3 / 4;
+}
+.poster-media,
+.card--poster .program-art {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background: var(--color-detail-f0f1ef);
+}
+.poster-media img,
+.card--poster .program-art img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    object-fit: cover;
+    max-height: none;
+    transform: none;
+}
+.poster-tag {
+    position: absolute;
+    inset: 14px auto auto 14px;
+    padding: 5px 9px;
+    border-radius: var(--radius-control);
+    background: var(--color-white);
+    color: var(--ink);
+    font-size: max(var(--text-min), var(--text-meta));
+    font-weight: var(--weight-title);
+}
+.poster-tag.today {
+    background: var(--human);
+}
+/* [포스터 하단 관심 버튼 / Favorite at the poster bottom]
+   링크와 독립된 이미지 크기의 영역으로 하트를 고정하고 포스터 클릭을 유지합니다.
+   Match the media bounds outside the link, allowing clicks through the overlay. */
+.card-poster-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+}
+.card--poster .favorite-button {
+    position: absolute;
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    width: var(--control-size);
+    height: var(--control-size);
+    border: 0;
+    border-radius: 50%;
+    color: var(--ink);
+    background: var(--color-white);
+    opacity: 0;
+    pointer-events: none;
+    transform: none;
+    transition: opacity 180ms ease;
+}
+.card--poster:is(:hover, :focus-within) .favorite-button {
+    opacity: 1;
+    pointer-events: auto;
+}
+.card--poster .favorite-button.selected {
+    background: var(--human);
+    opacity: 1;
+    pointer-events: auto;
+}
+.card--poster .program-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin: 20px 0 8px;
+    padding: 0;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-meta));
+}
+.card--poster h3 {
+    min-height: 0;
+    margin: 0 0 12px;
+    padding: 0;
+    font-size: max(var(--text-min), var(--text-card-title));
+    font-weight: var(--weight-title);
+    line-height: 1.5;
+}
+.card--poster :is(.program-card-date, .program-card-venue) {
+    margin: 4px 0 0;
+    padding: 0;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-meta));
+    line-height: 1.7;
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+/* [카드-히어로와 트랙 / Card-hero and track]
+   전환마다 새 검은 막을 붙이지 않고 고정 pseudo-element의 opacity를 보간합니다.
+   Interpolate a persistent shade instead of inserting a dark overlay on each change. */
+.season-stage {
+    touch-action: pan-y;
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+.season-stage[data-dragging="true"] {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}
+.season-track {
+    display: flex;
+    gap: var(--slide-gap);
+    width: max-content;
+    margin-left: calc((100% - var(--slide-width)) / 2);
+    transform: translate3d(calc(-2 * (var(--slide-width) + var(--slide-gap)) + var(--drag-x, 0px)), 0, 0);
+}
+.season-track.is-moving {
+    transition: transform var(--carousel-duration, 800ms) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.card--hero {
+    isolation: isolate;
+    width: var(--slide-width);
+    min-height: clamp(500px, 39vw, 600px);
+    flex: 0 0 var(--slide-width);
+    overflow: hidden;
+    border-radius: var(--radius-banner);
+    background: var(--color-detail-10100e);
+    color: var(--color-white);
+}
+.card--hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: var(--color-black);
+    opacity: 0.32;
+    transition: opacity 650ms ease;
+}
+.card--hero.is-active::before {
+    opacity: 0;
+}
+.card--hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--color-detail-1u8jjjy), var(--color-detail-1jw7hzj) 80%);
+}
+.season-card-link {
+    display: block;
+    min-height: inherit;
+    height: 100%;
+    color: inherit;
+}
+.card--hero .season-image {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    object-fit: cover;
+    object-position: 64% center;
+}
+.season-copy {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: inherit;
+    padding: clamp(32px, 4.6vw, 72px);
+    opacity: 0;
+    transition: opacity 650ms ease;
+}
+.is-active .season-copy {
+    opacity: 1;
+}
+.season-label {
+    margin: 0 0 24px;
+    font-size: max(var(--text-min), var(--text-meta));
+    font-weight: 550;
+}
+.season-copy h2 {
+    margin: 0 0 30px;
+    font-size: max(var(--text-min), var(--text-hero-standalone));
+    font-weight: 650;
+    line-height: 1.22;
+    letter-spacing: -0.055em;
+}
+.season-name {
+    margin: 0 0 8px;
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: 600;
+    line-height: 1.5;
+}
+.season-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 0 0 28px;
+    font-size: max(var(--text-min), var(--text-meta));
+}
+/* [카드-배너 / Card-banner] */
+.card--banner {
+    overflow: hidden;
+    padding: 0;
+    border-radius: var(--radius-banner);
+    background: var(--sky);
+    color: var(--ink);
+}
+.card-banner-link {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+    padding: 48px 64px;
+    color: inherit;
+}
+.card--banner h2 {
+    margin: 0 0 22px;
+    font-size: max(var(--text-min), clamp(28px, 2.8vw, 38px));
+    line-height: 1.35;
+}
+.invitation-art {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 260px;
+    padding-right: 24px;
+    line-height: 0.9;
+}
+.invitation-art > span {
+    position: relative;
+    z-index: 1;
+    font-size: max(var(--text-min), 72px);
+    font-weight: 750;
+    letter-spacing: -0.07em;
+}
+.invitation-art b {
+    position: relative;
+    z-index: 1;
+    margin-top: 12px;
+    font-size: max(var(--text-min), 40px);
+    font-weight: 650;
+    letter-spacing: -0.045em;
+}
+.invitation-art i {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    width: 180px;
+    height: 180px;
+    border: 1px solid var(--color-detail-1lavb2t);
+    border-radius: 50%;
+}
+@media (hover: none), (pointer: coarse) {
+    .card--poster .favorite-button {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+@media (max-width: 800px) {
+    .card--hero {
+        min-height: 510px;
+    }
+    .season-copy {
+        padding: 36px;
+    }
+    .season-copy h2 {
+        font-size: max(var(--text-min), var(--text-hero-standalone));
+    }
+    .card-banner-link {
+        padding: 36px;
+        gap: 24px;
+    }
+    .invitation-art {
+        min-width: 160px;
+    }
+    .invitation-art > span {
+        font-size: max(var(--text-min), 58px);
+    }
+    .invitation-art b {
+        font-size: max(var(--text-min), 30px);
+    }
+    .invitation-art i {
+        width: 140px;
+        height: 140px;
+    }
+}
+@media (max-width: 600px) {
+    .card--hero {
+        min-height: 540px;
+    }
+    .card--hero .season-image {
+        object-position: 72% center;
+    }
+    .card--hero::after {
+        background: linear-gradient(0deg, var(--color-detail-d9gs3q), var(--color-detail-vgt87r) 90%);
+    }
+    .season-copy {
+        justify-content: flex-end;
+        padding: 28px 24px;
+    }
+    .season-label {
+        margin-bottom: 14px;
+    }
+    .season-copy h2 {
+        font-size: max(var(--text-min), var(--text-hero-standalone));
+        margin-bottom: 20px;
+    }
+    .season-meta {
+        gap: 4px 12px;
+        margin-bottom: 22px;
+    }
+    .season-copy .button {
+        padding: 12px 18px;
+        font-size: max(var(--text-min), var(--text-sm));
+    }
+    .card-banner-link {
+        padding: 30px 26px;
+    }
+    .card--banner h2 {
+        font-size: max(var(--text-min), 28px);
+    }
+    .invitation-art {
+        display: none;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .card--hero::before, .season-copy, .card--poster .favorite-button {
+        transition-duration: 0.01ms;
+    }
+}
+/* [공통 정보 위계 / Shared information hierarchy]
+   작은 제목은 20px/650, 실제 설명은 18px로 역할에 따라 조정합니다.
+   Use 20px/650 for item titles and 18px for explanatory copy. */
+.news-editorial-list h3,
+.booking-summary__program h3,
+.program-filter-intro h2,
+.flow-form-section-title,
+.notice-row h3,
+.org-branches h3,
+.identity-swatch h3,
+.info-link-card h3,
+.overview-service h3,
+.program-season-shortcut strong {
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+}
+.faq-answer p,
+.english-grid p,
+.news-editorial-copy > p,
+.info-link-card p,
+.info-section-heading p,
+.overview-service p {
+    font-size: max(var(--text-min), var(--text-body));
+}
+/* [띠 박스 없는 안내 / Notices without stripe boxes]
+   체험·접수·이용 조건은 보존하고 색 띠·회색 박스만 없앱니다.
+   Preserve demo and service conditions while removing colored bars and tinted boxes. */
+.info-note, .demo-note, .flow-demo {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: var(--color-detail-j5afio);
+    box-shadow: none;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-body));
+}
+.info-note strong, .flow-demo strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--ink);
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: var(--weight-title);
+}
+.info-note p, .flow-demo p, .flow-demo span {
+    margin: 0;
+    font-size: max(var(--text-min), var(--text-body));
+    line-height: var(--leading-body);
+}
+.program-season-shortcut {
+    padding: 8px 0;
+    border: 0;
+    background: var(--color-detail-j5afio);
+}
+#search-dialog .dialog-top {
+    justify-content: flex-end;
+}
+.info-page .info-lead {
+    font-size: max(var(--text-min), var(--text-lead));
+}
+/* [모바일 항목 제목도 같은 위계 / Keep item hierarchy on mobile]
+   큰 데스크톱 제목은 유지하고 작은 화면의 단계·목록 제목만 20px로 맞춥니다.
+   Preserve larger desktop headings and use the shared item scale on compact screens. */
+@media (max-width: 600px) {
+    .program-guide-steps h3,
+    .info-steps h3,
+    .info-selected h3,
+    .goods-grid h2,
+    .magazine-grid h2,
+    .history-timeline h3 {
+        font-size: max(var(--text-min), var(--text-item-title));
+        font-weight: var(--weight-title);
+    }
+}
+.material-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    vertical-align: middle;
+    fill: currentColor;
+    stroke: none;
+    pointer-events: none;
+}
+.material-icon-filled {
+    display: none;
+}
+:is(.favorite-button.selected, .program-icon-button.is-saved) .material-icon-outline {
+    display: none;
+}
+:is(.favorite-button.selected, .program-icon-button.is-saved) .material-icon-filled {
+    display: inline;
+}
+/* [구·신버전 공통 알림 형태 / Shared feedback shape across both versions]
+   짧은 상태 알림은 완전히 둥근 캡슐로 표시합니다.
+   Short, nonblocking status messages use fully rounded capsule ends. */
+.toast {
+    border-radius: var(--radius-pill, 9999px);
+    min-height: 48px;
+    padding: 14px 28px;
+    font-size: var(--text-sm, 1rem);
+    line-height: 1.5;
+    text-align: center;
+}
+/* [상호 참고 색상과 위계 / Cross-reference color and hierarchy]
+   작품이 색을 이끌고 인터페이스는 흑백과 충분한 여백을 사용합니다.
+   Artwork carries color; the interface uses neutral surfaces and clear spacing. */
+.section-description {
+    margin: 1rem 0 0;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-body));
+}
+.desktop-nav a[aria-current] {
+    -webkit-text-decoration-color: var(--ink);
+    text-decoration-color: var(--ink);
+}
+.button--yellow {
+    color: var(--paper);
+    background: var(--ink);
+}
+/* [작품 중심의 히어로 / Artwork-led hero]
+   기존 사진·드래그·재생을 유지하고 행동 버튼의 채도 경쟁을 줄입니다.
+   Preserve imagery, drag and playback while giving the action a neutral surface. */
+.card--hero .button--yellow {
+    color: var(--ink);
+    background: var(--paper);
+}
+.season-copy h2 {
+    font-weight: 650;
+}
+.season-label {
+    letter-spacing: 0;
+}
+/* [비교 가능한 포스터 정보 / Comparable poster metadata]
+   날짜·장소의 순서와 읽기 크기를 유지하며 상태를 작은 무채색 표식으로 구분합니다.
+   Keep date and venue order and readable sizing with small neutral status labels. */
+.poster-tag.today {
+    color: var(--ink);
+    background: var(--paper);
+}
+.program-card-meta > span + span {
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--line);
+}
+.home-program-grid {
+    gap: 2rem;
+}
+.card--poster h3 {
+    min-height: 3em;
+}
+.program-choice button {
+    min-height: var(--control-size);
+}
+/* [시즌 안내의 편집 구성 / Editorial season invitation]
+   큰 유채색 면 대신 제목·연도·목적지의 대비로 시즌을 소개합니다.
+   Introduce the season through typography and a destination rather than a broad color field. */
+.card--banner {
+    color: var(--ink);
+    background: var(--color-detail-f3f4f4);
+}
+.card-banner-link {
+    align-items: center;
+    padding: 3rem 4rem;
+}
+.card--banner h2 {
+    font-size: max(var(--text-min), clamp(1.75rem, 2.8vw, 2.5rem));
+    font-weight: var(--weight-title);
+}
+.invitation-art {
+    min-width: 16rem;
+    padding-left: 2.5rem;
+    border-left: 1px solid var(--color-detail-d6dadd);
+}
+.invitation-art i {
+    display: none;
+}
+.invitation-art > span {
+    font-size: max(var(--text-min), 5rem);
+}
+.invitation-art b {
+    font-size: max(var(--text-min), 1.25rem);
+    line-height: 1.4;
+    letter-spacing: 0;
+}
+/* [방문 준비의 사진과 정보 / Visitor photograph and information]
+   건물의 가로 맥락을 보존하고 서비스 링크의 간격을 일정하게 맞춥니다.
+   Preserve the building's horizontal context and align practical service links. */
+.visit-photograph img {
+    aspect-ratio: 4 / 3;
+    object-position: center;
+}
+.visit-link-list a {
+    padding-block: 1.25rem;
+}
+/* [포커스된 방문 안내 이미지 / Focused visitor guide image]
+   같은 크기 안에서 이미지만 교차 전환하며 링크·문구의 배치는 유지합니다.
+   Crossfade within a stable frame while preserving the existing links and layout. */
+.visit-photograph {
+    display: grid;
+    min-width: 0;
+}
+.visit-photograph img[data-visit-image] {
+    grid-area: 1 / 1;
+    opacity: 0%;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+}
+.visit-photograph img[aria-hidden="false"] {
+    opacity: 100%;
+}
+.visit-photograph img[data-visit-kind="illustration"] {
+    object-fit: contain;
+}
+.visit-link-list a.is-previewed strong {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+/* [텍스트 우측의 공통 미리보기 / Shared preview to the right of the text]
+   기본 사진을 유지하며 하나의 프레임 안에서만 이미지를 교차 전환합니다.
+   Preserve the main photograph and crossfade inside one frame beside the text. */
+.visit-links-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+    grid-gap: 1.5rem;
+    gap: 1.5rem;
+}
+.visit-hover-rail {
+    min-width: 0;
+    pointer-events: none;
+}
+.visit-hover-preview {
+    position: -webkit-sticky;
+    position: sticky;
+    top: var(--visit-preview-top, 30vh);
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background: var(--paper);
+    box-shadow: 0 0.5rem 1.5rem var(--color-detail-1jm8av);
+}
+.visit-hover-preview img {
+    /* 원본 비율이 프레임 높이를 늘리지 않도록 고정합니다. / Keep intrinsic ratios from enlarging the frame. */
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0%;
+    transition: opacity 240ms ease;
+}
+.visit-hover-preview img[data-visit-kind="illustration"] {
+    object-fit: contain;
+}
+.visit-hover-preview img.is-active {
+    opacity: 100%;
+}
+@media (min-width: 801px) {
+    .home-visit {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
+        gap: clamp(2rem, 4vw, 4rem);
+    }
+}
+@media (max-width: 800px), (hover: none), (pointer: coarse) {
+    .visit-links-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .visit-hover-rail {
+        display: none;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .visit-photograph img[data-visit-image],
+    .visit-hover-preview,
+    .visit-hover-preview img {
+        transition: none;
+    }
+}
+/* [소식과 멤버십 / News and membership]
+   공지의 읽기 순서 옆에 지속적인 혜택 진입점을 조용히 둡니다.
+   Place a persistent benefit destination alongside the ordered news list. */
+.home-news-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+    grid-gap: 3rem;
+    gap: 3rem;
+    align-items: stretch;
+}
+.news-editorial-list a {
+    grid-template-columns: 5rem minmax(0, 1fr) 1.5rem;
+    gap: 0.5rem 1.5rem;
+    padding-block: 1.5rem;
+}
+.news-editorial-list h3 {
+    font-size: max(var(--text-min), var(--text-item-title));
+    line-height: 1.5;
+}
+.news-editorial-list time {
+    grid-column: 2;
+}
+.news-editorial-list svg {
+    grid-column: 3;
+    grid-row: 1 / 3;
+}
+.membership-feature {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: clamp(1.5rem, 2.8vw, 2.5rem);
+    border-radius: var(--radius-banner);
+    background: var(--color-detail-f3f4f4);
+}
+.membership-label {
+    margin: 0 0 1.5rem;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.membership-feature h3 {
+    margin: 0 0 1.5rem;
+    font-size: max(var(--text-min), clamp(1.75rem, 2.2vw, 2.25rem));
+    font-weight: var(--weight-title);
+    line-height: 1.4;
+}
+.membership-feature > p:not(.membership-label) {
+    margin: 0 0 2rem;
+    font-size: max(var(--text-min), var(--text-body));
+    color: var(--muted);
+}
+.membership-feature .text-link {
+    margin-top: auto;
+    min-height: var(--control-size);
+}
+@media (hover: hover) and (pointer: fine) {
+    .button--yellow:hover {
+        background: var(--color-detail-30343a);
+    }
+    .card--hero .button--yellow:hover {
+        background: var(--color-detail-edf0f2);
+    }
+}
+/* [좁은 화면에서의 재구성 / Narrow-screen recomposition]
+   글자 축소 대신 줄바꿈과 세로 배치로 정보·행동을 보존합니다.
+   Preserve information and actions by wrapping and stacking instead of shrinking text. */
+@media (max-width: 1024px) {
+    .home-news-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .membership-feature {
+        padding: 2rem;
+    }
+}
+@media (max-width: 600px) {
+    .section-heading {
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+    .section-heading .text-link {
+        padding-top: 0;
+        min-height: var(--control-size);
+    }
+    .section-description {
+        margin-top: 0.75rem;
+    }
+    .home-program-grid {
+        gap: 2rem 1rem;
+    }
+    .card--poster h3 {
+        min-height: 0;
+    }
+    .program-card-meta > span + span {
+        padding-left: 0;
+        border-left: 0;
+    }
+    .card-banner-link {
+        padding: 2rem 1.5rem;
+    }
+    .visit-photograph img {
+        aspect-ratio: 4 / 3;
+    }
+    .news-editorial-list a {
+        grid-template-columns: minmax(0, 1fr) 1.5rem;
+        gap: 0.5rem 1rem;
+    }
+    .news-editorial-list time {
+        grid-column: 1;
+    }
+    .news-editorial-list svg {
+        grid-column: 2;
+        grid-row: 1 / 4;
+    }
+    .membership-feature {
+        padding: 2rem 1.5rem;
+    }
+}
+/* [방문 안내·자료 검색 폼 / Arrival and document search controls]
+   네이티브 선택과 입력의 크기를 유지하고 긴 문구는 줄바꿈합니다.
+   Keep native controls stable and wrap longer labels at narrow widths. */
+.experience-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    align-items: flex-end;
+    margin: 2rem 0 2.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--surface-radius-panel);
+    background: var(--soft);
+}
+.experience-filters > label {
+    display: grid;
+    flex: 1 1 14rem;
+    min-width: 0;
+    grid-gap: .625rem;
+    gap: .625rem;
+    color: var(--ink);
+    font-size: max(var(--text-min), var(--text-sm));
+    font-weight: 650;
+}
+.experience-filters input,
+.experience-filters select {
+    width: 100%;
+    min-width: 0;
+    min-height: 3.25rem;
+    padding: .75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-control);
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 400;
+}
+.experience-filters > button {
+    min-height: 3.25rem;
+}
+.experience-state {
+    display: inline-block;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.6;
+}
+/* [출발지와 목적지의 대응 / Origin and destination correspondence]
+   지도 위 강조선과 텍스트 이동 순서를 함께 제공합니다.
+   Pair the schematic highlight with readable arrival instructions. */
+.arrival-planner {
+    margin-bottom: 4.5rem;
+}
+.arrival-result-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    grid-gap: 2.5rem;
+    gap: 2.5rem;
+    align-items: flex-start;
+}
+.arrival-map {
+    margin: 0;
+}
+.arrival-map svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.arrival-map figcaption {
+    padding: 1rem 0 0;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.7;
+}
+.arrival-map .map-default-route {
+    display: none;
+}
+.arrival-map-route path {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.arrival-map-route circle {
+    fill: var(--human);
+    stroke: var(--ink);
+    stroke-width: 3;
+}
+.arrival-instructions h3 {
+    margin: 0 0 1.5rem;
+    font-size: max(var(--text-min), clamp(1.5rem, 2vw, 2rem));
+    line-height: 1.4;
+    word-break: keep-all;
+}
+.arrival-instructions .info-steps {
+    margin: 0;
+}
+.arrival-instructions .info-steps > li {
+    gap: 1rem;
+    padding: 1.25rem 0;
+}
+.arrival-instructions .info-steps h3 {
+    margin-bottom: .5rem;
+    font-size: max(var(--text-min), var(--text-item-title));
+}
+/* [자료 열람과 이벤트 응모 상태 / Documents and event application status]
+   행별 정보 위계와 실제 상태를 유지하는 정적인 목록입니다.
+   Preserve row hierarchy and real local application state. */
+.disclosure-record-list,
+.event-status-list {
+    border-top: 1px solid var(--border-default);
+}
+.disclosure-record-list article,
+.event-status-record {
+    border-bottom: 1px solid var(--line);
+}
+.disclosure-record-list article > a {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.75rem 0;
+}
+.disclosure-record-list article > a > div {
+    min-width: 0;
+}
+.disclosure-record-list article > a > svg {
+    flex: 0 0 auto;
+}
+.disclosure-record-list h3,
+.event-status-record h3 {
+    margin: .5rem 0 .75rem;
+    font-size: max(var(--text-min), var(--text-item-title));
+    font-weight: 650;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+.disclosure-record-list p,
+.event-status-record p {
+    margin: .5rem 0;
+    overflow-wrap: anywhere;
+}
+.disclosure-record-list a:hover h3 {
+    text-decoration: underline;
+    text-underline-offset: .25rem;
+}
+.disclosure-document > h2 {
+    margin: 1rem 0;
+    font-size: max(var(--text-min), clamp(1.75rem, 3vw, 2.5rem));
+    line-height: 1.4;
+}
+.experience-table-hint {
+    display: none;
+    margin: 1.5rem 0 .75rem;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.disclosure-data {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: .75rem 0 2rem;
+}
+.disclosure-data .info-table-wrap {
+    overflow: visible;
+}
+.disclosure-data table {
+    min-width: 38rem;
+}
+.event-status-record {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-gap: 2rem;
+    gap: 2rem;
+    padding: 1.75rem 0;
+}
+/* [좁은 화면의 읽기 순서 / Narrow-screen reading order] */
+@media (max-width: 1000px) {
+    .arrival-result-layout {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .experience-table-hint {
+        display: block;
+    }
+    .experience-filters {
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .experience-filters > label {
+        flex-basis: 100%;
+    }
+    .event-status-record {
+        grid-template-columns: 1fr;
+        gap: .5rem;
+    }
+}
+/* [굿즈 탐색과 상세 / Goods discovery and details]
+   기존 상품 일러스트와 글자 체계를 상세·주문 화면으로 연결합니다.
+   Extend the existing goods artwork and typography into details and checkout. */
+.goods-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+}
+.goods-navigation a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: var(--control-size);
+    padding-block: 0.75rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.goods-navigation a[aria-current="page"] {
+    font-weight: 750;
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+}
+.goods-demo-note,
+.goods-detail-art > p {
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.75;
+}
+.goods-page > .goods-demo-note {
+    margin-bottom: 2.5rem;
+}
+.goods-product-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+}
+.goods-product h3 {
+    margin-block: 0.75rem;
+    font-size: max(var(--text-min), var(--text-card-title));
+    font-weight: var(--weight-title);
+}
+.goods-product-link:focus-visible h3 {
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+}
+.goods-price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block: 1rem;
+}
+.goods-detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-gap: clamp(2rem, 5vw, 5rem);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: flex-start;
+}
+.goods-detail-information h2 {
+    margin-block: 0.75rem 1.5rem;
+    font-size: max(var(--text-min), clamp(1.75rem, 3vw, 2.75rem));
+}
+.goods-description {
+    line-height: 1.8;
+}
+.goods-specs {
+    margin-block: 2rem;
+    border-top: 1px solid var(--line);
+}
+.goods-specs > div {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    grid-gap: 1rem;
+    gap: 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line);
+}
+.goods-specs dt {
+    color: var(--muted);
+}
+.goods-specs dd {
+    margin: 0;
+}
+.goods-quantity {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.goods-quantity select {
+    min-height: var(--control-size);
+    min-width: 6rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    color: var(--ink);
+    background: var(--paper);
+    font: inherit;
+}
+.goods-selection-total {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-block: 1.5rem;
+}
+.goods-selection-total strong,
+.goods-summary-total {
+    font-size: max(var(--text-min), var(--text-item-title));
+}
+.goods-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 1.5rem;
+}
+.goods-actions .text-link,
+.goods-cart-amount .text-link {
+    min-height: var(--control-size);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.goods-feedback {
+    margin-top: 1.5rem;
+    min-height: 1.75rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+/* [장바구니와 검토 단계 / Cart and review steps]
+   수량 입력과 금액은 안정된 위치를 유지합니다.
+   Quantity inputs and amounts retain stable positions during changes. */
+.goods-order-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    padding: 0;
+    margin: 0 0 2rem;
+    list-style: none;
+    color: var(--muted);
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.goods-order-steps [aria-current="step"] {
+    color: var(--ink);
+    font-weight: 750;
+}
+.goods-cart-list {
+    padding: 0;
+    margin: 1.5rem 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+}
+.goods-cart-row {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr) auto;
+    align-items: center;
+    grid-gap: 1.5rem;
+    gap: 1.5rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--line);
+}
+.goods-cart-art .goods-art {
+    margin: 0;
+}
+.goods-cart-art .goods-art > span {
+    font-size: max(var(--text-min), 3rem);
+}
+.goods-cart-art .goods-art > small {
+    display: none;
+}
+.goods-cart-information h2,
+.goods-order h2 {
+    margin: 0 0 0.5rem;
+    font-size: max(var(--text-min), var(--text-item-title));
+}
+.goods-cart-information p {
+    margin-bottom: 0.75rem;
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.goods-cart-amount {
+    display: grid;
+    justify-items: end;
+    grid-gap: 0.5rem;
+    gap: 0.5rem;
+}
+.goods-summary {
+    max-width: 32rem;
+    margin: 2rem 0 2rem auto;
+}
+.goods-summary > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-block: 0.75rem;
+}
+.goods-summary dd {
+    margin: 0;
+}
+.goods-summary-total {
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--border-default);
+    font-weight: 750;
+}
+.goods-confirmation {
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--line);
+}
+.goods-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    font-size: max(var(--text-min), var(--text-sm));
+    line-height: 1.75;
+}
+.goods-consent input {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.25rem;
+    accent-color: var(--ink);
+}
+/* [완료와 취소 피드백 / Completion and cancellation feedback]
+   확인 후 나타나는 내용만 짧게 연결하고 모션 감소 설정을 존중합니다.
+   Briefly connect revealed confirmation content and respect reduced motion. */
+.goods-receipt {
+    padding: clamp(1.25rem, 3vw, 2rem);
+    margin-bottom: 2rem;
+    background: var(--soft);
+    border-radius: var(--radius);
+}
+.goods-receipt h2 {
+    margin-bottom: 0.75rem;
+}
+.goods-order {
+    padding-block: 2rem;
+    border-top: 1px solid var(--line);
+}
+.goods-order-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+.goods-order-heading > div {
+    min-width: 0;
+}
+.goods-order-heading p {
+    overflow-wrap: anywhere;
+    font-size: max(var(--text-min), var(--text-sm));
+    color: var(--muted);
+}
+.goods-order-status {
+    font-size: max(var(--text-min), var(--text-sm));
+}
+.goods-order-items {
+    list-style: none;
+    padding: 0;
+    margin-block: 1.5rem;
+}
+.goods-order-items li,
+.goods-order-total {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding-block: 0.5rem;
+}
+.goods-order-total {
+    border-top: 1px solid var(--line);
+}
+.goods-cancel-confirm {
+    margin-top: 1rem;
+}
+.goods-cancel-confirm summary {
+    min-height: var(--control-size);
+    padding-block: 0.75rem;
+    cursor: pointer;
+    font-size: max(var(--text-min), var(--text-sm));
+    text-decoration: underline;
+    text-underline-offset: 0.25rem;
+}
+.goods-cancel-confirm > div {
+    padding-block: 0.75rem;
+}
+@media (hover: hover) and (pointer: fine) {
+    .goods-product-link:hover h3 {
+        text-decoration: underline;
+        text-underline-offset: 0.25rem;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .goods-receipt {
+        animation: goods-confirmation-entry 200ms var(--ease-out) both;
+    }
+    @keyframes goods-confirmation-entry {
+        from {
+            opacity: 0%;
+            transform: translateY(0.375rem);
+        }
+        to {
+            opacity: 100%;
+            transform: translateY(0);
+        }
+    }
+}
+/* [작은 화면에서의 읽기 순서 / Reading order on compact screens] */
+@media (max-width: 800px) {
+    .goods-detail {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .goods-detail-art {
+        max-width: 34rem;
+    }
+}
+@media (max-width: 600px) {
+    .goods-page .goods-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2.5rem;
+    }
+    .goods-cart-row {
+        grid-template-columns: 5rem minmax(0, 1fr);
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .goods-cart-amount {
+        grid-column: 2;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        justify-items: start;
+        width: 100%;
+    }
+    .goods-cart-art .goods-art > span {
+        font-size: max(var(--text-min), 2rem);
+    }
+    .goods-actions .button {
+        max-width: 100%;
+        white-space: normal;
+    }
+    .goods-specs > div {
+        grid-template-columns: 5rem minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+}
+/* [상태 변화의 속도와 입력 피드백 / State timing and input feedback]
+   자주 쓰는 조작은 위치를 고정한 채 색과 명도로 응답합니다.
+   Frequent controls respond with color and tone while keeping their position stable. */
+:root {
+    --motion-feedback: 160ms;
+    --motion-panel: 180ms;
+}
+.button,
+.round-button,
+.program-icon-button,
+.program-choice button,
+.info-chips a,
+.program-detail-tabs [role="tab"],
+.seat,
+.flow-text-button,
+.program-category-tabs a,
+.program-view-switch a,
+.program-filter__reset,
+.program-calendar button,
+.info-month button,
+.subnav a,
+.account-nav a,
+.goods-navigation a,
+.goods-quantity select,
+.experience-filters :is(input, select),
+.form-field :is(input, select, textarea),
+.flow-field :is(input, select, textarea) {
+    transition: background-color var(--motion-feedback) ease,
+        border-color var(--motion-feedback) ease,
+        color var(--motion-feedback) ease;
+}
+/* [탐색·선택·입력의 상태 전환 / Navigation, selection and input states]
+   경계선 두께나 위치를 바꾸지 않고 실제 조작 가능한 항목에만 피드백을 더합니다.
+   Add feedback to real controls without changing border widths or their positions. */
+.desktop-nav a,
+.footer-policy a,
+.menu-columns a,
+.overview-service,
+.info-link-card,
+.visit-link-list a,
+.program-season-shortcut,
+.goods-product-link {
+    transition: color var(--motion-feedback) ease, background-color var(--motion-feedback) ease;
+}
+.program-category-tabs a:active,
+.program-view-switch a:active,
+.subnav a:active,
+.account-nav a:active,
+.goods-navigation a:active,
+.overview-service:active,
+.info-link-card:active {
+    background-color: var(--soft);
+}
+.program-share {
+    transform-origin: top right;
+}
+/* [확인된 원래 상태로 즉시 복귀 / Resolve to the correct resting state]
+   타이핑·텍스트 선택·포커스 테두리는 움직임과 무관하게 즉시 응답합니다.
+   Typing, selection and focus outlines remain immediate and independent of motion. */
+@media (prefers-reduced-motion: reduce) {
+    .program-share {
+        transform: none;
+    }
+}
+.button:active,
+.round-button:active,
+.program-icon-button:active,
+.flow-text-button:active {
+    filter: brightness(0.88);
+}
+.button--dark:active {
+    background-color: var(--color-detail-30343a);
+    filter: none;
+}
+/* [대화상자의 배경과 펼침 상태 / Modal backdrop and disclosure state]
+   실제 닫힘까지 네이티브 모달 영역을 유지하고 펼침 내용의 높이는 JavaScript가 측정합니다.
+   Keep the native modal active until exit finishes; JavaScript measures disclosure content. */
+.navigation-dialog::-webkit-backdrop {
+    -webkit-transition: background-color var(--motion-panel) ease;
+    transition: background-color var(--motion-panel) ease;
+}
+.navigation-dialog::backdrop {
+    transition: background-color var(--motion-panel) ease;
+}
+.navigation-dialog[data-dialog-closing]::-webkit-backdrop {
+    background-color: var(--color-transparent);
+}
+.navigation-dialog[data-dialog-closing]::backdrop {
+    background-color: var(--color-transparent);
+}
+@starting-style {
+    .navigation-dialog[open]::-webkit-backdrop {
+        background-color: var(--color-transparent);
+    }
+    .navigation-dialog[open]::backdrop {
+        background-color: var(--color-transparent);
+    }
+}
+.faq-list summary svg,
+.program-guide-faq summary svg,
+.application-record summary > svg {
+    transition: transform var(--motion-panel) var(--ease-out);
+}
+details[data-disclosure-closing] summary svg {
+    transform: rotate(0deg);
+}
+/* [짧은 알림의 진입과 퇴장 / Short notification entrance and exit]
+   연속 알림은 같은 캡슐 안에서 갱신하며 불필요한 레이아웃 속성을 전환하지 않습니다.
+   Consecutive notices update one capsule without transitioning unrelated layout properties. */
+.toast {
+    transition: opacity var(--motion-panel) ease,
+        transform var(--motion-panel) var(--ease-out),
+        visibility 0s linear var(--motion-panel);
+}
+.toast.visible {
+    transition-delay: 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+    .toast,
+    .toast.visible {
+        transform: translate(-50%, 0);
+    }
+    .navigation-dialog::-webkit-backdrop {
+        -webkit-transition: none;
+        transition: none;
+    }
+    .navigation-dialog::backdrop,
+    .faq-list summary svg,
+    .program-guide-faq summary svg,
+    .application-record summary > svg {
+        transition: none;
+    }
+}
+/* [발견에서 방문까지 / From discovery to a visit]
+   명확한 제목과 얇은 선으로 검색과 공통 여정을 연결합니다.
+   Connect shared journeys with clear headings and fine rules. */
+.menu-journeys {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 32px;
+    gap: 32px;
+    margin: 8px 0 40px;
+}
+.menu-journeys a {
+    position: relative;
+    display: grid;
+    grid-gap: 10px;
+    gap: 10px;
+    padding: 24px 40px 24px 0;
+    border-block: 1px solid var(--line);
+    color: var(--ink);
+}
+.menu-journeys span {
+    font-size: max(var(--text-min), 16px);
+    color: var(--muted);
+}
+.menu-journeys strong {
+    font-size: max(var(--text-min), clamp(24px, 2.3vw, 36px));
+    font-weight: 600;
+    letter-spacing: -.04em;
+}
+.menu-journeys svg {
+    position: absolute;
+    right: 0;
+    top: 50%;
+}
+.discovery-page {
+    max-width: 1200px;
+}
+.discovery-page .search-results-form {
+    margin-bottom: 32px;
+}
+.discovery-page .search-results-form button {
+    min-width: 100px;
+    gap: 12px;
+}
+.discovery-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 16px;
+}
+.discovery-types a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    font-size: max(var(--text-min), 18px);
+    color: var(--muted);
+}
+.discovery-types a[aria-current] {
+    color: var(--ink);
+    font-weight: 700;
+    box-shadow: inset 0 -1px 0 var(--stroke-selected);
+}
+.discovery-types span {
+    font-size: max(var(--text-min), 16px);
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+}
+.discovery-group {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    grid-gap: 40px;
+    gap: 40px;
+    padding-block: 40px;
+    border-bottom: 1px solid var(--line);
+}
+.discovery-group > h2 {
+    font-size: max(var(--text-min), 26px);
+    letter-spacing: -.035em;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+.discovery-group > h2 > span {
+    font-size: max(var(--text-min), 16px);
+    font-weight: 400;
+    color: var(--muted);
+}
+.discovery-results {
+    min-width: 0;
+}
+.discovery-results .search-result {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.discovery-results .search-result + .search-result {
+    border-top: 1px solid var(--line);
+}
+.discovery-results .search-result > a {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    padding-block: 24px;
+}
+.discovery-results .search-result img {
+    width: 88px;
+    height: 112px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: var(--radius-media);
+}
+.discovery-results .search-result > a > div {
+    flex: 1 1;
+    min-width: 0;
+}
+.discovery-results .search-result h3 {
+    font-size: max(var(--text-min), 24px);
+    font-weight: 600;
+    letter-spacing: -.035em;
+    margin-bottom: 10px;
+}
+.discovery-results .search-result p {
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.6;
+    color: var(--muted);
+}
+.discovery-results .search-result .discovery-detail {
+    font-size: max(var(--text-min), 16px);
+    margin-bottom: 4px;
+}
+.discovery-results .search-result > a > svg {
+    flex-shrink: 0;
+}
+.discovery-suggestions {
+    padding-block: 56px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-column-gap: 48px;
+    column-gap: 48px;
+}
+.discovery-suggestions h2 {
+    grid-column: 1 / -1;
+    font-size: max(var(--text-min), 28px);
+    margin-bottom: 24px;
+}
+.discovery-suggestions a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+    border-bottom: 1px solid var(--line);
+    gap: 12px;
+    font-size: max(var(--text-min), 18px);
+}
+.journey-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 32px 0;
+    margin-block: 32px;
+    border-block: 1px solid var(--line);
+}
+.journey-entry h2 {
+    font-size: max(var(--text-min), clamp(26px, 3vw, 40px));
+    letter-spacing: -.04em;
+    margin-bottom: 10px;
+}
+.journey-entry p {
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.7;
+    color: var(--muted);
+}
+.journey-entry .button {
+    flex-shrink: 0;
+}
+.booking-party-note {
+    margin-block: 16px;
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.65;
+}
+@media (max-width: 700px) {
+    .menu-journeys {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+    .menu-journeys a {
+        padding-block: 16px;
+    }
+    .discovery-types {
+        gap: 4px 20px;
+    }
+    .discovery-group {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding-block: 32px;
+    }
+    .discovery-results .search-result > a {
+        gap: 16px;
+    }
+    .discovery-results .search-result img {
+        width: 64px;
+        height: 86px;
+    }
+    .discovery-results .search-result h3 {
+        font-size: max(var(--text-min), 21px);
+    }
+    .discovery-results .search-result > a > svg {
+        display: none;
+    }
+    .discovery-suggestions {
+        grid-template-columns: 1fr;
+    }
+    .discovery-suggestions h2 {
+        font-size: max(var(--text-min), 24px);
+    }
+    .journey-entry {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 24px;
+    }
+}
+/* [목적별 진입과 홈의 위계 / Purposeful entry and home hierarchy]
+   큰 제목과 여백으로 각 섹션의 행동을 구분합니다.
+   Distinguish each section's action through readable headings and space. */
+.home-pathways {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: 32px;
+    gap: 32px;
+    padding-block: 36px;
+    border-bottom: 1px solid var(--border-default);
+}
+.home-pathways > a {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-height: 72px;
+    color: var(--color-detail-202220);
+}
+.home-pathways > a > span {
+    flex: 1 1;
+}
+.home-pathways strong,
+.home-participation strong {
+    display: block;
+    font-size: max(var(--text-min), 20px);
+    font-weight: 650;
+    line-height: 1.5;
+}
+.home-pathways small,
+.home-participation small {
+    display: block;
+    margin-top: 5px;
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.6;
+    color: var(--color-detail-63655e);
+}
+.home-section-label {
+    margin-bottom: 18px;
+    color: var(--color-detail-5d625c);
+    font-size: max(var(--text-min), 16px);
+    font-weight: 600;
+    line-height: 1.6;
+}
+.home-booking,
+#discover-programs,
+#sejong-news {
+    padding-block: 104px;
+}
+.home-booking .section-heading h2,
+#discover-programs .section-heading h2,
+#sejong-news .section-heading h2 {
+    font-size: max(var(--text-min), clamp(36px, 4vw, 58px));
+    line-height: 1.2;
+    letter-spacing: -0.045em;
+    font-weight: 650;
+    word-break: keep-all;
+}
+.home-booking .section-description,
+#discover-programs .section-description,
+#sejong-news .section-description {
+    margin-top: 22px;
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.7;
+}
+/* [날짜와 프로그램 선택 / Date and program selection]
+   달력은 안정된 높이를 유지하고 프로그램 목록만 내부에서 스크롤합니다.
+   Keep a stable calendar area while the program list scrolls independently. */
+.quick-booking-layout {
+    display: grid;
+    grid-template-columns: minmax(360px, 0.86fr) minmax(0, 1.14fr);
+    grid-gap: 64px;
+    gap: 64px;
+    margin-top: 44px;
+}
+.quick-calendar,
+.quick-booking-choices {
+    min-width: 0;
+}
+.quick-calendar-heading,
+.quick-day-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    margin-bottom: 24px;
+}
+.quick-calendar-heading h3 {
+    font-size: max(var(--text-min), 28px);
+    font-weight: 650;
+    letter-spacing: -0.025em;
+}
+.quick-month-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.quick-calendar-week,
+.quick-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.quick-calendar-week span {
+    padding-block: 10px;
+    text-align: center;
+    font-size: max(var(--text-min), 16px);
+    color: var(--color-detail-646961);
+}
+.quick-calendar-grid {
+    min-height: calc(6 * var(--control-size) + 7 * var(--space-2));
+    align-content: start;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+}
+.quick-date,
+.quick-calendar-blank {
+    min-height: var(--control-size);
+}
+.quick-date {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    width: min(100%, var(--control-size));
+    justify-self: center;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-transparent);
+    color: var(--text-primary);
+    font-size: max(var(--text-min), var(--text-body));
+    font-weight: 500;
+    transition: background var(--duration-fast), color var(--duration-fast);
+}
+.quick-date:hover:not(.is-selected) {
+    background: var(--surface-default);
+}
+.quick-date:focus-visible {
+    outline: var(--focus-width) solid var(--border-focus);
+    outline-offset: var(--focus-offset);
+}
+.quick-date.is-today {
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+.quick-date.is-selected {
+    background: var(--surface-inverse);
+    color: var(--text-inverse);
+}
+.quick-date i,
+.quick-calendar-key i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+}
+.quick-date i {
+    position: absolute;
+    left: calc(50% - 2px);
+    bottom: 8px;
+}
+.quick-calendar-key {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 20px;
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.6;
+    color: var(--color-detail-5c635b);
+}
+.quick-native-date {
+    display: none;
+}
+/* [커서 옆의 날짜별 프로그램 표면 / Program surface beside the cursor]
+   Portal로 달력의 overflow와 분리하고 위치·크기는 화면 안에서 제한합니다.
+   A portal escapes calendar clipping while staying within viewport bounds. */
+.booking-date-preview {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 90;
+    width: min(352px, calc(100vw - 24px));
+    max-height: min(480px, calc(100dvh - 24px));
+    margin: 0;
+    animation: calendar-preview-enter 140ms ease-out;
+    /* 커서 좌표는 보간하지 않습니다. 전역 모션 감소 규칙의 암묵적 all 전환도 차단합니다.
+       Cursor coordinates are immediate, including under the global reduced-motion rule. */
+    transition: none;
+}
+.booking-date-preview-surface {
+    max-height: inherit;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.booking-date-preview-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+.booking-date-preview-heading > span,
+.booking-date-preview-list li > div > span,
+.booking-date-preview-more {
+    color: var(--text-secondary);
+}
+.booking-date-preview-list {
+    display: grid;
+    grid-gap: var(--space-4);
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.booking-date-preview-list li {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    grid-gap: var(--space-3);
+    gap: var(--space-3);
+    align-items: start;
+}
+.booking-date-preview-list img {
+    display: block;
+    width: 54px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-control);
+}
+.booking-date-preview-list li > div {
+    display: grid;
+    grid-gap: var(--space-1);
+    gap: var(--space-1);
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+.booking-date-preview-more {
+    margin-top: var(--space-4);
+}
+.booking-date-preview-empty {
+    margin: 0;
+}
+@keyframes calendar-preview-enter {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .booking-date-preview {
+        animation: none;
+    }
+    .quick-date {
+        transition: none;
+    }
+}
+.quick-day-heading p,
+.quick-day-heading > span {
+    font-size: max(var(--text-min), 16px);
+    color: var(--color-detail-61685f);
+    line-height: 1.6;
+}
+.quick-day-heading h3 {
+    margin-top: 3px;
+    font-size: max(var(--text-min), 26px);
+    font-weight: 650;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
+}
+.quick-program-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 350px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    padding: 4px;
+}
+.quick-program {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--surface-radius-compact);
+    background: var(--color-white);
+    color: var(--color-detail-252a25);
+    text-align: left;
+}
+.quick-program.is-selected {
+    border-color: var(--stroke-selected);
+    background: var(--surface-banner);
+    box-shadow: inset 0 0 0 1px var(--stroke-selected);
+}
+.quick-program:disabled {
+    opacity: 65%;
+    cursor: default;
+}
+.quick-program img {
+    width: 72px;
+    height: 96px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: var(--radius-media);
+}
+.quick-program-copy {
+    display: grid;
+    flex: 1 1;
+    min-width: 0;
+    grid-gap: 3px;
+    gap: 3px;
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.5;
+}
+.quick-program-copy strong {
+    margin-bottom: 4px;
+    font-size: max(var(--text-min), 20px);
+    font-weight: 650;
+    line-height: 1.4;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+}
+.quick-program-category {
+    color: var(--color-detail-697064);
+}
+.quick-program-check {
+    font-size: max(var(--text-min), 24px);
+    width: 24px;
+    text-align: center;
+}
+.quick-selection-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 120px;
+    grid-gap: 16px;
+    gap: 16px;
+    margin-top: 24px;
+}
+.quick-selection-fields label,
+.quick-native-date {
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.6;
+    font-weight: 600;
+}
+.quick-selection-fields select,
+.quick-native-date input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 52px;
+    margin-top: 8px;
+    padding: 12px;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-control);
+    background: var(--color-white);
+    color: var(--color-detail-2f372f);
+    font: inherit;
+}
+.quick-selection-fields select:disabled {
+    color: var(--color-detail-73776e);
+    background: var(--color-detail-eceee8);
+}
+.quick-booking-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 24px;
+}
+.quick-booking-action p {
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.5;
+    color: var(--color-detail-525c50);
+}
+.quick-booking-action .button {
+    flex-shrink: 0;
+    min-height: 52px;
+    font-size: max(var(--text-min), 18px);
+}
+.quick-booking-action button:disabled {
+    background: var(--color-detail-dde1d7);
+    color: var(--color-detail-61685e);
+    cursor: default;
+}
+.quick-booking-note {
+    margin-top: 20px;
+    font-size: max(var(--text-min), 16px);
+    line-height: 1.7;
+    color: var(--color-detail-656a61);
+}
+.quick-empty {
+    padding-block: 40px;
+    min-height: 260px;
+}
+.quick-empty h4 {
+    font-size: max(var(--text-min), 24px);
+    line-height: 1.4;
+    font-weight: 650;
+    word-break: keep-all;
+}
+.quick-empty p {
+    margin-block: 16px 24px;
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.7;
+}
+/* [발견과 지속적인 참여 / Discovery and continued participation] */
+#discover-programs {
+    border-top: 1px solid var(--border-default);
+}
+#discover-programs .program-choice {
+    flex-wrap: wrap;
+}
+#discover-programs .program-choice button {
+    min-height: 48px;
+}
+.home-season-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    margin-top: 44px;
+    padding: 32px 0;
+    border-block: 1px solid var(--border-default);
+}
+.home-season-link strong {
+    display: block;
+    margin-bottom: 10px;
+    font-size: max(var(--text-min), 26px);
+    line-height: 1.4;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+}
+.home-season-link > span > span {
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.7;
+    color: var(--color-detail-63695f);
+}
+.home-season-link > span:last-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.6;
+    flex-shrink: 0;
+}
+.home-visit-planner {
+    margin-bottom: 28px;
+}
+.home-news-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.home-news-filters button {
+    min-height: 48px;
+    padding: 8px 4px;
+    border-bottom: 1px solid var(--border-default);
+    color: var(--color-detail-666d62);
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.5;
+}
+.home-news-filters button[aria-pressed="true"] {
+    border-color: var(--stroke-selected);
+    color: var(--color-detail-252c25);
+    font-weight: 650;
+}
+.home-participation {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: var(--space-4);
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+}
+/* [선 대신 채워진 참여 박스 / Filled participation cards instead of a dividing rule] */
+.home-participation > a {
+    padding: var(--space-6);
+    min-height: 132px;
+    border-radius: var(--radius-lg);
+    background: var(--surface-subtle);
+    color: var(--text-primary);
+}
+.home-participation > a:nth-child(1) {
+    background: var(--accent-information);
+}
+.home-participation > a:nth-child(2) {
+    background: var(--accent-highlight);
+}
+.home-participation small {
+    color: var(--text-primary);
+}
+.home-participation > a:active {
+    filter: brightness(0.96);
+}
+.home-participation a,
+.home-institution-links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+.home-institution-links a {
+    min-height: 64px;
+}
+.home-institution-links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-gap: 32px;
+    gap: 32px;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-default);
+}
+.home-institution-links a {
+    color: var(--color-white);
+    font-size: max(var(--text-min), 18px);
+    line-height: 1.6;
+}
+@media (hover: hover) {
+    .quick-date:not(.is-selected):hover {
+        background: var(--color-detail-e4e8df);
+    }
+    .quick-program:not(:disabled):hover {
+        border-color: var(--border-default);
+    }
+    .home-pathways a:hover strong,
+    .home-participation a:hover strong {
+        color: var(--color-detail-5d6c58);
+    }
+}
+@media (max-width: 1100px) {
+    .quick-booking-layout {
+        gap: 32px;
+        grid-template-columns: minmax(340px, 0.9fr) minmax(0, 1.1fr);
+    }
+    .quick-booking-action {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .quick-booking-action .button {
+        justify-content: center;
+    }
+    .home-pathways,
+    .home-participation {
+        gap: 20px;
+    }
+}
+@media (max-width: 860px) {
+    .quick-booking-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    .quick-calendar {
+        max-width: 480px;
+        width: 100%;
+        margin-inline: auto;
+    }
+    .quick-booking-choices {
+        border-top: 1px solid var(--border-default);
+        padding-top: 28px;
+    }
+    .home-pathways > a > svg:first-child {
+        display: none;
+    }
+    .home-season-link {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .home-institution-links {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px 28px;
+    }
+}
+@media (max-width: 600px) {
+    .home-booking,
+    #discover-programs,
+    #sejong-news {
+        padding-block: 64px;
+    }
+    .home-pathways {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding-block: 12px;
+    }
+    .home-pathways > a {
+        padding-block: 20px;
+    }
+    .home-pathways > a + a {
+        border-top: 1px solid var(--border-default);
+    }
+    .home-participation {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+    }
+    .home-pathways > a > svg:first-child {
+        display: block;
+    }
+    .quick-booking-layout {
+        margin-top: 32px;
+    }
+    .quick-calendar-heading {
+        gap: 8px;
+    }
+    .quick-calendar-heading h3 {
+        font-size: max(var(--text-min), 24px);
+    }
+    .quick-date,
+    .quick-calendar-blank {
+        min-height: 48px;
+    }
+    .quick-program {
+        padding: 12px;
+        gap: 14px;
+    }
+    .quick-program img {
+        width: 60px;
+        height: 80px;
+    }
+    .quick-program-check {
+        display: none;
+    }
+    .quick-program-copy strong {
+        font-size: max(var(--text-min), 20px);
+    }
+    .quick-selection-fields {
+        grid-template-columns: minmax(0, 1fr) 88px;
+        gap: 12px;
+    }
+    .quick-selection-fields select {
+        padding-inline: 8px;
+    }
+    .quick-booking-action {
+        gap: 16px;
+    }
+    #discover-programs .program-filter-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    #discover-programs .program-choice {
+        gap: 8px;
+    }
+    #discover-programs .program-choice button {
+        min-height: 48px;
+        padding-inline: 16px;
+        font-size: max(var(--text-min), 16px);
+    }
+    .home-news-filters {
+        gap: 14px;
+    }
+    .home-news-filters button {
+        font-size: max(var(--text-min), 16px);
+    }
+    .home-institution-links {
+        margin-top: 40px;
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}
+/* [좁은 화면의 날짜 입력 / Date input on narrow screens]
+   일곱 열이 48px 조작 폭을 확보하지 못할 때 네이티브 날짜 입력을 제공합니다.
+   Use the native date input when seven columns cannot retain 48px touch widths. */
+@media (max-width: 430px) {
+    .quick-native-date {
+        display: block;
+    }
+    .quick-calendar-week,
+    .quick-calendar-grid,
+    .quick-calendar-key,
+    .quick-month-controls {
+        display: none;
+    }
+    .quick-calendar-heading {
+        margin-bottom: 16px;
+        min-height: 0;
+    }
+}
+
+/*# sourceMappingURL=material-symbols_1.css.map*/
